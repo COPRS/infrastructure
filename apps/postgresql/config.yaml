@@ -1,0 +1,3 @@
+chart_ref: bitnami/postgresql
+chart_version: 10.13.4
+namespace: infra

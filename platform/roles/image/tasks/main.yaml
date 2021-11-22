@@ -1,0 +1,94 @@
+---
+- name: Create temporary directory for ssh keys
+  tempfile:
+    state: directory
+    suffix: ssh_key
+  register: ssh_key_dir
+
+- name: Generate temporary ssh keys to create the image
+  local_action:
+    module: "user"
+    name: "{{ lookup('env','USER') }}"
+    generate_ssh_key: true
+    ssh_key_type: "rsa"
+    ssh_key_bits: "2048"
+    ssh_key_file: "{{ ssh_key_dir.path }}/ssh_rsa_2048"
+
+- name: Set the ssh public key variable
+  set_fact:
+    ssh_key: "{{ lookup('file', ssh_key_dir.path + '/ssh_rsa_2048.pub') }}"
+
+- name: Create temporary file for cloud config
+  tempfile:
+    state: file
+    suffix: cloud_config
+  register: cloud_config
+
+- name: Render the cloud config file
+  template:
+    src: cloud-config.j2
+    dest: "{{ cloud_config.path }}"
+
+- name: Create the temporary file for cloud init image
+  tempfile:
+    state: file
+    suffix: cloud_img
+  register: cloud_img
+
+- name: Create the cloud init image
+  shell: "cloud-localds {{ cloud_img.path }} {{ cloud_config.path }}"
+
+- name: Create the temporary file for container-runtime script file
+  tempfile:
+    state: file
+    suffix: container-runtime.sh
+  register: container_runtime
+
+- name: Render the container-runtime script file
+  template:
+    src: container-runtime.j2
+    dest: "{{ container_runtime.path }}"
+
+- name: Create the temporary file for packer base image
+  tempfile:
+    state: file
+    suffix: base_img.json
+  register: base_img
+
+- name: Render the packer base image file
+  template:
+    src: base_image.j2
+    dest: "{{ base_img.path }}"
+
+- name: Create the qcow2 image with packer
+  shell: "packer build -force -on-error=cleanup {{ base_img.path }}"
+
+- name: Include default vars from safescale-cluster
+  include_vars:
+    file: ../roles/safescale-cluster/defaults/main.yaml
+
+- name: Get credentials from tenant file
+  import_tasks: ../roles/safescale-cluster/tasks/tenant.yaml
+
+- name: Upload the packer image to the cloud provider
+  openstack.cloud.image:
+    auth:
+      auth_url: "https://iam.eu-west-0.prod-cloud-ocb.orange-business.com"
+      username: "{{ tenant.identity.Username }}"
+      password: "{{ tenant.identity.Password }}"
+      domain_name: "{{ tenant.identity.DomainName }}"
+      project_id: "{{ tenant.compute.ProjectID }}"
+    timeout: 600
+    name: "{{ image_name }}"
+    container_format: bare
+    disk_format: qcow2
+    state: present
+    min_disk: 40
+    filename: "{{ playbook_dir }}/../roles/image/files/output/image/packer-{{ qcow2_name }}"
+    protected: false
+    properties:
+      description: "Image created using packer_ctl, a HashiCorp Packer wrapper"
+      os_type: "Linux"
+      os_version: "Other Linux (64 bit)"
+      type: "ECS"
+      visibility: private

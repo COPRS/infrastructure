@@ -1,0 +1,37 @@
+image:
+  tag: 5.0.3-debian-10-r38
+architecture: standalone
+auth:
+  enabled: true
+  username: graylog
+  password: grayl0gPassw0rd
+  database: graylog
+persistence:
+  enabled: true
+  storageClass: ceph-block
+primary:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/worker"
+            operator: In
+            values:
+            - infra
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/component
+            operator: In
+            values:
+            - mongodb
+        topologyKey: "kubernetes.io/hostname"
+resources:
+  limits:
+    cpu: 300m
+    memory: 2048Mi
+  requests:
+    cpu: 100m
+    memory: 512Mi

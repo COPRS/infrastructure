@@ -1,0 +1,5 @@
+safescale_path: $(command -v safescale)
+tenant_path: ~/.safescale/tenants.yaml
+safescale_operator: safescale
+
+add_ingester: "{{ cluster.add_ingester | d(false) | bool }}"

@@ -1,0 +1,8 @@
+---
+- name: Install ClamAV
+  import_tasks: install.yaml
+  tags: clamav
+
+- name: Uninstall ClamAV
+  import_tasks: uninstall.yaml
+  tags: ['never', 'uninstall_clamav']

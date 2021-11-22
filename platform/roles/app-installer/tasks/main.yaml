@@ -1,0 +1,19 @@
+- name: get apps folders
+  find:
+    file_type: directory
+    paths: "{{ app_paths }}"
+  delegate_to: localhost
+  register: result
+
+- name: Extract app path
+  set_fact:
+    # do not take file starting with .
+    apps: "{{  result.files | sort(attribute='path') | map(attribute='path') | map('regex_search', regex) | list }}"
+  vars:
+    regex: '.+/[\w-]+[\w\.-]+$'
+
+- name: install apps
+  include_tasks: install.yaml
+  vars:
+    app_dir: "{{ item }}"
+  loop: "{{ apps }}"

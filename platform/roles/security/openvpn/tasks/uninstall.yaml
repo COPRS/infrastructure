@@ -1,0 +1,19 @@
+---
+- name: Stop openVpn
+  systemd:
+    state: stopped
+    name: openvpn
+    enabled: yes
+
+- name: Uninstall openvpn
+  apt: 
+    name: openvpn
+    state: absent
+    purge: yes
+    autoclean: yes
+    autoremove: yes
+
+- name: Delete content & directory
+  file:
+    state: absent
+    path: /etc/openvpn

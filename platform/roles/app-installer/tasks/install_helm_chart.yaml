@@ -1,0 +1,22 @@
+- name: Check whether the release is already installed
+  community.kubernetes.helm_info:
+    name: "{{ app_name }}"
+    release_namespace: "{{ app.namespace | default(default) }}"
+  register: helm_info
+
+- name: Install helm charts
+  kubernetes.core.helm:
+    chart_ref: "{{ app.chart_ref }}"
+    chart_repo_url: "{{ app.chart_repo_url | default(omit) }}"
+    chart_version: "{{ app.chart_version | default(omit) }}"
+    name: "{{ app_name }}"
+    namespace: "{{ app.namespace | default(default) }}"
+    create_namespace: "{{ helm_create_namespace | default(false) }}"
+    values: "{{ lookup('file', repo + '/values.yaml') | from_yaml }}"
+  register: helm
+  when: helm_info.status is not defined
+
+- name: Display informations
+  debug:
+    msg: "{{ helm.stdout_lines }}"
+  when: helm_info.status is not defined

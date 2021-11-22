@@ -1,0 +1,1 @@
+safescale_path: $(command -v safescale)

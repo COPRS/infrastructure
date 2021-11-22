@@ -1,0 +1,9 @@
+---
+- name: Install Suricata
+  import_tasks: install.yaml
+  tags: suricata
+
+- name: Uninstall Suricata
+  import_tasks: uninstall.yaml
+  tags: ['never', 'uninstall_suricata']
+ 

@@ -1,0 +1,12 @@
+- name: Uninstall Clamav
+  apt: 
+    name: clamav
+    state: absent
+    purge: yes
+    autoclean: yes
+    autoremove: yes
+
+- name: Delete ClamAv cron
+  cron:
+    name: "ClamAV"
+    state: absent

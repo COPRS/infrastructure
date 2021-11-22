@@ -1,0 +1,40 @@
+---
+# Add volumes on worker nodes to populate Ceph pool
+- name: Getting host list with safescale
+  shell: "{{ safescale_path }} cluster inspect {{ cluster.name }} | jq .result.nodes.masters[].name,.result.nodes.nodes[].name | tr -d '\"' | sort"
+  register: hosts
+
+- name: Setting nodes variables
+  set_fact:
+    nodes: "{{ hosts.stdout_lines | select('match','^.*node.*$') }}"
+
+- name: remove ingester from node list
+  set_fact:
+    nodes: "{{ nodes | difference(nodes | last) }}"
+  when: add_ingester
+
+- name: Create the volumes
+  shell: "{{ safescale_path }} volume create --size {{ volume.size }} --speed {{ volume.type }} {{ item.0 }}-{{ volume.type }}-{{ item.1 }} "
+  loop: "{{ nodes | product(range(1, volume.count+1)) | list }}"
+  async: 30
+  poll: 0
+  register: volumes
+
+- name: Wait for asynchronous job to end
+  async_status:
+    jid: '{{ volumes_result_item.ansible_job_id }}'
+  loop: "{{ volumes.results }}"
+  loop_control:
+    loop_var: "volumes_result_item"
+  register: job_result
+  until: job_result.finished
+  retries: 6
+  delay: 5
+  ignore_errors: yes
+
+- name: Attach the volumes
+  shell: "{{ safescale_path }} volume attach --do-not-format {{ item.0 }}-{{ volume.type }}-{{ item.1 }} {{ item.0 }} "
+  loop: "{{ nodes | product(range(1, volume.count+1)) | list }}"
+  async: 30
+  poll: 0
+  ignore_errors: yes

@@ -1,0 +1,58 @@
+---
+- name: Deleting the cluster, and the created files
+  hosts: localhost
+  tasks:
+
+    - name: Add default value for safescale values
+      set_fact:
+        safescale_path: "{{ safescale_path | default('$(command -v safescale)') }}"
+
+    - name: Detach volumes
+      block:
+        - name: Getting attached volume list
+          shell: "{{ safescale_path }} volume list | jq '.result[] | select((.name? | match(\"{{ cluster.name }}-node-[0-9]+-.*\")) and .attachments != null).name' | tr -d '\"'"
+          register: attached_volume_names
+
+        - name: Detach volumes from nodes
+          shell: "{{ safescale_path }} volume detach {{ item }} {{ item | regex_search(cluster.name+\"-node-[0-9]+\",'\\0') | first }} "
+          when: attached_volume_names.stdout_lines | length > 0
+          loop: "{{ attached_volume_names.stdout_lines }}"
+          async: 30
+          poll: 0
+      tags:  [ 'never', 'detach_volumes' ]
+
+    - block:
+        - name: Getting volume list
+          shell: "{{ safescale_path }} volume list | jq '.result[] | select(.name? | match(\"{{ cluster.name }}-node-[0-9]+-.*\")).name' | tr -d '\"'"
+          register: volume_names
+          
+        - name: Deleting the volumes
+          shell: "{{ safescale_path }} volume delete {{ item }}"
+          loop: "{{ volume_names.stdout_lines }}"
+          async: 30
+          poll: 0
+          when: volume_names.stdout_lines | length > 0
+      tags: [ 'never', 'delete_volumes' ]
+
+    - name: Deleting the cluster 
+      shell: "{{ safescale_path }} cluster delete -y {{ cluster.name }}"
+      ignore_errors: yes
+      tags: [ 'never', 'delete_cluster' ]
+
+    - name: cleanup repo
+      block:
+        - name: clean hosts file
+          blockinfile:
+            path: "{{ inventory_dir }}/hosts.ini"
+            marker: "# {mark} ANSIBLE MANAGED BLOCK"
+
+        - name: Deleting ssh keys, artifacts and ssh-bastion files
+          file:
+            state: absent
+            path: "{{ item }}"
+          loop:
+            - ../ssh-bastion.conf
+            - ../.ssh
+            - ../collections/kubespray/ssh-bastion.conf
+            - "{{ inventory_dir }}/artifacts"
+      tags: [ 'never', 'cleanup_generated' ]

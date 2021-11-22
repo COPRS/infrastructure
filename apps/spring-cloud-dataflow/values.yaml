@@ -1,0 +1,40 @@
+global:
+  storageClass: ceph-block
+server:
+  image:
+    tag: 2.9.1-debian-10-r7
+  composedTaskRunner:
+    image:
+      tag: 2.9.1-debian-10-r7
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/worker"
+            operator: In
+            values:
+            - processing
+skipper:
+  image:
+    tag: 2.8.1-debian-10-r6
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/worker"
+            operator: In
+            values:
+            - processing
+waitForBackends:
+  image:
+    tag: 1.22.2-debian-10-r39
+mariadb:
+  enabled: true
+rabbitmq:
+  enabled: false
+externalKafka:
+  enabled: true
+  brokers: kafka.infra.svc.cluster.local:9092
+  zkNodes: kafka-zookeeper.infra.svc.cluster.local:2181

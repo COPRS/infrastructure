@@ -1,0 +1,187 @@
+# default values at https://github.com/rook/rook/blob/master/cluster/charts/rook-ceph-cluster/values.yaml
+
+operatorNamespace: infra
+
+clusterName: rook-ceph
+
+# Installs a debugging toolbox deployment
+toolbox:
+  enabled: true
+
+monitoring:
+  enabled: false
+
+cephClusterSpec:
+  cephVersion:
+    image: quay.io/ceph/ceph:v16.2.6
+    allowUnsupported: false
+
+  dataDirHostPath: /data/rook
+
+  mon:
+    count: 3
+    allowMultiplePerNode: false
+
+  mgr:
+    count: 1
+
+  dashboard:
+    enabled: true
+
+  # automate [data cleanup process](https://github.com/rook/rook/blob/master/Documentation/ceph-teardown.md#delete-the-data-on-hosts) in cluster destruction.
+  cleanupPolicy:
+    # Since cluster cleanup is destructive to data, confirmation is required.
+    # To destroy all Rook data on hosts during uninstall, confirmation must be set to "yes-really-destroy-data".
+    # This value should only be set when the cluster is about to be deleted. After the confirmation is set,
+    # Rook will immediately stop configuring the cluster and only wait for the delete command.
+    # If the empty string is set, Rook will not destroy any data on hosts during uninstall.
+    confirmation: ""
+    # sanitizeDisks represents settings for sanitizing OSD disks on cluster deletion
+    sanitizeDisks:
+      # method indicates if the entire disk should be sanitized or simply ceph's metadata
+      # in both case, re-install is possible
+      # possible choices are 'complete' or 'quick' (default)
+      method: quick
+      # dataSource indicate where to get random bytes from to write on the disk
+      # possible choices are 'zero' (default) or 'random'
+      # using random sources will consume entropy from the system and will take much more time then the zero source
+      dataSource: zero
+      # iteration overwrite N times instead of the default (1)
+      # takes an integer value
+      iteration: 1
+    # allowUninstallWithVolumes defines how the uninstall should be performed
+    # If set to true, cephCluster deletion does not wait for the PVs to be deleted.
+    allowUninstallWithVolumes: false
+
+  # To control where various services will be scheduled by kubernetes, use the placement configuration sections below.
+  # The example under 'all' would have all services scheduled on kubernetes nodes labeled with 'role=storage-node' and
+  # tolerate taints with a key of 'storage-node'.
+  placement:
+    all:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/worker
+                operator: In
+                values:
+                  - infra
+ 
+  # The option to automatically remove OSDs that are out and are safe to destroy.
+  removeOSDsIfOutAndSafeToRemove: false
+
+  storage: # cluster level storage configuration and selection
+    useAllNodes: true
+    useAllDevices: true
+    deviceFilter: "vd[b-z]"
+
+  # The section for configuring management of daemon disruptions during upgrade or fencing.
+  disruptionManagement:
+    # If true, the operator will create and manage PodDisruptionBudgets for OSD, Mon, RGW, and MDS daemons. OSD PDBs are managed dynamically
+    # via the strategy outlined in the [design](https://github.com/rook/rook/blob/master/design/ceph/ceph-managed-disruptionbudgets.md). The operator will
+    # block eviction of OSDs by default and unblock them safely when drains are detected.
+    managePodBudgets: true
+    # A duration in minutes that determines how long an entire failureDomain like `region/zone/host` will be held in `noout` (in addition to the
+    # default DOWN/OUT interval) when it is draining. This is only relevant when  `managePodBudgets` is `true`. The default value is `30` minutes.
+    osdMaintenanceTimeout: 30
+    # A duration in minutes that the operator will wait for the placement groups to become healthy (active+clean) after a drain was completed and OSDs came back up.
+    # Operator will continue with the next drain if the timeout exceeds. It only works if `managePodBudgets` is `true`.
+    # No values or 0 means that the operator will wait until the placement groups are healthy before unblocking the next drain.
+    pgHealthCheckTimeout: 0
+    # If true, the operator will create and manage MachineDisruptionBudgets to ensure OSDs are only fenced when the cluster is healthy.
+    # Only available on OpenShift.
+    # manageMachineDisruptionBudgets: false
+    # Namespace in which to watch for the MachineDisruptionBudgets.
+    # machineDisruptionBudgetNamespace: openshift-machine-api
+
+  healthCheck:
+    daemonHealth:
+      mon:
+        disabled: false
+        interval: 45s
+      osd:
+        disabled: false
+        interval: 60s
+      status:
+        disabled: false
+        interval: 60s
+    livenessProbe:
+      mon:
+        disabled: false
+      mgr:
+        disabled: false
+      osd:
+        disabled: false
+
+ingress:
+  dashboard: {}
+
+cephBlockPools:
+  - name: ceph-blockpool
+    # see https://github.com/rook/rook/blob/master/Documentation/ceph-pool-crd.md#spec for available configuration
+    spec:
+      failureDomain: host
+      replicated:
+        size: 2
+    storageClass:
+      enabled: true
+      name: ceph-block
+      isDefault: false
+      reclaimPolicy: Delete
+      allowVolumeExpansion: true
+      # see https://github.com/rook/rook/blob/master/Documentation/ceph-block.md#provision-storage for available configuration
+      parameters:
+        # /!\ THE PARAMETERS FOLLOWING ARE MANDATORY
+        # RBD image format. Defaults to "2".
+        imageFormat: "2"
+        # RBD image features. Available for imageFormat: "2". CSI RBD currently supports only `layering` feature.
+        imageFeatures: layering
+        # The secrets contain Ceph admin credentials.
+        csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
+        csi.storage.k8s.io/provisioner-secret-namespace: infra
+        csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
+        csi.storage.k8s.io/controller-expand-secret-namespace: infra
+        csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
+        csi.storage.k8s.io/node-stage-secret-namespace: infra
+        csi.storage.k8s.io/fstype: ext4
+
+cephFileSystems:
+  - name: ceph-filesystem
+    # see https://github.com/rook/rook/blob/master/Documentation/ceph-filesystem-crd.md#filesystem-settings for available configuration
+    spec:
+      metadataPool:
+        replicated:
+          size: 2
+      dataPools:
+        - failureDomain: host
+          replicated:
+            size: 2
+      metadataServer:
+        activeCount: 1
+        activeStandby: true
+        placement:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                  - key: node-role.kubernetes.io/worker
+                    operator: In
+                    values:
+                      - infra
+    storageClass:
+      enabled: true
+      name: ceph-filesystem
+      reclaimPolicy: Delete
+      # see https://github.com/rook/rook/blob/master/Documentation/ceph-filesystem.md#provision-storage for available configuration
+      parameters:
+        # /!\ THE PARAMETERS FOLLOWING ARE MANDATORY
+        # The secrets contain Ceph admin credentials.
+        csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
+        csi.storage.k8s.io/provisioner-secret-namespace: infra
+        csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
+        csi.storage.k8s.io/controller-expand-secret-namespace: infra
+        csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
+        csi.storage.k8s.io/node-stage-secret-namespace: infra
+        csi.storage.k8s.io/fstype: ext4
+
+cephObjectStores: []

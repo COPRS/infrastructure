@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Install container runtime services
+
+curl -sL -o/var/cache/apt/archives/containerd.io_{{containerd_version}}_amd64.deb \
+https://download.docker.com/linux/ubuntu/dists/focal/pool/stable/amd64/containerd.io_{{containerd_version}}_amd64.deb && \
+sudo dpkg -i /var/cache/apt/archives/containerd.io_{{containerd_version}}_amd64.deb

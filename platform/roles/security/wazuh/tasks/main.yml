@@ -1,0 +1,8 @@
+---
+- name: Install Wazuh
+  import_tasks: install.yaml
+  tags: wazuh
+
+- name: Uninstall Wazuh
+  import_tasks: uninstall.yaml
+  tags: ['never', 'uninstall_wazuh']

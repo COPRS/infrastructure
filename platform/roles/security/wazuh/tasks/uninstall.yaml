@@ -1,0 +1,47 @@
+- name: Uninstall manager
+  block:
+    - name: Stop Wazuh
+      systemd:
+        name: wazuh-manager
+        state: stopped
+        enabled: no
+
+    - name: Uninstall Wazuh
+      apt: 
+        name: wazuh-manager
+        state: absent
+        purge: yes
+        autoclean: yes
+        autoremove: yes
+
+    - name: Delete wazuh manager cron
+      cron:
+        name: "# Wazuh ruleset is updated each day at 2:00 AM #"
+        state: absent
+
+  when: inventory_hostname == groups['kube_control_plane'][0]
+
+# AGENT
+- name: Uninstall agent
+  block:
+
+    - name: Stop Wazuh
+      systemd:
+        name: wazuh-agent
+        state: stopped
+        enabled: no
+
+    - name: Uninstall Wazuh
+      apt: 
+        name: wazuh-agent
+        state: absent
+        purge: yes
+        autoclean: yes
+        autoremove: yes
+      
+  when: inventory_hostname != groups['kube_control_plane'][0]
+
+- name: Delete content & directory
+  file:
+    state: absent
+    path: /var/ossec/
