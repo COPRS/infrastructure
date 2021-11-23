@@ -1,0 +1,4 @@
+- name: Create the cluster with safescale
+  hosts: localhost
+  roles: 
+    - { role: "../roles/safescale-cluster" }

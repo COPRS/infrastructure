@@ -1,0 +1,48 @@
+---
+- name: Stop and disable
+  systemd:
+    name: suricata
+    state: stopped
+    enabled: no
+
+- name: Delete Suricata cron
+  cron:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - "# Suricata rules are rotated each day at 2:00 AM #"
+
+- name: Delete content & directory
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    - /var/lib/suricata/rules/
+    - /usr/lib/systemd/system/suricata.service
+  
+- name: Uninstall Suricata
+  apt: 
+    name: suricata
+    state: absent
+    purge: yes
+    autoclean: yes
+    autoremove: yes
+
+- name: Delete content & directory
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    - /etc/suricata
+    - /var/log/suricata
+
+- name: Delete user suricata
+  user:
+    name: suricata
+    state: absent
+    remove: yes
+    
+- name: Delete group suricata
+  group:
+    name: suricata
+    state: absent

@@ -1,0 +1,70 @@
+---
+- name: Create group
+  group:
+    name: suricata
+    state: present
+  
+- name: Add the user suricata
+  user:
+    name: suricata
+    group: suricata
+  
+- name: Add Suricata APT repository
+  apt_repository: 
+    repo: "{{ suricata_repo_version }}" 
+    state: present
+  
+- name: Install ethtool and networkd-dispatcher for performance
+  apt:
+    pkg:
+      - ethtool # performance
+      - networkd-dispatcher # performance persistance config
+    state: present
+    update_cache: yes
+  
+- name:  Performance configuration
+  shell:
+    cmd: ethtool -K {{ suricata_iface }} gro off lro off
+
+- name: Set performance configuration peristant
+  copy:
+    dest: "/usr/lib/networkd-dispatcher/routable.d/10-disable-offloading"
+    mode: '0755'
+    content: |
+      #!/bin/sh
+      ethtool -K {{ suricata_iface }} gro off lro off
+  
+- name: Install Suricata
+  apt:  
+    name: suricata={{ suricata_version }}
+    state: present
+    update_cache: yes
+  
+- name: Configure network cidr
+  replace:
+    path: /etc/suricata/suricata.yaml
+    regexp: '^(\s*HOME_NET: ).*$'
+    replace: \1"[{{ suricata_local_cidr }}]"
+  
+- name: Start and enable service
+  systemd:
+    name: suricata
+    state: started
+    enabled: yes
+  
+- name: Configure rules rotation
+  cron:
+    name: "# Suricata rules are rotated each day at 2:00 AM #"
+    hour: "2"
+    job: "/etc/suricata/rotateRules.sh"
+  
+- name: Change interface to work on
+  replace:
+    path: /etc/suricata/suricata.yaml
+    regexp: '- interface: eth0'
+    replace: '- interface: {{ suricata_iface }}'
+  
+- name: Restart
+  systemd:
+    name: suricata
+    state: restarted

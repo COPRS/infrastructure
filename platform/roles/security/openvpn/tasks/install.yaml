@@ -1,0 +1,10 @@
+- name: Install openVpn
+  apt: 
+    name: openvpn={{ openvpn_version }}
+    state: present
+
+- name: Make sure a service unit is running
+  systemd:
+    state: started
+    name: openvpn
+    enabled: yes

@@ -1,0 +1,3 @@
+---
+# defaults file for openvpn
+openvpn_version: "2.4.7-1ubuntu2.20.04.3"

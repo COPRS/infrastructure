@@ -1,0 +1,83 @@
+---
+- name: Changing safescale operator in ansible.cfg
+  lineinfile:
+    path: "{{ playbook_dir }}/../ansible.cfg"
+    regexp: '^remote_user *=*'
+    line: "remote_user       = {{ safescale_operator }}"
+
+- name: Getting host list with safescale
+  shell: "{{ safescale_path }} cluster inspect {{ cluster.name }} | jq .result.nodes.masters[].name,.result.nodes.nodes[].name | tr -d '\"' | sort"
+  register: hosts
+
+- name: Setting nodes and masters variables
+  set_fact:
+    nodes: "{{ hosts.stdout_lines | list | select('match','^.*node.*$') | list }}"
+    masters: "{{ hosts.stdout_lines | list | select('match','^.*master.*$') | list }}"
+    gateways: "{{ [ 'gw-'+cluster.name ] | list }}"
+
+- name: Update nodes for ingester
+  set_fact:
+    ingesters: [ "{{ nodes | last }}" ]
+    nodes: "{{ nodes if not add_ingester else nodes | difference(nodes | last) }}"
+  when: add_ingester
+
+- name: Check whether a second gateway is defined
+  shell: "{{ safescale_path }} cluster inspect {{ cluster.name }} | jq .result.secondary_gateway_ip"
+  register: gateway
+
+- name: Adding second gateway if defined
+  set_fact:
+    gateways: "{{ gateways + [ 'gw2-'+cluster.name ] }}"
+  when: gateway.stdout != 'null'
+
+- name: Making a list with all hosts
+  set_fact:
+    hosts: "{{ nodes + masters + gateways }}"
+
+- name: Add ingesters to hosts
+  set_fact:
+    hosts: "{{ hosts + ingesters }}"
+  when: add_ingester
+
+- name: Getting the bastion IP
+  shell: "{{ safescale_path }} host inspect {{ gateways[0] }} | jq .result.public_ip | tr -d '\"'"
+  register: bastion_ip
+
+- name: Setting the bastion IP fact
+  set_fact:
+    bastion_ip: "{{ bastion_ip.stdout }}"
+
+- name: Creating the .ssh folder for the cluster ssh keys
+  file:
+    path: "{{ playbook_dir }}/../.ssh/"
+    state: directory
+    mode: 0700
+
+- name: Check if ssh key files exist
+  find:
+    paths: [ "{{ playbook_dir }}/../.ssh/" ]
+  register: ssh_files
+
+- name: Create the ssh key files
+  shell: "echo \"$({{ safescale_path }} host show {{ item }} | jq .result.private_key )\" | tr -d '\"' | head -c -1 - >> {{ playbook_dir }}/../.ssh/{{ item }}.pem && chmod 400 {{ playbook_dir }}/../.ssh/{{ item }}.pem "
+  when: not item in ( ssh_files.files |  map(attribute='path') | join(' ') )
+  with_items: " {{ hosts }} "
+
+- name: Get the hosts ip adresses
+  shell: "{{ safescale_path }} host show {{ item }} | jq .result.private_ip | tr -d '\"' "
+  with_items: " {{ hosts }} "
+  register: ip_adresses
+
+- name: Set the ip adresses
+  set_fact:
+    ip_adresses: "{{ ip_adresses.results | map(attribute='stdout') | list }}"
+
+- name: Update hosts.ini
+  blockinfile:
+    path: "{{ inventory_dir }}/hosts.ini"
+    block: "{{ lookup('template', 'hosts.j2') }}"
+
+- name: Create the bastion file
+  template:
+    src: ssh-bastion.j2
+    dest: "../ssh-bastion.conf"

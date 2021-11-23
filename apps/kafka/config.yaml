@@ -1,0 +1,3 @@
+chart_ref: bitnami/kafka
+chart_version: 14.2.3
+namespace: infra

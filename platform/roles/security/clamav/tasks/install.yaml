@@ -1,0 +1,40 @@
+- name: Install Clamav
+  apt: 
+    name: clamav={{ clamav_version }}
+    state: present
+
+- name: Stop service clamav-freshclam to update signature
+  systemd:
+    name: clamav-freshclam
+    state: stopped
+
+- name: Update Signature database
+  command:   
+    cmd: freshclam
+
+- name: Start service clamav-freshclam
+  systemd:
+    name: clamav-freshclam
+    state: started
+
+    # Allow clamav in selinux (should be useless as selinux is in permisive mode)
+    #sudo setsebool -P antivirus_can_scan_system 1
+    # Conf
+    #sudo sed -i -E "s;^(\s*Example);#\1;" /etc/freshclam.conf
+    
+# Download signature base
+- name: Set cron ClamAV signature base is updated each day at 2:00 AM
+  cron:
+    name: "ClamAV"
+    hour: "2"
+    job: "freshclam"
+
+- name: Creates directory /var/log/clamav
+  file:
+    path: /var/log/clamav
+
+- name: Set cron ClamAV scan
+  cron:
+    name: "# ClamAV scan recently modified files each day at 4:00 AM #"
+    hour: "4"
+    job: "find / -not -path '/sys*' -not -path '/proc*' -mmin -60 -type f | xargs -P 1 clamscan --infected | logger -i -t clamd -p auth.alert"

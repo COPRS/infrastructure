@@ -1,0 +1,37 @@
+---
+- name: Kustomize | Download kustomize
+  include_tasks: "../collections/kubespray/roles/download/tasks/download_file.yml"
+  vars:
+    download: "{{ download_defaults | combine(kustomize) }}"
+
+- name: Kustomize | Copy kustomize binary from download dir
+  synchronize:
+    src: "{{ local_release_dir }}/kustomize-{{ kustomize_version }}/kustomize"
+    dest: "{{ bin_dir }}/kustomize"
+    compress: no
+    perms: yes
+    owner: no
+    group: no
+  delegate_to: "{{ inventory_hostname }}"
+
+- name: Kustomize | Check if bash_completion.d folder exists  # noqa 503
+  stat:
+    path: "/etc/bash_completion.d/"
+    get_attributes: no
+    get_checksum: no
+    get_mime: no
+  register: stat_result
+
+- name: Kustomize | Get kustomize completion
+  command: "{{ bin_dir }}/kustomize completion bash"
+  changed_when: False
+  register: kustomize_completion
+  check_mode: False
+  when: stat_result.stat.exists
+
+- name: Kustomize | Install kustomize completion
+  copy:
+    dest: /etc/bash_completion.d/kustomize.sh
+    content: "{{ kustomize_completion.stdout }}"
+  become: True
+  when: stat_result.stat.exists

@@ -1,0 +1,31 @@
+image:
+  tag: 14.0.0
+persistence:
+  enabled: true
+  storageClass: ceph-block
+primary:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/worker"
+            operator: In
+            values:
+            - infra
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/component
+            operator: In
+            values:
+            - postgresql
+        topologyKey: "kubernetes.io/hostname"
+resources:
+  limits:
+    cpu: 250m
+    memory: 2048Mi
+  requests:
+    cpu: 50m
+    memory: 512Mi

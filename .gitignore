@@ -1,0 +1,9 @@
+logs
+.ssh
+artifacts
+tenants.*
+ssh-bastion.*
+!platform/roles/safescale-cluster/templates/*
+library/safescale
+apps/**/manifest.yaml
+platform/roles/image/files/output/

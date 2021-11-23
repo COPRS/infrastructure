@@ -1,0 +1,8 @@
+#cloud-config
+users:
+  - name: safescale
+    ssh_authorized_keys:
+      - "{{ ssh_key }}"
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    groups: sudo
+    shell: /bin/bash

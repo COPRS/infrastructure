@@ -1,0 +1,4 @@
+- name: Create the cloud image
+  hosts: localhost
+  roles: 
+    - { role: "../roles/image" }
