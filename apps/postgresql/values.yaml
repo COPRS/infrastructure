@@ -1,8 +1,11 @@
 image:
-  tag: 14.0.0
+  repository: bitnami/postgresql
+  tag: 14.1.0-debian-10-r12
 persistence:
   enabled: true
   storageClass: ceph-block
+postgresqlPassword: p0stgrespassword
+postgresqlDatabase: infra
 primary:
   affinity:
     nodeAffinity:

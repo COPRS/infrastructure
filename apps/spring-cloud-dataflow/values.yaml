@@ -33,9 +33,21 @@ waitForBackends:
   image:
     tag: 1.22.2-debian-10-r39
 mariadb:
-  enabled: true
+  enabled: false
 rabbitmq:
   enabled: false
+externalDatabase:
+  host: postgresql.infra.svc.cluster.local
+  port: 5432
+  driver: org.postgresql.Driver
+  scheme: postgresql
+  password: p0stgrespassword
+  dataflow:
+    database: infra
+    username: postgres
+  skipper:
+    database: infra
+    username: postgres
 externalKafka:
   enabled: true
   brokers: kafka.infra.svc.cluster.local:9092
