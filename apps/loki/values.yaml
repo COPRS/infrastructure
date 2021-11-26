@@ -1,0 +1,11 @@
+image:
+  repository: grafana/loki
+  tag: 2.4.1
+
+config:
+  auth_enabled: false
+
+persistence:  
+  enabled: true
+  storageClassName: ceph-block
+  size: 10Gi
