@@ -1,0 +1,15 @@
+image:
+  repository: bitnami/grafana
+  tag: 8.2.5-debian-10-r3
+
+admin:
+  user: "admin"
+  password: "grafanapass"
+
+grafana:
+  replicaCount: 1
+
+persistence:
+  enabled: true
+  storageClass: ceph-block
+  size: 10Gi
