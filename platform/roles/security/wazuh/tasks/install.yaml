@@ -5,7 +5,7 @@
 
 - name: Add specified repository into sources list in wazuh.list
   apt_repository:
-    repo: deb {{ wazuh_repository }} stable main
+    repo: deb {{ wazuh.wazuh_repository }} stable main
     state: present
     filename: wazuh #.list extension is added after by ansible module
 
@@ -20,7 +20,7 @@
   # TODO check if already present 
 - name: Ignore specific directory
   lineinfile:
-    path: "{{ wazuh_ossec_conf }}"
+    path: "{{ wazuh.wazuh_ossec_conf }}"
     insertafter: 'Files/directories to ignore'
     line: '    {{ item }}'
   with_items:

@@ -1,5 +1,14 @@
 ---
 # default vars file for auditd
-auditd_rules_dir: "/etc/audit/rules.d/"
-auditd_dir: "/etc/audit/"
-auditd_version: "1:2.8.5-2ubuntu6"
+auditd:
+  auditd_rules_dir: "/etc/audit/rules.d/"
+  auditd_dir: "/etc/audit/"
+  auditd_version: "1:2.8.5-2ubuntu6"
+
+  # rules : 
+  #   - name: 000-auditConf.rules
+  #     rules : |
+  #       -D
+  #       -b 8192
+  #       -f 1
+  #       -i 

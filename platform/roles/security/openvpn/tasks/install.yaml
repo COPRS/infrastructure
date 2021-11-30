@@ -1,7 +1,17 @@
 - name: Install openVpn
   apt: 
-    name: openvpn={{ openvpn_version }}
+    name: openvpn={{ openvpn.openvpn_version }}
     state: present
+
+- name: Insert client conf files
+  copy:
+    dest: "/etc/openvpn/client/{{ item.name }}"
+    content: "{{ item.content }}"
+    directory_mode: yes
+    mode: '0600'
+  loop: "{{ openvpn.conf_files }}"
+  no_log: true
+  when: "openvpn.conf_files is defined"
 
 - name: Make sure a service unit is running
   systemd:

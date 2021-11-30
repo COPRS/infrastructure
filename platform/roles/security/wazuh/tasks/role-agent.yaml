@@ -1,15 +1,15 @@
 - name: install wazuh agent
   apt:  
-    name: wazuh-agent={{ wazuh_version }}
+    name: wazuh-agent={{ wazuh.wazuh_version }}
     state: present
     update_cache: yes
     cache_valid_time: 86400
 
 - name: Create registration password file
   copy:
-    dest: "{{ wazuh_registration_file_path }}"
+    dest: "{{ wazuh.wazuh_registration_file_path }}"
     content: |
-        {{ wazuh_registration_password }}
+        {{ wazuh.wazuh_registration_password }}
     group: ossec
     owner: root
     mode: '0640'
@@ -28,7 +28,7 @@
             
 - name: Join agent to Wazuh Manager
   shell:
-    cmd: /var/ossec/bin/agent-auth -m {{ wazuh_manager_ip }} -i -P {{ wazuh_registration_password }}
+    cmd: /var/ossec/bin/agent-auth -m {{ wazuh_manager_ip }} -i -P {{ wazuh.wazuh_registration_password }}
 
 - name: Apply Wazuh Agent configuration
   systemd:

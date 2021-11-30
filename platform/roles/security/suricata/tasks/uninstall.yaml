@@ -5,13 +5,6 @@
     state: stopped
     enabled: no
 
-- name: Delete Suricata cron
-  cron:
-    name: "{{ item }}"
-    state: absent
-  with_items:
-    - "# Suricata rules are rotated each day at 2:00 AM #"
-
 - name: Delete content & directory
   file:
     state: absent
@@ -35,6 +28,18 @@
   with_items:
     - /etc/suricata
     - /var/log/suricata
+
+- name: Delete Cron Suricata rotate_rules
+  cron:
+    name: "{{ suricata.rotate_rules.cron.name }}"
+    state: absent
+  when: suricata.rotate_rules.cron is defined
+
+- name: Delete Cron Suricata rotateIpReputation
+  cron:
+    name: "{{ suricata.rotateIpReputation.cron.name }}"
+    state: absent
+  when: suricata.rotateIpReputation.cron is defined
 
 - name: Delete user suricata
   user:

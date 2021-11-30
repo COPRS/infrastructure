@@ -14,11 +14,6 @@
         autoclean: yes
         autoremove: yes
 
-    - name: Delete wazuh manager cron
-      cron:
-        name: "# Wazuh ruleset is updated each day at 2:00 AM #"
-        state: absent
-
   when: inventory_hostname == groups['kube_control_plane'][0]
 
 # AGENT
