@@ -345,7 +345,14 @@ config:
       DB.Sync          Normal
       Rotate_Wait      10
       Mem_Buf_Limit    10MB
-
+    [INPUT]
+      Name             tail
+      Tag              security.falco.*
+      Path             /var/log/containers/falco-*.log
+      DB               /var/log/fluentbit-security_falco.db
+      DB.Sync          Normal
+      Rotate_Wait      10
+      Mem_Buf_Limit    10MB
   ## https://docs.fluentbit.io/manual/pipeline/filters
   filters: |
     [FILTER]
@@ -443,6 +450,12 @@ config:
       Match       security.auditd.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.auditd
+    [OUTPUT]
+      Name        kafka
+      Format      json
+      Match       security.falco.*
+      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+      Topics      fluentbit.falco
 
 daemonSetVolumes:
   - name: varlog
@@ -471,3 +484,9 @@ daemonSetVolumeMounts:
   - name: wazuh-alert
     mountPath: /var/ossec/logs/alerts
     readOnly: true
+
+tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/gateway
