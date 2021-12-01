@@ -1,0 +1,30 @@
+image:
+  registry: quay.io
+  repository: strimzi
+  name: operator
+  tag: 0.26.0
+fullReconciliationIntervalMs: 120000
+operationTimeoutMs: 300000
+watchAnyNamespace: true
+tolerations: []
+affinity: {}
+annotations: {}
+labels: {}
+nodeSelector: {}
+
+resources:
+  limits:
+    memory: 384Mi
+    cpu: 1000m
+  requests:
+    memory: 384Mi
+    cpu: 200m
+livenessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 30
+readinessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 30
+
+imageTagOverride: "0.26.0"
+createGlobalResources: true

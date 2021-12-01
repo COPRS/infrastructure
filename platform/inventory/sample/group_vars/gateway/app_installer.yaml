@@ -13,6 +13,8 @@ helm_repositories:
     repo_url: https://fluent.github.io/helm-charts
   - name: grafana
     repo_url: https://grafana.github.io/helm-charts
+  - name: strimzi
+    repo_url: https://strimzi.io/charts/
 
 app_paths:
   - "{{ playbook_dir }}/../../apps"
