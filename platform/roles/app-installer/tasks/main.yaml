@@ -12,6 +12,15 @@
   vars:
     regex: '.+/[\w-]+[\w\.-]+$'
 
+- name: install {{ app_name }}
+  include_tasks: install.yaml
+  vars:
+    app_dir: "{{ apps | select('search', app_name) | first }}"
+  when: app_name is defined
+
+- meta: end_play
+  when: app_name is defined
+
 - name: install apps
   include_tasks: install.yaml
   vars:
