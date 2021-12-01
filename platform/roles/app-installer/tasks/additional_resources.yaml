@@ -1,0 +1,18 @@
+- name: "{{ app_name }} | Create tmp directory for additional resources"
+  tempfile:
+    state: directory
+    suffix: additional_resources
+  register: additional_resources_dir
+
+- name: "{{ app_name }} | Copy app files to remote host"
+  copy:
+    src: "{{ app_dir }}/additional_resources/"
+    dest: "{{ additional_resources_dir.path }}"
+
+- name: "{{ app_name }} | Deploy additional resources"
+  shell: "{{ bin_dir }}/kubectl apply -f {{ additional_resources_dir.path }} -n {{ app.namespace }}" -l app.kubernetes.io/instance={{ app_name }},app.kubernetes.io/managed-by=Kustomize"
+  register: kubectl_apply
+
+- name: "{{ app_name }} | Display additional resources deploy"
+  debug:
+    msg: "{{ kubectl_apply.stdout_lines }}"
