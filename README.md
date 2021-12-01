@@ -37,6 +37,7 @@ cp -rfp inventory/sample inventory/mycluster
 
 # Review and change paramters under ``inventory/mycluster/group_vars`` or ``inventory/mycluster/host_vars``
 cat inventory/mycluster/host_vars/localhost/cluster.yaml
+cat inventory/mycluster/host_vars/localhost/image.yaml
 cat inventory/mycluster/group_vars/all/kubespray.yaml
 cat inventory/mycluster/group_vars/bastion/apps.yaml
 
