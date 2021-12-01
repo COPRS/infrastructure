@@ -1,0 +1,3 @@
+chart_ref: bitnami/keycloak
+chart_version: 5.2.0
+namespace: security

@@ -2,6 +2,8 @@
   hosts: k8s_cluster
   gather_facts: false
   become: true
+  roles:
+    - { role: "roles/pam-ldap" }
   tasks:
     - name: install pip modules for ansible kubernetes.core
       pip: 

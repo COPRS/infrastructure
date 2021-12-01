@@ -1,0 +1,50 @@
+- name: Install neccessary packages for ldap-client
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+    pkg: "{{ ldap_client_pkg }}"
+    install_recommends: no
+    
+- name: Get Nodelocal DNS IP address
+  shell: ip a l nodelocaldns | awk '/inet/ {print $2}' | cut -d/ -f1
+  register: nodelocaldns
+
+- name: Add nodelocaldns IP in /etc/systemd/resolved.conf
+  lineinfile:
+    path: /etc/systemd/resolved.conf
+    backrefs: yes
+    regexp: '^(DNS=)((?!.*\b{{ nodelocaldns.stdout }}\b).*)$'
+    line: '\1 {{ nodelocaldns.stdout }} \2'
+  notify:
+  - Restart systemd-resolved
+    
+- name: Write ldap conf in /etc/ldap.conf
+  template:
+    src: ldap.conf.j2
+    dest: /etc/ldap.conf
+
+- name: Write ldap admin password in /etc/ldap.secret
+  copy:
+    content: "{{ ldap_admin_password }}"
+    dest: /etc/ldap.secret
+    owner: root
+    group: root
+    mode: 600
+  when: ldap_admin_password is defined
+
+- name: include ldap auth in /etc/nsswitch.conf
+  lineinfile:
+    path: /etc/nsswitch.conf
+    backrefs: yes
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^(passwd:(?!.*\bldap\b).*)$', line: '\1 ldap' }
+    - { regexp: '^(group:(?!.*\bldap\b).*)$', line: '\1 ldap' }
+  
+- name: Configure PAM to create homedir on login if it does not exist
+  lineinfile:
+    path: /etc/pam.d/common-session
+    regexp: '^session optional pam_mkhomedir\.so skel=/etc/skel umask=077$'
+    line: session optional pam_mkhomedir.so skel=/etc/skel umask=077
+    insertbefore: '# end of pam-auth-update config'
