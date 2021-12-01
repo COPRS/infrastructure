@@ -5,6 +5,7 @@ clamav:
   clamav_version: "0.103.2+dfsg-0ubuntu0.20.04.2"
 
   # Optional
+  
   # cron_update:
   #   name: "ClamAV"
   #   hour: "3"
