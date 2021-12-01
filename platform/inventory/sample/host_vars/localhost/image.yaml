@@ -1,2 +1,3 @@
 # Image creation
+packer_accelerator: kvm
 image_name: csc-rs-ubuntu
