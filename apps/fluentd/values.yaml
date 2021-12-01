@@ -17,9 +17,14 @@ aggregator:
     - name: fluentd-custom-plugins
       configMap:
         name: fluentd-custom-plugins
+    - name: elasticsearch-templates
+      configMap:
+        name: elasticsearch-templates
   extraVolumeMounts:
     - name: fluentd-custom-plugins
       mountPath: /etc/fluent/custom_plugins/
+    - name: elasticsearch-templates
+      mountPath: /etc/fluent/elasticsearch_templates
   configMapFiles:
     fluentd.conf: |
       # Ignore fluentd own events
@@ -36,10 +41,10 @@ aggregator:
       {{- end }}
     fluentd-inputs.conf: |
       <source>
-      @type kafka
-      brokers kafka.infra.svc.cluster.local:9092
-      topics fluentbit.system,fluentbit.processing,fluentbit.trace
-      format json
+        @type kafka
+        brokers kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+        topics fluentbit.system,fluentbit.processing,fluentbit.trace
+        format json
       </source>
       # Readyness probes source
       <source>
@@ -125,6 +130,8 @@ aggregator:
         reconnect_on_error true
         log_es_400_reason true
         time_key_format %Y-%m-%dT%H:%M:%S.%NZ
+        templates {"static_trace": "/etc/fluent/elasticsearch_templates/static_trace.json", "dynamic_trace": "/etc/fluent/elasticsearch_templates/dynamic_trace.json"}
+        template_overwrite true
         <buffer>
           @type file
           path /opt/bitnami/fluentd/logs/buffers/fluentd.elastic.buffer.trace

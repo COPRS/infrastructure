@@ -295,7 +295,7 @@ config:
       DB               /var/log/fluentbit_trace.db
       DB.Sync          full
       Rotate_Wait      10
-    #  Storage.type     filesystem
+      #Storage.type    filesystem
     [INPUT]
       Name             tail
       Tag              system.*
@@ -322,13 +322,13 @@ config:
       Rotate_Wait      10
       Mem_Buf_Limit    10MB
     [INPUT]
-       Name             tail
-       Tag              security.docker.*
-       Path             /var/log/containers/*_kube-system_*.log
-       DB               /var/log/fluentbit_kube-system.db
-       DB.Sync          Normal
-       Rotate_Wait      10
-       Mem_Buf_Limit    10MB
+      Name             tail
+      Tag              security.docker.*
+      Path             /var/log/containers/*_kube-system_*.log
+      DB               /var/log/fluentbit_kube-system.db
+      DB.Sync          Normal
+      Rotate_Wait      10
+      Mem_Buf_Limit    10MB
     [INPUT]
       Name             tail
       Tag              security.wazuh.*
@@ -410,38 +410,38 @@ config:
       Name        kafka
       Format      json
       Match       processing.log.*
-      Brokers     kafka.infra.svc.cluster.local:9092
+      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.processing
     [OUTPUT]
       Name        kafka
       Format      json
       Match       processing.trace.*
-      Brokers     kafka.infra.svc.cluster.local:9092
+      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.trace
       rdkafka.enable.idempotence true
     [OUTPUT]
       Name        kafka
       Format      json
       Match       system.*
-      Brokers     kafka.infra.svc.cluster.local:9092
+      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.system
     [OUTPUT]
       Name        kafka
       Format      json
       Match       security.docker.*
-      Brokers     kafka.infra.svc.cluster.local:9092
-      Topics      fluentbit.docker_security
+      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+      Topics      fluentbit.docker-security
     [OUTPUT]
       Name        kafka
       Format      json
       Match       security.wazuh.*
-      Brokers     kafka.infra.svc.cluster.local:9092
+      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.wazuh
     [OUTPUT]
       Name        kafka
       Format      json
       Match       security.auditd.*
-      Brokers     kafka.infra.svc.cluster.local:9092
+      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.auditd
 
 daemonSetVolumes:

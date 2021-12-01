@@ -71,7 +71,7 @@ fileConfigs:
   01_sources.conf: |-
     <source>
       @type kafka_group
-      brokers kafka.infra.svc.cluster.local:9092
+      brokers kafka-cluster-kafka-brokers.infra.svc.cluster.local:9092
       consumer_group fluentd
       topics fluentbit.system,fluentbit.processing,fluentbit.trace
       <storage>

@@ -12,3 +12,7 @@ configMapGenerator:
   - ./custom_plugins/rename_key_util.rb
   - ./custom_plugins/filter_rename_key.rb
   - ./custom_plugins/out_loki.rb
+- name: elasticsearch-templates
+  files:
+  - ./elasticsearch_templates/static_trace.json
+  - ./elasticsearch_templates/dynamic_trace.json
