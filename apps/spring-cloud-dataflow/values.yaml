@@ -50,5 +50,5 @@ externalDatabase:
     username: postgres
 externalKafka:
   enabled: true
-  brokers: kafka.infra.svc.cluster.local:9092
-  zkNodes: kafka-zookeeper.infra.svc.cluster.local:2181
+  brokers: kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+  zkNodes: kafka-cluster-zookeeper-client.infra.svc.cluster.local:2181
