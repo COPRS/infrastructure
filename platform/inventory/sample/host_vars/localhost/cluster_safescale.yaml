@@ -4,13 +4,13 @@ cluster:
   complexity: Small
   cidr: 192.168.0.0/16
   os: "csc-rs-ubuntu"
-  m_cpu: 4
-  m_ram: "[8-10]"
-  m_disk: 40
+  m_cpu: 2
+  m_ram: "[4-5]"
+  m_disk: 20
   n_cpu: 4
   n_ram: "[8-10]"
   n_disk: 40
-  n_count: 3
+  n_count: 2
   g_cpu: 2
   g_ram: "[4-5]"
   g_disk: 20

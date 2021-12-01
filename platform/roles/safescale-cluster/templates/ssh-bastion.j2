@@ -1,9 +1,0 @@
-Host {{ bastion_ip }}
-    Hostname {{ bastion_ip }}
-    StrictHostKeyChecking no
-    ControlMaster auto
-    ControlPath ~/.ssh/ansible-%r@%h:%p
-    ControlPersist 5m
-
-Host *
-    ProxyCommand ssh -F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -W %h:%p -p 22 {{ safescale_operator }}@{{ bastion_ip }} -i .ssh/gw-{{ cluster.name }}.pem

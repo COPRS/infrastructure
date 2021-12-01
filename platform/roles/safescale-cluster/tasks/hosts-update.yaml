@@ -39,13 +39,13 @@
     hosts: "{{ hosts + ingesters }}"
   when: add_ingester
 
-- name: Getting the bastion IP
+- name: Getting the main gateway IP
   shell: "{{ safescale_path }} host inspect {{ gateways[0] }} | jq .result.public_ip | tr -d '\"'"
-  register: bastion_ip
+  register: main_gateway_ip
 
 - name: Setting the bastion IP fact
   set_fact:
-    bastion_ip: "{{ bastion_ip.stdout }}"
+    main_gateway_ip: "{{ main_gateway_ip.stdout }}"
 
 - name: Creating the .ssh folder for the cluster ssh keys
   file:
@@ -79,5 +79,5 @@
 
 - name: Create the bastion file
   template:
-    src: ssh-bastion.j2
-    dest: "../ssh-bastion.conf"
+    src: ssh-main-gateway.j2
+    dest: "../ssh-main-gateway.conf"

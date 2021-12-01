@@ -19,7 +19,7 @@ cephClusterSpec:
   dataDirHostPath: /data/rook
 
   mon:
-    count: 3
+    count: 2
     allowMultiplePerNode: false
 
   mgr:

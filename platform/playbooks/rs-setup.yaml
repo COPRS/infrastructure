@@ -67,10 +67,11 @@
       command: netplan apply
       become: true
 
-- name: Install Kubectl, Kustomize Helm on gateways
+- name: Prepare gateways
   hosts: gateway
   gather_facts: true
   become: true
+  tags: gateway
   vars_files: 
     - "../collections/kubespray/roles/download/defaults/main.yml"
     - "../collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
@@ -80,7 +81,7 @@
     - { role: "roles/kubectl" }
 
 - name: Deploy reference system
-  hosts: bastion[0]
+  hosts: gateway[0]
   gather_facts: false
   vars_files:
   - "../collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
