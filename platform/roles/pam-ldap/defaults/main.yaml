@@ -1,0 +1,5 @@
+base_dn: dc=cluster,dc=local
+
+ldap_server_url: ldap://openldap.security.svc.cluster.local
+
+# ldap_admin_password: PASSWORD_HERE

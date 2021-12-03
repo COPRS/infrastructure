@@ -1,17 +1,24 @@
 - name: Prepare machines
   hosts: k8s_cluster
-  gather_facts: false
+  gather_facts: true
   become: true
+  handlers:
+    - name: Restart sshd
+      service:
+        name: sshd
+        state: restarted
+  roles:
+    - { role: "roles/pam-ldap" }
   tasks:
-    - name: install pip modules for ansible kubernetes.core
-      pip: 
-        name: "{{ item }}"
-      loop:
-        - pyyaml==5.3.1
-        - openshift==0.12.1
-        - kubernetes==12.0.1
-
-    - name: config firewalld with coredns
+    - name: Allow SSH connection with password
+      replace:
+        path: /etc/ssh/sshd_config
+        regexp: '^(.*)PasswordAuthentication(.*)$'
+        replace: PasswordAuthentication yes
+      notify:
+        - Restart sshd
+      
+    - name: Config firewalld with coredns
       firewalld:
         permanent: yes
         immediate: yes
@@ -21,7 +28,7 @@
 
 - name: Set ingester networing
   hosts: ingester
-  gather_facts: true
+  gather_facts: false
   vars_files:
     - "../roles/safescale-cluster/defaults/main.yaml"
   tasks:
@@ -69,7 +76,7 @@
 
 - name: Prepare gateways
   hosts: gateway
-  gather_facts: true
+  gather_facts: false
   become: true
   tags: gateway
   vars_files: 
@@ -85,6 +92,14 @@
   gather_facts: false
   vars_files:
   - "../collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
+  pre_tasks:
+    - name: install pip modules for ansible kubernetes.core
+      pip: 
+        name: "{{ item }}"
+      loop:
+        - pyyaml==5.3.1
+        - openshift==0.12.1
+        - kubernetes==12.0.1
   roles: 
     - { role: roles/rs-defaults }
     - { role: roles/app-installer, tags: apps }

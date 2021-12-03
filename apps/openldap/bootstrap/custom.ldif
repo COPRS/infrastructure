@@ -1,0 +1,55 @@
+# users, cluster.local
+dn: ou=users,dc=cluster,dc=local
+objectClass: organizationalUnit
+ou: users
+
+# groups, cluster.local
+dn: ou=groups,dc=cluster,dc=local
+objectClass: organizationalUnit
+ou: groups
+
+# user1, users, cluster.local
+dn: cn=user1,ou=users,dc=cluster,dc=local
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+cn: user1
+uid: user1
+givenName: foo
+sn: bar
+uidNumber: 1111
+gidNumber: 2000
+homeDirectory: /home/user1
+loginShell: /bin/bash
+
+# sudo, groups, cluster.local
+dn: cn=sudo,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: sudo
+gidNumber: 27
+member: cn=user1,ou=users,dc=cluster,dc=local
+
+# user, groups, cluster.local
+dn: cn=rs-user,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: rs-user
+gidNumber: 2000
+member: cn=user1,ou=users,dc=cluster,dc=local
+
+# operator, groups, cluster.local
+dn: cn=operator,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: operator
+gidNumber: 2002
+member: cn=user1,ou=users,dc=cluster,dc=local
+
+# rs-admin, groups, cluster.local
+dn: cn=rs-admin,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: rs-admin
+gidNumber: 2001
+member: cn=user1,ou=users,dc=cluster,dc=local

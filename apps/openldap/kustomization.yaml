@@ -1,0 +1,28 @@
+namespace: security
+
+commonLabels:
+  app.kubernetes.io/component: openldap
+  app.kubernetes.io/instance: openldap
+  app.kubernetes.io/managed-by: Kustomize
+  app.kubernetes.io/name: openldap
+
+resources:
+- statefulset.yaml
+- service.yaml
+- svc-headless.yaml
+
+configMapGenerator:
+- name: openldap-env
+  envs:
+  - openldap.env
+- name: openldap-bootstrap-database
+  files:
+  - bootstrap/custom.ldif
+  - bootstrap/02-security.ldif
+  
+secretGenerator:
+- name: openldap
+  literals:
+  - LDAP_ADMIN_PASSWORD=adminpassword
+  - LDAP_CONFIG_PASSWORD=configpassword
+  - LDAP_READONLY_USER_PASSWORD=readonly
