@@ -8,6 +8,10 @@ wazuh:
   wazuh_ossec_conf: /var/ossec/etc/ossec.conf
   wazuh_ossec_agent_conf: /var/ossec/etc/shared/default/agent.conf
 
+  agent_conf: |
+      <agent_config>
+      </agent_config>
+
   # Optional
   # unused_rules:
   #   - Rule_to_exclude

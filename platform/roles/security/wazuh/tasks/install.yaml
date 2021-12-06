@@ -17,7 +17,6 @@
   import_tasks: role-agent.yaml
   when: inventory_hostname != groups['kube_control_plane'][0]
 
-  # TODO check if already present 
 - name: Ignore specific directory
   lineinfile:
     path: "{{ wazuh.wazuh_ossec_conf }}"

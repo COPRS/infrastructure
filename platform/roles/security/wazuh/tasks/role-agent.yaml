@@ -25,12 +25,14 @@
     before: '</address>'
     regexp: '^(.+)$'
     replace: "{{ wazuh_manager_ip }}"
-            
-- name: Join agent to Wazuh Manager
+
+- name: Join Wazuh Manager
   shell:
     cmd: /var/ossec/bin/agent-auth -m {{ wazuh_manager_ip }} -i -P {{ wazuh.wazuh_registration_password }}
+  no_log: True
+  when: "inventory_hostname not in hostvars[groups['kube_control_plane'][0]]['wazuh_nodes_list'] "
 
-- name: Apply Wazuh Agent configuration
+- name: Restart Wazuh Agent to apply configuration
   systemd:
     name: wazuh-agent
     state: restarted

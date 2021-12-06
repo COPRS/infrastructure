@@ -13,16 +13,23 @@
     group: ossec
     owner: root
     mode: '0640'
-    
-- name: Copy conf from local to manager
+
+- name: Write conf from facts
   copy:
-    src: ../files/agent.conf
     dest: "{{ wazuh.wazuh_ossec_agent_conf }}"
+    content: "{{ wazuh.agent_conf }}"
     mode: '0640'
     owner: ossec
     group: ossec
 
-#TODO ADD according needs
+- name: Write variable from groupvars
+  copy:
+    dest: "{{ auditd.auditd_dir}}/rules.d/{{ item.name }}"
+    content: "{{ item.rules }}"
+  loop: "{{ auditd.rules }}"
+  no_log: true
+  when: "auditd.rules is defined"
+
 - name: Disable all unused decoders
   lineinfile:
     path: "{{ wazuh.wazuh_ossec_conf }}"
@@ -58,6 +65,15 @@
   shell:
     cmd: kill {{ pid.stdout }} 
 
-- name: Restart authd OSSEC 
+- name: Restart wazuh-authd
   shell:
-    cmd: /var/ossec/bin/wazuh-authd -P
+    cmd: /bin/bash -c 'nohup /var/ossec/bin/wazuh-authd -P & disown'
+
+- name: Get nodes already under management
+  shell:
+    cmd: '/var/ossec/bin/agent_control -lcj'
+  register: wazuh_joined_machines_output
+
+- name: Get list of already present nodes
+  set_fact:
+    wazuh_nodes_list: "{{ wazuh_joined_machines_output.stdout | from_json | community.general.json_query('data[*].name')}}"
