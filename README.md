@@ -61,6 +61,13 @@ ansible-playbook collections/kubespray/cluster.yml \
     -i inventory/mycluster/hosts.ini \
     --become
 
+# Enable the podsecurity policies on the cluster
+ansible-playbook collections/kubespray/upgrade-cluster.yml \
+    -i inventory/mycluster/hosts.ini \
+    --tags master,cluster-roles \
+    -e podsecuritypolicy_enabled=true \
+    --become
+
 # Configure kubernetes and deploy apps
 ansible-playbook playbooks/rs-setup.yaml \
     -i inventory/mycluster/hosts.ini

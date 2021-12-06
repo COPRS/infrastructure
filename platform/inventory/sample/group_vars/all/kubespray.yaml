@@ -29,7 +29,11 @@ container_manager: containerd
 #     "containerd.io=1.4.11-1"
 
 ## Kubeadm config
-podsecuritypolicy_enabled: true
+
+# do not add psp yet
+# they will be installed through a cluster update
+# cf: https://github.com/COPRS/rs-issues/issues/154
+# podsecuritypolicy_enabled: true
 
 kube_apiserver_enable_admission_plugins: [NodeRestriction]
 
