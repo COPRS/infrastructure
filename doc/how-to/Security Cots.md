@@ -56,6 +56,7 @@ We strongly advise to use the lastest version of Wazuh as the version 3 and 4 ar
 | wazuh_registration_password  |  The wazuh master password to join cluster surveillance  |  Yes |
 | unused_rules  |  List of rules to not use  |  No |
 | unused_decoders  |  List of decoders to not use  |  No |
+| agent_conf  |  XML content describing agent configuration  |  Yes |
 
 
 ## Suricata
