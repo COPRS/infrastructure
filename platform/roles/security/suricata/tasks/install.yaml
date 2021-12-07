@@ -79,9 +79,22 @@
         regexp: 'default-rule-path: /var/lib/suricata/rules'
         replace: 'default-rule-path: /etc/suricata/rules'
 
+    - name: Delete old suricata.pid
+      ansible.builtin.file:
+        path: /var/run/suricata.pid
+        state: absent
+
+    - name: Restart suricata
+      shell:
+        cmd: suricata -c /etc/suricata/suricata.yaml -i {{ suricata.suricata_iface }} -D
+
+    - name:  Launch rules rotation   
+      shell:
+        cmd: "{{ suricata.suricata_path }}{{ suricata.rotate_rules.name }}"
+
     - name: Get file to enable specific rule
       find:
-        paths: ["{{ suricata.suricata_path }}rules/"]
+        paths: "{{ suricata.suricata_path }}rules/"
         patterns: '.*.rules'
         use_regex: yes
       register: files_to_add
@@ -101,17 +114,7 @@
       loop: "{{ suricata.ignored_rules }}"
       when: "suricata.ignored_rules is defined"
 
-    - name: Restart
-      systemd:
-        name: suricata
-        state: restarted
-
-    - name:  Launch rules rotation   
-      shell:
-        cmd: "{{ suricata.suricata_path }}{{ suricata.rotate_rules.name }}"
-
   when: suricata.rotate_rules is defined
-
 
 - name: Change interface to work on
   replace:
