@@ -14,7 +14,7 @@
     --disable reverseproxy \
     --os "{{ cluster.os }}" \
     --master-sizing "cpu="{{ cluster.m_cpu }}", ram="{{ cluster.m_ram }}", disk="{{ cluster.m_disk }}"" \
-    --node-sizing "cpu="{{ cluster.n_cpu }}", ram="{{ cluster.n_ram }}", disk="{{ cluster.n_disk }}", count="{{ cluster.n_count + 1 if add_ingester else cluster.n_count }}"" \
+    --node-sizing "cpu="{{ cluster.n_cpu }}", ram="{{ cluster.n_ram }}", disk="{{ cluster.n_disk }}", count="{{ cluster.n_count + 1 if add_egress else cluster.n_count }}"" \
     --gw-sizing "cpu="{{ cluster.g_cpu }}", ram="{{ cluster.g_ram }}", disk="{{ cluster.g_disk }}"" \
     "{{ cluster.name }}"
   when: not cluster.name in cluster_list.stdout

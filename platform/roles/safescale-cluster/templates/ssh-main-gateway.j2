@@ -6,4 +6,4 @@ Host {{ main_gateway_ip }}
     ControlPersist 5m
 
 Host *
-    ProxyCommand ssh -F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -W %h:%p -p 22 {{ safescale_operator }}@{{ main_gateway_ip }} -i .ssh/gw-{{ cluster.name }}.pem
+    ProxyCommand ssh -F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -W %h:%p -p 22 {{ safescale_operator }}@{{ main_gateway_ip }} -i {{ playbook_dir }}/../.ssh/gw-{{ cluster.name }}.pem

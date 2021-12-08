@@ -9,17 +9,22 @@
   shell: "{{ safescale_path }} cluster inspect {{ cluster.name }} | jq .result.nodes.masters[].name,.result.nodes.nodes[].name | tr -d '\"' | sort"
   register: hosts
 
+- name: No host found for cluster {{ cluster.name }}
+  fail:
+    msg: Getting host list with safescale returned an empty node list. Maybe the cluster does not exist yet or the cluster name has a mistake.
+  when: hosts.stdout | length == 0
+
 - name: Setting nodes and masters variables
   set_fact:
     nodes: "{{ hosts.stdout_lines | list | select('match','^.*node.*$') | list }}"
     masters: "{{ hosts.stdout_lines | list | select('match','^.*master.*$') | list }}"
-    gateways: "{{ [ 'gw-'+cluster.name ] | list }}"
+    gateways: "{{ [ 'gw-' + cluster.name ] | list }}"
 
-- name: Update nodes for ingester
+- name: Update nodes for egress
   set_fact:
-    ingesters: [ "{{ nodes | last }}" ]
-    nodes: "{{ nodes if not add_ingester else nodes | difference(nodes | last) }}"
-  when: add_ingester
+    egresss: [ "{{ nodes | last }}" ]
+    nodes: "{{ nodes | difference(nodes | last) }}"
+  when: add_egress
 
 - name: Check whether a second gateway is defined
   shell: "{{ safescale_path }} cluster inspect {{ cluster.name }} | jq .result.secondary_gateway_ip"
@@ -34,16 +39,16 @@
   set_fact:
     hosts: "{{ nodes + masters + gateways }}"
 
-- name: Add ingesters to hosts
+- name: Add egresss to hosts
   set_fact:
-    hosts: "{{ hosts + ingesters }}"
-  when: add_ingester
+    hosts: "{{ hosts + egresss }}"
+  when: add_egress
 
 - name: Getting the main gateway IP
   shell: "{{ safescale_path }} host inspect {{ gateways[0] }} | jq .result.public_ip | tr -d '\"'"
   register: main_gateway_ip
 
-- name: Setting the bastion IP fact
+- name: Setting the main gateway IP fact
   set_fact:
     main_gateway_ip: "{{ main_gateway_ip.stdout }}"
 
@@ -80,4 +85,4 @@
 - name: Create the bastion file
   template:
     src: ssh-main-gateway.j2
-    dest: "../ssh-main-gateway.conf"
+    dest: "{{ playbook_dir }}/../ssh-main-gateway.conf"

@@ -9,10 +9,8 @@ primary:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
         - matchExpressions:
-          - key: "node-role.kubernetes.io/worker"
-            operator: In
-            values:
-            - infra
+          - key: "node-role.kubernetes.io/infra"
+            operator: Exists
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
       - labelSelector:

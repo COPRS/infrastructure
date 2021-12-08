@@ -21,6 +21,7 @@ uidNumber: 1111
 gidNumber: 2000
 homeDirectory: /home/user1
 loginShell: /bin/bash
+userPassword: password1
 
 # sudo, groups, cluster.local
 dn: cn=sudo,ou=groups,dc=cluster,dc=local

@@ -62,10 +62,8 @@ cephClusterSpec:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
-              - key: node-role.kubernetes.io/worker
-                operator: In
-                values:
-                  - infra
+              - key: node-role.kubernetes.io/infra
+                operator: Exists
  
   # The option to automatically remove OSDs that are out and are safe to destroy.
   removeOSDsIfOutAndSafeToRemove: false
@@ -164,10 +162,8 @@ cephFileSystems:
             requiredDuringSchedulingIgnoredDuringExecution:
               nodeSelectorTerms:
                 - matchExpressions:
-                  - key: node-role.kubernetes.io/worker
-                    operator: In
-                    values:
-                      - infra
+                  - key: node-role.kubernetes.io/infra
+                    operator: Exists
     storageClass:
       enabled: true
       name: ceph-filesystem

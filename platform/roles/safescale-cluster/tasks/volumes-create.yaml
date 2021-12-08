@@ -8,10 +8,10 @@
   set_fact:
     nodes: "{{ hosts.stdout_lines | select('match','^.*node.*$') }}"
 
-- name: remove ingester from node list
+- name: remove egress from node list
   set_fact:
     nodes: "{{ nodes | difference(nodes | last) }}"
-  when: add_ingester
+  when: add_egress
 
 - name: Create the volumes
   shell: "{{ safescale_path }} volume create --size {{ volume.size }} --speed {{ volume.type }} {{ item.0 }}-{{ volume.type }}-{{ item.1 }} "

@@ -8,7 +8,7 @@
         name: sshd
         state: restarted
   roles:
-    - { role: "roles/pam-ldap" }
+    - { role: "../roles/pam-ldap" }
   tasks:
     - name: Allow SSH connection with password
       replace:
@@ -26,8 +26,8 @@
         zone: trusted
         state: enabled
 
-- name: Set ingester networing
-  hosts: ingester
+- name: Set egress networing
+  hosts: egress
   gather_facts: false
   vars_files:
     - "../roles/safescale-cluster/defaults/main.yaml"
@@ -37,7 +37,7 @@
       delegate_to: localhost
       run_once: true
 
-    - name: Add floating IP to ingester
+    - name: Add floating IP to egress
       os_floating_ip:
         auth:
           auth_url: "https://iam.eu-west-0.prod-cloud-ocb.orange-business.com"
@@ -47,7 +47,7 @@
           project_id: "{{ tenant.compute.ProjectID }}"
         region_name: "{{ tenant.compute.Region }}"
         server: "{{ item }}"
-      loop: "{{ groups['ingester'] }}"
+      loop: "{{ groups['egress'] }}"
       delegate_to: localhost
       run_once: true
 
@@ -83,9 +83,9 @@
     - "../collections/kubespray/roles/download/defaults/main.yml"
     - "../collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
   roles:
-    - { role: "collections/kubespray/roles/kubernetes-apps/helm" }
-    - { role: "roles/kustomize" }
-    - { role: "roles/kubectl" }
+    - { role: "../collections/kubespray/roles/kubernetes-apps/helm" }
+    - { role: "../roles/kustomize" }
+    - { role: "../roles/kubectl" }
 
 - name: Deploy reference system
   hosts: gateway[0]
@@ -101,5 +101,5 @@
         - openshift==0.12.1
         - kubernetes==12.0.1
   roles: 
-    - { role: roles/rs-defaults }
-    - { role: roles/app-installer, tags: apps }
+    - { role: "../roles/rs-defaults" }
+    - { role: "../roles/app-installer", tags: apps }
