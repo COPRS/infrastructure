@@ -7,3 +7,4 @@ ssh-main-gateway.*
 library/safescale
 apps/**/manifest.yaml
 platform/roles/image/files/output/
+__pycache__

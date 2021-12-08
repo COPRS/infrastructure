@@ -4,18 +4,27 @@ cluster:
   complexity: Small
   cidr: 192.168.0.0/16
   os: "csc-rs-ubuntu"
-  m_cpu: 2
-  m_ram: "[4-5]"
-  m_disk: 20
-  n_cpu: 4
-  n_ram: "[8-10]"
-  n_disk: 40
-  n_count: 2
-  g_cpu: 2
-  g_ram: "[4-5]"
-  g_disk: 20
-  add_ingester: true
 
+  master:
+    cpu: 2
+    ram: "[4-5]"
+    disk: 20
+  node:
+    # 3 workers min
+    count: 3
+    cpu: 4
+    ram: "[8-10]"
+    disk: 40
+  gateway:
+    cpu: 2
+    ram: "[4-5]"
+    disk: 20
+  egress:
+    count: 1
+    cpu: 2
+    ram: "[4-5]"
+    disk: 20
+      
 volume:
   type: HDD
   size: 100

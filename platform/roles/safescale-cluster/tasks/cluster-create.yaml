@@ -4,17 +4,28 @@
   register: cluster_list
 
 - name: Creating cluster with safescale
-  shell: |
-    "{{ safescale_path }}" \
-    cluster create \
-    --complexity "{{ cluster.complexity }}" \
-    --flavor BOH \
-    --cidr "{{ cluster.cidr }}" \
-    --disable remotedesktop \
-    --disable reverseproxy \
-    --os "{{ cluster.os }}" \
-    --master-sizing "cpu="{{ cluster.m_cpu }}", ram="{{ cluster.m_ram }}", disk="{{ cluster.m_disk }}"" \
-    --node-sizing "cpu="{{ cluster.n_cpu }}", ram="{{ cluster.n_ram }}", disk="{{ cluster.n_disk }}", count="{{ cluster.n_count + 1 if add_egress else cluster.n_count }}"" \
-    --gw-sizing "cpu="{{ cluster.g_cpu }}", ram="{{ cluster.g_ram }}", disk="{{ cluster.g_disk }}"" \
-    "{{ cluster.name }}"
+  block:
+    - name: Create safescale cluster
+      shell: |
+        {{ safescale_path }} \
+        cluster create \
+        {% if cluster.complexity is defined %}--complexity {{ cluster.complexity }}{% endif %} \
+        --flavor BOH \
+        {% if cluster.cidr is defined %}--cidr {{ cluster.cidr }}{% endif %} \
+        --disable remotedesktop \
+        --disable reverseproxy \
+        {% if cluster.os is defined %}--os {{ cluster.os }}{% endif %} \
+        {% if cluster.master is defined %}--master-sizing {{ cluster.master.keys() | zip(cluster.master.values()) | map('join', '=') | join(',') }}{% endif %} \
+        {% if cluster.node is defined %}--node-sizing {{ cluster.node.keys() | zip(cluster.node.values()) | map('join', '=') | join(',') }}{% endif %} \
+        {% if cluster.gateway is defined %}--gw-sizing {{ cluster.gateway.keys() | zip(cluster.gateway.values()) | map('join', '=') | join(',') }}{% endif %} \
+        {{ cluster.name }}
+
+    - name: Create egresses nodes
+      shell: |
+        {{ safescale_path }} \
+        cluster expand \
+        --count {{ cluster.egress.count }} \
+        {% if cluster.egress is defined %}--node-sizing {{ cluster.egress.keys() | zip(cluster.egress.values()) | map('join', '=') | reject('search', 'count') | join(',') }}{% endif %} \
+        {{ cluster.name }}
+      when: cluster.egress.count != 0
   when: not cluster.name in cluster_list.stdout
