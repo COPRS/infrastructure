@@ -62,6 +62,21 @@ ansible-playbook collections/kubespray/cluster.yml \
     -i inventory/mycluster/hosts.ini \
     --become
 
+# Enable pod security policies on the cluster
+# /!\ you first need to create the psp and crb resources
+# before enabling the admission plugin
+ansible-playbook collections/kubespray/upgrade-cluster.yml \
+    -i inventory/mycluster/hosts.ini \
+    --tags cluster-roles \
+    -e podsecuritypolicy_enabled=true \
+    --become
+
+ansible-playbook collections/kubespray/upgrade-cluster.yml \
+    -i inventory/mycluster/hosts.ini \
+    --tags master \
+    -e podsecuritypolicy_enabled=true \
+    --become
+
 # Configure kubernetes and deploy apps
 ansible-playbook playbooks/rs-setup.yaml \
     -i inventory/mycluster/hosts.ini
