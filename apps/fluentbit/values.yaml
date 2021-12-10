@@ -6,6 +6,10 @@ image:
 
 logLevel: warn
 
+serviceMonitor:
+  enabled: true
+  interval: 2m
+
 luaScripts:
  scripts.lua: |
     local escape_char_map = {

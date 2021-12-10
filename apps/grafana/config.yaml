@@ -1,3 +1,3 @@
-  chart_ref: bitnami/grafana
-  chart_version: 7.2.2
-  namespace: monitoring
+chart_ref: bitnami/grafana
+chart_version: 7.2.2
+namespace: monitoring

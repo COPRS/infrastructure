@@ -4,6 +4,11 @@ image:
 
 config:
   auth_enabled: false
+  table_manager:
+    retention_period: 240h
+
+serviceMonitor:
+  enabled: true
 
 persistence:  
   enabled: true
