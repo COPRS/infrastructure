@@ -15,6 +15,8 @@ helm_repositories:
     repo_url: https://grafana.github.io/helm-charts
   - name: strimzi
     repo_url: https://strimzi.io/charts/
+  - name: prometheus-community
+    repo_url: https://prometheus-community.github.io/helm-charts
 
 app_paths:
   - "{{ playbook_dir }}/../../apps"
