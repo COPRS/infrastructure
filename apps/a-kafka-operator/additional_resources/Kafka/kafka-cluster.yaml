@@ -58,6 +58,12 @@ spec:
       type: persistent-claim
       size: 5Gi
       class: "ceph-block"
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: kafka-metrics
+          key: kafka-metrics-config.yml
   zookeeper:
     replicas: 1
     logging:
@@ -75,6 +81,12 @@ spec:
       type: persistent-claim
       size: 5Gi
       class: "ceph-block"
+    metricsConfig:
+      type: jmxPrometheusExporter
+      valueFrom:
+        configMapKeyRef:
+          name: kafka-metrics
+          key: zookeeper-metrics-config.yml
   kafkaExporter:
     groupRegex: ".*"
     topicRegex: ".*"
