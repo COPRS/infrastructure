@@ -94,7 +94,7 @@ The repository is made of the following main directories.
 - platform
 ### Apps
 This folder gather the configuration of the applications deployed on the platform.  
-Each application has its own folder inside apps with the values of the Helm chart, the kustomization files and the patches related.  
+Each application has its own folder inside apps with the values of the Helm chart, the kustomization files, the patches related and any additional kubernetes resources.  
 The application's directory can be splitted by environment with subfolders like dev, prod, etc.
 ### Doc
 Here we find all the documentation describing the infrastructure deployment and maintenance operations.
@@ -134,9 +134,16 @@ This directory concentrate what is required to deploy the infrastructure with An
 To configure apps, refer to the following Helm Charts :
 - Rook Ceph : https://github.com/rook/rook/blob/master/Documentation/helm-operator.md
 - Rook Ceph Cluster : https://github.com/rook/rook/blob/master/Documentation/helm-ceph-cluster.md
-- Kafka : https://github.com/bitnami/charts/tree/master/bitnami/kafka
+- Kafka Operator : https://github.com/strimzi/strimzi-kafka-operator/tree/main/helm-charts/helm3/strimzi-kafka-operator
 - PostreSQL : https://github.com/bitnami/charts/tree/master/bitnami/postgresql
 - Elasticsearch : https://github.com/bitnami/charts/tree/master/bitnami/elasticsearch
 - MongoDB : https://github.com/bitnami/charts/tree/master/bitnami/mongodb
 - Graylog : https://github.com/KongZ/charts/tree/main/charts/graylog
 - Spring Cloud Data Flow : https://github.com/bitnami/charts/tree/master/bitnami/spring-cloud-dataflow
+- Loki : https://github.com/grafana/helm-charts/tree/main/charts/loki
+- Fluent Bit : https://github.com/fluent/helm-charts/tree/main/charts/fluent-bit
+- Fluentd : https://github.com/bitnami/charts/tree/master/bitnami/fluentd
+- Grafana Operator: https://github.com/bitnami/charts/tree/master/bitnami/grafana-operator
+- Kibana : https://github.com/bitnami/charts/tree/master/bitnami/kibana
+- Prometheus Stack : https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
+- Thanos : https://github.com/bitnami/charts/tree/master/bitnami/thanos
