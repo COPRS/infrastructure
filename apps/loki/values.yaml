@@ -5,7 +5,7 @@ image:
 config:
   auth_enabled: false
   table_manager:
-    retention_period: 240h
+    retention_period: 1460h
 
 serviceMonitor:
   enabled: true
@@ -13,4 +13,4 @@ serviceMonitor:
 persistence:  
   enabled: true
   storageClassName: ceph-block
-  size: 10Gi
+  size: 100Gi
