@@ -21,6 +21,15 @@
 {% endfor%}
 
 {% endif %}
+
+{% if prometheus | length > 0 %}
+[prometheus]
+{% for prometheus in prometheuses %}
+{{ prometheus }}
+{% endfor%}
+
+{% endif %}
+
 [kube_control_plane]
 {% for master in masters %}
 {{ master }}
@@ -31,6 +40,9 @@ worker
 gateway
 {% if egresses | length > 0 %}
 egress
+{% endif %}
+{% if prometheuses | length > 0 %}
+prometheus
 {% endif %}
 
 [k8s_cluster:children]
@@ -47,4 +59,10 @@ node_taints={"node-role.kubernetes.io/gateway:NoSchedule"}
 {% if egresses | length > 0 %}
 [egress:vars]
 node_labels={"node-role.kubernetes.io/egress": ""}
+{% endif %}
+
+{% if prometheuses | length > 0 %}
+[prometheus:vars]
+node_labels={"node-role.kubernetes.io/infra": ""}
+node_labels={"node-role.kubernetes.io/prometheus":""}
 {% endif %}

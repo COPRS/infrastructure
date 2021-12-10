@@ -25,12 +25,12 @@
   register: ssh_files
 
 - name: Create the ssh key files
-  shell: "echo \"$({{ safescale_path }} host show {{ item }} | jq .result.private_key )\" | tr -d '\"' | head -c -1 - >> {{ playbook_dir }}/../.ssh/{{ item }}.pem && chmod 400 {{ playbook_dir }}/../.ssh/{{ item }}.pem "
+  shell: "echo \"$({{ safescale_path }} host show {{ item }} | jq '.result.private_key' )\" | tr -d '\"' | head -c -1 - >> {{ playbook_dir }}/../.ssh/{{ item }}.pem && chmod 400 {{ playbook_dir }}/../.ssh/{{ item }}.pem "
   when: not item in ( ssh_files.files |  map(attribute='path') | join(' ') )
   with_items: " {{ hosts }} "
 
 - name: Get the hosts ip adresses
-  shell: "{{ safescale_path }} host show {{ item }} | jq .result.private_ip | tr -d '\"' "
+  shell: "{{ safescale_path }} host show {{ item }} | jq '.result.private_ip' | tr -d '\"' "
   with_items: " {{ hosts }} "
   register: ip_adresses
 

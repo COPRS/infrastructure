@@ -50,7 +50,7 @@ cluster:
 # additional volumes mounted
 # used for persistent storage with Ceph
 # the volume are mounted on each worker node
-# no volume is set on gateways, egresses or master nodes      
+# no volume is set on gateways, egresses, prometheuses or master nodes      
 volume:
 
   type: HDD
