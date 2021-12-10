@@ -7,7 +7,7 @@
 - name: Create namespaces
   kubernetes.core.k8s:
     state: present
-    template: ns.yaml.j2
+    src: ../files/namespaces.yaml
   when: k8s_namespaces is defined
 
 - name: Create clusterRoleBinding 
