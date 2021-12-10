@@ -37,6 +37,7 @@ cp -rfp inventory/sample inventory/mycluster
 
 # Review and change paramters under ``inventory/mycluster/group_vars`` or ``inventory/mycluster/host_vars``
 cat inventory/mycluster/host_vars/localhost/cluster.yaml
+cat inventory/mycluster/host_vars/localhost/image.yaml
 cat inventory/mycluster/group_vars/all/kubespray.yaml
 cat inventory/mycluster/group_vars/bastion/apps.yaml
 
@@ -59,6 +60,21 @@ ansible-playbook playbooks/security.yaml \
 # Without --become the playbook will fail to run!
 ansible-playbook collections/kubespray/cluster.yml \
     -i inventory/mycluster/hosts.ini \
+    --become
+
+# Enable pod security policies on the cluster
+# /!\ you first need to create the psp and crb resources
+# before enabling the admission plugin
+ansible-playbook collections/kubespray/upgrade-cluster.yml \
+    -i inventory/mycluster/hosts.ini \
+    --tags cluster-roles \
+    -e podsecuritypolicy_enabled=true \
+    --become
+
+ansible-playbook collections/kubespray/upgrade-cluster.yml \
+    -i inventory/mycluster/hosts.ini \
+    --tags master \
+    -e podsecuritypolicy_enabled=true \
     --become
 
 # Configure kubernetes and deploy apps

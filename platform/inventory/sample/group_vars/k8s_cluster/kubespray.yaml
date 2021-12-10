@@ -29,7 +29,12 @@ container_manager: containerd
 #     "containerd.io=1.4.11-1"
 
 ## Kubeadm config
-podsecuritypolicy_enabled: true
+## only for single master clusters for multiple master cluster,
+## enabling this feature prevent secondary masters to join the cluster
+## With multiple masters, you need to enable it through the 
+## upgrade-cluster.yml playbook. The related commands are describe
+## in the README.md
+# podsecuritypolicy_enabled: true
 
 kube_apiserver_enable_admission_plugins: [NodeRestriction]
 

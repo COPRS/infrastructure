@@ -38,13 +38,13 @@
             "output_directory": "{{ playbook_dir }}/../roles/image/files/output/image/",
             {%- raw %}
             "disk_size": "{{user `disk_size`}}",
+            {% endraw -%}
             "disk_compression": true,
             "disk_interface": "virtio",
             "net_device": "virtio-net",
-            "accelerator": "kvm",
+            "accelerator": "{{ packer_accelerator | default("none", true) }}",
             "disk_image": true,
             "shutdown_command": "rm -f /home/safescale/*.txt && rm -f /home/safescale/.ssh/authorized_keys && sudo rm -f /root/.ssh/authorized_keys && sudo -S shutdown -P now"
-            {% endraw -%}
         }
     ],
     "provisioners": [
