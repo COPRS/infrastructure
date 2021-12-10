@@ -22,7 +22,7 @@ csi:
     enabled: false
     image: quay.io/csiaddons/volumereplication-operator:v0.1.0
 
-  provisionerNodeAffinity: node-role.kubernetes.io/worker=infra
+  provisionerNodeAffinity: node-role.kubernetes.io/infra
 
-discover.nodeAffinity: node-role.kubernetes.io/worker=infra
-admissionController.nodeAffinity: node-role.kubernetes.io/worker=infra
+discover.nodeAffinity: node-role.kubernetes.io/infra
+admissionController.nodeAffinity: node-role.kubernetes.io/infra

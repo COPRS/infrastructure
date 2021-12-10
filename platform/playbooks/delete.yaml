@@ -46,13 +46,12 @@
             path: "{{ inventory_dir }}/hosts.ini"
             marker: "# {mark} ANSIBLE MANAGED BLOCK"
 
-        - name: Deleting ssh keys, artifacts and ssh-bastion files
+        - name: Deleting ssh keys, artifacts and ssh-main-gateway files
           file:
             state: absent
             path: "{{ item }}"
           loop:
-            - ../ssh-bastion.conf
-            - ../.ssh
-            - ../collections/kubespray/ssh-bastion.conf
+            - "{{ playbook_dir }}/../ssh-main-gateway.conf"
+            - "{{ playbook_dir }}/../.ssh"
             - "{{ inventory_dir }}/artifacts"
       tags: [ 'never', 'cleanup_generated' ]

@@ -1,17 +1,24 @@
 - name: Prepare machines
   hosts: k8s_cluster
-  gather_facts: false
+  gather_facts: true
   become: true
+  handlers:
+    - name: Restart sshd
+      service:
+        name: sshd
+        state: restarted
+  roles:
+    - { role: "../roles/pam-ldap" }
   tasks:
-    - name: install pip modules for ansible kubernetes.core
-      pip: 
-        name: "{{ item }}"
-      loop:
-        - pyyaml==5.3.1
-        - openshift==0.12.1
-        - kubernetes==12.0.1
-
-    - name: config firewalld with coredns
+    - name: Allow SSH connection with password
+      replace:
+        path: /etc/ssh/sshd_config
+        regexp: '^(.*)PasswordAuthentication(.*)$'
+        replace: PasswordAuthentication yes
+      notify:
+        - Restart sshd
+      
+    - name: Config firewalld with coredns
       firewalld:
         permanent: yes
         immediate: yes
@@ -19,9 +26,9 @@
         zone: trusted
         state: enabled
 
-- name: Set ingester networing
-  hosts: ingester
-  gather_facts: true
+- name: Set egress networing
+  hosts: egress
+  gather_facts: false
   vars_files:
     - "../roles/safescale-cluster/defaults/main.yaml"
   tasks:
@@ -30,7 +37,7 @@
       delegate_to: localhost
       run_once: true
 
-    - name: Add floating IP to ingester
+    - name: Add floating IP to egress
       os_floating_ip:
         auth:
           auth_url: "https://iam.eu-west-0.prod-cloud-ocb.orange-business.com"
@@ -40,7 +47,7 @@
           project_id: "{{ tenant.compute.ProjectID }}"
         region_name: "{{ tenant.compute.Region }}"
         server: "{{ item }}"
-      loop: "{{ groups['ingester'] }}"
+      loop: "{{ groups['egress'] }}"
       delegate_to: localhost
       run_once: true
 
@@ -67,23 +74,32 @@
       command: netplan apply
       become: true
 
-- name: Install Kubectl, Kustomize Helm on gateways
+- name: Prepare gateways
   hosts: gateway
-  gather_facts: true
+  gather_facts: false
   become: true
+  tags: gateway
   vars_files: 
     - "../collections/kubespray/roles/download/defaults/main.yml"
     - "../collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
   roles:
-    - { role: "collections/kubespray/roles/kubernetes-apps/helm" }
-    - { role: "roles/kustomize" }
-    - { role: "roles/kubectl" }
+    - { role: "../collections/kubespray/roles/kubernetes-apps/helm" }
+    - { role: "../roles/kustomize" }
+    - { role: "../roles/kubectl" }
 
 - name: Deploy reference system
-  hosts: bastion[0]
+  hosts: gateway[0]
   gather_facts: false
   vars_files:
   - "../collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
+  pre_tasks:
+    - name: install pip modules for ansible kubernetes.core
+      pip: 
+        name: "{{ item }}"
+      loop:
+        - pyyaml==5.3.1
+        - openshift==0.12.1
+        - kubernetes==12.0.1
   roles: 
-    - { role: roles/rs-defaults }
-    - { role: roles/app-installer, tags: apps }
+    - { role: "../roles/rs-defaults" }
+    - { role: "../roles/app-installer", tags: apps }

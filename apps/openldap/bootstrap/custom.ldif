@@ -1,0 +1,37 @@
+# users, cluster.local
+dn: ou=users,dc=cluster,dc=local
+objectClass: organizationalUnit
+ou: users
+
+# groups, cluster.local
+dn: ou=groups,dc=cluster,dc=local
+objectClass: organizationalUnit
+ou: groups
+
+# sudo, groups, cluster.local
+dn: cn=sudo,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: sudo
+gidNumber: 27
+
+# user, groups, cluster.local
+dn: cn=rs-user,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: rs-user
+gidNumber: 2000
+
+# operator, groups, cluster.local
+dn: cn=operator,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: operator
+gidNumber: 2002
+
+# rs-admin, groups, cluster.local
+dn: cn=rs-admin,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: rs-admin
+gidNumber: 2001

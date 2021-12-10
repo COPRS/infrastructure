@@ -2,8 +2,9 @@ logs
 .ssh
 artifacts
 tenants.*
-ssh-bastion.*
+ssh-main-gateway.*
 !platform/roles/safescale-cluster/templates/*
 library/safescale
 apps/**/manifest.yaml
 platform/roles/image/files/output/
+__pycache__

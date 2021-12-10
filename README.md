@@ -119,6 +119,16 @@ This directory concentrate what is required to deploy the infrastructure with An
     - **security**: roles describing the installation of the different security tools.
 - `ansible.cfg`: Ansible configuration file. It includes the ssh configuration to allow Ansible to access the machines through the gateway.
 
+## Playbooks
+
+| name | tags | utility | 
+|---|---|---|
+| cluster-setup.yaml | *none* <br> cluster_create <br> hosts_update <br> volumes_create | *all tags below are executed* <br> create safescale cluster <br> update hosts.ini with newly created machines, fill .ssh folder with machines ssh public keys, generate ansible ssh config, update config.cfg <br> attach disks to kubernetes nodes |
+| delete.yaml <br> :warning: this playbook has been developed with the only purpose of testing the project **not for production usage**| *none* <br> cleanup_generated <br> detach_volumes <br> delete_volumes <br> delete_cluster | *nothing* <br> **remove** ssh keys, added hosts in hosts.ini, ssh config file <br> detach added disks from k8s nodes <br> delete added disks from k8s nodes <br> delete safescale cluster|
+| image.yaml | *none* | *make reference system golden image for k8s nodes* |
+|rs-setup.yaml | *none* <br> gateway <br> apps | *all tags below are executed* <br> install tools on gateways <br> deploy applications (adding -e app_name=APP_NAME deploy only the app matching APP_NAME) |
+| security.yaml | *none* <br> auditd <br> wazuh <br> clamav <br> openvpn <br> suricata <br> uninstall_APP_NAME| *install all securty tools* <br> install auditd <br> install wazuh <br> install clamav <br> install openvpn <br> install suricata <br> uninstall the app matching APP_NAME
+
 ## Apps
 
 To configure apps, refer to the following Helm Charts :

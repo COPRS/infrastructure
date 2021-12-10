@@ -1,68 +1,46 @@
-- name: Gather facts
-  set_fact:
-    env: "{{ 'dev' if env is not defined else env }}"
+- name: Check whether kustomization exists
+  stat:
+    path: "{{ app_dir }}/kustomization.yaml"
+  register: kustomization
+
+- name: Check whether values exists
+  stat:
+    path: "{{ app_dir }}/values.yaml"
+  register: values
+
+- name: Fail when neither file is present
+  fail:
+    msg: "No kustomization.yaml or values.yaml file found in {{ app_dir }}"
+  when: 
+    - not kustomization.stat.exists
+    - not values.stat.exists
 
 - name: Check whether config.yaml file exists
   stat:
     path: "{{ app_dir }}/config.yaml"
   register: config_file
 
-- name: config file does not exist
+- name: Config file does not exist
   fail:
     msg: "No config.yaml file present in {{ app_dir }}"
-  when: not config_file.stat.exists
+  when: 
+    - not config_file.stat.exists
+    - values.stat.exists
 
 - name: Get app config
   include_vars:
     file: "{{ app_dir }}/config.yaml"
     name: app
+  when: config_file.stat.exists
 
-- name: Check whether folder exist for env
-  stat:
-    path: "{{ app_dir }}/{{ env }}"
-  register: directory_env
-- name: Check whether base folder exist for app
-  stat:
-    path: "{{ app_dir }}/{{ env }}"
-  register: directory_base
-  when: not directory_env.stat.exists
-
-- name: Set repo and app_name
-  set_fact:
-    app_name: "{{ app_dir | basename }}"
-    repo: "{{ app_dir }}{% if directory_env.stat.exists %}/{{ env }}{% elif directory_base.stat.exists %}/base{% endif %}"
-
-- name: Display repo found
-  debug:
-    msg: "{% if directory_env.stat.exists %}Using {{ repo }}{% else %}No repo matching {{ env }} in {{ app_dir }}. Fallback to {{ repo }}{% endif %}"
-
-- name: Check whether kustomization exists
-  stat:
-    path: "{{ repo }}/kustomization.yaml"
-  register: kustomization
-
-- name: Check whether values exists
-  stat:
-    path: "{{ repo }}/values.yaml"
-  register: values_repo
-
-- name: Check whether files exists
-  fail:
-    msg: "No kustomization.yaml or values.yaml file found in {{ repo }}"
-  when: 
-    - not kustomization.stat.exists
-    - not values_repo.stat.exists
-
-- name: Check whether values exist in base
-  stat:
-    path: "{{ app_dir }}/base/values.yaml"
-  register: values_base
+- name: 'Fallback for namespace: read kustomization.yaml'
+  include_vars:
+    file: "{{ app_dir }}/kustomization.yaml"
   when:
     - kustomization.stat.exists
-    - not values_repo.stat.exists
-    - directory_base.stat.exists
-    - repo != app_dir + '/base' 
+    - not config_file.stat.exists
 
-- name: Set values fact
+- name: Set facts
   set_fact:
-    values: "{{ values_repo if values_repo.stat.exists else values_base }}"
+    app_name: "{{ app_dir | basename }}"
+    app_namespace: "{% if config_file.stat.exists %}{{ app.namespace }}{% else %}{{ namespace }}{% endif %}"

@@ -1,22 +1,24 @@
-- name: Generate helm template
+- name: "{{ app_name }} | Generate helm template"
   import_tasks: template_helm_chart.yaml
+  when: 
+    - values.stat.exists
 
-- name: Create tmp directory for kustomize
+- name: "{{ app_name }} | Create tmp directory for kustomize"
   tempfile:
     state: directory
     suffix: kustomize
   register: kustomize_dir
 
-- name: Copy app files to remote host
+- name: "{{ app_name }} | Copy app files to remote host"
   copy:
     src: "{{ app_dir }}/"
     dest: "{{ kustomize_dir.path }}"
 
 ## https://github.com/kubernetes-sigs/kustomize/issues/876
-- name: deploy app
-  shell: "{{ bin_dir }}/kustomize build {{ kustomize_dir.path }}/{{ env }} | {{ bin_dir }}/kubectl apply -f - --prune -n {{ app.namespace }} -l app.kubernetes.io/instance={{ app_name }},app.kubernetes.io/managed-by=Kustomize"
+- name: "{{ app_name }} | deploy app"
+  shell: "{{ bin_dir }}/kustomize build {{ kustomize_dir.path }} | {{ bin_dir }}/kubectl apply -f - --prune -n {{ app_namespace }} -l app.kubernetes.io/instance={{ app_name }},app.kubernetes.io/managed-by=Kustomize"
   register: kubectl_apply
 
-- name: display deployed resources
+- name: "{{ app_name }} | display deployed resources"
   debug:
     msg: "{{ kubectl_apply.stdout_lines }}"

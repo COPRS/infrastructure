@@ -5,23 +5,23 @@
         module: import_tasks
         file: gather_facts.yaml
 
-    - name: Deploy with kustomize
+    - name: "{{ app_name }} | Deploy with kustomize"
       include_tasks: kustomize.yaml
       when: kustomization.stat.exists
       
-    - name: Deploy with Helm
+    - name: "{{ app_name }} | Deploy with Helm"
       include_tasks: install_helm_chart.yaml
       when:
         - not kustomization.stat.exists
         - values.stat.exists
   always:
-    - name: remove tmp dir
+    - name: "{{ app_name }} | remove tmp dir"
       file:
         path: "{{ kustomize_dir.path }}"
         state: absent
       when: kustomize_dir.path is defined
 
-    - name: remove tmp file
+    - name: "{{ app_name }} | remove tmp file"
       file:
         path: "{{ temp_values.path }}"
         state: absent
