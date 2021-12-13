@@ -66,6 +66,7 @@ spec:
           key: kafka-metrics-config.yml
   zookeeper:
     replicas: 1
+    version: 3.5.9
     logging:
       type: inline
       loggers:
