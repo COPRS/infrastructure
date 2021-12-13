@@ -47,5 +47,4 @@
 
 - name: Set facts
   set_fact:
-    app_name: "{{ app_dir | basename }}"
     app_namespace: "{% if config_file.stat.exists %}{{ app.namespace }}{% else %}{{ namespace }}{% endif %}"

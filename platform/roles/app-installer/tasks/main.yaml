@@ -16,13 +16,20 @@
   include_tasks: install.yaml
   vars:
     app_dir: "{{ apps | select('search', app_name) | first }}"
+    app_name: "{{ app_name | regex_search('^([0-9]{3})?-?(.+)', '\\2') | first }}"
   when: app_name is defined
 
 - meta: end_play
   when: app_name is defined
 
+- name: Initialize parsed app folders
+  set_fact:
+    parsed_apps: []
+
 - name: install apps
   include_tasks: install.yaml
   vars:
+    app_name: "{{ item | basename | regex_search('^([0-9]{3})?-?(.+)', '\\2') | first }}"
     app_dir: "{{ item }}"
   loop: "{{ apps }}"
+  when: app_name not in parsed_apps

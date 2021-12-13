@@ -18,6 +18,10 @@
     - name: Apply additional resources
       include_tasks: additional_resources.yaml
       when: additional_resources.stat.exists
+
+    - name: "Add {{ app_name }} to parsed apps"
+      set_fact:
+        parsed_apps: "{{ parsed_apps + [ app_name ] }}"
         
   always:
     - name: "{{ app_name }} | remove tmp dir"
