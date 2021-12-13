@@ -1,0 +1,35 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: elasticsearch-cluster
+spec:
+  version: 7.15.2
+  nodeSets:
+    - name: master-nodes
+      count: 1
+      config:
+        node.roles: ["master"]
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 10Gi
+            storageClassName: ceph-block
+    - name: data-nodes
+      count: 1
+      config:
+        node.roles: ["data"]
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 100Gi
+            storageClassName: ceph-block
