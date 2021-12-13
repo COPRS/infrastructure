@@ -1,5 +1,5 @@
 - name: Configurate Graylog with available content packs
-  hosts: bastion[0]
+  hosts: gateway[0]
   gather_facts: false
   roles: 
     - { role: roles/graylog }
