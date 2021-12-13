@@ -311,7 +311,7 @@ config:
       Buffer_Max_Size  1MB
     [INPUT]
       Name             tail
-      Tag              security.docker.*
+      Tag              security.container.*
       Path             /var/log/containers/postgresql-postresql-*_infra_postgresql-*.log
       DB               /var/log/fluentbit_postgresql-infra.db
       DB.Sync          Normal
@@ -319,7 +319,7 @@ config:
       Mem_Buf_Limit    10MB
     [INPUT]
       Name             tail
-      Tag              security.docker.*
+      Tag              security.container.*
       Path             /var/log/containers/mongodb-*_infra_mongodb-*-*.log
       DB               /var/log/fluentbit_mongodb.db
       DB.Sync          Normal
@@ -327,7 +327,7 @@ config:
       Mem_Buf_Limit    10MB
     [INPUT]
       Name             tail
-      Tag              security.docker.*
+      Tag              security.container.*
       Path             /var/log/containers/*_kube-system_*.log
       DB               /var/log/fluentbit_kube-system.db
       DB.Sync          Normal
@@ -346,14 +346,6 @@ config:
       Tag              security.auditd.*
       Path             /var/log/audit/audit_*.log
       DB               /var/log/fluentbit-security_auditd.db
-      DB.Sync          Normal
-      Rotate_Wait      10
-      Mem_Buf_Limit    10MB
-    [INPUT]
-      Name             tail
-      Tag              security.falco.*
-      Path             /var/log/containers/falco-*.log
-      DB               /var/log/fluentbit-security_falco.db
       DB.Sync          Normal
       Rotate_Wait      10
       Mem_Buf_Limit    10MB
@@ -405,8 +397,8 @@ config:
       Keep_Log            Off
     [FILTER]
       Name                kubernetes
-      Match               security.docker.*
-      Kube_Tag_Prefix     security.docker.var.log.containers.
+      Match               security.container.*
+      Kube_Tag_Prefix     security.container.var.log.containers.
       Kube_URL            https://kubernetes.default.svc:443
       Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
@@ -439,7 +431,7 @@ config:
     [OUTPUT]
       Name        kafka
       Format      json
-      Match       security.docker.*
+      Match       security.container.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.docker-security
     [OUTPUT]
