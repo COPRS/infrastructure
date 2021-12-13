@@ -1,3 +1,16 @@
 ---
-# defaults file for openvpn
-openvpn_version: "2.4.7-1ubuntu2.20.04.3"
+openvpn:
+  # Requiered
+  openvpn_version: "2.4.7-1ubuntu2.20.04.3"
+
+  # Optional
+  # conf_files:
+  #   - name: ca.crt
+  #     content: |
+  #       Certificate
+  #   - name: client.conf
+  #     content: |
+  #         OpenVpn Client Conf
+  #   - name: plateformcs.crt
+  #     content: |
+  #       plateforme.crt

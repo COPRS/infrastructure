@@ -4,17 +4,10 @@
   apt: 
     name: auditd
     state: absent
+    autoremove: yes
+    purge: yes
 
-#Clean old rules files + conf
-- name: Ansible delete file glob
-  find:
-    paths: ["{{ auditd_rules_dir }}"]
-    patterns: '.*.(rules|conf)'
-    use_regex: yes
-  register: files_to_delete
-
-- name: Ansible remove rules files
+- name: Delete content & directory
   file:
-    path: "{{ item.path }}"
     state: absent
-  with_items: "{{ files_to_delete.files }}"
+    path: /etc/audit

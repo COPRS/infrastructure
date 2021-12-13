@@ -6,7 +6,12 @@
     autoclean: yes
     autoremove: yes
 
-- name: Delete ClamAv cron
+- name: Delete cron ClamAV signature base is updated each day
   cron:
-    name: "ClamAV"
+    name: "{{ clamav.cron_update.name | default('ClamAv') }}"
+    state: absent
+
+- name: Delete cron ClamAV scan
+  cron:
+    name: "{{ clamav.cron_scan.name | default('ClamAv Scan') }}"
     state: absent

@@ -1,2 +1,15 @@
 ---
-clamav_version: "0.103.2+dfsg-0ubuntu0.20.04.2"
+clamav:
+
+  # Requiered
+  clamav_version: "0.103.2+dfsg-0ubuntu0.20.04.2"
+
+  # Optional
+  
+  # cron_update:
+  #   name: "ClamAV"
+  #   hour: "3"
+
+  # cron_scan:
+  #   name: "# ClamAV scan recently modified files each day at 6:00 AM #"
+  #   hour: "6"

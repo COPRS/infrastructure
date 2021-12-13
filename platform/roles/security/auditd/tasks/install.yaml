@@ -1,12 +1,12 @@
 - name: Install auditD
   apt: 
-    name: auditd={{ auditd_version }}
+    name: auditd={{ auditd.auditd_version }}
     state: present
     
 # Clean old rules files + conf (update case)
 - name: Ansible delete file glob
   find:
-    paths: ["{{ auditd_rules_dir }}"]
+    paths: ["{{ auditd.auditd_rules_dir }}"]
     patterns: '.*.(rules|conf)'
     use_regex: yes
   register: files_to_delete
@@ -21,10 +21,11 @@
 # add rules if present groups vars rules 
 - name: Write variable from groupvars
   copy:
-    dest: "{{ auditd_dir}}/rules.d/{{ item.name }}"
+    dest: "{{ auditd.auditd_dir}}/rules.d/{{ item.name }}"
     content: "{{ item.rules }}"
-  loop: "{{ rules }}"
-  when: "rules is defined"
+  loop: "{{ auditd.rules }}"
+  no_log: true
+  when: "auditd.rules is defined"
 
 - name: Get Hostname
   ansible.builtin.command:   

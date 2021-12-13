@@ -11,7 +11,7 @@
   
 - name: Add Suricata APT repository
   apt_repository: 
-    repo: "{{ suricata_repo_version }}" 
+    repo: "{{ suricata.suricata_repo_version }}" 
     state: present
   
 - name: Install ethtool and networkd-dispatcher for performance
@@ -24,7 +24,7 @@
   
 - name:  Performance configuration
   shell:
-    cmd: ethtool -K {{ suricata_iface }} gro off lro off
+    cmd: ethtool -K {{ suricata.suricata_iface }} gro off lro off
 
 - name: Set performance configuration peristant
   copy:
@@ -32,11 +32,11 @@
     mode: '0755'
     content: |
       #!/bin/sh
-      ethtool -K {{ suricata_iface }} gro off lro off
+      ethtool -K {{ suricata.suricata_iface }} gro off lro off
   
 - name: Install Suricata
   apt:  
-    name: suricata={{ suricata_version }}
+    name: suricata={{ suricata.suricata_version }}
     state: present
     update_cache: yes
   
@@ -44,26 +44,134 @@
   replace:
     path: /etc/suricata/suricata.yaml
     regexp: '^(\s*HOME_NET: ).*$'
-    replace: \1"[{{ suricata_local_cidr }}]"
+    replace: \1"[{{ suricata.suricata_local_cidr }}]"
   
 - name: Start and enable service
   systemd:
     name: suricata
     state: started
     enabled: yes
-  
-- name: Configure rules rotation
-  cron:
-    name: "# Suricata rules are rotated each day at 2:00 AM #"
-    hour: "2"
-    job: "/etc/suricata/rotateRules.sh"
-  
+
+############ Rules rotation
+- name: Handle rules rotation
+  block:
+    - name: Prepare Rules rotation
+      copy:
+      # / is included in suricata_path
+        dest: "{{ suricata.suricata_path }}{{ suricata.rotate_rules.name }}"
+        content: "{{ suricata.rotate_rules.content }}"
+        group: suricata
+        owner: suricata
+        mode: '0740'
+      no_log: true
+      when: "suricata.rotate_rules is defined"
+
+    - name: Configure rules rotation CRON
+      cron:
+        name: "{{ suricata.rotate_rules.cron.name }}"
+        hour: "{{ suricata.rotate_rules.cron.hour }}"
+        job: "{{ suricata.suricata_path }}{{ suricata.rotate_rules.name }}"
+      when: "suricata.rotate_rules.cron is defined"
+      
+    - name: Change rules path
+      replace:
+        path: "{{ suricata.suricata_path }}suricata.yaml"
+        regexp: 'default-rule-path: /var/lib/suricata/rules'
+        replace: 'default-rule-path: /etc/suricata/rules'
+
+    - name: Delete old suricata.pid
+      ansible.builtin.file:
+        path: /var/run/suricata.pid
+        state: absent
+
+    - name: Restart suricata
+      shell:
+        cmd: suricata -c /etc/suricata/suricata.yaml -i {{ suricata.suricata_iface }} -D
+
+    - name:  Launch rules rotation   
+      shell:
+        cmd: "{{ suricata.suricata_path }}{{ suricata.rotate_rules.name }}"
+
+    - name: Get file to enable specific rule
+      find:
+        paths: "{{ suricata.suricata_path }}rules/"
+        patterns: '.*.rules'
+        use_regex: yes
+      register: files_to_add
+      
+    - name: Enable specific rule
+      lineinfile:
+        path: "{{ suricata.suricata_path }}suricata.yaml"
+        insertafter: 'rule-files:'
+        line: '  - {{ item.path | basename }}'
+      loop: "{{ files_to_add.files }}"
+
+    - name: Ignore specific rule
+      replace:
+        path: "{{ suricata.suricata_path }}suricata.yaml"
+        regexp: '^(  - {{ item }})$'
+        replace: '#\1'
+      loop: "{{ suricata.ignored_rules }}"
+      when: "suricata.ignored_rules is defined"
+
+  when: suricata.rotate_rules is defined
+
 - name: Change interface to work on
   replace:
-    path: /etc/suricata/suricata.yaml
+    path: "{{ suricata.suricata_path }}suricata.yaml"
     regexp: '- interface: eth0'
-    replace: '- interface: {{ suricata_iface }}'
-  
+    replace: '- interface: {{ suricata.suricata_iface }}'
+
+##### IP REPUTATION
+- name: Handle IP Reputation 
+  block:
+    - name: Ip reputation
+      blockinfile:
+        path: "{{ suricata.suricata_path }}suricata.yaml"
+        block: |
+          reputation-categories-file: {{ suricata.suricata_path }}iprep/categories.txt
+          default-reputation-path: {{ suricata.suricata_path }}iprep
+          reputation-files:
+            - blacklist.list
+            - tor-nodes.list
+      
+    - name: Creates directory /etc/suricata/iprep
+      file:
+        path: "{{ suricata.suricata_path }}iprep"
+        state: directory
+        group: suricata
+        owner: suricata
+
+    - name: Upload categories.txt  /etc/suricata/iprep/
+      copy:
+        dest: "{{ suricata.suricata_path }}iprep/{{ suricata.categories.name }}"
+        content: "{{ suricata.categories.content }}"
+      no_log: true
+      when: "suricata.categories is defined"
+      
+    - name: Upload rotateIpReputation.sh  /etc/suricata/
+      copy:
+        dest: "{{ suricata.suricata_path }}{{ suricata.rotateIpReputation.name }}"
+        content: "{{ suricata.rotateIpReputation.content }}"
+        group: suricata
+        owner: suricata
+        mode: '0740'
+      no_log: true
+      
+    - name: Configure rules rotateIpReputation cron
+      cron:
+        name: "{{ suricata.rotateIpReputation.cron.name }}"
+        hour: "{{ suricata.rotateIpReputation.cron.hour }}"
+        job: "{{ suricata.suricata_path }}{{ suricata.rotateIpReputation.name }}"
+      when: "suricata.rotateIpReputation.cron is defined"
+      
+    - name:  Execute rotateIpReputation.sh
+      shell:
+        cmd: /etc/suricata/rotateIpReputation.sh
+
+  when: "suricata.rotateIpReputation is defined"
+####
+
 - name: Restart
   systemd:
     name: suricata
