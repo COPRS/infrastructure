@@ -1,0 +1,11 @@
+- name: Get facts
+  include_tasks: gather_facts.yaml
+
+- name: install content_packs
+  include_tasks: content_packs.yaml
+
+# - name: install notifications
+#   include_tasks: notifications.yaml
+
+# - name: install events
+#   include_tasks: events.yaml

@@ -1,0 +1,3 @@
+graylog_alert_http: "http"
+graylog_alerts_mail_from: "test@test.fr"
+graylog_alerts_mail_to: "test@test.fr"
