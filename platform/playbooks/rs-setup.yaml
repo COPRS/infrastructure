@@ -87,6 +87,19 @@
     - { role: "../roles/kustomize" }
     - { role: "../roles/kubectl" }
 
+- name: Install etcd secrets in the cluster
+  hosts: kube_control_plane[0]
+  gather_facts: false
+  tasks:
+    - name: Create kubernetes etcd-client secret
+      command: >
+        kubectl create secret generic etcd-client
+        --from-file=/etc/kubernetes/pki/etcd/ca.crt
+        --from-file=/etc/kubernetes/pki/etcd/server.key
+        --from-file=/etc/kubernetes/pki/etcd/server.crt
+        --namespace monitoring
+      become: true
+
 - name: Deploy reference system
   hosts: gateway[0]
   gather_facts: false

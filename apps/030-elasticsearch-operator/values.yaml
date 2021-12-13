@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: docker.elastic.co/eck/eck-operator
+  tag: 1.9.0
+
+resources:
+  limits:
+    cpu: 1
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 150Mi
+
+config:
+  logVerbosity: "0"
+  metricsPort: "9115"
+  containerRegistry: docker.elastic.co
+
+podMonitor:
+  enabled: true
+  interval: 2m

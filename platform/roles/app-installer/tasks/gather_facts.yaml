@@ -8,6 +8,11 @@
     path: "{{ app_dir }}/values.yaml"
   register: values
 
+- name: Check whether additional_resources directory exists
+  stat:
+    path: "{{ app_dir }}/additional_resources"
+  register: additional_resources
+
 - name: Fail when neither file is present
   fail:
     msg: "No kustomization.yaml or values.yaml file found in {{ app_dir }}"
@@ -42,5 +47,4 @@
 
 - name: Set facts
   set_fact:
-    app_name: "{{ app_dir | basename }}"
     app_namespace: "{% if config_file.stat.exists %}{{ app.namespace }}{% else %}{{ namespace }}{% endif %}"

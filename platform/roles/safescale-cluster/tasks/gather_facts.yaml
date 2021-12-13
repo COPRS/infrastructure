@@ -13,10 +13,11 @@
     masters: "{{ hosts.stdout_lines | select('match','^.*master.*$') }}"
     gateways: "{{ [ 'gw-' + cluster.name ] | list }}"
 
-- name: Get nodes and egresses
+- name: Get nodes, egresses and prometheuses
   set_fact:
-    egresses: "{{ nodes[-cluster.egress.count:] }}"
-    nodes: "{{ nodes[:-cluster.egress.count] }}"
+    prometheuses: "{{ nodes[-cluster.prometheus.count:] }}"
+    egresses: "{{ nodes[-(cluster.egress.count + cluster.prometheus.count):-cluster.prometheus.count] }}"
+    nodes: "{{ nodes[:-(cluster.egress.count + cluster.prometheus.count)] }}"
 
 - name: Check whether a second gateway is defined
   shell: "{{ safescale_path }} cluster inspect {{ cluster.name }} | jq .result.secondary_gateway_ip"
@@ -29,4 +30,4 @@
 
 - name: Making a list with all hosts
   set_fact:
-    hosts: "{{ nodes + masters + gateways + egresses }}"
+    hosts: "{{ nodes + masters + gateways + egresses + prometheuses}}"

@@ -1,0 +1,17 @@
+image:
+  registry: quay.io
+  repository: strimzi
+  name: operator
+  tag: 0.26.0
+watchAnyNamespace: true
+
+resources:
+  limits:
+    memory: 384Mi
+    cpu: 1000m
+  requests:
+    memory: 384Mi
+    cpu: 200m
+
+imageTagOverride: "0.26.0"
+createGlobalResources: true

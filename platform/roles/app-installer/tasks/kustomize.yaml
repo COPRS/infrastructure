@@ -15,10 +15,10 @@
     dest: "{{ kustomize_dir.path }}"
 
 ## https://github.com/kubernetes-sigs/kustomize/issues/876
-- name: "{{ app_name }} | deploy app"
+- name: "{{ app_name }} | Deploy app"
   shell: "{{ bin_dir }}/kustomize build {{ kustomize_dir.path }} | {{ bin_dir }}/kubectl apply -f - --prune -n {{ app_namespace }} -l app.kubernetes.io/instance={{ app_name }},app.kubernetes.io/managed-by=Kustomize"
   register: kubectl_apply
 
-- name: "{{ app_name }} | display deployed resources"
+- name: "{{ app_name }} | Display deployed resources"
   debug:
     msg: "{{ kubectl_apply.stdout_lines }}"

@@ -9,7 +9,7 @@ toolbox:
   enabled: true
 
 monitoring:
-  enabled: false
+  enabled: true
 
 cephClusterSpec:
   cephVersion:

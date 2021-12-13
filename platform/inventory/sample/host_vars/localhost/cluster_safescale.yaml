@@ -24,6 +24,11 @@ cluster:
     cpu: 2
     ram: "[4-5]"
     disk: 20
+  prometheus:
+    count: 1
+    cpu: 8
+    ram: "[14-18]"
+    disk: 40
       
 volume:
   type: HDD

@@ -25,7 +25,19 @@
         {{ safescale_path }} \
         cluster expand \
         --count {{ cluster.egress.count }} \
+        {% if cluster.os is defined %}--os {{ cluster.os }}{% endif %} \
         {% if cluster.egress is defined %}--node-sizing {{ cluster.egress.keys() | zip(cluster.egress.values()) | map('join', '=') | reject('search', 'count') | join(',') }}{% endif %} \
         {{ cluster.name }}
       when: cluster.egress.count != 0
+      
+    - name: Create prometheus nodes
+      shell: |
+        {{ safescale_path }} \
+        cluster expand \
+        --count {{ cluster.prometheus.count }} \
+        {% if cluster.os is defined %}--os {{ cluster.os }}{% endif %} \
+        {% if cluster.prometheus is defined %}--node-sizing {{ cluster.prometheus.keys() | zip(cluster.prometheus.values()) | map('join', '=') | reject('search', 'count') | join(',') }}{% endif %} \
+        {{ cluster.name }}
+      when: cluster.prometheus.count != 0
+
   when: not cluster.name in cluster_list.stdout
