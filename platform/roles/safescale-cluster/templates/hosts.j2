@@ -22,7 +22,7 @@
 
 {% endif %}
 
-{% if prometheus | length > 0 %}
+{% if prometheuses | length > 0 %}
 [prometheus]
 {% for prometheus in prometheuses %}
 {{ prometheus }}

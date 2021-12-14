@@ -1,0 +1,9 @@
+{% for ns in k8s_namespaces %}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+    name: {{ ns.name }}
+    annotations:
+      scheduler.alpha.kubernetes.io/node-selector: {{ ns.nodeSelectorAnnotation }}
+{% endfor %}

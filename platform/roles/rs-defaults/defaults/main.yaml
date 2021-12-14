@@ -1,5 +1,12 @@
 k8s_namespaces:
-  - monitoring
-  - processing
-  - security
-  - infra
+  - name: monitoring
+    nodeSelectorAnnotation: node-role.kubernetes.io/infra=
+  - name: processing
+    label:
+    nodeSelectorAnnotation: node-role.kubernetes.io/processing=
+  - name: security
+    label:
+    nodeSelectorAnnotation: node-role.kubernetes.io/infra=
+  - name: infra
+    label:
+    nodeSelectorAnnotation: node-role.kubernetes.io/infra=
