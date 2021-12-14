@@ -3,6 +3,10 @@ kind: Kibana
 metadata:
   name: kibana
 spec:
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
   version: 7.15.2
   count: 1
   elasticsearchRef:
