@@ -3,8 +3,8 @@ logs
 artifacts
 tenants.*
 ssh-main-gateway.*
-!platform/roles/safescale-cluster/templates/*
+!roles/safescale-cluster/templates/*
 library/safescale
 apps/**/manifest.yaml
-platform/roles/image/files/output/
+roles/image/files/output/
 __pycache__

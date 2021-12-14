@@ -3,7 +3,7 @@
 - name: Get Content Packs files to upload on Graylog
   find:
     file_type: file
-    paths: "{{ playbook_dir }}/../../apps/graylog/config/content-packs"
+    paths: "{{ app_path }}/config/content-packs"
   delegate_to: localhost
   register: content_packs_files
 
@@ -20,7 +20,7 @@
     user: "{{ graylog_username }}"
     password: "{{ graylog_password }}"
     method: POST
-    body: "{{ lookup('file','{{ playbook_dir }}/../../apps/graylog/config/content-packs/{{ item }}') }}"
+    body: "{{ lookup('file','{{ app_path }}/config/content-packs/{{ item }}') }}"
     force_basic_auth: yes
     body_format: json
     headers:
@@ -35,7 +35,7 @@
   set_fact:
     content_packs_name_list: "{{ (content_packs_name_list | default([])) + [  file | community.general.json_query('name') ] }}"
   vars :
-    file : "{{ lookup('file','{{ playbook_dir }}/../../apps/graylog/config/content-packs/{{ item }}') }}"
+    file : "{{ lookup('file','{{ app_path }}/config/content-packs/{{ item }}') }}"
   loop: "{{ content_packs_list }}"
 
 - name: Get list of id of uploaded content packs

@@ -24,3 +24,4 @@
   set_fact: 
     graylog_ip: "{{ graylog_output | community.general.json_query('resources[0].spec.clusterIP') }}"
     graylog_port: "{{ graylog_output | community.general.json_query('resources[0].spec.ports[0].port') }}"
+    app_path: "{{ playbook_dir }}/apps/graylog"

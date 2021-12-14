@@ -8,7 +8,7 @@
         name: sshd
         state: restarted
   roles:
-    - { role: "../roles/pam-ldap" }
+    - { role: "pam-ldap" }
   tasks:
     - name: Allow SSH connection with password
       replace:
@@ -30,10 +30,10 @@
   hosts: egress
   gather_facts: false
   vars_files:
-    - "../roles/safescale-cluster/defaults/main.yaml"
+    - "roles/safescale-cluster/defaults/main.yaml"
   tasks:
     - name: Get informations from tenant file
-      import_tasks: ../roles/safescale-cluster/tasks/tenant.yaml
+      import_tasks: roles/safescale-cluster/tasks/tenant.yaml
       delegate_to: localhost
       run_once: true
 
@@ -41,11 +41,11 @@
       os_floating_ip:
         auth:
           auth_url: "https://iam.eu-west-0.prod-cloud-ocb.orange-business.com"
-          username: "{{ tenant.identity.Username }}"
+          username: "{{ tenant.identity.Username }}"
           password: "{{ tenant.identity.Password }}"
-          domain_name: "{{ tenant.identity.DomainName }}"
+          domain_name: "{{ tenant.identity.DomainName }}"
           project_id: "{{ tenant.compute.ProjectID }}"
-        region_name: "{{ tenant.compute.Region }}"
+        region_name: "{{ tenant.compute.Region }}"
         server: "{{ item }}"
       loop: "{{ groups['egress'] }}"
       delegate_to: localhost
@@ -80,18 +80,18 @@
   become: true
   tags: gateway
   vars_files: 
-    - "../collections/kubespray/roles/download/defaults/main.yml"
-    - "../collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
+    - "collections/kubespray/roles/download/defaults/main.yml"
+    - "collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
   roles:
-    - { role: "../collections/kubespray/roles/kubernetes-apps/helm" }
-    - { role: "../roles/kustomize" }
-    - { role: "../roles/kubectl" }
+    - { role: "collections/kubespray/roles/kubernetes-apps/helm" }
+    - { role: "kustomize" }
+    - { role: "kubectl" }
 
 - name: Deploy reference system
   hosts: gateway[0]
   gather_facts: false
   vars_files:
-  - "../collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
+  - "collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
   pre_tasks:
     - name: install pip modules for ansible kubernetes.core
       pip: 
@@ -101,8 +101,8 @@
         - openshift==0.12.1
         - kubernetes==12.0.1
   roles: 
-    - { role: "../roles/rs-defaults" }
-    - { role: "../roles/app-installer", tags: apps }
+    - { role: "rs-defaults" }
+    - { role: "app-installer", tags: apps }
 
 - name: Install etcd secrets in the cluster
   hosts: kube_control_plane[0]

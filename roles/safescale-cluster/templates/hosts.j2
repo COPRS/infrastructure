@@ -1,7 +1,7 @@
 
 [all]
 {% for host in hosts %}
-{{host}}    ansible_host={{ ip_adresses[loop.index0] }}    ansible_ssh_private_key_file={{ playbook_dir }}/../.ssh/{{ host }}.pem
+{{host}}    ansible_host={{ ip_addresses[loop.index0] }}    ansible_ssh_private_key_file={{ ssh_key_path }}/{{ host }}.pem
 {% endfor %}
 
 [gateway]

@@ -2,4 +2,4 @@
   hosts: gateway[0]
   gather_facts: false
   roles: 
-    - { role: roles/graylog }
+    - { role: graylog }

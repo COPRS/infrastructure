@@ -51,7 +51,7 @@
             state: absent
             path: "{{ item }}"
           loop:
-            - "{{ playbook_dir }}/../ssh-main-gateway.conf"
-            - "{{ playbook_dir }}/../.ssh"
+            - "{{ playbook_dir }}/ssh-main-gateway.conf"
+            - "{{ playbook_dir }}/.ssh"
             - "{{ inventory_dir }}/artifacts"
       tags: [ 'never', 'cleanup_generated' ]
