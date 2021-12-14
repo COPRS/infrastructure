@@ -1,4 +1,4 @@
-# Installation manual
+# How To
 
 ## Overview
 ![](./doc/img/deployment.png)
@@ -131,19 +131,182 @@ This directory concentrate what is required to deploy the infrastructure with An
 
 ## Apps
 
-To configure apps, refer to the following Helm Charts :
-- Rook Ceph : https://github.com/rook/rook/blob/master/Documentation/helm-operator.md
-- Rook Ceph Cluster : https://github.com/rook/rook/blob/master/Documentation/helm-ceph-cluster.md
-- Kafka Operator : https://github.com/strimzi/strimzi-kafka-operator/tree/main/helm-charts/helm3/strimzi-kafka-operator
-- PostreSQL : https://github.com/bitnami/charts/tree/master/bitnami/postgresql
-- Elasticsearch : https://github.com/bitnami/charts/tree/master/bitnami/elasticsearch
-- MongoDB : https://github.com/bitnami/charts/tree/master/bitnami/mongodb
-- Graylog : https://github.com/KongZ/charts/tree/main/charts/graylog
-- Spring Cloud Data Flow : https://github.com/bitnami/charts/tree/master/bitnami/spring-cloud-dataflow
-- Loki : https://github.com/grafana/helm-charts/tree/main/charts/loki
-- Fluent Bit : https://github.com/fluent/helm-charts/tree/main/charts/fluent-bit
-- Fluentd : https://github.com/bitnami/charts/tree/master/bitnami/fluentd
-- Grafana Operator: https://github.com/bitnami/charts/tree/master/bitnami/grafana-operator
-- Kibana : https://github.com/bitnami/charts/tree/master/bitnami/kibana
-- Prometheus Stack : https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
-- Thanos : https://github.com/bitnami/charts/tree/master/bitnami/thanos
+Configurations proposed by default :
+- **Rook Ceph** 
+  - Chart Helm 
+    - URL : charts.rook.io/release
+    - Version : 1.7.7
+    - Documentation : https://github.com/rook/rook/blob/master/Documentation/helm-operator.md
+  - Images
+    - Ceph
+      - Registry : Docker Hub
+      - Repository : ceph
+      - Version : 1.7.7
+    - CSI
+      - Ceph
+        - Registry : quay.io
+        - Version : 3.4.0
+      - Registrar
+        - Registry : k8s.gcr.io
+        - Version : 2.3.0
+      - Resizer
+        - Registry : k8s.gcr.io
+        - Version : 1.3.0
+      - Provisioner
+        - Registry : k8s.gcr.io
+        - Version : 3.0.0
+      - Snapshotter
+        - Registry : k8s.gcr.io
+        - Version : 4.2.0
+      - Attacher
+        - Registry : k8s.gcr.io
+        - Version : 3.3.0
+      - Volume Replication
+        - Registry : quay.io
+        - Version : 0.1.0
+- **Rook Ceph Cluster**
+  - Chart Helm
+    - URL : charts.rook.io/release
+    - Version : 1.7.7
+    - Documentation : https://github.com/rook/rook/blob/master/Documentation/helm-ceph-cluster.md
+  - Image
+    - Registry : quay.io
+    - Version : 16.2.6
+- **Kafka Operator**
+  - Chart Helm
+    - URL : strimzi.io/charts/
+    - Version : 0.26.0
+    - Documentation : https://github.com/strimzi/strimzi-kafka-operator/tree/main/helm-charts/helm3/strimzi-kafka-operator
+  - Images
+    - Registry : quai.io
+    - Versions
+      - Operator : 0.26.0
+      - Kafka : 2.8.1
+      - Zookeeper : 3.5.9
+- **Elasticsearch Operator**
+  - Chart Helm
+    - URL : helm.elastic.co
+    - Version : 1.9.0
+    - Source : https://github.com/elastic/cloud-on-k8s/tree/master/deploy/eck-operator
+  - Images
+    - Registry : docker.elastic.co
+    - Versions
+      - Operator :1.9.0
+      - Elasticsearch : 7.15.2
+      - Kibana : 7.15.2
+- **PostreSQL**
+  - Chart Helm
+    - URL : charts.bitnami.com/bitnami
+    - Version : 10.13.4
+    - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/postgresql
+  - Images
+    - Registry : Docker Hub
+    - Repository : bitnami
+    - Versions
+      - PostgreSQL : 14.1.0
+      - Exporter : 0.10.0
+- **MongoDB**
+  - Chart Helm :
+    - URL : charts.bitnami.com/bitnami
+    - Version : 10.29.0
+    - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/mongodb
+  - Images
+    - Registry : Docker Hub
+    - Repository : bitnami
+    - Versions
+      - MongoDB : 5.0.3
+      - Exporter : 0.11.2
+- **Graylog**
+  - Chart Helm
+    - URL : charts.kong-z.com
+    - Version : 1.8.10
+    - Documentation : https://github.com/KongZ/charts/tree/main/charts/graylog
+  - Image
+    - Registry : Docker Hub
+    - Repository : graylog
+    - Version : 4.2.1
+- **Spring Cloud Data Flow**
+  - Chart Helm
+    - URL : charts.bitnami.com/bitnami
+    - Version : 4.1.5
+    - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/spring-cloud-dataflow
+  - Images
+    - Registry : Docker Hub
+    - Repository : bitnami
+    - Versions
+      - Server : 2.9.1
+      - Skipper : 2.8.1
+      - WaitForBackend : 1.22.2
+      - Exporter : 1.3.0
+- **Loki**
+  - Chart Helm
+    - URL : grafana.github.io/helm-charts
+    - Version : 2.8.1
+    - Documentation : https://github.com/grafana/helm-charts/tree/main/charts/loki
+  - Image
+    - Registry : Docker Hub
+    - Repository : grafana
+    - Version : 2.4.1
+- **Fluentbit**
+  - Chart Helm
+    - URL : fluent.github.io/helm-charts
+    - Version : 0.19.6
+    - Documentation : https://github.com/fluent/helm-charts/tree/main/charts/fluent-bit
+  - Image
+    - Registry : Docker Hub
+    - Repository : fluent
+    - Version : 1.8.10
+- **Fluentd**
+  - Chart Helm
+    - URL : charts.bitnami.com/bitnami
+    - Version : 4.4.1
+    - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/fluentd
+  - Image
+    - Registry : Docker Hub
+    - Repository : bitnami
+    - Version : 1.14.2
+- **Grafana**
+  - Chart Helm
+    - URL : charts.bitnami.com/bitnami
+    - Version : 7.2.2
+    - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/grafana-operator
+  - Image
+    - Registry : Docker Hub
+    - Repository : bitnami
+    - Version : 8.2.5
+- **Prometheus Stack**
+  - Chart Helm :
+    - URL : prometheus-community.github.io/helm-charts
+    - Version : 21.0.0
+    - Documentation : https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
+  - Images
+    - Registry : quay.io
+    - Versions : 
+      - AlertManager : 0.23.0
+      - Node Exporter : 1.3.0
+      - Operator : 0.52.1
+      - Prometheus : 2.31.1
+- **Thanos**
+  - Chart Helm
+    - URL : charts.bitnami.com/bitnami
+    - Version : 8.1.2
+    - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/thanos
+  - Image
+    - Registry : Docker Hub
+    - Repository : bitnami
+    - Version : 0.23.1
+- **Keycloack**
+  - Chart Helm
+    - URL : charts.bitnami.com/bitnami
+    - Version : 5.2.0
+    - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/keycloak
+  - Image
+    - Registry : Docker Hub
+    - Repository : bitnami
+    - Version : 15.0.2
+- **OpenLDAP**
+  - Chart Helm : use _kustomize_
+  - Image
+    - Registry : Docker Hub
+    - Repository : osixia
+    - Version : 1.5.0
