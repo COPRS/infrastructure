@@ -77,6 +77,10 @@ ansible-playbook collections/kubespray/upgrade-cluster.yml \
 # Configure kubernetes and deploy apps
 ansible-playbook rs-setup.yaml \
     -i inventory/mycluster/hosts.ini
+
+# Install graylog content packs (Optionnal)
+ansible-playbook playbooks/configure-graylog.yaml \
+    -i inventory/mycluster/hosts.ini
 ```
 
 ## Dependencies
@@ -112,6 +116,7 @@ This directory concentrate what is required to deploy the infrastructure with An
     - `image.yaml`: build the image used to create the machines.
     - `rs-setup.yaml`: prepare the necessary resources for the platform and deploy the applications present in apps.
     - `security.yaml`: deploy the security services.
+    - `configure-graylog.yaml`: upload and install graylog content-packs located in apps/graylog/config/content-packs/
 - **roles**: list of roles used to deploy the cluster.
     - **security**: roles describing the installation of the different security tools.
 - `ansible.cfg`: Ansible configuration file. It includes the ssh configuration to allow Ansible to access the machines through the gateway.
