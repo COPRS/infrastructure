@@ -1,0 +1,27 @@
+#Get Graylog facts to perform API call
+- name: Get Graylog secret
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Secret
+    name: graylog
+    namespace: security
+  register: graylog_output
+
+- name: Setting Graylog facts
+  set_fact: 
+    graylog_password: "{{ graylog_output | community.general.json_query('resources[0].data.\"graylog-password-secret\"') | b64decode }}"
+    graylog_username: "{{ graylog_output | community.general.json_query('resources[0].data.\"graylog-root-username\"') | b64decode }}"
+
+- name: Get Graylog service IP
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Service
+    name: graylog-master
+    namespace: security
+  register: graylog_output
+
+- name: Setting Graylog networking facts
+  set_fact: 
+    graylog_ip: "{{ graylog_output | community.general.json_query('resources[0].spec.clusterIP') }}"
+    graylog_port: "{{ graylog_output | community.general.json_query('resources[0].spec.ports[0].port') }}"
+    app_path: "{{ playbook_dir }}/apps/graylog"

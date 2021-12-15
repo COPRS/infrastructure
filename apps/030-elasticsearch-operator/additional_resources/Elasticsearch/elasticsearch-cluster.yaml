@@ -2,12 +2,20 @@ apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
   name: elasticsearch-cluster
+  labels:
+    app.kubernetes.io/instance: elasticsearch-operator
+    app.kubernetes.io/managed-by: additional_resources
 spec:
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
   version: 7.15.2
   nodeSets:
     - name: master-nodes
       count: 1
       config:
+        xpack.security.authc.anonymous.roles: superuser
         node.roles: ["master"]
       volumeClaimTemplates:
         - metadata:
@@ -22,6 +30,7 @@ spec:
     - name: data-nodes
       count: 1
       config:
+        xpack.security.authc.anonymous.roles: superuser
         node.roles: ["data"]
       volumeClaimTemplates:
         - metadata:

@@ -1,0 +1,5 @@
+- name: Configurate Graylog with available content packs
+  hosts: gateway[0]
+  gather_facts: false
+  roles: 
+    - { role: graylog }

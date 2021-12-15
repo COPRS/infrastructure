@@ -10,7 +10,7 @@ graylog:
     uri:  mongodb://graylog:grayl0gPassw0rd@mongodb.infra.svc.cluster.local/graylog
 
   elasticsearch:
-    hosts: http://elasticsearch-master.infra.svc.cluster.local:9200
+    hosts: http://elasticsearch-cluster-es-http.infra.svc.cluster.local:9200
     version: 7
     
   persistence:

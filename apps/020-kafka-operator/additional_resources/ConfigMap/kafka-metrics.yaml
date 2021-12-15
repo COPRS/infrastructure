@@ -4,7 +4,7 @@ metadata:
   name: kafka-metrics
   labels:
     app: strimzi
-    app.kubernetes.io/instance: a-kafka-operator
+    app.kubernetes.io/instance: kafka-operator
     app.kubernetes.io/managed-by: additional_resources
 data:
   kafka-metrics-config.yml: |

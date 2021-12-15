@@ -1,4 +1,4 @@
-[submodule "platform/collections/kubespray"]
-	path = platform/collections/kubespray
+[submodule "collections/kubespray"]
+	path = collections/kubespray
 	url = https://github.com/kubernetes-sigs/kubespray.git
 	branch = release-2.17

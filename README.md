@@ -18,19 +18,16 @@
 ## ON BASTION
 
 # get the infrastructure repository
-git clone -b 0.1.0-rci https://github.com/COPRS/infrastructure.git
+git clone https://github.com/COPRS/infrastructure.git
 
 cd infrastructure
 
 # install requirements
 git submodule update --init
-python3 -m pip install --user -r platform/collections/kubespray/requirements.txt
+python3 -m pip install --user -r collections/kubespray/requirements.txt
 ansible-galaxy collection install \
     kubernetes.core \
     openstack.cloud
-
-# access platform repository
-cd platform
 
 # Copy ``inventory/sample`` as ``inventory/mycluster``
 cp -rfp inventory/sample inventory/mycluster
@@ -42,15 +39,15 @@ cat inventory/mycluster/group_vars/all/kubespray.yaml
 cat inventory/mycluster/group_vars/bastion/apps.yaml
 
 # If needed create an image for the machines with Packer
-ansible-playbook playbooks/image.yaml \
+ansible-playbook image.yaml \
     -i inventory/mycluster/hosts.ini
 
 # Deploy machines with safescale
-ansible-playbook playbooks/cluster-setup.yaml \
+ansible-playbook cluster-setup.yaml \
     -i inventory/mycluster/hosts.ini
 
 # Install security services
-ansible-playbook playbooks/security.yaml \
+ansible-playbook security.yaml \
     -i inventory/mycluster/hosts.ini \
     --become
 
@@ -78,7 +75,11 @@ ansible-playbook collections/kubespray/upgrade-cluster.yml \
     --become
 
 # Configure kubernetes and deploy apps
-ansible-playbook playbooks/rs-setup.yaml \
+ansible-playbook rs-setup.yaml \
+    -i inventory/mycluster/hosts.ini
+
+# Install graylog content packs (Optionnal)
+ansible-playbook playbooks/configure-graylog.yaml \
     -i inventory/mycluster/hosts.ini
 ```
 
@@ -95,7 +96,7 @@ The repository is made of the following main directories.
 ### Apps
 This folder gather the configuration of the applications deployed on the platform.  
 Each application has its own folder inside apps with the values of the Helm chart, the kustomization files, the patches related and any additional kubernetes resources.  
-The application's directory can be splitted by environment with subfolders like dev, prod, etc.
+The application's directory can be split by environment with subfolders like dev, prod, etc.
 ### Doc
 Here we find all the documentation describing the infrastructure deployment and maintenance operations.
 ### Platform
@@ -115,6 +116,7 @@ This directory concentrate what is required to deploy the infrastructure with An
     - `image.yaml`: build the image used to create the machines.
     - `rs-setup.yaml`: prepare the necessary resources for the platform and deploy the applications present in apps.
     - `security.yaml`: deploy the security services.
+    - `configure-graylog.yaml`: upload and install graylog content-packs located in apps/graylog/config/content-packs/
 - **roles**: list of roles used to deploy the cluster.
     - **security**: roles describing the installation of the different security tools.
 - `ansible.cfg`: Ansible configuration file. It includes the ssh configuration to allow Ansible to access the machines through the gateway.

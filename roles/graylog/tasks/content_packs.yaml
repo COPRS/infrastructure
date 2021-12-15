@@ -1,0 +1,76 @@
+####### Upload all Content Pack
+# Get all content pack in the folder
+- name: Get Content Packs files to upload on Graylog
+  find:
+    file_type: file
+    paths: "{{ app_path }}/config/content-packs"
+  delegate_to: localhost
+  register: content_packs_files
+
+- name: Append filename to content_packs_list
+  set_fact:
+    content_packs_list: "{{ (content_packs_list | default([])) + [  item.path | basename ] }}"
+  loop: "{{ content_packs_files.files }}"
+  no_log: true
+
+#Send upload API request 
+- name: Upload content packs 
+  uri:
+    url: http://{{graylog_ip}}:{{graylog_port}}/api/system/content_packs
+    user: "{{ graylog_username }}"
+    password: "{{ graylog_password }}"
+    method: POST
+    body: "{{ lookup('file','{{ app_path }}/config/content-packs/{{ item }}') }}"
+    force_basic_auth: yes
+    body_format: json
+    headers:
+      X-Requested-By: "cli"
+    status_code: 201
+  loop: "{{ content_packs_list }}"
+  no_log: true
+  ignore_errors: yes
+
+####### Install Input/Stream/Pipeline/GeoIP
+- name: Get Names from files
+  set_fact:
+    content_packs_name_list: "{{ (content_packs_name_list | default([])) + [  file | community.general.json_query('name') ] }}"
+  vars :
+    file : "{{ lookup('file','{{ app_path }}/config/content-packs/{{ item }}') }}"
+  loop: "{{ content_packs_list }}"
+
+- name: Get list of id of uploaded content packs
+  uri:
+    url: http://{{graylog_ip}}:{{graylog_port}}/api/system/content_packs
+    user: "{{ graylog_username }}"
+    password: "{{ graylog_password }}"
+    method: GET
+    force_basic_auth: yes
+    headers:
+      X-Requested-By: "cli"
+    status_code: 200
+  register: content_packs
+
+# Get ID after upload
+- name: Get ID after upload
+  set_fact:
+    content_packs_ids: "{{ (content_packs_ids | default([])) + [  content_packs | community.general.json_query(query) ] }}"
+  vars :
+    query: 'json.content_packs[?name==`{{ item }}`].id'
+  loop: "{{ content_packs_name_list }}"
+
+# Install with id
+- name: Install with id
+  uri:
+    url: http://{{graylog_ip}}:{{graylog_port}}/api/system/content_packs/{{ item[0] }}/1/installations
+    user: "{{ graylog_username }}"
+    password: "{{ graylog_password }}"
+    method: POST
+    body: "{\"parameters\": {},\"comment\": \"\"}"
+    force_basic_auth: yes
+    body_format: json
+    headers:
+      X-Requested-By: "cli"
+    status_code: 200
+  loop: "{{ content_packs_ids }}"
+  no_log: true
+  ignore_errors: yes
