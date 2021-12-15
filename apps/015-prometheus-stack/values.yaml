@@ -87,6 +87,8 @@ prometheus:
     replicas: 1
     serviceMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelector: {}
+    podMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelector: {}
     retention: 2d
     scrapeInterval: 2m
     thanos:

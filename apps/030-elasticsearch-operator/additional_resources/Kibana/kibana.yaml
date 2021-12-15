@@ -2,6 +2,9 @@ apiVersion: kibana.k8s.elastic.co/v1
 kind: Kibana
 metadata:
   name: kibana
+  labels:
+    app.kubernetes.io/instance: elasticsearch-operator
+    app.kubernetes.io/managed-by: additional_resources
 spec:
   http:
     tls:
