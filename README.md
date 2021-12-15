@@ -138,7 +138,7 @@ To configure apps, refer to the following Helm Charts :
 - Rook Ceph Cluster : https://github.com/rook/rook/blob/master/Documentation/helm-ceph-cluster.md
 - Kafka Operator : https://github.com/strimzi/strimzi-kafka-operator/tree/main/helm-charts/helm3/strimzi-kafka-operator
 - PostreSQL : https://github.com/bitnami/charts/tree/master/bitnami/postgresql
-- Elasticsearch : https://github.com/bitnami/charts/tree/master/bitnami/elasticsearch
+- ECK Operator: https://github.com/elastic/cloud-on-k8s/tree/master/deploy/eck-operator
 - MongoDB : https://github.com/bitnami/charts/tree/master/bitnami/mongodb
 - Graylog : https://github.com/KongZ/charts/tree/main/charts/graylog
 - Spring Cloud Data Flow : https://github.com/bitnami/charts/tree/master/bitnami/spring-cloud-dataflow
@@ -146,6 +146,5 @@ To configure apps, refer to the following Helm Charts :
 - Fluent Bit : https://github.com/fluent/helm-charts/tree/main/charts/fluent-bit
 - Fluentd : https://github.com/bitnami/charts/tree/master/bitnami/fluentd
 - Grafana Operator: https://github.com/bitnami/charts/tree/master/bitnami/grafana-operator
-- Kibana : https://github.com/bitnami/charts/tree/master/bitnami/kibana
 - Prometheus Stack : https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
 - Thanos : https://github.com/bitnami/charts/tree/master/bitnami/thanos

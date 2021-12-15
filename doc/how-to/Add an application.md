@@ -120,3 +120,8 @@ There are a few custom resources deployed by default, see [here](https://github.
 
 To deploy Kafka related custom resources, such as *topics* or *kafka clusters*, place them as explained in the the `additional_resources` directory.
 There are a few custom resources deployed by default, see [here](https://github.com/strimzi/strimzi-kafka-operator/tree/0.26.0/examples) for more examples.
+
+### Deploy Elastic cloud related custom resources
+
+To deploy Elastic cloud related custom resources, such as *Kibana instances* or *Elastic searc instances*, place them as explained in the the `additional_resources` directory.
+There are a few custom resources deployed by default, see [here](https://www.elastic.co/guide/en/cloud-on-k8s/master/k8s-api-reference.html) for reference on these CRDs.
