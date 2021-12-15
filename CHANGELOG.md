@@ -11,7 +11,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
-## [Unreleased]
+## [0.2.0-rc1] - 2021-12-15
+### Added
+- [#79 - SECURITY: live demonstration of FALCO](https://github.com/COPRS/SCRUM-Tickets/issues/79)
+- [#117 - MONITORING: Process new format of traces](https://github.com/COPRS/SCRUM-Tickets/issues/117)
+- [#119 - MONITORING: deploy LOKI](https://github.com/COPRS/SCRUM-Tickets/issues/119)
+- [#120 - Security : List of trusted sources](https://github.com/COPRS/SCRUM-Tickets/issues/120)
+- [#121 - INFRA/SECURITY: Deploy the new IAM solution](https://github.com/COPRS/SCRUM-Tickets/issues/121)
+- [#122 - SECURITY: Deploy the secret management solution](https://github.com/COPRS/SCRUM-Tickets/issues/122)
+- [#123 - INFRA: Provide a base image to use for future developments](https://github.com/COPRS/SCRUM-Tickets/issues/123)
+- [#124 - SECURITY: Provide a security clearance after deployment](https://github.com/COPRS/SCRUM-Tickets/issues/124)
+- [#145 - MONITORING: Deploy the metrics, log and trace chain](https://github.com/COPRS/SCRUM-Tickets/issues/145)
+
+### Fixed
+- [#154 - [Infra] Second master fails to join cluster during Kubernetes deployment](https://github.com/COPRS/SCRUM-Tickets/issues/154)
 
 ## [0.1.0-rc1] - 2021-11-17
 ### Added
@@ -25,18 +38,3 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 - [#90 - Deploy the latest version of Kafka](https://github.com/COPRS/SCRUM-Tickets/issues/90)
 - [#91 - Deploy Rook/CephFS into the cluster](https://github.com/COPRS/SCRUM-Tickets/issues/91)
 - [#97 - Deploy infrastructure](https://github.com/COPRS/SCRUM-Tickets/issues/97)
-
-### Changed
-None
-
-### Deprecated
-None
-
-### Removed
-None
-
-### Fixed
-None
-
-### Security
-None
