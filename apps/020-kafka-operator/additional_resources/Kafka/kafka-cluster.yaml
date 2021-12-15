@@ -3,7 +3,7 @@ kind: Kafka
 metadata:
   name: kafka-cluster
   labels:
-    app.kubernetes.io/instance: a-kafka-operator
+    app.kubernetes.io/instance: kafka-operator
     app.kubernetes.io/managed-by: additional_resources
 spec:
   kafka:
@@ -66,7 +66,7 @@ spec:
           key: kafka-metrics-config.yml
   zookeeper:
     replicas: 1
-    version: 3.5.9
+    # uses version: 3.5.9 for kafka 2.8.1
     logging:
       type: inline
       loggers:
