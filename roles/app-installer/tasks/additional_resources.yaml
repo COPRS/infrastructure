@@ -13,6 +13,6 @@
   shell: "{{ bin_dir }}/kubectl apply --recursive -f {{ additional_resources_dir.path }} --prune -n {{ app.namespace }} -l app.kubernetes.io/instance={{ app_name }},app.kubernetes.io/managed-by=additional_resources"
   register: kubectl_apply
 
-- name: "{{ app_name }} | Display additional resources deploy"
+- name: "{{ app_name }} | Display additional resources deployed"
   debug:
     msg: "{{ kubectl_apply.stdout_lines }}"

@@ -26,3 +26,4 @@ csi:
 
 discover.nodeAffinity: node-role.kubernetes.io/infra
 admissionController.nodeAffinity: node-role.kubernetes.io/infra
+monitoring.enabled: true
