@@ -9,6 +9,15 @@ spec:
   kafka:
     replicas: 1
     version: 2.8.1
+    template:
+      pod:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "node-role.kubernetes.io/infra"
+                    operator: Exists
     logging:
       type: inline
       loggers:
@@ -67,6 +76,15 @@ spec:
   zookeeper:
     replicas: 1
     # uses version: 3.5.9 for kafka 2.8.1
+    template:
+      pod:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: "node-role.kubernetes.io/infra"
+                  operator: Exists
     logging:
       type: inline
       loggers:

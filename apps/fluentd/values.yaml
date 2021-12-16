@@ -17,6 +17,13 @@ aggregator:
     storageClass: ceph-block
     size: 10Gi
   replicaCount: 1
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
   extraArgs: "-v -p /etc/fluent/custom_plugins/"
   extraVolumes:
     - name: fluentd-custom-plugins

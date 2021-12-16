@@ -15,6 +15,13 @@ query:
   dnsDiscovery:
     sidecarsService: prometheus-operated
     sidecarsNamespace: monitoring
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
 
 compactor:
   enabled: true
@@ -27,15 +34,36 @@ compactor:
     accessModes:
       - ReadWriteOnce
     size: 20Gi
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
 queryFrontend:
   enabled: false
 storegateway:
   persistence:
     enabled: false
   enabled: true
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
 
 ruler:
   enabled: false
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
   alertmanagers:
     - http://prometheus-stack-kube-prom-alertmanager.monitoring.svc.cluster.local:9094
   # alertmanagersConfig:

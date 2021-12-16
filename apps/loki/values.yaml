@@ -14,3 +14,11 @@ persistence:
   enabled: true
   storageClassName: ceph-block
   size: 100Gi
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/infra"
+            operator: Exists

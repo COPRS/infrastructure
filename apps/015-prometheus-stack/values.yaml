@@ -8,6 +8,13 @@ alertmanager:
     image:
       repository: quay.io/prometheus/alertmanager
       tag: v0.23.0
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+              - key: "node-role.kubernetes.io/infra"
+                operator: Exists
 grafana:
   enabled: false
 kubeApiServer:
@@ -63,6 +70,20 @@ prometheusOperator:
       image:
         repository: k8s.gcr.io/ingress-nginx/kube-webhook-certgen
         tag: v1.0
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: "node-role.kubernetes.io/infra"
+                  operator: Exists
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
   serviceMonitor:
     interval: "2m"
   image:
@@ -99,12 +120,12 @@ prometheus:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
-          - matchExpressions:
-            - key: "node-role.kubernetes.io/infra"
-              operator: Exists
-          - matchExpressions:
-            - key: "node-role.kubernetes.io/prometheus"
-              operator: Exists
+            - matchExpressions:
+              - key: "node-role.kubernetes.io/infra"
+                operator: Exists
+            - matchExpressions:
+              - key: "node-role.kubernetes.io/prometheus"
+                operator: Exists
     secrets:
       - etcd-client
     storageSpec:

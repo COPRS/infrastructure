@@ -4,7 +4,13 @@ image:
   name: operator
   tag: 0.26.0
 watchAnyNamespace: true
-
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/infra"
+            operator: Exists
 resources:
   limits:
     memory: 384Mi

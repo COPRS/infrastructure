@@ -27,6 +27,14 @@ spec:
               requests:
                 storage: 10Gi
             storageClassName: ceph-block
+      podTemplate:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: "node-role.kubernetes.io/infra"
+                  operator: Exists
     - name: data-nodes
       count: 1
       config:
@@ -42,3 +50,11 @@ spec:
               requests:
                 storage: 100Gi
             storageClassName: ceph-block
+      podTemplate:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "node-role.kubernetes.io/infra"
+                    operator: Exists

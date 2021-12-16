@@ -16,3 +16,11 @@ graylog:
   persistence:
     storageClass: ceph-block
     size: 10Gi
+  
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
