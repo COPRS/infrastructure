@@ -36,7 +36,7 @@ container_manager: containerd
 ## in the README.md
 # podsecuritypolicy_enabled: true
 
-kube_apiserver_enable_admission_plugins: [NodeRestriction, PodNodeSelector]
+kube_apiserver_enable_admission_plugins: [NodeRestriction]
 
 kube_kubeadm_controller_extra_args:
   use-service-account-credentials: true
