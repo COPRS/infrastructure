@@ -49,3 +49,6 @@ audit_log_maxsize: 100
 
 ##  to get kubectl config file generated in library/kubespray/inventory/mycluster/artifacts/
 kubeconfig_localhost: true
+
+# Enable prometheus metrics queries
+kube_proxy_metrics_bind_address: 0.0.0.0:10249
