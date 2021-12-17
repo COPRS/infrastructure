@@ -7,7 +7,7 @@ metadata:
     app.kubernetes.io/instance: fluentd
     app.kubernetes.io/managed-by: additional_resources
 spec:
-  partitions: 6
+  partitions: 2
   replicas: 1
   config:
     retention.bytes: 89478485
