@@ -7,6 +7,13 @@ clusterName: rook-ceph
 # Installs a debugging toolbox deployment
 toolbox:
   enabled: true
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
 
 monitoring:
   enabled: true
@@ -15,6 +22,14 @@ cephClusterSpec:
   cephVersion:
     image: quay.io/ceph/ceph:v16.2.6
     allowUnsupported: false
+
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
 
   dataDirHostPath: /data/rook
 

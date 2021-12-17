@@ -10,6 +10,14 @@ serviceMonitor:
   enabled: true
   interval: 2m
 
+resources:
+  limits:
+    cpu: 100m
+    memory: 256Mi
+  requests:
+    cpu: 20m
+    memory: 128Mi
+
 luaScripts:
  scripts.lua: |
     local escape_char_map = {
@@ -346,6 +354,14 @@ config:
       Tag              security.auditd.*
       Path             /var/log/audit/audit_*.log
       DB               /var/log/fluentbit-security_auditd.db
+      DB.Sync          Normal
+      Rotate_Wait      10
+      Mem_Buf_Limit    10MB
+    [INPUT]
+      Name             tail
+      Tag              security.falco.*
+      Path             /var/log/containers/falco-*.log
+      DB               /var/log/fluentbit-security_falco.db
       DB.Sync          Normal
       Rotate_Wait      10
       Mem_Buf_Limit    10MB

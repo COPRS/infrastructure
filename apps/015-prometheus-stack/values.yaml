@@ -15,6 +15,14 @@ alertmanager:
             - matchExpressions:
               - key: "node-role.kubernetes.io/infra"
                 operator: Exists
+    resources:
+      limits:
+        cpu: 50m
+        memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi
+
 grafana:
   enabled: false
 kubeApiServer:
@@ -77,6 +85,13 @@ prometheusOperator:
               - matchExpressions:
                 - key: "node-role.kubernetes.io/infra"
                   operator: Exists
+      resources:
+        limits:
+          cpu: 50m
+          memory: 128Mi
+        requests:
+          cpu: 10m
+          memory: 64Mi
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
@@ -84,6 +99,13 @@ prometheusOperator:
           - matchExpressions:
             - key: "node-role.kubernetes.io/infra"
               operator: Exists
+  resources:
+    limits:
+      cpu: 50m
+      memory: 256Mi
+    requests:
+      cpu: 10m
+      memory: 128Mi
   serviceMonitor:
     interval: "2m"
   image:
@@ -93,6 +115,13 @@ prometheusOperator:
     image:
       repository: quay.io/prometheus-operator/prometheus-config-reloader
       tag: v0.52.1-amd64
+    resources:
+      limits:
+        cpu: 10m
+        memory: 64Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi
   thanosImage:
     repository: quay.io/thanos/thanos
     tag: v0.23.1
@@ -100,6 +129,9 @@ prometheusOperator:
 prometheus:
   enabled: true
   serviceMonitor:
+    interval: 2m
+  thanosServiceMonitor:
+    enabled: true
     interval: 2m
   prometheusSpec:
     image:
@@ -116,6 +148,13 @@ prometheus:
       objectStorageConfig:
         name: thanos-bucket-credentials
         key: objstore.yml
+      resources:
+        limits:
+          cpu: 100m
+          memory:  2Gi
+        requests:
+          cpu: 25m
+          memory: 512Mi
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
@@ -126,6 +165,13 @@ prometheus:
             - matchExpressions:
               - key: "node-role.kubernetes.io/prometheus"
                 operator: Exists
+    resources:
+      limits:
+        cpu: 4000m
+        memory: 25Gi
+      requests:
+        cpu: 2000m
+        memory: 15Gi
     secrets:
       - etcd-client
     storageSpec:

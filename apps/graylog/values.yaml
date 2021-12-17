@@ -24,3 +24,10 @@ graylog:
           - matchExpressions:
             - key: "node-role.kubernetes.io/infra"
               operator: Exists
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 8Gi
+    requests:
+      cpu: 500m
+      memory: 3Gi

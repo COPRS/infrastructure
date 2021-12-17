@@ -24,6 +24,13 @@ aggregator:
           - matchExpressions:
             - key: "node-role.kubernetes.io/infra"
               operator: Exists
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
   extraArgs: "-v -p /etc/fluent/custom_plugins/"
   extraVolumes:
     - name: fluentd-custom-plugins

@@ -13,6 +13,13 @@ server:
           - matchExpressions:
             - key: "node-role.kubernetes.io/infra"
               operator: Exists
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 skipper:
   image:
     tag: 2.8.1-debian-10-r6
@@ -23,6 +30,13 @@ skipper:
           - matchExpressions:
             - key: "node-role.kubernetes.io/infra"
               operator: Exists
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 metrics:
   enabled: true
   image:
@@ -38,6 +52,13 @@ metrics:
           - matchExpressions:
             - key: "node-role.kubernetes.io/infra"
               operator: Exists
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 waitForBackends:
   image:
     tag: 1.22.2-debian-10-r39

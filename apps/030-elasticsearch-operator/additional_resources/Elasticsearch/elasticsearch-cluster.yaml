@@ -35,6 +35,13 @@ spec:
               - matchExpressions:
                 - key: "node-role.kubernetes.io/infra"
                   operator: Exists
+        resources:
+          limits:
+            cpu: 300m
+            memory: 6Gi
+          requests:
+            cpu: 100m
+            memory: 2Gi
     - name: data-nodes
       count: 1
       config:
@@ -58,3 +65,10 @@ spec:
                 - matchExpressions:
                   - key: "node-role.kubernetes.io/infra"
                     operator: Exists
+        resources:
+          limits:
+            cpu: 300m
+            memory: 6Gi
+          requests:
+            cpu: 100m
+            memory: 2Gi
