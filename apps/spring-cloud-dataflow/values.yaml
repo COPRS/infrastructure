@@ -16,10 +16,10 @@ server:
   resources:
     limits:
       cpu: 500m
-      memory: 256Mi
+      memory: 512Mi
     requests:
-      cpu: 100m
-      memory: 128Mi
+      cpu: 200m
+      memory: 256Mi
 skipper:
   image:
     tag: 2.8.1-debian-10-r6
@@ -33,10 +33,10 @@ skipper:
   resources:
     limits:
       cpu: 500m
-      memory: 256Mi
+      memory: 512Mi
     requests:
-      cpu: 100m
-      memory: 128Mi
+      cpu: 200m
+      memory: 256Mi
 metrics:
   enabled: true
   image:

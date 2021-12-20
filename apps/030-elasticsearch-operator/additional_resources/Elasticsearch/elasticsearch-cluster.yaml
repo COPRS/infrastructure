@@ -28,20 +28,23 @@ spec:
                 storage: 10Gi
             storageClassName: ceph-block
       podTemplate:
-        affinity:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-              - matchExpressions:
-                - key: "node-role.kubernetes.io/infra"
-                  operator: Exists
-        resources:
-          limits:
-            cpu: 300m
-            memory: 6Gi
-          requests:
-            cpu: 100m
-            memory: 2Gi
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "node-role.kubernetes.io/infra"
+                    operator: Exists
+          containers:
+            - name: elasticsearch
+              resources:
+                limits:
+                  cpu: 300m
+                  memory: 6Gi
+                requests:
+                  cpu: 100m
+                  memory: 2Gi
     - name: data-nodes
       count: 1
       config:
@@ -58,17 +61,20 @@ spec:
                 storage: 100Gi
             storageClassName: ceph-block
       podTemplate:
-        affinity:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-                - matchExpressions:
-                  - key: "node-role.kubernetes.io/infra"
-                    operator: Exists
-        resources:
-          limits:
-            cpu: 300m
-            memory: 6Gi
-          requests:
-            cpu: 100m
-            memory: 2Gi
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: "node-role.kubernetes.io/infra"
+                      operator: Exists
+          containers:
+            - name: elasticsearch
+              resources:
+                limits:
+                  cpu: 300m
+                  memory: 6Gi
+                requests:
+                  cpu: 100m
+                  memory: 2Gi
