@@ -147,6 +147,7 @@ prometheus:
     serviceMonitorSelector: {}
     podMonitorSelectorNilUsesHelmValues: false
     podMonitorSelector: {}
+    priorityClassName: prometheus-priority
     retention: 2d
     scrapeInterval: 2m
     thanos:
@@ -167,16 +168,15 @@ prometheus:
             - matchExpressions:
               - key: "node-role.kubernetes.io/infra"
                 operator: Exists
-            - matchExpressions:
               - key: "node-role.kubernetes.io/prometheus"
                 operator: Exists
     resources:
       limits:
         cpu: 4000m
-        memory: 25Gi
+        memory: 22Gi
       requests:
         cpu: 2000m
-        memory: 15Gi
+        memory: 14Gi
     secrets:
       - etcd-client
     storageSpec:
