@@ -18,3 +18,5 @@ wazuh:
 
   # unused_decoders:
   #   - Rule_to_exclude
+
+  # log_level_output: 3

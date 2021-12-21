@@ -57,6 +57,7 @@ We strongly advise to use the lastest version of Wazuh as the version 3 and 4 ar
 | unused_rules  |  List of rules to not use  |  No |
 | unused_decoders  |  List of decoders to not use  |  No |
 | agent_conf  |  XML content describing agent configuration  |  Yes |
+| log_level_output  |  Level log output that must appears in alerts.json (from 1 to 15)  |  No |
 
 
 ## Suricata

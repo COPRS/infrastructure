@@ -22,14 +22,6 @@
     owner: ossec
     group: ossec
 
-- name: Write variable from groupvars
-  copy:
-    dest: "{{ auditd.auditd_dir}}/rules.d/{{ item.name }}"
-    content: "{{ item.rules }}"
-  loop: "{{ auditd.rules }}"
-  no_log: true
-  when: "auditd.rules is defined"
-
 - name: Disable all unused decoders
   lineinfile:
     path: "{{ wazuh.wazuh_ossec_conf }}"
