@@ -1,0 +1,54 @@
+image:
+  registry: registry.opensource.zalan.do
+  repository: acid/postgres-operator
+  tag: v1.7.1
+
+enableJsonLogging: true
+
+configGeneral:
+  docker_image: registry.opensource.zalan.do/acid/spilo-14:2.1-p3
+
+configUsers:
+  # postgres username used for replication between instances
+  replication_username: standby
+  super_username: postgres
+
+configKubernetes:
+  enable_pod_antiaffinity: true
+  enable_cross_namespace_secret: true
+  pod_environment_secret: postgres-backup-config
+
+configPostgresPodResources:
+  default_cpu_limit: 250m
+  default_cpu_request: 50m
+  default_memory_limit: 2Gi
+  default_memory_request: 512Mi
+  min_cpu_limit: 50m
+  min_memory_limit: 250Mi
+
+configDebug:
+  debug_logging: false
+
+configConnectionPooler:
+  connection_pooler_image: "registry.opensource.zalan.do/acid/pgbouncer:master-19"
+  connection_pooler_number_of_instances: 2
+  connection_pooler_default_cpu_request: 500m
+  connection_pooler_default_memory_request: 100Mi
+  connection_pooler_default_cpu_limit: 1000m
+  connection_pooler_default_memory_limit: 200Mi
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 500Mi
+  requests:
+    cpu: 100m
+    memory: 250Mi
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/infra"
+            operator: Exists

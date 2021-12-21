@@ -37,7 +37,17 @@ extraVolumes:
 
 auth:
   adminUser: superadmin
-  existingSecret: keycloak
+  existingSecretPerPassword:
+    keyMapping:
+      adminPassword: admin-password
+      managementPassword: management-password
+      databasePassword: password
+    adminPassword:
+      name: keycloak-admin-password
+    managementPassword:
+      name: keycloak-management-password
+    databasePassword:
+      name: security.keycloak.infra-postgres.credentials.postgresql.acid.zalan.do
 
 resources:
   limits:
@@ -57,7 +67,7 @@ service:
   type: NodePort
 
 externalDatabase:
-  host: postgresql.infra.svc.cluster.local
+  host: infra-postgres.infra.svc.cluster.local
   port: 5432
-  user: keycloak
+  user: security.keycloak=
   database: keycloak

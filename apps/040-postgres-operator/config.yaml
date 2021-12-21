@@ -1,0 +1,3 @@
+chart_ref: zalando/postgres-operator
+chart_version: 1.7.1
+namespace: infra

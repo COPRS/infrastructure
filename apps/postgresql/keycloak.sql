@@ -1,3 +1,0 @@
-CREATE USER keycloak WITH ENCRYPTED PASSWORD 'keycloakpassword';
-CREATE DATABASE keycloak;
-GRANT ALL PRIVILEGES ON DATABASE keycloak TO keycloak;

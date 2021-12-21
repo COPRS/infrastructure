@@ -15,8 +15,9 @@ configMapGenerator:
     - realm.json
 
 secretGenerator:
-  - name: keycloak
+  - name: keycloak-admin-password
     literals:
       - admin-password=keycloaksuperadmin
+  - name: keycloak-management-password
+    literals:
       - management-password=keycloakmanager
-      - postgresql-password=keycloakpassword
