@@ -1,0 +1,31 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: elasticsearch-backup-config
+  labels:
+    app.kubernetes.io/instance: elasticsearch-operator
+    app.kubernetes.io/managed-by: additional_resources
+data:
+  snapshot-config.json: |
+    {
+      "schedule": "0 0 5 * * ?", 
+      "name": "<daily-snap-{now/d}>", 
+      "repository": "backup-repository", 
+      "config": {
+        "ignore_unavailable": true,
+        "include_global_state": true
+      },
+      "retention": { 
+        "expire_after": "30d", 
+        "min_count": 5, 
+        "max_count": 30 
+      }
+    }
+  s3-repository.json: |
+    {
+      "type": "s3",
+      "settings": {
+        "client": "default",
+        "bucket": "S3_BUCKET"
+      }
+    }

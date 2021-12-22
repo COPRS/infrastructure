@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: elasticsearch-backup-config
+  labels:
+    app.kubernetes.io/instance: elasticsearch-operator
+    app.kubernetes.io/managed-by: additional_resources
+spec:
+  parallelism: 1
+  completions: 1
+  template:
+    metadata:
+      name: elasticsearch-backup-config
+    spec:
+      restartPolicy: Never
+      initContainers:
+        - name: wait-for-elasticearch
+          image: alpine
+          command:
+            [
+              "sh",
+              "-c",
+              "for i in $(seq 1 300); do nc -zvw1 elasticsearch-cluster-es-http.infra.svc.cluster.local 9200 && exit 0 || sleep 3; done; exit 1",
+            ]
+      containers:
+        - name: backup-config
+          image: appropriate/curl
+          volumeMounts:
+            - name: elasticsearch-backup-config
+              mountPath: /etc/backup-config
+          command:
+            - sh
+            - -c
+            - |
+              curl -X PUT "elasticsearch-cluster-es-http.infra.svc.cluster.local:9200/_snapshot/backup-repository?pretty" -H 'Content-Type: application/json' -d @/etc/backup-config/s3-repository.json
+              curl -X PUT "elasticsearch-cluster-es-http.infra.svc.cluster.local:9200/_slm/policy/daily-snapshots?pretty" -H 'Content-Type: application/json' -d @/etc/backup-config/snapshot-config.json
+      volumes:
+        - name: elasticsearch-backup-config
+          configMap:
+            name: elasticsearch-backup-config
