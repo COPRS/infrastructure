@@ -12,7 +12,7 @@ spec:
     metadata:
       name: elasticsearch-backup-config
     spec:
-      restartPolicy: Never
+      restartPolicy: OnFailure
       initContainers:
         - name: wait-for-elasticearch
           image: alpine
