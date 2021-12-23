@@ -28,7 +28,7 @@
 
 - name: Join Wazuh Manager
   shell:
-    cmd: /var/ossec/bin/agent-auth -m {{ wazuh_manager_ip }} -i -P {{ wazuh.wazuh_registration_password }}
+    cmd: /var/ossec/bin/agent-auth -m {{ wazuh_manager_ip }}
   no_log: True
   when: "inventory_hostname not in hostvars[groups['kube_control_plane'][0]]['wazuh_nodes_list'] "
 

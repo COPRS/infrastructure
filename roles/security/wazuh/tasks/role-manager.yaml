@@ -39,6 +39,14 @@
   no_log: true
   when: "wazuh.unused_decoders is defined"
 
+- name: Set Password authentication
+  replace:
+    path: "{{ wazuh.wazuh_ossec_conf }}"
+    after: '<use_password>'
+    before: '</use_password>'
+    regexp: '^(.+)$'
+    replace: "yes"
+
   # Disable all unused rules
   #sudo sed -i "/^<decoder_exclude>.*<\/decoder_exclude>$/d" /var/ossec/etc/ossec.conf
 
@@ -55,19 +63,6 @@
   systemd:
     name: wazuh-manager
     state: restarted
-
-- name: Getting process IDs of the process wazuh-authd
-  shell:
-    cmd: pidof wazuh-authd
-  register: pid
-
-- name: Kill OSSEC 
-  shell:
-    cmd: kill {{ pid.stdout }} 
-
-- name: Restart wazuh-authd
-  shell:
-    cmd: /bin/bash -c 'nohup /var/ossec/bin/wazuh-authd -P & disown'
 
 - name: Get nodes already under management
   shell:
