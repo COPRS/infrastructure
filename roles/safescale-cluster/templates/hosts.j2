@@ -62,6 +62,5 @@ node_labels={"node-role.kubernetes.io/egress": ""}
 
 {% if prometheuses | length > 0 %}
 [prometheus:vars]
-node_labels={"node-role.kubernetes.io/infra": ""}
-node_labels={"node-role.kubernetes.io/prometheus":""}
+node_labels={"node-role.kubernetes.io/infra": "", "node-role.kubernetes.io/prometheus": ""}
 {% endif %}

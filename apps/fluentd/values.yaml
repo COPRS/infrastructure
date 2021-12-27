@@ -16,7 +16,21 @@ aggregator:
     enabled: true
     storageClass: ceph-block
     size: 10Gi
-  replicaCount: 1
+  replicaCount: 2
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
   extraArgs: "-v -p /etc/fluent/custom_plugins/"
   extraVolumes:
     - name: fluentd-custom-plugins
@@ -46,10 +60,10 @@ aggregator:
       {{- end }}
     fluentd-inputs.conf: |
       <source>
-        @type kafka
+        @type kafka_group
         brokers kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+        consumer_group fluentd
         topics fluentbit.system,fluentbit.processing,fluentbit.trace
-        format json
       </source>
       # Readyness probes source
       <source>

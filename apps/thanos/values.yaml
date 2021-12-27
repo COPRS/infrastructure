@@ -15,6 +15,20 @@ query:
   dnsDiscovery:
     sidecarsService: prometheus-operated
     sidecarsNamespace: monitoring
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  resources:
+    limits:
+      cpu: 500m
+      memory: 2Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
 
 compactor:
   enabled: true
@@ -27,15 +41,57 @@ compactor:
     accessModes:
       - ReadWriteOnce
     size: 20Gi
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  resources:
+    limits:
+      cpu: 500m
+      memory: 2Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
 queryFrontend:
   enabled: false
 storegateway:
   persistence:
     enabled: false
   enabled: true
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  resources:
+    limits:
+      cpu: 500m
+      memory: 2Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
 
 ruler:
   enabled: false
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  resources:
+    limits:
+      cpu: 50m
+      memory: 128Mi
+    requests:
+      cpu: 20m
+      memory: 64Mi
   alertmanagers:
     - http://prometheus-stack-kube-prom-alertmanager.monitoring.svc.cluster.local:9094
   # alertmanagersConfig:

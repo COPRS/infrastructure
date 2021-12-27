@@ -24,13 +24,19 @@
         parsed_apps: "{{ parsed_apps + [ app_name ] }}"
         
   always:
-    - name: "{{ app_name }} | remove tmp dir"
+    - name: "{{ app_name }} | Remove kustomize tmp dir"
       file:
         path: "{{ kustomize_dir.path }}"
         state: absent
       when: kustomize_dir.path is defined
 
-    - name: "{{ app_name }} | remove tmp file"
+    - name: "{{ app_name }} | Remove additional tmp dir"
+      file:
+        path: "{{ additional_resources_dir.path }}"
+        state: absent
+      when: additional_resources_dir.path is defined
+
+    - name: "{{ app_name }} | Remove tmp file"
       file:
         path: "{{ temp_values.path }}"
         state: absent

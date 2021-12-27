@@ -6,11 +6,11 @@ image:
 
 resources:
   limits:
-    cpu: 1
-    memory: 512Mi
+    cpu: 500m
+    memory: 256Mi
   requests:
     cpu: 100m
-    memory: 150Mi
+    memory: 128Mi
 
 config:
   logVerbosity: "0"
@@ -20,3 +20,11 @@ config:
 podMonitor:
   enabled: true
   interval: 2m
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/infra"
+            operator: Exists

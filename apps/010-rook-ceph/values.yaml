@@ -4,6 +4,14 @@ image:
   repository: rook/ceph
   tag: v1.7.7
 
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
 csi:
   enableRbdDriver: true
   enableCephfsDriver: true
@@ -26,3 +34,4 @@ csi:
 
 discover.nodeAffinity: node-role.kubernetes.io/infra
 admissionController.nodeAffinity: node-role.kubernetes.io/infra
+monitoring.enabled: true

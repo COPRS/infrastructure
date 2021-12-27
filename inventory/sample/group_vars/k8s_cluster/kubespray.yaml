@@ -36,7 +36,7 @@ container_manager: containerd
 ## in the README.md
 # podsecuritypolicy_enabled: true
 
-kube_apiserver_enable_admission_plugins: [NodeRestriction, PodNodeSelector]
+kube_apiserver_enable_admission_plugins: [NodeRestriction]
 
 kube_kubeadm_controller_extra_args:
   use-service-account-credentials: true
@@ -49,3 +49,6 @@ audit_log_maxsize: 100
 
 ##  to get kubectl config file generated in library/kubespray/inventory/mycluster/artifacts/
 kubeconfig_localhost: true
+
+# Enable prometheus metrics queries
+kube_proxy_metrics_bind_address: 0.0.0.0:10249

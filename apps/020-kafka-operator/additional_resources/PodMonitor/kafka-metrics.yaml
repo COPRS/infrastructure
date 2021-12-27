@@ -39,25 +39,6 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: bridge-metrics
-  labels:
-    app.kubernetes.io/instance: kafka-operator
-    app.kubernetes.io/managed-by: additional_resources
-    app: strimzi
-spec:
-  selector:
-    matchLabels:
-      strimzi.io/kind: KafkaBridge
-  namespaceSelector:
-    matchNames:
-      - infra
-  podMetricsEndpoints:
-    - path: /metrics
-      port: rest-api
----
-apiVersion: monitoring.coreos.com/v1
-kind: PodMonitor
-metadata:
   name: kafka-resources-metrics
   labels:
     app.kubernetes.io/instance: kafka-operator

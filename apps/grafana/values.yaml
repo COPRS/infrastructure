@@ -13,3 +13,19 @@ persistence:
   enabled: true
   storageClass: ceph-block
   size: 10Gi
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/infra"
+            operator: Exists
+
+resources:
+  limits:
+    cpu: 300m
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 256Mi

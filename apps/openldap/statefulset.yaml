@@ -65,7 +65,13 @@ spec:
           tcpSocket:
             port: ldap-port
           timeoutSeconds: 1
-        resources: {}
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
         volumeMounts:
         - mountPath: /var/lib/ldap
           name: data

@@ -9,6 +9,16 @@ auth:
 persistence:
   enabled: true
   storageClass: ceph-block
+  size: 8Gi
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/infra"
+            operator: Exists
+arbiter:
+  enabled: false
 metrics:
   enabled: true
   image:
@@ -17,10 +27,17 @@ metrics:
   serviceMonitor:
     enabled: true
     interval: 2m
+  resources:
+    limits:
+      cpu: 50m
+      memory: 128Mi
+    requests:
+      cpu: 20m
+      memory: 64Mi
 resources:
   limits:
     cpu: 300m
-    memory: 2048Mi
+    memory: 2Gi
   requests:
     cpu: 100m
     memory: 512Mi

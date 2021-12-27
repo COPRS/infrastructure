@@ -14,10 +14,25 @@ metrics:
   image:
     repository: bitnami/postgres-exporter
     tag: 0.10.0-debian-10-r133
+  resources:
+    limits:
+      cpu: 50m
+      memory: 128Mi
+    requests:
+      cpu: 20m
+      memory: 64Mi
+primary:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
 resources:
   limits:
     cpu: 250m
-    memory: 2048Mi
+    memory: 2Gi
   requests:
     cpu: 50m
     memory: 512Mi
