@@ -10,10 +10,10 @@ safescale volume create --size VOLUME_SIZE --speed DISK_TYPE VOLUME_NAME
 
 ### Attach the newly created volume to an existing machine of the cluster
 
-*The volume must be attached without being formatted for Ceph to detect it. You can do this on safescale by adding the option **--do-not-format.***
+*The volume must be attached without being formatted nor mounted for Ceph to detect it. You can do this on safescale by adding the options **--do-not-format** and **--do-not-mount***. 
 
 ```Bash
-safescale volume attach --do-no-format VOLUME_NAME MACHINE_NAME
+safescale volume attach --do-not-format --do-not-mount VOLUME_NAME MACHINE_NAME
 ```
 
 ### Update Ceph to integrate the volume into the Ceph pool

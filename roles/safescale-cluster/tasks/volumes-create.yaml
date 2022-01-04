@@ -20,7 +20,7 @@
   ignore_errors: yes
 
 - name: Attach the volumes
-  shell: "{{ safescale_path }} volume attach --do-not-format {{ item.0 }}-{{ volume.type }}-{{ item.1 }} {{ item.0 }} "
+  shell: "{{ safescale_path }} volume attach --do-not-format --do-not-mount {{ item.0 }}-{{ volume.type }}-{{ item.1 }} {{ item.0 }} "
   loop: "{{ nodes | product(range(1, volume.count+1)) | list }}"
   async: 30
   poll: 0
