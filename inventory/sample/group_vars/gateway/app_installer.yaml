@@ -19,6 +19,8 @@ helm_repositories:
     repo_url: https://prometheus-community.github.io/helm-charts
   - name: elastic
     repo_url: https://helm.elastic.co
+  - name: zalando
+    repo_url: https://opensource.zalando.com/postgres-operator/charts/postgres-operator/
 
 app_paths:
   - "{{ playbook_dir }}/../../apps"

@@ -54,16 +54,18 @@ spec:
             - name: elasticsearch
               resources:
                 limits:
-                  cpu: 300m
+                  cpu: 900m
                   memory: 6Gi
                 requests:
-                  cpu: 100m
+                  cpu: 300m
                   memory: 2Gi
     - name: data-nodes
       count: 1
       config:
         xpack.security.authc.anonymous.roles: superuser
         node.roles: ["data"]
+        s3.client.default.endpoint: "S3_ENDPOINT"
+        s3.client.default.region: "S3_REGION"
       volumeClaimTemplates:
         - metadata:
             name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
@@ -99,8 +101,8 @@ spec:
             - name: elasticsearch
               resources:
                 limits:
-                  cpu: 300m
+                  cpu: 900m
                   memory: 6Gi
                 requests:
-                  cpu: 100m
+                  cpu: 300m
                   memory: 2Gi
