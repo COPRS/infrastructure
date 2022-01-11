@@ -275,5 +275,9 @@ spec:
     port: 8443
     protocol: TCP
     targetPort: https
+  - port: 8080
+    targetPort: metrics
+    protocol: TCP
+    name: metrics
   selector:
     app.kubernetes.io/component: grafana-operator
