@@ -7,6 +7,12 @@ metadata:
     app.kubernetes.io/managed-by: additional_resources
 spec:
   customFolderName: cots/monitoring
+  plugins:
+    - name: "grafana-piechart-panel"
+      version: "1.6.2"
+  datasources:
+    - inputName: "DS_PROMETHEUS"
+      datasourceName: "Thanos"
   grafanaCom:
     id: 13407
     revision: 1
