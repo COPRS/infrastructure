@@ -1,0 +1,13 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: strimzi-kafka
+  labels:
+    app.kubernetes.io/instance: grafana-operator
+    app.kubernetes.io/managed-by: additional_resources
+spec:
+  customFolderName: cots/infra
+  datasources:
+    - inputName: "DS_PROMETHEUS"
+      datasourceName: "Thanos"
+  url: https://raw.githubusercontent.com/strimzi/strimzi-kafka-operator/main/examples/metrics/grafana-dashboards/strimzi-kafka.json
