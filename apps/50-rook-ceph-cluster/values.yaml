@@ -126,6 +126,14 @@ cephClusterSpec:
       osd:
         disabled: false
 
+  annotations:
+    cleanup:
+      linkerd.io/inject: disabled
+    prepareosd:
+      linkerd.io/inject: disabled
+    osd:
+      linkerd.io/inject: disabled
+
 ingress:
   dashboard: {}
 
@@ -139,8 +147,8 @@ cephBlockPools:
     storageClass:
       enabled: true
       name: ceph-block
-      isDefault: false
-      reclaimPolicy: Delete
+      isDefault: true
+      reclaimPolicy: Retain
       allowVolumeExpansion: true
       # see https://github.com/rook/rook/blob/master/Documentation/ceph-block.md#provision-storage for available configuration
       parameters:

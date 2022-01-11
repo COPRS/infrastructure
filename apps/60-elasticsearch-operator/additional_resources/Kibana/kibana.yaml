@@ -14,24 +14,3 @@ spec:
   count: 1
   elasticsearchRef:
     name: elasticsearch-cluster
-  podTemplate:
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                - key: "node-role.kubernetes.io/infra"
-                  operator: Exists
-      containers:
-        - name: kibana
-          env:
-            - name: NODE_OPTIONS
-              value: "--max-old-space-size=2048"
-          resources:
-            limits:
-              cpu: 1800m
-              memory: 3Gi
-            requests:
-              cpu: 600m
-              memory: 1Gi

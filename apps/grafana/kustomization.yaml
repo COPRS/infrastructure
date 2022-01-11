@@ -1,0 +1,13 @@
+namespace: monitoring
+
+commonLabels:
+  app.kubernetes.io/instance: grafana
+  app.kubernetes.io/managed-by: Kustomize
+
+resources:
+  - manifest.yaml
+
+configMapGenerator:
+  - name: grafana
+    files:
+      - grafana.ini
