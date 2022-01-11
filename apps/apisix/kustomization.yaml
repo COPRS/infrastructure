@@ -1,0 +1,13 @@
+namespace: infra
+
+commonLabels:
+  app.kubernetes.io/instance: apisix
+  app.kubernetes.io/managed-by: Kustomize
+
+resources:
+  - manifest.yaml
+
+patches:
+  # ingress controller deployment does not include the possibility to add any annotation
+  # init container must be allowed to outbound to admin without mesh
+  - linkerd-annotation-ingress-controller.yaml

@@ -1,0 +1,9 @@
+chart_ref: apisix/apisix
+chart_version: 0.7.3
+namespace: infra
+no_hooks: true
+include_crds: true
+
+# TODO: option for hooks in app_installer
+# TODO: update/make documentation on config.yaml options
+# TODO: domain redirection url for authorization server. Domaine name ?
