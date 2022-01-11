@@ -1,0 +1,5 @@
+chart_ref: linkerd/linkerd-viz
+chart_version: 2.11.1
+namespace: infra
+atomic: true
+# create_namespace: false

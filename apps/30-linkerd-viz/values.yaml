@@ -1,0 +1,26 @@
+# -- control plane version. See Proxy section for proxy version
+linkerdVersion: stable-2.11.1
+
+dashboard:
+  # -- Number of replicas of dashboard
+  replicas: 1
+
+  # cf: https://linkerd.io/2.11/tasks/exposing-dashboard/#tweaking-host-requirement
+  enforcedHostRegexp: ^(linkerd\.alam-dev\.csgroup\.space|localhost|127\.0\.0\.1|web\.linkerd-viz\.svc\.cluster\.local|web\.linkerd-viz\.svc|\[::1\])(:\d+)?$
+
+  logLevel: debug
+
+grafana:
+  enabled: false
+
+prometheus:
+  enabled: false
+
+prometheusUrl: http://prometheus-stack-kube-prom-prometheus.monitoring.svc.cluster.local:9090
+
+# -- Namespace of the Linkerd core control-plane install. Default to linkerd
+# linkerdNamespace: linkerd
+# -- Set to false when installing in a custom namespace.
+installNamespace: true
+# -- Namespace in which the Linkerd Viz extension has to be installed. Default to linkerd-viz
+# namespace: linkerd-viz
