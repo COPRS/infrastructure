@@ -1,0 +1,32 @@
+# default value availble at https://github.com/jetstack/cert-manager/blob/master/deploy/charts/cert-manager/values.yaml
+
+installCRDs: true
+
+image:
+  repository: quay.io/jetstack/cert-manager-controller
+  # You can manage a registry with
+  # registry: quay.io
+  # repository: jetstack/cert-manager-controller
+
+  # Override the image tag to deploy by setting this variable.
+  # If no value is set, the chart's appVersion will be used.
+  # tag: canary
+
+prometheus:
+  enabled: true
+  servicemonitor:
+    enabled: true
+    prometheusInstance: default
+    targetPort: 9402
+    path: /metrics
+    interval: 60s
+    scrapeTimeout: 30s
+    labels: {}
+    honorLabels: false
+
+startupapicheck:
+  podAnnotations:
+    linkerd.io/inject: disabled
+
+# extraArgs:
+#   - --controllers=*,certificatesigningrequests-issuer-acme
