@@ -9,27 +9,28 @@
   set_fact:
     parsed_apps: []
 
-- name: Extract app path
+- name: Extract app path and names
   set_fact:
-    # do not take file starting with .
-    apps: "{{  result.files | sort(attribute='path') | map(attribute='path') | map('regex_search', regex) | list }}"
+    apps: "{{ apps|default([]) + [ { 'name': name, 'dir': item } ] }}"
   vars:
+    name: "{{ item | basename }}"
     regex: '.+/[\w-]+[\w\.-]+$'
+  loop: "{{  result.files | sort(attribute='path') | map(attribute='path') | map('regex_search', regex) }}"
 
-- name: install {{ app_name }}
-  include_tasks: install.yaml
-  vars:
-    app_dir: "{{ apps | select('search', app_name) | first }}"
-    # app_name: "{{ app_name | regex_search('^([0-9]{3})?-?(.+)', '\\2') | first }}"
-  when: app_name is defined
+- block:
+    - name: install {{ APP_NAME }}
+      include_tasks: install.yaml
+      vars:
+        app_name: "{{ APP_NAME | regex_search('^[0-9-]*([\\w-]+)', '\\1') | first }}"
+        app_dir: "{{ apps | select('search', APP_NAME ) | map(attribute='dir') | first }}"
 
-- meta: end_play
-  when: app_name is defined
+    - meta: end_play
+  when: APP_NAME is defined
 
 - name: install apps
   include_tasks: install.yaml
   vars:
-    app_name: "{{ item | basename | regex_search('^([0-9]{3})?-?(.+)', '\\2') | first }}"
-    app_dir: "{{ item }}"
-  loop: "{{ apps }}"
+    app_name: "{{ item.name | regex_search('^[0-9-]*([\\w-]+)', '\\1') | first }}"
+    app_dir: "{{ item.dir }}"
+  loop: "{{ apps | sort(attribute='name') }}"
   when: app_name not in parsed_apps

@@ -33,6 +33,9 @@ spring-cloud-dataflow
 ```
 Hence, you have to create a folder for your app. It will contain all the files and configurations needed to run the app.
 
+> *Note: The application installer process following the alphanumerical order. You can sort your applications prefixing each one by a number with a dash.*  
+*Example: 10-linkerd2*
+
 ## Helm chart
 
 This section covers the deployment of your application as a Helm chart.
@@ -60,12 +63,18 @@ namespace: infra
 
 Below is the list of the supported variables.
 
-| name | mandatory \| optional | default value |
-|:---|:---:|---:|
-| chart_ref | mandatory | | 
-| chart_version | optional | latest |
-| chart_repo_url | optional | |
-| namespace | optional | default |
+| name | mandatory \| optional | default value | comments |
+|:---|:---:|---:|---|
+| atomic | optional | false | If set, the installation process deletes the installation on failure. The --wait flag will be set automatically if --atomic is used |
+| chart_ref | mandatory | | chart_reference on chart repository<br>path to a packaged chart<br>path to an unpacked chart directory<br>absolute URL |
+| chart_repo_url | optional | | Chart repository URL where to locate the requested chart. |
+| chart_version | optional | latest | Chart version to install. If this is not specified, the latest version is installed. |
+| create_namespace | optional | false | Create the release namespace if not present |
+| include_crds | optional | false | Include CRDs in Helm templating |
+| no_hooks | optional | false | Prevent hooks from running during install. More explanations about Helm lifecycle at https://helm.sh/docs/topics/charts_hooks/ |
+| namespace | optional | default | Namespace where Helm metadata for the release are stored as a secret. By convention, it is also the namespace of the installed release resources. |
+| timeout | optional | 5m0s | Timeout when wait option is enabled. By default, the timeout **is set to 300 seconds**. |
+| wait | optional | false | Wait until all Pods, PVCs, Services, and minimum number of Pods of a Deployment are in a ready state before marking the release as successful. Helm will wait as long as what is set with ```timeout```. |
 
 The ```values.yaml```, is the file where you write down the parameters you apply on the chart.  
 You can find examples of this file, or documentation to explain you what to write on it, in the chart documentation of the application you install.

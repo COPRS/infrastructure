@@ -10,9 +10,12 @@
     chart_repo_url: "{{ app.chart_repo_url | default(omit) }}"
     chart_version: "{{ app.chart_version | default(omit) }}"
     name: "{{ app_name }}"
-    namespace: "{{ app_namespace | default(default) }}"
-    create_namespace: "{{ helm_create_namespace | default(false) }}"
+    release_namespace: "{{ app_namespace | default(default) }}"
+    create_namespace: "{{ create_namespace | default(false) }}"
     values: "{{ lookup('file', app_dir + '/values.yaml') | from_yaml }}"
+    disable_hook: "{{ app.no_hooks | default(false) }}"
+    wait: "{{ app.wait | default(false) }}"
+    wait_timeout: "{{ app.wait_timeout | default('5m0s') }}"
   register: helm
   when: helm_info.status is not defined
 

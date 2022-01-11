@@ -1,11 +1,11 @@
 - name: Install app
   block:
-    - name: Gather facts
+    - name: "{{ app_name }} | Gather facts"
       local_action:
         module: import_tasks
         file: gather_facts.yaml
 
-    - name: "{{ app_name }} | Deploy with kustomize"
+    - name: "{{ app_name }} | Deploy with kustomize"
       include_tasks: kustomize.yaml
       when: kustomization.stat.exists
       
@@ -15,13 +15,13 @@
         - not kustomization.stat.exists
         - values.stat.exists
 
-    - name: Apply additional resources
+    - name: "{{ app_name }} | Apply additional resources"
       include_tasks: additional_resources.yaml
       when: additional_resources.stat.exists
 
     - name: "Add {{ app_name }} to parsed apps"
       set_fact:
-        parsed_apps: "{{ parsed_apps + [ app_name ] }}"
+        parsed_apps: "{{ parsed_apps + [ app_name ] }}"
         
   always:
     - name: "{{ app_name }} | Remove kustomize tmp dir"
