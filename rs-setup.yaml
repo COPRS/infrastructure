@@ -105,7 +105,6 @@
         - kubernetes==12.0.1
   roles: 
     - { role: "rs-defaults" }
-    - { role: "app-installer", tags: apps }
 
 - name: Install etcd secrets in the cluster
   hosts: kube_control_plane[0]
@@ -120,3 +119,11 @@
         --from-file=/etc/kubernetes/pki/etcd/server.crt
         --namespace monitoring
       become: true
+
+- name: Deploy reference system
+  hosts: gateway[0]
+  gather_facts: false
+  vars_files:
+  - "collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
+  roles: 
+    - { role: "app-installer", tags: apps }
