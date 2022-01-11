@@ -1,0 +1,51 @@
+apiVersion: apisix.apache.org/v2beta2
+kind: ApisixRoute
+metadata:
+  name: security
+  namespace: security
+spec:
+  http:
+    - name: keycloak
+      backends:
+        - serviceName: keycloak
+          servicePort: 80
+      match:
+        hosts: [ security.alam-dev.csgroup.space ]
+        paths: 
+          - /auth/realms/RS/*
+          - /auth/resources/*
+          - /auth/js/*
+        methods: [ GET, POST ]
+      plugins:
+        - name: cors
+          enable: true
+          config:
+            allow_methods: "GET"
+            allow_origins: "http://linkerd.alam-dev.csgroup.space,http://monitoring.alam-dev.csgroup.space,http://apisix.alam-dev.csgroup.space,http://infra.alam-dev.csgroup.space"
+
+    - name: graylog
+      backends:
+        - serviceName: graylog-web
+          servicePort: 9000
+      match:
+        hosts: [ security.alam-dev.csgroup.space ]
+        paths: 
+          - /graylog
+          - /graylog/*
+        methods: [ GET, POST, PUT ]
+      plugins:
+        - name: proxy-rewrite
+          enable: true
+          config:
+            regex_uri: [ "^/graylog/(.*)$", "/$1" ]
+        - name: openid-connect
+          enable: true
+          config:
+            client_id: security
+            client_secret: d96c32e1-a357-48c8-974c-bfb30a265085
+            discovery: http://security.alam-dev.csgroup.space/auth/realms/RS/.well-known/openid-configuration
+            scope: openid profile
+            bearer_only: false
+            realm: RS
+            introspection_endpoint_auth_method: client_secret_post
+            redirect_uri: http://security.alam-dev.csgroup.space/graylog/callback

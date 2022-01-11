@@ -1,0 +1,32 @@
+apiVersion: apisix.apache.org/v2beta2
+kind: ApisixRoute
+metadata:
+  name: linkerd-dashboard
+  namespace: linkerd-viz
+spec:
+  http:
+    - name: linkerd-dashboard
+      backends:
+        - serviceName: web
+          servicePort: 8084
+      match:
+        hosts: [ linkerd.alam-dev.csgroup.space ]
+        paths: [ /* ]
+        methods: [ GET ]
+      websocket: true
+      plugins:
+        # this plugin make noise with openidc-connect plugin
+        # - name: proxy-rewrite
+        #     config:
+        #       host: web.linkerd-viz.svc.cluster.local
+        - name: openid-connect
+          enable: true
+          config:
+            client_id: linkerd
+            client_secret: 05576d8c-162d-45b0-9dda-53023df46b2a
+            discovery: http://security.alam-dev.csgroup.space/auth/realms/RS/.well-known/openid-configuration
+            scope: openid profile
+            bearer_only: false
+            realm: RS
+            introspection_endpoint_auth_method: client_secret_post
+            redirect_uri: http://linkerd.alam-dev.csgroup.space/callback
