@@ -69,5 +69,5 @@ service:
 externalDatabase:
   host: infra-postgres.infra.svc.cluster.local
   port: 5432
-  user: security.keycloak=
+  user: security.keycloak
   database: keycloak
