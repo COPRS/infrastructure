@@ -9,8 +9,8 @@ spec:
   driver: Restic
   repository:
     name: s3-backup
-  # Daily at 4:30 am
-  schedule: "*/15 * * * ?"
+  # Daily at 4 am
+  schedule: "0 4 * * ?"
   paused: false
   backupHistoryLimit: 3
   target:

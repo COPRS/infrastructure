@@ -4,35 +4,16 @@
 
 ### Configure scheduled backup on S3 bucket
 
-The documentation used to create the daily backup can be found [here](https://github.com/zalando/postgres-operator/blob/master/docs/administrator.md#wal-archiving-and-physical-basebackups).
+The documentation used to create the daily backup can be found [here](https://stash.run/docs/v2021.11.24/concepts/crds/backupconfiguration/).
 
-Configure the schedule and the S3 bucket credentials by setting the following variables in **apps/040-postgres-operator/additional_resources/Secret/postgres-backup-config.yaml**:
-  - *stringData.BACKUP_SCHEDULE*
-  - *stringData.BACKUP_NUM_TO_RETAIN*
-  - *stringData.AWS_ACCESS_KEY_ID*
-  - *stringData.AWS_SECRET_ACCESS_KEY*
-  - *stringData.AWS_ENDPOINT*
-  - *stringData.AWS_REGION*
-  - *stringData.WAL_S3_BUCKET*
-
+Configure the schedule and the S3 bucket credentials by setting the following variables:
+  - **apps/stash/additional_resources/BackupConfiguration/postgresql-daily.yaml**:
+    - *spec.schedule*
+    - *spec.retentionPolicy.keepLast*
 
 ### Restore a chosen backup
 
-In order to restore the full Postgresql database at a specific point in time, insert the following configuration in **apps/040-postgres-operator/additional_resources/Secret/postgres-backup-config.yaml*:
-
-```yaml
-  CLONE_METHOD: CLONE_WITH_WALE
-  CLONE_USE_WALG_RESTORE: "true"
-  CLONE_AWS_ACCESS_KEY_ID: "S3_ACCESS_KEY" 
-  CLONE_AWS_SECRET_ACCESS_KEY: "S3_SECRET_KEY"
-  CLONE_AWS_ENDPOINT: "S3_ENDPOINT"
-  CLONE_AWS_REGION: "S3_REGION"
-  CLONE_WAL_S3_BUCKET: "S3_BUCKET"
-  CLONE_WAL_BUCKET_SCOPE_SUFFIX: ""
-  CLONE_TARGET_TIME: "2021-12-21T16:12:00+00:00" # time in the WAL archive that we want to restore
-  CLONE_SCOPE: infra-infra-postgres
-```
-These variables must reference the location of the backed-up database in an S3 bucket. The restore will happen at the startup of the pod.
+*To be done*
 
 ## Elasticsearch indexes
 
