@@ -67,18 +67,17 @@ mariadb:
 rabbitmq:
   enabled: false
 externalDatabase:
-  host: infra-postgres.infra.svc.cluster.local
+  host: postgresql.infra.svc.cluster.local
   port: 5432
   driver: org.postgresql.Driver
   scheme: postgresql
-  existingPasswordSecret: processing.scdf.infra-postgres.credentials.postgresql.acid.zalan.do
-  existingPasswordKey: password
+  password: scdfpassword
   dataflow:
     database: dataflow
-    username: processing.scdf
+    username: scdf
   skipper:
     database: skipper
-    username: processing.scdf
+    username: scdf
 externalKafka:
   enabled: true
   brokers: kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
