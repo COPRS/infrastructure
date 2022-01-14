@@ -1,0 +1,55 @@
+apiVersion: stash.appscode.com/v1beta1
+kind: BackupConfiguration
+metadata:
+  name: postgresql-daily-backup
+  labels:
+    app.kubernetes.io/instance: stash
+    app.kubernetes.io/managed-by: additional_resources
+spec:
+  driver: Restic
+  repository:
+    name: s3-backup
+  # Daily at 4:30 am
+  schedule: "*/15 * * * ?"
+  paused: false
+  backupHistoryLimit: 3
+  target:
+    alias: postgresql
+    ref:
+      apiVersion: apps/v1
+      kind: StatefulSet
+      name: postgresql-postgresql
+    paths:
+      - /data/backup
+    volumeMounts:
+      - name: data-backup
+        mountPath: /data/backup
+  hooks:
+    preBackup:
+      exec:
+        command:
+          - /bin/bash
+          - -c
+          - /bin/rm -rf /data/backup/* && export PGPASSWORD="keycloakpassword" && pg_dump -U keycloak keycloak > /data/backup/backup.sql && /bin/chmod -R 777 /data/backup/*
+      containerName: postgresql
+  runtimeSettings:
+    container:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128M
+        limits:
+          cpu: 200m
+          memory: 256M
+    pod:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/infra
+                operator: Exists
+  retentionPolicy:
+    name: 'keep-last-30'
+    keepLast: 30
+    prune: true

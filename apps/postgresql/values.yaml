@@ -1,0 +1,33 @@
+image:
+  repository: bitnami/postgresql
+  tag: 14.1.0-debian-10-r12
+persistence:
+  enabled: true
+  storageClass: ceph-block
+postgresqlPassword: p0stgrespassword
+postgresqlDatabase: infra
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    interval: 2m
+  image:
+    repository: bitnami/postgres-exporter
+    tag: 0.10.0-debian-10-r133
+resources:
+  limits:
+    cpu: 250m
+    memory: 2048Mi
+  requests:
+    cpu: 50m
+    memory: 512Mi
+
+extraVolumeMounts:
+  - mountPath: /data/backup
+    name: data-backup
+
+extraVolumes:
+  - name: data-backup
+    emptyDir: {}
+
+initdbScriptsSecret: init-postgres-db
