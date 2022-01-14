@@ -47,20 +47,20 @@ spec:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
-                - matchExpressions:
-                  - key: "node-role.kubernetes.io/infra"
-                    operator: Exists
+                  - matchExpressions:
+                    - key: "node-role.kubernetes.io/infra"
+                      operator: Exists
           containers:
             - name: elasticsearch
               resources:
                 limits:
-                  cpu: 900m
+                  cpu: 1500m
                   memory: 6Gi
                 requests:
-                  cpu: 300m
+                  cpu: 500m
                   memory: 2Gi
     - name: data-nodes
-      count: 1
+      count: 2
       config:
         xpack.security.authc.anonymous.roles: superuser
         node.roles: ["data"]
@@ -97,12 +97,21 @@ spec:
                   - matchExpressions:
                     - key: "node-role.kubernetes.io/infra"
                       operator: Exists
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: elasticsearch.k8s.elastic.co/node-master
+                        operator: In
+                        values:
+                          - 'true'
+                  topologyKey: kubernetes.io/hostname
           containers:
             - name: elasticsearch
               resources:
                 limits:
-                  cpu: 900m
+                  cpu: 1500m
                   memory: 6Gi
                 requests:
-                  cpu: 300m
+                  cpu: 500m
                   memory: 2Gi
