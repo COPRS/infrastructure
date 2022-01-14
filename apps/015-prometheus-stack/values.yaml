@@ -173,10 +173,10 @@ prometheus:
     resources:
       limits:
         cpu: 4000m
-        memory: 22Gi
+        memory: 20Gi
       requests:
         cpu: 2000m
-        memory: 14Gi
+        memory: 12Gi
     secrets:
       - etcd-client
     storageSpec:
