@@ -1,32 +1,32 @@
 apiVersion: apisix.apache.org/v2beta2
 kind: ApisixRoute
 metadata:
-  name: linkerd-dashboard
-  namespace: linkerd-viz
+  name: apisix
+  namespace: infra
 spec:
   http:
-    - name: linkerd-dashboard
+    - name: apisix
       backends:
-        - serviceName: web
-          servicePort: 8084
+        - serviceName: apisix-dashboard
+          servicePort: 80
       match:
-        hosts: [ linkerd.DOMAIN_NAME ]
+        hosts: [ apisix.DOMAIN_NAME ]
         paths: [ /* ]
-        methods: [ GET ]
-      websocket: true
+        methods: [ GET, POST, PUT ]
       plugins:
-        - name: proxy-rewrite
+        - name: cors
           enable: true
           config:
-            host: web.linkerd-viz.svc.cluster.local
+            allow_origins: "https://security.DOMAIN_NAME"
         - name: openid-connect
           enable: true
           config:
-            client_id: linkerd
-            client_secret: 05576d8c-162d-45b0-9dda-53023df46b2a
+            client_id: apisix
+            client_secret: d08e16f6-ef3d-4b49-b5fd-b8d50e99f569
             discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false
             realm: RS
             introspection_endpoint_auth_method: client_secret_post
-            redirect_uri: https://linkerd.DOMAIN_NAME/redirect_uri
+            redirect_uri: https://apisix.DOMAIN_NAME/redirect_uri
+

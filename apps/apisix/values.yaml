@@ -68,10 +68,12 @@ gateway:
     enabled: true
     servicePort: 80
     containerPort: 9080
+    nodePort: 32080
   tls:
     enabled: true
     servicePort: 443
     containerPort: 9443
+    nodePort: 32443
     existingCASecret: ""
     certCAFilename: ""
     http2:
@@ -274,6 +276,9 @@ etcd:
     enabled: true
     storageClass: ceph-block
 
+  podAnnotations:
+    config.linkerd.io/skip-inbound-ports: "2379"
+
 dashboard:
   enabled: true
   # default values available at: https://github.com/apache/apisix-helm-chart/blob/master/charts/apisix-dashboard/values.yaml
@@ -310,7 +315,7 @@ ingress-controller:
     # error
     # panic
     # fatal
-    logLevel: "debug"
+    logLevel: "info"
     # the output file path of error log, default is stderr, when
     # the file path is "stderr" or "stdout", logs are marshalled
     # plainly, which is more readable for human; otherwise logs
@@ -366,7 +371,9 @@ ingress-controller:
   nodeSelector: {}
   tolerations: []
 
+  # service selectors do not match kustomize configuration
+  # we define the serviceMonitor with kustomization
   serviceMonitor:
-    enabled: true
-    namespace: "monitoring"
+    enabled: false
+    namespace: monitoring
     interval: 15s
