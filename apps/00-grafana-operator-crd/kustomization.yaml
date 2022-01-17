@@ -8,6 +8,3 @@ commonLabels:
 
 resources:
   - crds.yaml
-  - deployment.yaml
-  - rbac.yaml
-  - servicemonitor.yaml

@@ -1,0 +1,22 @@
+namespace: monitoring
+namePrefix: grafana-operator-
+
+commonLabels:
+  app.kubernetes.io/managed-by: Kustomize
+  app.kubernetes.io/instance: grafana-operator
+  app.kubernetes.io/component: grafana-operator
+
+resources:
+  - deployment.yaml
+  - rbac.yaml
+  - servicemonitor.yaml
+  - grafana.yaml
+
+secretGenerator:
+  - name: grafana-admin
+    literals:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=grafanapass
+  - name: oidc-grafana-client-secret
+    literals:
+      - GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET=4cb16727-a3c3-444d-8fc0-b4238566a87f
