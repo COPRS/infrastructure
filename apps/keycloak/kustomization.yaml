@@ -12,11 +12,6 @@ resources:
 # patches:
   # - sa-enable-automountServiceAccountToken.yaml # mandatory to mesh with identity
 
-configMapGenerator:
-  - name: keycloak-realm
-    files:
-    - realm.json
-
 secretGenerator:
   - name: keycloak-database
     literals:
@@ -26,3 +21,7 @@ secretGenerator:
     literals:
       - user=superadmin
       - password=keycloaksuperadmin
+  - name: realm-secret
+    files:
+    - master-realm.json
+    - rs-realm.json
