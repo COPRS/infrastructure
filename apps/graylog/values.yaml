@@ -33,7 +33,10 @@ graylog:
       cpu: 500m
       memory: 3Gi
 
-  externalUri: http://security.DOMAIN_NAME/graylog
+  env:
+    GRAYLOG_TRUSTED_PROXIES: 10.244.0.0/16
 
+  externalUri: http://security.DOMAIN_NAME/graylog
+  
   ingress:
     enabled: false
