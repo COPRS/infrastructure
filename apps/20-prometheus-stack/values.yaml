@@ -193,5 +193,3 @@ prometheus:
 
     externalUrl: http://monitoring.alam-dev.csgroup.space/prometheus/
     routePrefix: /prometheus/
-
-    logLevel: debug
