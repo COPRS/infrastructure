@@ -343,6 +343,30 @@ config:
       Mem_Buf_Limit    10MB
     [INPUT]
       Name             tail
+      Tag              security.container.*
+      Path             /var/log/containers/*_security_keycloak-*.log
+      DB               /var/log/keycloak.db
+      DB.Sync          Normal
+      Rotate_Wait      10
+      Mem_Buf_Limit    10MB
+    [INPUT]
+      Name             tail
+      Tag              security.container.*
+      Path             /var/log/containers/apisix-*_infra_apisix-*.log
+      DB               /var/log/fluentbit_apisix.db
+      DB.Sync          Normal
+      Rotate_Wait      10
+      Mem_Buf_Limit    10MB
+    [INPUT]
+      Name             tail
+      Tag              security.container.*
+      Path             /var/log/containers/openldap-*_security_openldap-*.log
+      DB               /var/log/fluentbit_openldap.db
+      DB.Sync          Normal
+      Rotate_Wait      10
+      Mem_Buf_Limit    10MB
+    [INPUT]
+      Name             tail
       Tag              security.wazuh.*
       Path             /var/ossec/logs/alerts/alerts.json
       DB               /var/log/fluentbit-security_wazuh.db
@@ -379,6 +403,34 @@ config:
       Name    grep
       Match   system.*
       Exclude log /.*systemd: Created|Removed slice libcontainer_.*_systemd_test_default.slice./
+    [FILTER]
+      Name    grep
+      Match   system.*
+      Exclude log level=info
+    [FILTER]
+      Name    grep
+      Match   system.*
+      Exclude log systemd.*Succeeded.
+    [FILTER]
+      Name    grep
+      Match   system.*
+      Exclude log containerd.*[INFO]
+    [FILTER]
+      Name    grep
+      Match   security.container.*
+      Exclude log /.*\[INFO\]\[.*\] felix.*/
+    [FILTER]
+      Name    grep
+      Match   system.*
+      Exclude log kubelet.*Pod status updated.*
+    [FILTER]
+      Name    grep
+      Match   system.*
+      Exclude log kubelet.*RemoveContainer.*
+    [FILTER]
+      Name    grep
+      Match   system.*
+      Exclude log kernel
     [FILTER]
       Name    lua
       Match   processing.trace.*

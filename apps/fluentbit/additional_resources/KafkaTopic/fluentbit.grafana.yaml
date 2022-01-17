@@ -1,16 +1,17 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
-  name: fluentbit.processing
+  name: fluentbit.grafana
   labels:
     strimzi.io/cluster: kafka-cluster
     app.kubernetes.io/instance: fluentd
     app.kubernetes.io/managed-by: additional_resources
+  namespace: monitoring
 spec:
-  partitions: 2
+  partitions: 6
   replicas: 1
   config:
-    retention.bytes: 357913941
+    retention.bytes: 89478485
     retention.ms: "-1"
-    segment.bytes: 89478485
+    segment.bytes: 22369621
     cleanup.policy: delete
