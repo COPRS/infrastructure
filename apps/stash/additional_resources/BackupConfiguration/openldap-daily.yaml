@@ -1,0 +1,56 @@
+apiVersion: stash.appscode.com/v1beta1
+kind: BackupConfiguration
+metadata:
+  name: openldap-daily
+  labels:
+    app.kubernetes.io/instance: stash
+    app.kubernetes.io/managed-by: additional_resources
+spec:
+  driver: Restic
+  repository:
+    name: s3-backup
+  # Daily at 4 am
+  schedule: "0 4 * * ?"
+  paused: false
+  backupHistoryLimit: 3
+  target:
+    alias: openldap
+    ref:
+      apiVersion: apps/v1
+      kind: StatefulSet
+      name: openldap
+    paths:
+      - /data/backup
+    volumeMounts:
+      - name: data-backup
+        mountPath: /data/backup
+  hooks:
+    preBackup:
+      exec:
+        command:
+          - /bin/bash
+          - -c
+          - /bin/rm -rf /data/backup/* && /sbin/slapd-backup-config && /sbin/slapd-backup-data && /bin/chmod -R 777 /data/backup/*
+      containerName: openldap
+  runtimeSettings:
+    container:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 128M
+        limits:
+          cpu: 200m
+          memory: 256M
+    pod:
+      # serviceAccountName: openldap-daily-backup-svc
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/infra
+                operator: Exists
+  retentionPolicy:
+    name: 'keep-last-30'
+    keepLast: 30
+    prune: true

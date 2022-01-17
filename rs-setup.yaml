@@ -107,6 +107,7 @@
 - name: Install etcd secrets in the cluster
   hosts: kube_control_plane[0]
   gather_facts: false
+  tags: etcd-client-secret
   tasks:
     - name: Create kubernetes etcd-client secret
       command: >

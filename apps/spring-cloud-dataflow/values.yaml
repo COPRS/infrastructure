@@ -15,11 +15,11 @@ server:
               operator: Exists
   resources:
     limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
       cpu: 500m
       memory: 512Mi
-    requests:
-      cpu: 200m
-      memory: 256Mi
 skipper:
   image:
     tag: 2.8.1-debian-10-r6
@@ -32,11 +32,11 @@ skipper:
               operator: Exists
   resources:
     limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
       cpu: 500m
       memory: 512Mi
-    requests:
-      cpu: 200m
-      memory: 256Mi
 metrics:
   enabled: true
   image:
@@ -71,13 +71,13 @@ externalDatabase:
   port: 5432
   driver: org.postgresql.Driver
   scheme: postgresql
-  password: p0stgrespassword
+  password: scdfpassword
   dataflow:
-    database: infra
-    username: postgres
+    database: dataflow
+    username: scdf
   skipper:
-    database: infra
-    username: postgres
+    database: skipper
+    username: scdf
 externalKafka:
   enabled: true
   brokers: kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092

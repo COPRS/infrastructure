@@ -25,10 +25,13 @@ spec:
                   operator: Exists
       containers:
         - name: kibana
+          env:
+            - name: NODE_OPTIONS
+              value: "--max-old-space-size=2048"
           resources:
             limits:
-              cpu: 500m
-              memory: 512Mi
+              cpu: 1800m
+              memory: 3Gi
             requests:
-              cpu: 200m
-              memory: 256Mi
+              cpu: 600m
+              memory: 1Gi

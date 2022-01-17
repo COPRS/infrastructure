@@ -9,14 +9,20 @@ commonLabels:
 resources:
   - manifest.yaml
 
+# patches:
+  # - sa-enable-automountServiceAccountToken.yaml # mandatory to mesh with identity
+
 configMapGenerator:
   - name: keycloak-realm
     files:
     - realm.json
 
 secretGenerator:
+  - name: keycloak-database
+    literals:
+      - user=keycloak
+      - password=keycloakpassword
   - name: keycloak
     literals:
-      - admin-password=keycloaksuperadmin
-      - management-password=keycloakmanager
-      - postgresql-password=keycloakpassword
+      - user=superadmin
+      - password=keycloaksuperadmin
