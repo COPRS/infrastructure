@@ -5,6 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: kafka-operator
     app.kubernetes.io/managed-by: additional_resources
+  namespace: infra
 spec:
   kafka:
     replicas: 1

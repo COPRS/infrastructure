@@ -6,6 +6,7 @@ metadata:
     app: strimzi
     app.kubernetes.io/instance: kafka-operator
     app.kubernetes.io/managed-by: additional_resources
+  namespace: infra
 data:
   kafka-metrics-config.yml: |
     # See https://github.com/prometheus/jmx_exporter for more info about JMX Prometheus Exporter metrics

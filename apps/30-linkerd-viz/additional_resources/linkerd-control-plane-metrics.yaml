@@ -6,6 +6,7 @@ metadata:
     app.kubernetes.io/name: linkerd-viz
     app.kubernetes.io/instance: linkerd-viz
     app.kubernetes.io/managed-by: additional_resources
+  namespace: infra
 spec:
   selector:
     matchLabels:
