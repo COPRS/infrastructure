@@ -15,8 +15,9 @@
 
 ## Infrastructure requirements
 
-- A domain name publicly available.
-- A load balancer listening on a public IP address.  
+- A **domain name** publicly available.  
+  Replace all occurences of ```DOMAIN_NAME``` in the repo by your own domain name.
+- A **load balancer** listening on a public IP address.  
   Configure the load balancer to forward incoming flow toward the cluster masters.
 
   | Load balancer port | masters port |
