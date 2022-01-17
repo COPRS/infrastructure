@@ -10,7 +10,7 @@
     dest: "{{ additional_resources_dir.path }}"
 
 - name: "{{ app_name }} | Deploy additional resources"
-  shell: "{{ bin_dir }}/kubectl apply --recursive -f {{ additional_resources_dir.path }} --prune -n {{ app.namespace }} -l app.kubernetes.io/instance={{ app_name }},app.kubernetes.io/managed-by=additional_resources"
+  shell: "{{ bin_dir }}/kubectl apply --recursive -f {{ additional_resources_dir.path }} --prune -n {{ app_namespace }} -l app.kubernetes.io/instance={{ app_name }},app.kubernetes.io/managed-by=additional_resources"
   register: kubectl_apply
 
 - name: "{{ app_name }} | Display additional resources deployed"

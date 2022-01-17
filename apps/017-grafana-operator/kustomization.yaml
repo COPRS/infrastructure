@@ -1,0 +1,13 @@
+namespace: monitoring
+namePrefix: grafana-operator-
+
+commonLabels:
+  app.kubernetes.io/managed-by: Kustomize
+  app.kubernetes.io/instance: grafana-operator
+  app.kubernetes.io/component: grafana-operator
+
+resources:
+  - crds.yaml
+  - deployment.yaml
+  - rbac.yaml
+  - servicemonitor.yaml
