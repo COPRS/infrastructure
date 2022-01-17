@@ -35,7 +35,7 @@
             "iso_urls": "{{user `iso_urls`}}",
             "iso_checksum": "{{user `iso_checksum`}}",
             {% endraw -%}
-            "output_directory": "{{ playbook_dir }}/../roles/image/files/output/image/",
+            "output_directory": "{{ playbook_dir }}/roles/image/files/output/image/",
             {%- raw %}
             "disk_size": "{{user `disk_size`}}",
             {% endraw -%}
@@ -55,12 +55,12 @@
             "expect_disconnect": true,
             {% endraw -%}
             "scripts": [
-                "{{ playbook_dir }}/../roles/image/files/scripts/base.sh",
-                "{{ playbook_dir }}/../roles/image/files/scripts/ntpd.sh",
-                "{{ playbook_dir }}/../roles/image/files/scripts/certificate-authority.sh",
+                "{{ playbook_dir }}/roles/image/files/scripts/base.sh",
+                "{{ playbook_dir }}/roles/image/files/scripts/ntpd.sh",
+                "{{ playbook_dir }}/roles/image/files/scripts/certificate-authority.sh",
                 "{{ container_runtime.path }}",
-                "{{ playbook_dir }}/../roles/image/files/scripts/ldap.sh",
-                "{{ playbook_dir }}/../roles/image/files/scripts/list.sh"
+                "{{ playbook_dir }}/roles/image/files/scripts/ldap.sh",
+                "{{ playbook_dir }}/roles/image/files/scripts/list.sh"
             ]
         },
         {
@@ -69,7 +69,7 @@
             "execute_command": "echo 'root' | sudo -S bash -c '{{ .Vars }} {{ .Path }}'",
             "expect_disconnect": true,
             {% endraw -%}
-            "script": "{{ playbook_dir }}/../roles/image/files/scripts/security.sh"
+            "script": "{{ playbook_dir }}/roles/image/files/scripts/security.sh"
         },
         {
             {%- raw %}
@@ -77,7 +77,7 @@
             "direction": "download",
             "source": "/home/safescale/*",
             {% endraw -%}
-            "destination": "{{ playbook_dir }}/../roles/image/files/output/"
+            "destination": "{{ playbook_dir }}/roles/image/files/output/"
         }
     ]
 }

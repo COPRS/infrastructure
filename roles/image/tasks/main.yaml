@@ -65,10 +65,10 @@
 
 - name: Include default vars from safescale-cluster
   include_vars:
-    file: ../roles/safescale-cluster/defaults/main.yaml
+    file: roles/safescale-cluster/defaults/main.yaml
 
 - name: Get credentials from tenant file
-  import_tasks: ../roles/safescale-cluster/tasks/tenant.yaml
+  import_tasks: roles/safescale-cluster/tasks/tenant.yaml
 
 - name: Upload the packer image to the cloud provider
   openstack.cloud.image:
@@ -84,7 +84,7 @@
     disk_format: qcow2
     state: present
     min_disk: 40
-    filename: "{{ playbook_dir }}/../roles/image/files/output/image/packer-{{ qcow2_name }}"
+    filename: "{{ playbook_dir }}/roles/image/files/output/image/packer-{{ qcow2_name }}"
     protected: false
     properties:
       description: "Image created using packer_ctl, a HashiCorp Packer wrapper"
