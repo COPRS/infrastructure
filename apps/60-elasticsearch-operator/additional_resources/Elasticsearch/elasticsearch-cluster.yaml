@@ -5,7 +5,11 @@ metadata:
   labels:
     app.kubernetes.io/instance: elasticsearch-operator
     app.kubernetes.io/managed-by: additional_resources
+  namespace: infra
 spec:
+  auth:
+    fileRealm:
+      - secretName: elasticsearch-cluster-filerealm-secret
   http:
     tls:
       selfSignedCertificate:
@@ -15,7 +19,10 @@ spec:
     - name: master-nodes
       count: 1
       config:
-        xpack.security.authc.anonymous.roles: superuser
+        xpack.security.authc.anonymous:
+          username: anonymous
+          roles: superuser
+          authz_exception: false
         node.roles: ["master"]
       volumeClaimTemplates:
         - metadata:
@@ -27,10 +34,16 @@ spec:
               requests:
                 storage: 10Gi
             storageClassName: ceph-block
+      podTemplate:
+        spec:
+          automountServiceAccountToken: true
     - name: data-nodes
       count: 1
       config:
-        xpack.security.authc.anonymous.roles: superuser
+        xpack.security.authc.anonymous:
+          username: anonymous
+          roles: superuser
+          authz_exception: false
         node.roles: ["data"]
       volumeClaimTemplates:
         - metadata:
@@ -42,3 +55,6 @@ spec:
               requests:
                 storage: 100Gi
             storageClassName: ceph-block
+      podTemplate:
+        spec:
+          automountServiceAccountToken: true

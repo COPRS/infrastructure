@@ -5,6 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: elasticsearch-operator
     app.kubernetes.io/managed-by: additional_resources
+  namespace: infra
 spec:
   http:
     tls:
@@ -14,3 +15,9 @@ spec:
   count: 1
   elasticsearchRef:
     name: elasticsearch-cluster
+  podTemplate:
+    spec:
+      automountServiceAccountToken: true
+  config:
+    server.publicBaseUrl: https://infra.DOMAIN_NAME
+  
