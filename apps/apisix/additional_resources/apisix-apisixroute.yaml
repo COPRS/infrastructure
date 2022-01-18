@@ -3,6 +3,9 @@ kind: ApisixRoute
 metadata:
   name: apisix
   namespace: infra
+  labels:
+    app.kubernetes.io/instance: apisix
+    app.kubernetes.io/managed-by: additional_resources
 spec:
   http:
     - name: apisix

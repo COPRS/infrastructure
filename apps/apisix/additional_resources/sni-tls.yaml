@@ -3,6 +3,9 @@ kind: ApisixTls
 metadata:
   name: letsencrypt-tls
   namespace: infra
+  labels:
+    app.kubernetes.io/instance: apisix
+    app.kubernetes.io/managed-by: additional_resources
 spec:
   hosts:
     - apisix.DOMAIN_NAME

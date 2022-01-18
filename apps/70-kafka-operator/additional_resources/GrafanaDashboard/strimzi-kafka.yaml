@@ -3,8 +3,9 @@ kind: GrafanaDashboard
 metadata:
   name: strimzi-kafka
   labels:
-    app.kubernetes.io/instance: grafana-operator
+    app.kubernetes.io/instance: kafka-operator
     app.kubernetes.io/managed-by: additional_resources
+  namespace: infra
 spec:
   customFolderName: cots/infra
   datasources:

@@ -13,10 +13,14 @@ resources:
   - grafana.yaml
 
 secretGenerator:
-  - name: grafana-admin
+  - name: admin
     literals:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=grafanapass
-  - name: oidc-grafana-client-secret
+    options:
+      disableNameSuffixHash: true
+  - name: oidc-client-secret
     literals:
       - GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET=4cb16727-a3c3-444d-8fc0-b4238566a87f
+    options:
+      disableNameSuffixHash: true

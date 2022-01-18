@@ -5,6 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: elasticsearch-operator
     app.kubernetes.io/managed-by: additional_resources
+  namespace: infra
 data:
   snapshot-config.json: |
     {

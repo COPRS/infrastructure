@@ -1007,7 +1007,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "d08e16f6-ef3d-4b49-b5fd-b8d50e99f569",
       "redirectUris": [
         "https://apisix.DOMAIN_NAME/*"
       ],
@@ -1139,7 +1139,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "4cb16727-a3c3-444d-8fc0-b4238566a87f",
       "redirectUris": [
         "https://monitoring.DOMAIN_NAME/login/generic_oauth"
       ],
@@ -1243,7 +1243,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "d96c32e1-a357-48c8-974c-bfb30a265085",
       "redirectUris": [
         "https://security.DOMAIN_NAME/*"
       ],
@@ -1326,7 +1326,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "63cf253f-bf86-43c0-8f18-96d1ccb4e2a6",
       "redirectUris": [
         "https://infra.DOMAIN_NAME/*"
       ],
@@ -1409,7 +1409,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "05576d8c-162d-45b0-9dda-53023df46b2a",
       "redirectUris": [
         "https://linkerd.DOMAIN_NAME/*"
       ],
@@ -1492,7 +1492,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "54616714-8684-4dcb-be7c-caa2121350ad",
       "redirectUris": [
         "https://monitoring.DOMAIN_NAME/*"
       ],
@@ -2750,7 +2750,7 @@
             "true"
           ],
           "bindCredential": [
-            "**********"
+            "adminpassword"
           ],
           "usernameLDAPAttribute": [
             "uid"
