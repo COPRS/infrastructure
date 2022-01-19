@@ -26,6 +26,6 @@ data:
       "type": "s3",
       "settings": {
         "client": "default",
-        "bucket": "S3_BUCKET"
+        "bucket": "S3_ELASTICSEARCH_BACKUP_BUCKET"
       }
     }
