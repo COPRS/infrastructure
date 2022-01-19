@@ -42,3 +42,78 @@
   service: 
     name: auditd
     state: restarted
+
+- name: Install Laurel if defined
+  block:
+    - name: Run whoami 
+      command: whoami
+      changed_when: false
+      become: false
+      register: whoami
+
+    - name: Set a fact with the user name.
+      set_fact:
+        login_user: "{{ whoami.stdout }}"
+
+    - name: Create a temp directory if it does not exist
+      ansible.builtin.file:
+        path: /tmp/laurel_tmp
+        state: directory
+
+    - name: Download Laurel
+      get_url:
+        url: "{{ auditd.laurel.laurel_url }}"
+        dest: /tmp/laurel_tmp
+      register: zip_path
+
+    - name: Untar Laurel
+      ansible.builtin.unarchive:
+        src: "{{ zip_path.dest }}"
+        dest: "/tmp/laurel_tmp"
+        remote_src: yes
+
+    - name: Create a etc directory for laurel
+      ansible.builtin.file:
+        path: /etc/laurel
+        state: directory
+
+    - name: Copy Laurel to /etc/laurel
+      copy: 
+        remote_src: yes 
+        src: /tmp/laurel_tmp/laurel
+        dest: /etc/laurel
+        mode: +x
+
+    - name: Write laurel conf in /etc/laurel
+      copy:
+        dest: /etc/laurel/config.toml
+        content: "{{ auditd.laurel.laurel_config }}"
+
+    - name: Edit conf with username
+      replace:
+        path: /etc/laurel/config.toml
+        regexp: 'USER'
+        replace: '{{ login_user }}'
+
+    - name: Edit conf with audit.log hostname
+      replace:
+        path: /etc/laurel/config.toml
+        regexp: 'audit.log'
+        replace: 'audit_{{ hostname["stdout"] }}.json'
+
+    - name: Create audisp plugin 
+      copy:
+        dest: /etc/audisp/plugins.d/laurel.conf
+        content: "{{ auditd.laurel.laurel_audisp }}"
+
+    - name: Clean tmp 
+      ansible.builtin.file:
+        path: /tmp/laurel_tmp
+        state: absent
+
+    - name: Restart service auditd
+      service: 
+        name: auditd
+        state: restarted
+
+  when: auditd.laurel is defined
