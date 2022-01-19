@@ -79,6 +79,10 @@ spec:
     # uses version: 3.5.9 for kafka 2.8.1
     template:
       pod:
+        metadata:
+          annotations:
+            config.linkerd.io/skip-inbound-ports: 2888,3888
+            config.linkerd.io/skip-outbound-ports: 2888,3888
         affinity:
           nodeAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
@@ -90,12 +94,6 @@ spec:
       type: inline
       loggers:
         zookeeper.root.logger: "INFO"
-    template:
-      statefulset:
-        metadata:
-          annotations:
-            config.linkerd.io/skip-inbound-ports: 2888,3888
-            config.linkerd.io/skip-outbound-ports: 2888,3888
     resources:
       limits:
         cpu: 500m
