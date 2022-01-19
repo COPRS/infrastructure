@@ -376,7 +376,7 @@ config:
     [INPUT]
       Name             tail
       Tag              security.auditd.*
-      Path             /var/log/audit/audit_*.log
+      Path             /var/log/audit_*.json
       DB               /var/log/fluentbit-security_auditd.db
       DB.Sync          Normal
       Rotate_Wait      10
@@ -386,6 +386,14 @@ config:
       Tag              security.falco.*
       Path             /var/log/containers/falco-*.log
       DB               /var/log/fluentbit-security_falco.db
+      DB.Sync          Normal
+      Rotate_Wait      10
+      Mem_Buf_Limit    10MB
+    [INPUT]
+      Name             tail
+      Tag              security.scans.*
+      Path             /var/log/nmap/*.log
+      DB               /var/log/fluentbit-security_nmap.db
       DB.Sync          Normal
       Rotate_Wait      10
       Mem_Buf_Limit    10MB
@@ -520,6 +528,13 @@ config:
       Match       security.falco.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.falco
+    [OUTPUT]
+      Name        kafka
+      Format      json
+      Match       security.scans.*
+      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+      Topics      fluentbit.scans
+ 
 
 daemonSetVolumes:
   - name: varlog
