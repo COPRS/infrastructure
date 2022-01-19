@@ -81,6 +81,26 @@ You can find examples of this file, or documentation to explain you what to writ
 
 For Bitnami, the list of possible parameters is accessible in the [bitnami repository](https://github.com/bitnami/charts/tree/master/bitnami). You can read it on the README.&#xfeff;md of the folder related to the specific chart.  
 
+### Add the repository
+
+You need to ensure the repository of the Helm chart you add is present in ```YOUR_INVENTORY/group_vars/gateway/app_installer.yaml```.
+
+```yaml
+helm_repositories:
+  - name: REPO_NAME
+    repo_url: REPO_URL
+  
+  ...
+```
+The list of supported parameters is defined below.
+
+| parameter | required ? | description |
+| --- | --- | --- |
+| name | yes | The name you give to the repository.<br>You will use it as prefix of the chart reference in your app config file. |
+| repo_url | yes | the URL of your repository |
+| repo_username | no | username of the repository.<br>For private repositories |
+| repo_password | no | password for private repositories. Must be set if ```repo_username``` is set. |
+
 ## Kustomize
 
 This section describe the deployment of an application using kustomize.

@@ -26,5 +26,7 @@
   kubernetes.core.helm_repository:
     name: "{{ item.name }}"
     repo_url: "{{ item.repo_url }}"
+    repo_username: "{{ item.repo_username if item.repo_username is defined else omit }}"
+    repo_password: "{{ item.repo_password if item.repo_password is defined else omit }}"
   loop: "{{ helm_repositories }}"
   become: false
