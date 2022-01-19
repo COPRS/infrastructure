@@ -22,14 +22,20 @@
     owner: ossec
     group: ossec
 
-- name: Disable all unused decoders
-  lineinfile:
-    path: "{{ wazuh.wazuh_ossec_conf }}"
-    insertafter: '</decoder_dir>'
-    line: '    <decoder_exclude>{{ item }}</decoder_exclude>'
-  loop: "{{ wazuh.unused_decoders }}"
-  no_log: true
-  when: "wazuh.unused_decoders is defined"
+- name: Write specific wazuh manager if wazuh.ossec_conf is defined
+  block:
+    
+    - name: Delete old ossec_conf
+      file:
+        state: absent
+        path: "{{ wazuh.wazuh_ossec_conf }}"
+
+    - name: Rewrite ossec_conf
+      copy:
+        dest: "{{ wazuh.wazuh_ossec_conf }}"
+        content: "{{ wazuh.ossec_conf }}"
+
+  when: wazuh.ossec_conf is defined 
 
 - name: Set Password authentication
   replace:
@@ -39,8 +45,14 @@
     regexp: '^(.+)$'
     replace: "yes"
 
-  # Disable all unused rules
-  #sudo sed -i "/^<decoder_exclude>.*<\/decoder_exclude>$/d" /var/ossec/etc/ossec.conf
+- name: Disable all unused decoders
+  lineinfile:
+    path: "{{ wazuh.wazuh_ossec_conf }}"
+    insertafter: '</decoder_dir>'
+    line: '    <decoder_exclude>{{ item }}</decoder_exclude>'
+  loop: "{{ wazuh.unused_decoders }}"
+  no_log: true
+  when: "wazuh.unused_decoders is defined"
 
 - name: Disable all unused rules
   lineinfile:

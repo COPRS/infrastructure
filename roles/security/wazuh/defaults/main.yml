@@ -8,9 +8,12 @@ wazuh:
   wazuh_ossec_conf: /var/ossec/etc/ossec.conf
   wazuh_ossec_agent_conf: /var/ossec/etc/shared/default/agent.conf
 
-  agent_conf: |
-      <agent_config>
-      </agent_config>
+  #Optional
+  # agent_conf: |
+  #     <agent_config>
+  #     </agent_config>
+
+  # ossec_conf: | WAZUH MASTER CONF HERE
 
   # Optional
   # unused_rules:
@@ -18,5 +21,3 @@ wazuh:
 
   # unused_decoders:
   #   - Rule_to_exclude
-
-  # log_level_output: 3
