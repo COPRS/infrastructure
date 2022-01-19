@@ -1,0 +1,63 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: rclone-postgresql-backup
+spec:
+  schedule: "0 5 * * ?"
+  failedJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          securityContext:
+            runAsUser: 16  # run as cron user instead of root
+          restartPolicy: Never
+          containers:
+            - name: rclone-ldap
+              image: bitnami/rclone:1.57.0-debian-10-r72
+              command:
+                - /entrypoint.sh
+              env:
+                - name: BUCKET
+                  value: S3_POSTGRESQL_BACKUP_BUCKET
+                - name: RETENTION_DAYS
+                  value: '7'
+              volumeMounts:
+                - name: rclone-conf
+                  mountPath: /.rclone.conf
+                  subPath: .rclone.conf
+                  readOnly: true
+                - name: entrypoint
+                  mountPath: /entrypoint.sh
+                  subPath: entrypoint.sh
+              resources:
+                limits:
+                  cpu: 100m
+                  memory: 256Mi
+                requests:
+                  cpu: 50m
+                  memory: 128Mi
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: node-role.kubernetes.io/infra
+                      operator: Exists
+          volumes:
+            - name: rclone-conf
+              secret:
+                secretName: rclone-conf
+                items:
+                  - key: rclone.conf
+                    path: .rclone.conf
+                    mode: 365
+            - name: entrypoint
+              configMap:
+                name: rclone-entrypoint
+                items:
+                  - key: entrypoint.sh
+                    path: entrypoint.sh
+                    mode: 365 # 0555
