@@ -225,10 +225,12 @@ dns:
 autoscaling:
   enabled: false
 
+# service selectors do not match kustomize configuration
+# we define the serviceMonitor with kustomization
 # Observability configuration.
 # ref: https://apisix.apache.org/docs/apisix/plugins/prometheus/
 serviceMonitor:
-  enabled: true
+  enabled: false
   # namespace where the serviceMonitor is deployed, by default, it is the same as the namespace of the apisix
   namespace: ""
   # interval at which metrics should be scraped
@@ -371,9 +373,4 @@ ingress-controller:
   nodeSelector: {}
   tolerations: []
 
-  # service selectors do not match kustomize configuration
-  # we define the serviceMonitor with kustomization
-  serviceMonitor:
-    enabled: false
-    namespace: monitoring
-    interval: 15s
+
