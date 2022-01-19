@@ -29,6 +29,8 @@ query:
     requests:
       cpu: 100m
       memory: 512Mi
+  extraFlags:
+    - --web.prefix-header=X-Forwarded-Prefix
 
 compactor:
   enabled: true

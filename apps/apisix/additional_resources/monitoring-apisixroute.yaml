@@ -10,7 +10,7 @@ spec:
   http:
     - name: grafana
       backends:
-        - serviceName: grafana
+        - serviceName: grafana-service
           servicePort: 3000
       match:
         hosts: [ monitoring.DOMAIN_NAME ]
@@ -50,16 +50,22 @@ spec:
           - /thanos
           - /thanos/*
         methods: [ GET ]
-      # plugins:
-      #   - name: openid-connect
-      #     enable: true
-      #     config:
-      #       client_id: prometheus
-      #       client_secret: 54616714-8684-4dcb-be7c-caa2121350ad
-      #       discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
-      #       scope: openid
-      #       bearer_only: false
-      #       realm: RS
-      #       introspection_endpoint_auth_method: client_secret_post
-      #       redirect_uri: https://monitoring.DOMAIN_NAME/prometheus/redirect_uri
+      plugins:
+        - name: proxy-rewrite
+          enable: true
+          config:
+            regex_uri: [ "^/thanos/(.*)$", "/$1" ]
+            headers:
+              X-Forwarded-Prefix: /thanos
+        - name: openid-connect
+          enable: true
+          config:
+            client_id: prometheus
+            client_secret: 54616714-8684-4dcb-be7c-caa2121350ad
+            discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
+            scope: openid
+            bearer_only: false
+            realm: RS
+            introspection_endpoint_auth_method: client_secret_post
+            redirect_uri: https://monitoring.DOMAIN_NAME/thanos/redirect_uri
     
