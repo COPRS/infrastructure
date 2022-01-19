@@ -18,10 +18,16 @@ spec:
         methods: [ GET ]
       websocket: true
       plugins:
+        - name: cors
+          enable: true
+          config:
+            allow_origins: "https://security.DOMAIN_NAME"
         - name: proxy-rewrite
           enable: true
           config:
             host: web.linkerd-viz.svc.cluster.local
+            headers:
+              Origin: ""
         - name: openid-connect
           enable: true
           config:
