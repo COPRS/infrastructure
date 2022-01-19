@@ -37,14 +37,14 @@ spec:
         - name: openid-connect
           enable: true
           config:
-            client_id: security
+            client_id: graylog
             client_secret: d96c32e1-a357-48c8-974c-bfb30a265085
             discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false
             realm: RS
             introspection_endpoint_auth_method: client_secret_post
-            redirect_uri: https://security.DOMAIN_NAME/redirect_uri
+            redirect_uri: https://security.DOMAIN_NAME/graylog/redirect_uri
             set_access_token_header: false
             set_id_token_header: false
             set_userinfo_header: false
