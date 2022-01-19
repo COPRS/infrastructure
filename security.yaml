@@ -8,7 +8,11 @@
   roles:
     - "security/clamav"
 
-- hosts: gateway
+- hosts: gateway, egress
   roles:
-    - "security/suricata"
-    - "security/openvpn"
+   - "security/suricata"
+   - "security/openvpn"
+
+- hosts: kube_control_plane, gateway, egress
+  roles:
+      - "security/nmap"
