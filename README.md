@@ -256,7 +256,7 @@ Configurations proposed by default :
   - Image
     - Registry : Docker Hub
     - Repository : graylog
-    - Version : 4.2.1
+    - Version : 4.2.3
 - **Spring Cloud Data Flow**
   - Chart Helm
     - URL : charts.bitnami.com/bitnami

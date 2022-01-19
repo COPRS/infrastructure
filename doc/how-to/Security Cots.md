@@ -28,6 +28,14 @@ The COTS can be configured by updating the file : ```infrastructure/platform/rol
 |  auditd_version    |    Version of auditd to use      |   Yes   |
 |  rules   |   List of rules to add to auditd each rule is composed of two attributes the name and the rule description      |     No     |
 
+In order to make easy the management of auditd logs, Laurel can be deployed.
+This tool is plugged to audisp and allow to merge auditd message types in one unique JSON.
+The documentation and exemple of configuration are available here : https://github.com/threathunters-io/laurel
+
+This plugin allow you to set laurel.conf through `laurel_conf`
+The audisp plugin can be configured by setting `laurel_audisp` property.
+Finally the release to be installed can be set by `using laurel_url`.
+NB if one property is set, all properties must be set too otherwise the installation will fail. 
 
 ## ClamAv
 **Scope: gateways and masters**
@@ -44,6 +52,7 @@ Two crons are created by default, you can change their name or hour of execution
 |  cron_update |  Object cron to update clamav rules each day | No  |
 |  cron_scan |  Object cron to run the clamav scan each day | No  |
 
+Be aware that the clamav cron use a lot of resources and can impact the stability of the plateform.
 ## Wazuh
 **Scope: The Manager is installed only on the first master node and agent that are installed on all remaining nodes.** 
 The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/wazuh/defaults/main.yml```
@@ -58,6 +67,7 @@ We strongly advise to use the lastest version of Wazuh as the version 3 and 4 ar
 | unused_decoders  |  List of decoders to not use  |  No |
 | agent_conf  |  XML content describing agent configuration  |  Yes |
 | log_level_output  |  Level log output that must appears in alerts.json (from 1 to 15)  |  No |
+| ossec_conf  | Set Custom ossec.conf for master  |  No |
 
 
 ## Suricata
@@ -107,6 +117,17 @@ The `conf_files` is a list of file with th following structure :
 - The `content` of the file. 
 It can be used to add certificate and client configuration for the VPN client.
 
-# Update
-To update, create a specific yaml file with COTS to uninstall
-then update conf file and rereun install script on thoses nodes. 
+## Nmap
+**Scope: Gateway,egress, master**
+Nmap is deployed on gateways and egress. During the installation of the COTS, the public ip
+of the node where nmap is installed is retrieved.
+Nmap is also installed on the frist master node, and require the user to fill the loadbalancer ip
+in order to perform scan on HTTP exposed port.
+
+| Name               | Description                                                         | Required |
+|--------------------|---------------------------------------------------------------------|----------|
+| nmap_version       | Version of nmap to be installed                                     | Yes      |
+| domain_balancer_ip | load balancer ip if cluster is exposed online and has a domain name | No       |
+
+To perform the scan everyday a cronis deployed, the `name` and the `hour` of work can be set
+by modifing this properties.
