@@ -24,6 +24,10 @@ Configure the schedule and the S3 bucket credentials by setting the following va
 
 ### Restore a chosen backup
 
+The restore is done in two steps:
+ - download chosen backup to the running pod (~3 minutes service interruption then ~3 minutes of downloading depending on network speed)
+ - trigger a restore in the running pod (~1 minute, no service downtine using *psql*)
+
 To restore a backup previously backed up on a S3 bucket by stash, create a `RestoreSession` based on this definition:
 
 ```yaml
@@ -104,6 +108,10 @@ Configure the schedule and the S3 bucket credentials by setting the following va
     - *stringData.S3_SECRET_KEY*
 
 ### Restore a chosen backup 
+
+The restore is done in two steps:
+ - download chosen backup to the running pods (no service interruption thanks to replication, then ~2 minutes of downloading depending on network speed)
+ - trigger a restore in the leader running pod (~1 minute, no service downtine using *slapd*)
 
 To restore elasticsearch indexes, access the Kibana UI using the `elastic` username and the password got by running `kubectl get secret -n infra elasticsearch-cluster-es-elastic-user -o go-template='{{.data.elastic | base64decode}}'`.
 Then navigate to `Management` - `Stack Management` - `Data` - `Snapshot and Restore` to chose a backup to restore.
