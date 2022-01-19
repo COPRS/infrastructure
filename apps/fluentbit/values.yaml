@@ -320,8 +320,8 @@ config:
     [INPUT]
       Name             tail
       Tag              security.container.*
-      Path             /var/log/containers/infra-postgres-*_infra_postgres-*.log
-      DB               /var/log/fluentbit_postgres-infra.db
+      Path             /var/log/containers/postgresql-postgresql-*_infra_postgresql-*.log
+      DB               /var/log/fluentbit_postgresql-infra.db
       DB.Sync          Normal
       Rotate_Wait      10
       Mem_Buf_Limit    10MB
