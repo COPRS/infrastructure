@@ -13,7 +13,7 @@ grafana:
 prometheus:
   enabled: false
 
-prometheusUrl: http://prometheus-stack-kube-prom-prometheus.monitoring.svc.cluster.local:9090
+prometheusUrl: http://prometheus-stack-kube-prom-prometheus.monitoring.svc.cluster.local:9090/prometheus
 
 # -- Namespace of the Linkerd core control-plane install. Default to linkerd
 # linkerdNamespace: linkerd
