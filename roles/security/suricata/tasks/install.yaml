@@ -70,6 +70,7 @@
       cron:
         name: "{{ suricata.rotate_rules.cron.name }}"
         hour: "{{ suricata.rotate_rules.cron.hour }}"
+        minute: "0"
         job: "{{ suricata.suricata_path }}{{ suricata.rotate_rules.name }}"
       when: "suricata.rotate_rules.cron is defined"
       
@@ -162,6 +163,7 @@
       cron:
         name: "{{ suricata.rotateIpReputation.cron.name }}"
         hour: "{{ suricata.rotateIpReputation.cron.hour }}"
+        minute: "0"
         job: "{{ suricata.suricata_path }}{{ suricata.rotateIpReputation.name }}"
       when: "suricata.rotateIpReputation.cron is defined"
       

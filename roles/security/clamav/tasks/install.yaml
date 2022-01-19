@@ -22,14 +22,16 @@
   cron:
     name: "{{ clamav.cron_update.name | default('ClamAv') }}"
     hour: "{{ clamav.cron_update.hour | default(2) }}"
+    minute: "0"
     job: "freshclam"
 
 - name: Creates directory /var/log/clamav
   file:
     path: /var/log/clamav
 
-- name: Set cron ClamAV scan
-  cron:
-    name: "{{ clamav.cron_scan.name | default('ClamAv Scan') }}"
-    hour: "{{ clamav.cron_scan.hour | default(4) }}"
-    job: "find / -not -path '/sys*' -not -path '/proc*' -mmin -60 -type f | xargs -P 1 clamscan --infected | logger -i -t clamd -p auth.alert"
+# - name: Set cron ClamAV scan
+#   cron:
+#     name: "{{ clamav.cron_scan.name | default('ClamAv Scan') }}"
+#     hour: "{{ clamav.cron_scan.hour | default(4) }}"
+#     minute: "0"
+#     job: "find / -not -path '/sys*' -not -path '/proc*' -mmin -60 -type f | xargs -P 1 clamscan --infected | logger -i -t clamd -p auth.alert"
