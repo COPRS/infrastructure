@@ -11,6 +11,11 @@ spec:
       selfSignedCertificate:
         disabled: true
   version: 7.15.2
+  monitoring:
+    metrics:
+      elasticsearchRefs:
+        - name: elasticsearch-cluster
+          namespace: infra
   nodeSets:
     - name: master-nodes
       count: 1
@@ -59,6 +64,20 @@ spec:
                 requests:
                   cpu: 500m
                   memory: 2Gi
+              readinessProbe:
+                exec:
+                  command:
+                  - bash
+                  - -c
+                  - /mnt/elastic-internal/scripts/readiness-probe-script.sh
+                failureThreshold: 3
+                initialDelaySeconds: 60
+                periodSeconds: 22
+                successThreshold: 1
+                timeoutSeconds: 22
+              env:
+              - name: READINESS_PROBE_TIMEOUT
+                value: "20"
     - name: data-nodes
       count: 2
       config:
@@ -101,10 +120,10 @@ spec:
               requiredDuringSchedulingIgnoredDuringExecution:
                 - labelSelector:
                     matchExpressions:
-                      - key: elasticsearch.k8s.elastic.co/node-master
+                      - key: elasticsearch.k8s.elastic.co/cluster-name
                         operator: In
                         values:
-                          - 'true'
+                          - 'elasticsearch-cluster'
                   topologyKey: kubernetes.io/hostname
           containers:
             - name: elasticsearch
