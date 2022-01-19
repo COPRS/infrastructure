@@ -9,22 +9,23 @@ ou: users
 
 # rs-admin, users, cluster.local
 dn: uid=rs-admin,ou=users,dc=cluster,dc=local
-loginShell: /bin/bash
-sn:: IA==
-gidNumber: 2000
-givenName:: IA==
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: shadowAccount
-shadowInactive: -1
 uid: rs-admin
+userPassword:: e1NTSEF9MjhxSVdBSWhkVGh1WjlPdmJwOEpONjNGZE1sOHRYVHc=
+loginShell: /bin/bash
+sn:: IA==
+gidNumber: 2000
+mail: rs-admin@rs.eu
+givenName:: IA==
+shadowInactive: -1
 shadowMax: 9999
 uidNumber: 2001
 shadowExpire: -1
 shadowWarning: 7
 cn: rs-admin
-homeDirectory:: rs-admin
-userPassword:: e1NTSEF9STQrNDNPcjJlaVFYRjJiK3Y1S1BMRUFhc3ZaeDNsWkw=
+homeDirectory: rs-admin
 
 # groups, cluster.local
 dn: ou=groups,dc=cluster,dc=local
