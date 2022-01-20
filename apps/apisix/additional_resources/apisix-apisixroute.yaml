@@ -25,7 +25,7 @@ spec:
           enable: true
           config:
             client_id: apisix
-            client_secret: d08e16f6-ef3d-4b49-b5fd-b8d50e99f569
+            client_secret: APISIX_OIDC_CLIENT_SECRET
             discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false

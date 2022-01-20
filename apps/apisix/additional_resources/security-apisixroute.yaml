@@ -38,7 +38,7 @@ spec:
           enable: true
           config:
             client_id: graylog
-            client_secret: d96c32e1-a357-48c8-974c-bfb30a265085
+            client_secret: GRAYLOG_OIDC_CLIENT_SECRET
             discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false

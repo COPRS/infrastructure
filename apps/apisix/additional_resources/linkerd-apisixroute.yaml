@@ -32,7 +32,7 @@ spec:
           enable: true
           config:
             client_id: linkerd
-            client_secret: 05576d8c-162d-45b0-9dda-53023df46b2a
+            client_secret: LINKERD_OIDC_CLIENT_SECRET
             discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false

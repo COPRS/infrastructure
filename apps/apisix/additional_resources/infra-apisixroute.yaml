@@ -30,7 +30,7 @@ spec:
           enable: true
           config:
             client_id: kibana
-            client_secret: 63cf253f-bf86-43c0-8f18-96d1ccb4e2a6
+            client_secret: KIBANA_OIDC_CLIENT_SECRET
             discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false

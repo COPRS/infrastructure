@@ -33,7 +33,7 @@ spec:
           enable: true
           config:
             client_id: prometheus
-            client_secret: 54616714-8684-4dcb-be7c-caa2121350ad
+            client_secret: PROMETHEUS_OIDC_CLIENT_SECRET
             discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false
@@ -61,7 +61,7 @@ spec:
           enable: true
           config:
             client_id: prometheus
-            client_secret: 54616714-8684-4dcb-be7c-caa2121350ad
+            client_secret: PROMETHEUS_OIDC_CLIENT_SECRET
             discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false

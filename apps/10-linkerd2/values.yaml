@@ -200,39 +200,26 @@ identity:
       # -- Issuer certificate (ECDSA). It must be provided during install.
       crtPEM: |
         -----BEGIN CERTIFICATE-----
-        MIIBsjCCAVmgAwIBAgIRANZrK8gXpjuidAaDTaxu7QowCgYIKoZIzj0EAwIwJTEj
-        MCEGA1UEAxMacm9vdC5saW5rZXJkLmNsdXN0ZXIubG9jYWwwHhcNMjExMjIxMTQz
-        NTA4WhcNMjIxMjIxMTQzNTA4WjApMScwJQYDVQQDEx5pZGVudGl0eS5saW5rZXJk
-        LmNsdXN0ZXIubG9jYWwwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAAQj9tSX+mNb
-        JkVXB9GqtHHIlWZ38/NZClcU3SCLikEfR13AJN+2e5hsElpsZg4XRx5WBtiiPaDT
-        xbCx0LQMHSo5o2YwZDAOBgNVHQ8BAf8EBAMCAQYwEgYDVR0TAQH/BAgwBgEB/wIB
-        ADAdBgNVHQ4EFgQUSv5qMvGM+csviYjHCq/dkfLzWPAwHwYDVR0jBBgwFoAUymX5
-        MhK18Lwfjx+YpyO4vmAFn3YwCgYIKoZIzj0EAwIDRwAwRAIgAb5eEyjXEThKG1Bm
-        hHkc83mQ+qGHC7jaxO6+JjBFI1kCIEZ4smvTDJ1QEPX3gmUzlF0K9zHxpi4rOzdh
-        SNAquBII
+        YOUR MTLS INTERMEDIATE CERTIFICATE ISSUER HERE
+        Read the following documentationto generate your own
+        https://linkerd.io/2.10/tasks/generate-certificates/
         -----END CERTIFICATE-----
 
       # -- Key for the issuer certificate (ECDSA). It must be provided during
       # install
       keyPEM: |
         -----BEGIN EC PRIVATE KEY-----
-        MHcCAQEEIO7iBYvSsFRc2pW7mQr3dL2f/JHfEZL7R0JSAiJMXyg2oAoGCCqGSM49
-        AwEHoUQDQgAEI/bUl/pjWyZFVwfRqrRxyJVmd/PzWQpXFN0gi4pBH0ddwCTftnuY
-        bBJabGYOF0ceVgbYoj2g08WwsdC0DB0qOQ==
+        YOUR MTLS INTERMEDIATE CERTIFICATE KEY HERE
+        Read the following documentationto generate your own
+        https://linkerd.io/2.10/tasks/generate-certificates/
         -----END EC PRIVATE KEY-----
 
 # CA
 identityTrustAnchorsPEM: |
   -----BEGIN CERTIFICATE-----
-  MIIBjTCCATOgAwIBAgIQID+7BrwUwqhtgL2E59QxtDAKBggqhkjOPQQDAjAlMSMw
-  IQYDVQQDExpyb290LmxpbmtlcmQuY2x1c3Rlci5sb2NhbDAeFw0yMTEyMjExNDM0
-  MjFaFw0zMTEyMTkxNDM0MjFaMCUxIzAhBgNVBAMTGnJvb3QubGlua2VyZC5jbHVz
-  dGVyLmxvY2FsMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEC8Eb4sXqBah/Ttc3
-  EmIG40GJmnk8TcsIRUA/7eD05yxlW4xE181CTSadEayNnO2I10ns3JAvNSsIKfj9
-  fdXijKNFMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8CAQEwHQYD
-  VR0OBBYEFMpl+TIStfC8H48fmKcjuL5gBZ92MAoGCCqGSM49BAMCA0gAMEUCIQDs
-  0j0ENuA2auFbQR/f5wPv6dLnC7id9po5lOokCMus4gIgHilj83Xs/RrJfK8KLene
-  4+2ige7C6SSb+gDnTMnAXrc=
+  YOUR MTLS ROOT CERTIFICATE HERE
+  Read the following documentationto generate your own
+  https://linkerd.io/2.10/tasks/generate-certificates/
   -----END CERTIFICATE-----
 
 # -|- CPU, Memory and Ephemeral Storage resources required by the identity controller (see `proxy.resources` for sub-fields)
