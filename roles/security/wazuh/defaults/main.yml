@@ -8,11 +8,11 @@ wazuh:
   wazuh_ossec_conf: /var/ossec/etc/ossec.conf
   wazuh_ossec_agent_conf: /var/ossec/etc/shared/default/agent.conf
 
-  #Optional
-  # agent_conf: |
-  #     <agent_config>
-  #     </agent_config>
+  agent_conf: |
+      <agent_config>
+      </agent_config>
 
+  #Optional
   # ossec_conf: | WAZUH MASTER CONF HERE
 
   # Optional
