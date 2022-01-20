@@ -16,7 +16,7 @@
     state: absent
     path: /var/log/nmap
 
-- name: Install xq to handle xml from nmap
+- name: Uninstall xq from PIP
   pip:
     name: yq
     state: absent
