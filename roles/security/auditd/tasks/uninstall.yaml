@@ -11,3 +11,18 @@
   file:
     state: absent
     path: /etc/audit
+
+- name: Uninstall Laurel if installed
+  block: 
+
+    - name: Delete Laurel etc
+      file:
+        state: absent
+        path: /etc/laurel
+
+    - name: Delete Laurel audisp
+      file:
+        state: absent
+        path: /etc/audisp
+
+  when: auditd.laurel is defined

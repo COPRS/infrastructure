@@ -1,0 +1,42 @@
+- name: Install nmap
+  apt: 
+    name: nmap={{ nmap.nmap_version }}
+    state: present
+
+- name: Install xq to handle xml from nmap
+  pip:
+    name: yq
+
+- name: Creates directory /var/log/nmap
+  file:
+    path: /var/log/nmap
+    state: directory
+
+- name: Gateway install
+  block:
+    - name: Get public Ip
+      uri:
+        url: http://ipinfo.io/ip
+        return_content: yes
+      register: pub_ip
+
+    - name: Get public ip
+      debug:
+        msg: "{{pub_ip.content}}"
+
+    - name: Set cron nmap scan
+      cron:
+        name: "{{ nmap.cron_scan.name | default('nmap Scan') }}"
+        hour: "{{ nmap.cron_scan.hour | default(6) }}"
+        minute: "0"
+        job: "/bin/nmap {{ pub_ip.content}} -Pn -oX /tmp/{{inventory_hostname}}.log && /bin/cat /tmp/{{inventory_hostname}}.log | /usr/local/bin/xq -c >  /var/log/nmap/{{inventory_hostname}}.log"
+
+  when: inventory_hostname in groups['gateway']
+
+- name: Master install (Load balancer scan)
+  cron:
+    name: "{{ nmap.cron_scan.name | default('nmap Scan') }}"
+    hour: "{{ nmap.cron_scan.hour | default(6) }}"
+    minute: "0"
+    job: "/bin/nmap {{ nmap.domain_balancer_ip }} -Pn -oX /tmp/{{inventory_hostname}}.log && /bin/cat /tmp/{{inventory_hostname}}.log | /usr/local/bin/xq -c >  /var/log/nmap/{{inventory_hostname}}.log"
+  when: "inventory_hostname == groups['kube_control_plane'][0] and nmap.domain_balancer_ip is defined"

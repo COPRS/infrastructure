@@ -12,6 +12,9 @@ wazuh:
       <agent_config>
       </agent_config>
 
+  #Optional
+  # ossec_conf: | WAZUH MASTER CONF HERE
+
   # Optional
   # unused_rules:
   #   - Rule_to_exclude

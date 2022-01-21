@@ -1,5 +1,0 @@
-- name: Get facts
-  include_tasks: gather_facts.yaml
-
-- name: install content_packs
-  include_tasks: content_packs.yaml

@@ -4,8 +4,7 @@ tags:
 
 graylog:
   image:
-    repository: graylog/graylog
-    tag: 4.2.3-1
+    repository: graylog/graylog:4.2.3-1
 
   mongodb:
     uri:  mongodb://graylog:grayl0gPassw0rd@mongodb.infra.svc.cluster.local/graylog

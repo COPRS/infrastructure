@@ -145,7 +145,6 @@ This directory concentrates what is required to deploy the infrastructure with A
     - `rs-setup.yaml`: prepare the necessary resources for the platform.
     - `apps.yaml`: deploy the applications.
     - `security.yaml`: deploy the security services.
-    - `configure-graylog.yaml`: upload and install graylog content-packs located in apps/graylog/config/content-packs/
 - **roles**: list of roles used to deploy the cluster.
     - **security**: roles describing the installation of the different security tools.
 - `ansible.cfg`: Ansible configuration file. It includes the ssh configuration to allow Ansible to access the machines through the gateway.
@@ -256,7 +255,7 @@ Configurations proposed by default :
   - Image
     - Registry : Docker Hub
     - Repository : graylog
-    - Version : 4.2.1
+    - Version : 4.2.3
 - **Spring Cloud Data Flow**
   - Chart Helm
     - URL : charts.bitnami.com/bitnami
