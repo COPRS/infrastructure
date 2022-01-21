@@ -1,0 +1,34 @@
+imagePullSecrets: rs-artifactory
+
+image:
+  registry: artifactory.coprs.esa-copernicus.eu/cs-docker
+  repository: finops-resources-exporter
+  tag: release-0.3.0
+
+metrics:
+  serviceMonitor:
+    interval: 15s
+    additionalLabels.release: prometheus-operator
+
+affinity: 
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: "node-role.kubernetes.io/infra"
+          operator: Exists
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/instance: finops-resources-exporter
+            app.kubernetes.io/name: finops-resources-exporter
+        topologyKey: kubernetes.io/hostname
+
+rbac:
+  create: true
+
+configs:
+- name: templates
+  path: /root/.config/exporter/templates.json
+  value: '{"templates":[{"name":"s3.xlarge.2","cpu":4,"memory":8},{"name":"s3.large.2","cpu":2,"memory":4},{"name":"s3.2xlarge.4","cpu":8,"memory":32},{"name":"s3.xlarge.4","cpu":4,"memory":16},{"name":"t2.small","cpu":1,"memory":2}]}'
