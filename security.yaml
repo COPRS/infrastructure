@@ -3,9 +3,6 @@
   roles:
     - "security/auditd"
     - "security/wazuh"
-
-- hosts: kube_control_plane, gateway
-  roles:
     - "security/clamav"
 
 - hosts: gateway, egress
