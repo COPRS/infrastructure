@@ -11,6 +11,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+
+## [0.3.0-rc1] - 2021-12-15
+### Added
+- [#102 - [Tradeoff] Using ISTIO ?](https://github.com/COPRS/SCRUM-Tickets/issues/102)
+- [#125 - Backup and restore databases - ELASTICSEARCH](https://github.com/COPRS/SCRUM-Tickets/issues/125)
+- [#126 - SECURITY: Monitor specific scenarios through the SIEM](https://github.com/COPRS/SCRUM-Tickets/issues/126)
+- [#175 - FinOPS: monitor & control system costs - RESOURCES](https://github.com/COPRS/SCRUM-Tickets/issues/175)
+- [#178 - Compliance to "Non Functional Requirements"](https://github.com/COPRS/SCRUM-Tickets/issues/178)
+- [#179 - Security: deploy, configure FALCO and link logs to the SIEM](https://github.com/COPRS/SCRUM-Tickets/issues/179)
+- [#185 - Backup and Restore databases - POSTGRESQL](https://github.com/COPRS/SCRUM-Tickets/issues/185)
+- [#186 - Backup and Restore databases - LDAP](https://github.com/COPRS/SCRUM-Tickets/issues/186)
+- [#187 - FinOPS: monitor & control system costs - STORAGE](https://github.com/COPRS/SCRUM-Tickets/issues/187)
+- [#188 - FinOPS: monitor & control system costs - NETWORK](https://github.com/COPRS/SCRUM-Tickets/issues/188)
+- [#189 - Ingress Controller](https://github.com/COPRS/SCRUM-Tickets/issues/189)
+  
 ## [0.2.0-rc1] - 2021-12-15
 ### Added
 - [#79 - SECURITY: live demonstration of FALCO](https://github.com/COPRS/SCRUM-Tickets/issues/79)
