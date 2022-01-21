@@ -40,7 +40,7 @@ spec:
   task:
     name: postgresql-restore
   repository:
-    name: s3-backup
+    name: s3-postgresql-backup
   target:
     alias: postgresql
     ref:
@@ -48,7 +48,7 @@ spec:
       kind: StatefulSet
       name: postgresql-postgresql
     volumeMounts:
-      - name: data-backup
+      - name: tmp-backup
         mountPath: /tmp/backup
     rules:
       - targetHosts: []
@@ -147,7 +147,7 @@ spec:
   task:
     name: ldap-restore
   repository:
-    name: s3-backup
+    name: s3-ldap-backup
   target:
     alias: openldap
     ref:
