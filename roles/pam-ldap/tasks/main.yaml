@@ -6,7 +6,7 @@
   lineinfile:
     path: /etc/systemd/resolved.conf
     backrefs: yes
-    regexp: '^(DNS=)((?!.*\b{{ nodelocaldns.stdout }}\b).*)$'
+    regexp: '^(\s*DNS=)((?!.*\b{{ nodelocaldns.stdout }}\b).*)$'
     line: '\1 {{ nodelocaldns.stdout }} \2'
   notify:
   - Restart systemd-resolved

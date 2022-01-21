@@ -13,7 +13,20 @@
 - qemu-system : **>= v4.2.1** (https://packages.ubuntu.com/focal/qemu-kvm / https://packages.ubuntu.com/focal/qemu-system-x86)
 - Packer : **>= v1.7.8** (https://github.com/hashicorp/packer)
 
-## Quick start
+## Infrastructure requirements
+
+- A **domain name** publicly available.  
+  Replace all occurences of ```DOMAIN_NAME``` in the repo by your own domain name.
+- A **load balancer** listening on a public IP address.  
+  Configure the load balancer to forward incoming flow toward the cluster masters.
+
+  | Load balancer port | masters port |
+  | :---: | :---: |
+  | 80 | 32080 |
+  | 443 | 32443 |
+
+
+## Quickstart
 
 ```Bash
 ## ON BASTION
@@ -33,7 +46,7 @@ ansible-galaxy collection install \
 # Copy ``inventory/sample`` as ``inventory/mycluster``
 cp -rfp inventory/sample inventory/mycluster
 
-# Review and change paramters under ``inventory/mycluster/group_vars`` or ``inventory/mycluster/host_vars``
+# Review and change paramters under ``inventory/mycluster/group_vars`` or ``inventory/mycluster/host_vars``
 cat inventory/mycluster/host_vars/localhost/cluster.yaml
 cat inventory/mycluster/host_vars/localhost/image.yaml
 cat inventory/mycluster/group_vars/all/kubespray.yaml
@@ -53,7 +66,7 @@ ansible-playbook security.yaml \
     --become
 
 # Deploy kubernetes with Kubespray - run the playbook as root
-# The option `--become` is required, as for example writing SSL keys in /etc/,
+# The option `--become` is required, for example writing SSL keys in /etc/,
 # installing packages and interacting with various systemd daemons.
 # Without --become the playbook will fail to run!
 ansible-playbook collections/kubespray/cluster.yml \
@@ -61,7 +74,7 @@ ansible-playbook collections/kubespray/cluster.yml \
     --become
 
 # Enable pod security policies on the cluster
-# /!\ you first need to create the psp and crb resources
+# /!\ you first need to create the psp and crb resources
 # before enabling the admission plugin
 ansible-playbook collections/kubespray/upgrade-cluster.yml \
     -i inventory/mycluster/hosts.ini \
@@ -75,19 +88,33 @@ ansible-playbook collections/kubespray/upgrade-cluster.yml \
     -e podsecuritypolicy_enabled=true \
     --become
 
-# Configure kubernetes and deploy apps
+# Prepare the cluster for Reference System
 ansible-playbook rs-setup.yaml \
     -i inventory/mycluster/hosts.ini
 
+# deploy apps
+ansible-playbook apps.yaml \
+    -i inventory/mycluster/hosts.ini
+
 # Install graylog content packs (Optionnal)
-ansible-playbook playbooks/configure-graylog.yaml \
+ansible-playbook configure-graylog.yaml \
     -i inventory/mycluster/hosts.ini
 ```
 
+## TLS configuration
+
+Reference System exploits APISIX Ingress Controller and Cert Manager for TLS configuration.
+
+You need to create an [issuer](https://cert-manager.io/docs/concepts/issuer/) and a [certificate](https://cert-manager.io/docs/concepts/certificate/) for your domain name with Cert Manager.
+
+APISIX does not work with Cert Manager for ACME HTTP01 challenges ([#781](https://github.com/apache/apisix-ingress-controller/issues/781)).  
+You must use the DNS01 challenge to generate a Let's encrypt certificate. The configuration is detailled on [Cert Manager documentation](https://cert-manager.io/docs/configuration/acme/dns01).
+
+
 ## Dependencies
 
-This project exploit Kubespray to deploy Kubernetes.  
-The fully detailled documentation and configuration options are available on its page: [https://kubespray.io/](https://kubespray.io/#/)
+This project exploits Kubespray to deploy Kubernetes.  
+The fully detailed documentation and configuration options are available on its page: [https://kubespray.io/](https://kubespray.io/#/)
 
 ## Tree view
 The repository is made of the following main directories.
@@ -95,14 +122,14 @@ The repository is made of the following main directories.
 - doc
 - platform
 ### Apps
-This folder gather the configuration of the applications deployed on the platform.  
-Each application has its own folder inside apps with the values of the Helm chart, the kustomization files, the patches related and any additional kubernetes resources.  
+This folder gathers the configuration of the applications deployed on the platform.  
+Each application has its own folder inside apps with the values of the Helm chart, the kustomization files, the patches related, and any additional kubernetes resources.  
 The application's directory can be split by environment with subfolders like dev, prod, etc.
 ### Doc
 Here we find all the documentation describing the infrastructure deployment and maintenance operations.
 ### Platform
-This directory concentrate what is required to deploy the infrastructure with Ansible.
-- **collections/kubespray**: folder where kubespray is integrated in the project as a git submodule.
+This directory concentrates what is required to deploy the infrastructure with Ansible.
+- **collections/kubespray**: folder where kubespray is integrated into the project as a git submodule.
     - `cluster.yaml` the Ansible playbook to run to deploy Kubernetes.
 - **inventory**: 
     - **sample**: Ansible inventory for sample configuration.
@@ -115,7 +142,8 @@ This directory concentrate what is required to deploy the infrastructure with An
     - `clean.yaml`: remove the generated files by the different playbooks, delete the cluster and remove the volumes.
     - `cluster-setup.yaml`: deploy the network, the machines and the volumes with safescale.
     - `image.yaml`: build the image used to create the machines.
-    - `rs-setup.yaml`: prepare the necessary resources for the platform and deploy the applications present in apps.
+    - `rs-setup.yaml`: prepare the necessary resources for the platform.
+    - `apps.yaml`: deploy the applications.
     - `security.yaml`: deploy the security services.
     - `configure-graylog.yaml`: upload and install graylog content-packs located in apps/graylog/config/content-packs/
 - **roles**: list of roles used to deploy the cluster.
@@ -126,11 +154,12 @@ This directory concentrate what is required to deploy the infrastructure with An
 
 | name | tags | utility | 
 |---|---|---|
-| cluster-setup.yaml | *none* <br> cluster_create <br> hosts_update <br> volumes_create | *all tags below are executed* <br> create safescale cluster <br> update hosts.ini with newly created machines, fill .ssh folder with machines ssh public keys, generate ansible ssh config, update config.cfg <br> attach disks to kubernetes nodes |
-| delete.yaml <br> :warning: this playbook has been developed with the only purpose of testing the project **not for production usage**| *none* <br> cleanup_generated <br> detach_volumes <br> delete_volumes <br> delete_cluster | *nothing* <br> **remove** ssh keys, added hosts in hosts.ini, ssh config file <br> detach added disks from k8s nodes <br> delete added disks from k8s nodes <br> delete safescale cluster|
-| image.yaml | *none* | *make reference system golden image for k8s nodes* |
-|rs-setup.yaml | *none* <br> gateway <br> apps | *all tags below are executed* <br> install tools on gateways <br> deploy applications (adding -e app_name=APP_NAME deploy only the app matching APP_NAME) |
-| security.yaml | *none* <br> auditd <br> wazuh <br> clamav <br> openvpn <br> suricata <br> uninstall_APP_NAME| *install all securty tools* <br> install auditd <br> install wazuh <br> install clamav <br> install openvpn <br> install suricata <br> uninstall the app matching APP_NAME
+| cluster-setup.yaml | *none* <br> cluster_create <br> hosts_update <br> volumes_create | *all tags below are executed* <br> create safescale cluster <br> update hosts.ini with newly created machines, fill .ssh folder with machines ssh public keys, generate ansible ssh config, update config.cfg <br> attach disks to kubernetes nodes |
+| delete.yaml <br> :warning: this playbook has been developed with the only purpose of testing the project **not for production usage**| *none* <br> cleanup_generated <br> detach_volumes <br> delete_volumes <br> delete_cluster | *nothing* <br> **remove** ssh keys, added hosts in hosts.ini, ssh config file <br> detach added disks from k8s nodes <br> delete added disks from k8s nodes <br> delete safescale cluster|
+| image.yaml | *none* | *make reference system golden image for k8s nodes* |
+|rs-setup.yaml | *none* <br> gateway <br> apps | *all tags below are executed* <br> install tools on gateways <br> configure the cluster |
+| apps.yaml | *none* |  *deploy applications (adding -e name=APP_NAME deploy only the app matching APP_NAME)* |
+| security.yaml | *none* <br> auditd <br> wazuh <br> clamav <br> openvpn <br> suricata <br> uninstall_APP_NAME| *install all security tools* <br> install auditd <br> install wazuh <br> install clamav <br> install openvpn <br> install suricata <br> uninstall the app matching APP_NAME
 
 ## Apps
 

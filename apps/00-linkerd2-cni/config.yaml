@@ -1,0 +1,4 @@
+chart_ref: linkerd/linkerd2-cni
+chart_version: 2.11.1
+namespace: infra
+# create_namespace: true

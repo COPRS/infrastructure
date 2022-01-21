@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/instance: apisix
+    app.kubernetes.io/managed-by: Kustomize
+    app.kubernetes.io/name: apisix
+  name: apisix
+  namespace: infra
+spec:
+  endpoints:
+  - interval: 15s
+    path: /apisix/prometheus/metrics
+    scheme: http
+    targetPort: prometheus
+  namespaceSelector:
+    matchNames:
+    - infra
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: apisix
+      app.kubernetes.io/managed-by: Kustomize
+      app.kubernetes.io/name: apisix
+      app.kubernetes.io/service: apisix-gateway

@@ -1,0 +1,39 @@
+apiVersion: apisix.apache.org/v2beta2
+kind: ApisixRoute
+metadata:
+  name: infra
+  namespace: infra
+  labels:
+    app.kubernetes.io/instance: apisix
+    app.kubernetes.io/managed-by: additional_resources
+spec:
+  http:
+    - name: kibana
+      backends:
+        - serviceName: kibana-kb-http
+          servicePort: 5601
+      match:
+        hosts: [ infra.DOMAIN_NAME ]
+        paths: [ /* ]
+        methods: [ GET, PUT ]
+      plugins:
+        - name: cors
+          enable: true
+          config:
+            allow_origins: "https://security.DOMAIN_NAME"
+        - name: proxy-rewrite
+          enable: true
+          config:
+            headers:
+              Authorization: "Basic b3BlcmF0b3I6Nyp3dHd3YloyJXptSzZIWlc2KjU="
+        - name: openid-connect
+          enable: true
+          config:
+            client_id: kibana
+            client_secret: KIBANA_OIDC_CLIENT_SECRET
+            discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
+            scope: openid
+            bearer_only: false
+            realm: RS
+            introspection_endpoint_auth_method: client_secret_post
+            redirect_uri: https://kibana.DOMAIN_NAME/redirect_uri

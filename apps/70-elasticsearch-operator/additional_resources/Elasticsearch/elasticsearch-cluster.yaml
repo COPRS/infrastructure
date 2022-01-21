@@ -1,0 +1,60 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: elasticsearch-cluster
+  labels:
+    app.kubernetes.io/instance: elasticsearch-operator
+    app.kubernetes.io/managed-by: additional_resources
+  namespace: infra
+spec:
+  auth:
+    fileRealm:
+      - secretName: elasticsearch-cluster-filerealm-secret
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  version: 7.15.2
+  nodeSets:
+    - name: master-nodes
+      count: 1
+      config:
+        xpack.security.authc.anonymous:
+          username: anonymous
+          roles: superuser
+          authz_exception: false
+        node.roles: ["master"]
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 10Gi
+            storageClassName: ceph-block
+      podTemplate:
+        spec:
+          automountServiceAccountToken: true
+    - name: data-nodes
+      count: 1
+      config:
+        xpack.security.authc.anonymous:
+          username: anonymous
+          roles: superuser
+          authz_exception: false
+        node.roles: ["data"]
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 100Gi
+            storageClassName: ceph-block
+      podTemplate:
+        spec:
+          automountServiceAccountToken: true

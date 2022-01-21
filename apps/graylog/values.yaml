@@ -4,7 +4,8 @@ tags:
 
 graylog:
   image:
-    repository: graylog/graylog:4.2.1-1
+    repository: graylog/graylog
+    tag: 4.2.3-1
 
   mongodb:
     uri:  mongodb://graylog:grayl0gPassw0rd@mongodb.infra.svc.cluster.local/graylog
@@ -31,3 +32,11 @@ graylog:
     requests:
       cpu: 500m
       memory: 3Gi
+
+  env:
+    GRAYLOG_TRUSTED_PROXIES: 10.244.0.0/16
+
+  externalUri: http://security.DOMAIN_NAME/graylog
+  
+  ingress:
+    enabled: false

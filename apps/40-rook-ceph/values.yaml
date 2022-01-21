@@ -1,4 +1,4 @@
-# default values at https://github.com/rook/rook/blob/master/cluster/charts/rook-ceph/values.yaml
+# default values at https://github.com/rook/rook/blob/master/deploy/charts/rook-ceph/values.yaml
 
 image:
   repository: rook/ceph

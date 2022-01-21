@@ -66,8 +66,11 @@
             renderer: networkd
             ethernets:
               ens3:
-                addresses: [{{ ansible_facts.ens3.ipv4.address }}/17]
-                gateway4: {{ ansible_facts.ens3.ipv4.network | regex_search('^([0-9]{1,3}.){3}') }}1
+                addresses: [{{ address_mask | ipaddr('host/prefix') }}]
+                gateway4: {{ gateway_ip }}
+      vars:
+        address_mask: "{{ ansible_default_ipv4['address'] }}/{{ ansible_default_ipv4['netmask'] }}"
+        gateway_ip: "{{ hostvars[groups['gateway'][0]]['ansible_default_ipv4']['gateway'] }}"
       become: true
 
     - name: Apply netplan config
@@ -102,9 +105,8 @@
         - kubernetes==12.0.1
   roles: 
     - { role: "rs-defaults" }
-    - { role: "app-installer", tags: apps }
 
-- name: Install etcd secrets in the cluster
+- name: Install etcd secrets in the cluster to monitor the cluster
   hosts: kube_control_plane[0]
   gather_facts: false
   tags: etcd-client-secret

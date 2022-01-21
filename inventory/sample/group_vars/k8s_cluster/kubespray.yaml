@@ -7,6 +7,9 @@ kube_network_plugin: calico
 calico_version: "v3.19.2"
 ipip: false
 calico_vxlan_mode: Always
+# if a node may have several interfaces
+# set the ip autodetection method to the internal nodes network CIDR
+calico_ip_auto_method: "cidr=192.168.0.0/16"
 
 kube_proxy_mode: iptables
 
