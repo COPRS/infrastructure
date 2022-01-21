@@ -5,6 +5,6 @@ tenants.*
 ssh-main-gateway.*
 !roles/safescale-cluster/templates/*
 library/safescale
-apps/**/manifest.yaml
+apps/**/resources.txt
 roles/image/files/output/
 __pycache__
