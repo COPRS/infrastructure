@@ -1,0 +1,45 @@
+rs_domain_name: DOMAIN_NAME
+
+linkerd:
+  ca_crt: |
+    -----BEGIN CERTIFICATE-----
+    YOUR MTLS ROOT CERTIFICATE HERE
+    Read the following documentationto generate your own
+    https://linkerd.io/2.10/tasks/generate-certificates/
+    -----END CERTIFICATE-----
+
+  issuer_crt: |
+    -----BEGIN CERTIFICATE-----
+    YOUR MTLS INTERMEDIATE CERTIFICATE ISSUER HERE
+    Read the following documentationto generate your own
+    https://linkerd.io/2.10/tasks/generate-certificates/
+    -----END CERTIFICATE-----
+
+  issuer_key: |
+    -----BEGIN EC PRIVATE KEY-----
+    YOUR MTLS INTERMEDIATE CERTIFICATE KEY HERE
+    Read the following documentationto generate your own
+    https://linkerd.io/2.10/tasks/generate-certificates/
+    -----END EC PRIVATE KEY-----
+
+thanos_bucket:
+  name: BUCKET_NAME
+  s3_endpoint: S3_ENDPOINT
+  region: S3_REGION
+  access_key: XXXXXXXXXXXXX
+  secret_key: xxxxxxxxxxxx
+
+grafana:
+  admin_password: grafanapass
+  oidc_client_secret: xxxxxxxxxxxx
+
+eck_backup_bucket:
+  name: BUCKET_NAME
+  access_key: XXXXXXXXXXXXX
+  secret_key: xxxxxxxxxxxx
+
+elasticsearch_trace:
+  operator_password_hash: $2a$10$/7vn2QXvp.tWbH7.Of3LpOU9zYqOL.tqeZk4/T1dZ/TqkqAmpImG6
+
+kibana:
+  oidc_client_secret: KIBANA_OIDC_CLIENT_SECRET

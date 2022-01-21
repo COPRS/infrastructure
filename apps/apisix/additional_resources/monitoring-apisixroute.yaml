@@ -13,7 +13,7 @@ spec:
         - serviceName: grafana-service
           servicePort: 3000
       match:
-        hosts: [ monitoring.DOMAIN_NAME ]
+        hosts: [ monitoring.{{ rs_domain_name }} ]
         paths:
           - /*
         methods: [ GET, POST ]
@@ -23,7 +23,7 @@ spec:
         - serviceName: prometheus-stack-kube-prom-prometheus
           servicePort: 9090
       match:
-        hosts: [ monitoring.DOMAIN_NAME ]
+        hosts: [ monitoring.{{ rs_domain_name }} ]
         paths:
           - /prometheus
           - /prometheus/*
@@ -34,18 +34,18 @@ spec:
           config:
             client_id: prometheus
             client_secret: PROMETHEUS_OIDC_CLIENT_SECRET
-            discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
+            discovery: https://security.{{ rs_domain_name }}/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false
             realm: RS
             introspection_endpoint_auth_method: client_secret_post
-            redirect_uri: https://monitoring.DOMAIN_NAME/prometheus/redirect_uri
+            redirect_uri: https://monitoring.{{ rs_domain_name }}/prometheus/redirect_uri
     - name: thanos
       backends:
         - serviceName: thanos-query
           servicePort: 9090
       match:
-        hosts: [ monitoring.DOMAIN_NAME ]
+        hosts: [ monitoring.{{ rs_domain_name }} ]
         paths:
           - /thanos
           - /thanos/*
@@ -62,10 +62,10 @@ spec:
           config:
             client_id: prometheus
             client_secret: PROMETHEUS_OIDC_CLIENT_SECRET
-            discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
+            discovery: https://security.{{ rs_domain_name }}/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false
             realm: RS
             introspection_endpoint_auth_method: client_secret_post
-            redirect_uri: https://monitoring.DOMAIN_NAME/thanos/redirect_uri
+            redirect_uri: https://monitoring.{{ rs_domain_name }}/thanos/redirect_uri
     

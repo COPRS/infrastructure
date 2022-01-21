@@ -1,3 +1,0 @@
-chart_ref: elastic/eck-operator
-chart_version: 1.9.0
-namespace: infra

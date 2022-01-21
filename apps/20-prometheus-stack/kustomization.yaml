@@ -1,0 +1,20 @@
+commonLabels:
+  app.kubernetes.io/instance: {{ app_name }}
+
+namespace: monitoring
+
+resources:
+  - prometheus-priority.yaml
+  - secret/thanos-bucket-credentials.yaml
+
+helmChartInflationGenerator:
+- chartName: kube-prometheus-stack
+  chartRepoUrl: https://prometheus-community.github.io/helm-charts
+  chartVersion: 21.0.0
+  releaseName: {{ app_name }}
+  values: values.yaml
+
+secretGenerator:
+  - name: thanos-bucket-credentials
+    files: 
+      - objstore.yml

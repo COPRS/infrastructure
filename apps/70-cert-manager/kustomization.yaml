@@ -1,0 +1,9 @@
+commonLabels:
+  app.kubernetes.io/instance: {{ app_name }}
+
+helmChartInflationGenerator:
+- chartName: {{ app_name }}
+  chartRepoUrl: https://charts.jetstack.io
+  chartVersion: v1.6.1
+  releaseNamespace: infra
+  values: values.yaml

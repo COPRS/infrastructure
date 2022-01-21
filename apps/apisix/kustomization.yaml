@@ -1,9 +1,18 @@
 commonLabels:
-  app.kubernetes.io/instance: apisix
-  app.kubernetes.io/managed-by: Kustomize
+  app.kubernetes.io/instance: {{ app_name }}
+
+namespace: infra
+
+helmChartInflationGenerator:
+- chartName: {{ app_name }}
+  chartRepoUrl: https://charts.apiseven.com
+  chartVersion: 0.7.3
+  values: values.yaml
+  extraArgs:
+    - --include-crds
+    - --no-hooks
 
 resources:
-  - manifest.yaml
   - serviceMonitor.yaml
 
 patches:

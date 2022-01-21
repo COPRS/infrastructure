@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/instance: apisix
-    app.kubernetes.io/managed-by: Kustomize
     app.kubernetes.io/name: dashboard
   name: apisix-dashboard
 spec:

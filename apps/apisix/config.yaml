@@ -1,5 +1,0 @@
-chart_ref: apisix/apisix
-chart_version: 0.7.3
-namespace: infra
-no_hooks: true
-include_crds: true

@@ -1,0 +1,25 @@
+commonLabels:
+  app.kubernetes.io/instance: {{ app_name }}
+
+namespace: infra
+
+helmChartInflationGenerator:
+- chartName: eck-operator
+  chartRepoUrl:  https://helm.elastic.co
+  chartVersion: 1.9.0
+  releaseName: {{ app_name }}
+  values: values.yaml
+
+resources:
+  - Secret/eck-s3-credentials.yaml
+  - Job/elasticsearch-backup-config.yaml
+  - Elasticsearch_trace/filerealm-secret.yaml
+  - Elasticsearch_trace/elasticsearch-cluster.yaml
+  - Elasticsearch_trace/kibana.yaml
+
+
+configMapGenerator:
+  - name: elasticsearch-backup-config
+    files:
+      - backup_config/snapshot-config.json
+      - backup_config/s3-repository.json

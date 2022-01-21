@@ -1,0 +1,25 @@
+commonLabels:
+  app.kubernetes.io/instance: {{ app_name }}
+
+namespace: infra
+
+helmChartInflationGenerator:
+- chartName: strimzi-kafka-operator
+  chartRepoUrl:   https://strimzi.io/charts/
+  chartVersion:  0.26.0
+  releaseName: {{ app_name }}
+  values: values.yaml
+
+configMapGenerator:
+  - name: kafka-metrics
+    files:
+      - kafka-metrics-config.yml
+      - zookeeper-metrics-config.yml
+
+resources:
+  - GrafanaDashboard/strimzi-kafka.yaml
+  - Kafka/kafka-cluster.yaml
+  - PodMonitor/bridge-metrics.yaml
+  - PodMonitor/cluster-operator-metrics.yaml
+  - PodMonitor/entity-operator-metrics.yaml
+  - PodMonitor/kafka-resources-metrics.yaml

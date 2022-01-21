@@ -13,23 +13,23 @@ spec:
         - serviceName: apisix-dashboard
           servicePort: 80
       match:
-        hosts: [ apisix.DOMAIN_NAME ]
+        hosts: [ apisix.{{ rs_domain_name }} ]
         paths: [ /* ]
         methods: [ GET, POST, PUT ]
       plugins:
         - name: cors
           enable: true
           config:
-            allow_origins: "https://security.DOMAIN_NAME"
+            allow_origins: "https://security.{{ rs_domain_name }}"
         - name: openid-connect
           enable: true
           config:
             client_id: apisix
             client_secret: APISIX_OIDC_CLIENT_SECRET
-            discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
+            discovery: https://security.{{ rs_domain_name }}/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false
             realm: RS
             introspection_endpoint_auth_method: client_secret_post
-            redirect_uri: https://apisix.DOMAIN_NAME/redirect_uri
+            redirect_uri: https://apisix.{{ rs_domain_name }}/redirect_uri
 

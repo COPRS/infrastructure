@@ -1,0 +1,14 @@
+{
+    "schedule": "0 0 5 * * ?", 
+    "name": "<daily-snap-{now/d}>", 
+    "repository": "backup-repository", 
+    "config": {
+      "ignore_unavailable": true,
+      "include_global_state": true
+    },
+    "retention": { 
+      "expire_after": "30d", 
+      "min_count": 5, 
+      "max_count": 30 
+    }
+  }

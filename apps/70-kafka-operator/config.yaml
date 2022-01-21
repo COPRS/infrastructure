@@ -1,3 +1,0 @@
-chart_ref: strimzi/strimzi-kafka-operator
-chart_version: 0.26.0
-namespace: infra
