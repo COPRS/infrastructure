@@ -13,7 +13,7 @@ spec:
       version: "1.6.2"
   datasources:
     - inputName: "DS_PROMETHEUS"
-      datasourceName: "Loki"
+      datasourceName: "Thanos"
   grafanaCom:
     id: 13407
     revision: 1

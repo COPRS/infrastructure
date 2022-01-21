@@ -19,8 +19,6 @@ helm_repositories:
     repo_url: https://prometheus-community.github.io/helm-charts
   - name: elastic
     repo_url: https://helm.elastic.co
-  - name: zalando
-    repo_url: https://opensource.zalando.com/postgres-operator/charts/postgres-operator/
   - name: appscode
     repo_url: https://charts.appscode.com/stable/
   - name: linkerd
