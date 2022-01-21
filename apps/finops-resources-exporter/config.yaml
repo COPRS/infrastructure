@@ -1,0 +1,3 @@
+chart_ref: rs-artifactory/finops-resources-exporter
+chart_version: 1.0.0
+namespace: monitoring
