@@ -342,3 +342,12 @@ Configurations proposed by default :
     - Registry : Docker Hub
     - Repository : osixia
     - Version : 1.5.0
+- **Falco**
+  - Chart Helm
+    - URL : https://github.com/falcosecurity/charts
+    - Version : 1.16.2
+    - Documentation : https://github.com/falcosecurity/charts
+  - Image
+    - Registry : Docker Hub
+    - Repository : falcosecurity/falco
+    - Version : 0.30.0
