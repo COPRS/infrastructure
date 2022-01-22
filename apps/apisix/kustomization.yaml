@@ -3,14 +3,13 @@ commonLabels:
 
 namespace: infra
 
-helmChartInflationGenerator:
-- chartName: {{ app_name }}
-  chartRepoUrl: https://charts.apiseven.com
-  chartVersion: 0.7.3
-  values: values.yaml
-  extraArgs:
-    - --include-crds
-    - --no-hooks
+helmCharts:
+- name: {{ app_name }}
+  repo: https://charts.apiseven.com
+  version: 0.7.3
+  valuesFile: values.yaml
+  includeCRDs: true
+    # - --no-hooks
 
 resources:
   - serviceMonitor.yaml

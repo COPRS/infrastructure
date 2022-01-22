@@ -3,12 +3,12 @@ commonLabels:
 
 namespace: infra
 
-helmChartInflationGenerator:
-- chartName: eck-operator
-  chartRepoUrl:  https://helm.elastic.co
-  chartVersion: 1.9.0
+helmCharts:
+- name: eck-operator
+  repo:  https://helm.elastic.co
+  version: 1.9.0
   releaseName: {{ app_name }}
-  values: values.yaml
+  valuesFile: values.yaml
 
 resources:
   - Secret/eck-s3-credentials.yaml

@@ -1,10 +1,10 @@
 commonLabels:
   app.kubernetes.io/instance: {{ app_name }}
 
-helmChartInflationGenerator:
-- chartName: {{ app_name }}
-  chartRepoUrl: https://helm.linkerd.io/stable
-  chartVersion: 2.11.1
+helmCharts:
+- name: {{ app_name }}
+  repo: https://helm.linkerd.io/stable
+  version: 2.11.1
   releaseName: {{ app_name }}
-  releaseNamespace: infra
-  values: values.yaml
+  namespace: infra
+  valuesFile: values.yaml

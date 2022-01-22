@@ -5,14 +5,14 @@ namespace: monitoring
 
 resources:
   - prometheus-priority.yaml
-  - secret/thanos-bucket-credentials.yaml
 
-helmChartInflationGenerator:
-- chartName: kube-prometheus-stack
-  chartRepoUrl: https://prometheus-community.github.io/helm-charts
-  chartVersion: 21.0.0
+helmCharts:
+- name: kube-prometheus-stack
+  repo: https://prometheus-community.github.io/helm-charts
+  version: 21.0.0
   releaseName: {{ app_name }}
-  values: values.yaml
+  valuesFile: values.yaml
+  includeCRDs: true
 
 secretGenerator:
   - name: thanos-bucket-credentials
