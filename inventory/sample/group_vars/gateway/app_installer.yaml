@@ -32,5 +32,5 @@ helm_repositories:
   - name: rs-artifactory
     repo_url: https://artifactory.coprs.esa-copernicus.eu/artifactory/cs-helm-local
 
-app_paths:
-  - "{{ playbook_dir }}/../../apps"
+package_paths:
+  - "{{ playbook_dir }}/apps"
