@@ -26,7 +26,7 @@
       when: item.state == 'file'
 
     - name: "{{ package_name  }} - {{ app_name }} | Deploy resources"
-      shell: "{{ bin_dir }}/kustomize build --enable-helm {{ resources_dir.path }} | {{ bin_dir }}/kubectl apply -f - --prune -l app.kubernetes.io/instance={{ app_name }}"
+      shell: "{{ bin_dir }}/kustomize build --enable-helm {{ resources_dir.path }} | {{ bin_dir }}/kubectl apply -f - --server-side --prune -l app.kubernetes.io/instance={{ app_name }}"
       register: result
 
     - name: "{{ package_name  }} - {{ app_name }} | Extract deployed resources kind"
