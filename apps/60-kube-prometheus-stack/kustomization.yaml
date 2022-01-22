@@ -13,6 +13,7 @@ helmCharts:
   releaseName: {{ app_name }}
   valuesFile: values.yaml
   includeCRDs: true
+  namespace: monitoring
 
 secretGenerator:
   - name: thanos-bucket-credentials
