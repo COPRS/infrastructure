@@ -6,5 +6,4 @@ helmCharts:
   repo: https://helm.linkerd.io/stable
   version: 2.11.1
   releaseName: {{ app_name }}
-  namespace: infra
   valuesFile: values.yaml
