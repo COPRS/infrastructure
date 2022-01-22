@@ -23,13 +23,22 @@ cephClusterSpec:
     image: quay.io/ceph/ceph:v16.2.6
     allowUnsupported: false
 
-  resources:
-    limits:
-      cpu: 500m
-      memory: 1024Mi
-    requests:
-      cpu: 100m
-      memory: 256Mi
+
+  # resources:
+  #   mgr:
+  #     limits:
+  #       cpu: 500m
+  #       memory: 1024Mi
+  #     requests:
+  #       cpu: 100m
+  #       memory: 256Mi
+  #   mon:
+  #     limits:
+  #       cpu: 500m
+  #       memory: 1024Mi
+  #     requests:
+  #       cpu: 100m
+  #       memory: 256Mi
 
   dataDirHostPath: /data/rook
 
