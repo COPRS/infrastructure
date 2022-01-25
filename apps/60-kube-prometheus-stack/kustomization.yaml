@@ -13,8 +13,3 @@ helmCharts:
   releaseName: {{ app_name }}
   valuesFile: values.yaml
   namespace: monitoring
-
-secretGenerator:
-  - name: thanos-bucket-credentials
-    files: 
-      - objstore.yml

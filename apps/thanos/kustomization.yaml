@@ -8,3 +8,8 @@ helmCharts:
   version: 8.1.2
   valuesFile: values.yaml
   namespace: monitoring
+
+secretGenerator:
+  - name: thanos-bucket-credentials
+    files: 
+      - objstore.yml
