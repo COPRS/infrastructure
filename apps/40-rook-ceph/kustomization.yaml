@@ -8,3 +8,4 @@ helmCharts:
   repo: https://charts.rook.io/release
   version: v1.7.7
   valuesFile: values.yaml
+  namespace: infra

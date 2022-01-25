@@ -1,6 +1,7 @@
 commonLabels:
   app.kubernetes.io/instance: {{ app_name }}
 
+# do not forget to update the patch with the namespace
 namespace: infra
 
 helmCharts:
@@ -8,8 +9,8 @@ helmCharts:
   repo: https://charts.rook.io/release
   version: v1.7.7
   valuesFile: values.yaml
+  namespace: infra
 
-# CephCluster .spec.monitor.namespaceOverride does not exist in CRD schema
 patches:
   - path: patch.yaml
     target:
