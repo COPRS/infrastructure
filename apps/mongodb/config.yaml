@@ -1,3 +1,0 @@
-chart_ref: bitnami/mongodb
-chart_version: 10.29.0
-namespace: infra

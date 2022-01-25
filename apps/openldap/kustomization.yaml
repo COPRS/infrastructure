@@ -1,12 +1,12 @@
 namespace: security
 
 commonLabels:
-  app.kubernetes.io/component: openldap
-  app.kubernetes.io/instance: openldap
-  app.kubernetes.io/managed-by: Kustomize
-  app.kubernetes.io/name: openldap
+  app.kubernetes.io/instance: {{ app_name }}
 
 resources:
+- BackupConfiguration/openldap-daily.yaml
+- Repository/s3-backup.yaml
+- Secret/stash-s3-credentials.yaml
 - statefulset.yaml
 - service.yaml
 - svc-headless.yaml
@@ -23,6 +23,6 @@ configMapGenerator:
 secretGenerator:
 - name: openldap
   literals:
-  - LDAP_ADMIN_PASSWORD=adminpassword
-  - LDAP_CONFIG_PASSWORD=configpassword
-  - LDAP_READONLY_USER_PASSWORD=readonly
+  - LDAP_ADMIN_PASSWORD={{ openldap.admin_user_password }}
+  - LDAP_CONFIG_PASSWORD={{ openldap.config_user_password }}
+  - LDAP_READONLY_USER_PASSWORD={{ openldap.readonly_user_password }}

@@ -3,9 +3,9 @@ image:
 architecture: standalone
 auth:
   enabled: true
-  username: graylog
-  password: grayl0gPassw0rd
-  database: graylog
+  username: {{ mongodb.username }}
+  password: {{ mongodb.password }}
+  database: {{ mongodb.database }}
 persistence:
   enabled: true
   storageClass: ceph-block

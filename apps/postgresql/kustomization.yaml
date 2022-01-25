@@ -1,9 +1,19 @@
 commonLabels:
-    app.kubernetes.io/instance: postgresql
-    app.kubernetes.io/managed-by: Kustomize
+    app.kubernetes.io/instance: {{ app_name }}
+
+namespace: infra
+
+helmCharts:
+- name: {{ app_name }}
+  repo:   https://charts.bitnami.com/bitnami
+  version:  10.13.4
+  valuesFile: values.yaml
+  releaseName: {{ app_name }}
 
 resources:
-  - manifest.yaml
+  - BackupConfiguration/postgresql-daily.yaml
+  - Repository/s3-backup.yaml
+  - Secret/stash-s3-credentials.yaml
 
 secretGenerator:
 - name: init-postgres-db
