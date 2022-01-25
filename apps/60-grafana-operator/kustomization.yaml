@@ -1,25 +1,16 @@
-namespace: monitoring
+namespace: infra
 namePrefix: {{ app_name }}-
 
 commonLabels:
   app.kubernetes.io/instance: {{ app_name }}
-  app.kubernetes.io/component: {{ app_name }}
 
 resources:
   - deployment.yaml
   - rbac.yaml
   - servicemonitor.yaml
-  - grafana.yaml
+  - service.yaml
 
-secretGenerator:
-  - name: admin
-    literals:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD={{ grafana.admin_password }}
-    options:
-      disableNameSuffixHash: true
-  - name: oidc-client-secret
-    literals:
-      - GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET={{ grafana.oidc_client_secret }}
-    options:
-      disableNameSuffixHash: true
+configMapGenerator:
+- name: manager-config
+  files:
+    - controller_manager_config.yaml

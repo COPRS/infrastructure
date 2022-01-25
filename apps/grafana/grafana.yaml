@@ -43,9 +43,7 @@ spec:
     skipCreateAdminAccount: true
     envFrom:
       - secretRef:
-          name: grafana-operator-admin
-      - secretRef:
-          name: grafana-operator-oidc-client-secret
+          name: grafana-oidc-client-secret
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:

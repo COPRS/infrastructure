@@ -264,20 +264,3 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: controller-manager
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: controller-manager-metrics-service
-spec:
-  ports:
-  - name: https
-    port: 8443
-    protocol: TCP
-    targetPort: https
-  - port: 8080
-    targetPort: metrics
-    protocol: TCP
-    name: metrics
-  selector:
-    app.kubernetes.io/component: grafana-operator
