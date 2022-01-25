@@ -13,8 +13,10 @@ helmCharts:
 configMapGenerator:
   - name: kafka-metrics
     files:
-      - kafka-metrics-config.yml
-      - zookeeper-metrics-config.yml
+      - metrics-config/kafka-metrics-config.yml
+      - metrics-config/zookeeper-metrics-config.yml
+    options:
+      disableNameSuffixHash: true
 
 resources:
   - GrafanaDashboard/strimzi-kafka.yaml
