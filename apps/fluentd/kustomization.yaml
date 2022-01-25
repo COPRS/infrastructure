@@ -1,8 +1,7 @@
-resources:
-  - manifest.yaml
 commonLabels:
-  app.kubernetes.io/managed-by: Kustomize
-  app.kubernetes.io/instance: fluentd
+  app.kubernetes.io/instance: {{ app_name }}
+
+namespace: monitoring
 
 configMapGenerator:
   - name: fluentd-custom-plugins
@@ -16,3 +15,10 @@ configMapGenerator:
     files:
       - ./elasticsearch_templates/static_trace.json
       - ./elasticsearch_templates/dynamic_trace.json
+
+helmCharts:
+- name: {{ app_name }}
+  repo: https://charts.bitnami.com/bitnami
+  version: 4.4.1
+  valuesFile: values.yaml
+  releaseName: {{ app_name }}

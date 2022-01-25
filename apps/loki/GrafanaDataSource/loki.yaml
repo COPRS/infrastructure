@@ -4,8 +4,6 @@ metadata:
   name: loki
   labels:
     app.kubernetes.io/instance: loki
-    app.kubernetes.io/managed-by: additional_resources
-  namespace: monitoring
 spec:
   name: loki
   datasources:

@@ -256,7 +256,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "APISIX_OIDC_CLIENT_SECRET",
+      "secret": "{{ apisix.oidc_client_secret }}",
       "redirectUris": [
           "https://apisix.{{ rs_domain_name }}/*"
       ],
@@ -274,7 +274,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "GRAFANA_OIDC_CLIENT_SECRET",
+      "secret": "{{ grafana.oidc_client_secret }}",
       "redirectUris": [
         "https://monitoring.{{ rs_domain_name }}/login/generic_oauth"
       ],
@@ -321,7 +321,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "GRAYLOG_OIDC_CLIENT_SECRET",
+      "secret": "graylog.oidc_client_secret",
       "redirectUris": [
           "https://security.{{ rs_domain_name }}/*"
       ],
@@ -346,7 +346,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "KIBANA_OIDC_CLIENT_SECRET",
+      "secret": "kibana.oidc_clienet_secret",
       "redirectUris": [
           "https://infra.{{ rs_domain_name }}/*"
       ],
@@ -371,7 +371,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "LINKERD_OIDC_CLIENT_SECRET",
+      "secret": "{{ linkerd.oidc_client_secret }}",
       "redirectUris": [
           "https://linkerd.{{ rs_domain_name }}/*"
       ],
@@ -396,7 +396,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "PROMETHEUS_OIDC_CLIENT_SECRET",
+      "secret": "{{ prometheus.oidc_client_secret }}",
       "redirectUris": [
           "https://monitoring.{{ rs_domain_name }}/*"
       ],
@@ -1180,7 +1180,7 @@
             "uid"
           ],
           "bindCredential": [
-            "adminpassword"
+            "{{ openldap.admin_user_password }}"
           ],
           "bindDn": [
             "cn=admin,dc=cluster,dc=local"
