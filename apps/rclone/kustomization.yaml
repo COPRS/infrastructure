@@ -1,10 +1,8 @@
 namespace: security
 
 commonLabels:
-  app.kubernetes.io/component: rclone
-  app.kubernetes.io/instance: rclone
-  app.kubernetes.io/managed-by: Kustomize
-  app.kubernetes.io/name: rclone
+  app.kubernetes.io/component: {{ app_name }}
+  app.kubernetes.io/instance: {{ app_name }}
 
 resources:
   - clone-elasticsearch-backup.yaml

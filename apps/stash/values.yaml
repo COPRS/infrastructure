@@ -1,7 +1,5 @@
 license: |
-  -----BEGIN CERTIFICATE-----
-  Get a license here: https://license-issuer.appscode.com/?p=stash-community
-  -----END CERTIFICATE-----
+  {{ stash.license | indent( width=2 ) }}
 licenseApiService: v1beta1.admission.stash.appscode.com
 operator:
   registry: appscode
@@ -49,3 +47,6 @@ monitoring:
   agent: "prometheus.io/operator"
   backup: true
   operator: true
+
+podAnnotations:
+  linkerd.io/inject: disabled
