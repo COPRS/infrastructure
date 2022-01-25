@@ -1,0 +1,14 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: fluentbit.docker-security
+  labels:
+    strimzi.io/cluster: kafka-cluster
+spec:
+  partitions: 2
+  replicas: 1
+  config:
+    retention.bytes: 89478485
+    retention.ms: "-1"
+    segment.bytes: 22369621
+    cleanup.policy: delete

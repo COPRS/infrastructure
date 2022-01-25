@@ -4,6 +4,6 @@
     "enabled": true,
     "displayName": "Keycloak",
     "attributes": {
-      "frontendUrl": "https://security.DOMAIN_NAME/auth"
+      "frontendUrl": "https://security.{{ rs_domain_name }}/auth"
     }
 }

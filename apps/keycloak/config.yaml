@@ -1,3 +1,0 @@
-chart_ref: codecentric/keycloak
-chart_version: 16.0.5
-namespace: security

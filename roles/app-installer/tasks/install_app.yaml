@@ -1,0 +1,56 @@
+- name: Install app
+  block:
+    - name: "{{ package_name  }} - {{ app_name }} | Check whether kustomization.yaml file exists"
+      stat:
+        path: "{{ app_dir }}/kustomization.yaml"
+      delegate_to: localhost
+      register: kustomization
+
+    - name: "{{ package_name  }} - {{ app_name }}"
+      fail:
+        msg: "No kustomization.yaml file found in {{ app_dir }}. Documentation available at https://github.com/COPRS/infrastructure/blob/release/0.3.0/doc/how-to/Add%20an%20application.md"
+      when: not kustomization.stat.exists
+
+    - name: "{{ package_name  }} - {{ app_name }} | Create tmp directory for k8s resources"
+      tempfile:
+        state: directory
+        suffix: "k8s_resources_{{ app_name }}"
+      register: resources_dir
+
+    - name: "{{ package_name  }} - {{ app_name }} | Template and send resources to remote"
+      include_tasks: copy_and_template.yaml
+      with_community.general.filetree: "{{ app_dir }}/"
+      when: item.state == 'file'
+
+    - name: "{{ package_name  }} - {{ app_name }} | Deploy resources"
+      shell: "{{ bin_dir }}/kustomize build --enable-helm {{ resources_dir.path }} | {{ bin_dir }}/kubectl apply -f - --server-side --force-conflicts --prune -l app.kubernetes.io/instance={{ app_name }}"
+      register: result
+
+    - name: "{{ package_name  }} - {{ app_name }} | Extract deployed resources"
+      set_fact:
+        resources: "{{ resources|d([]) + [item.split()[0]] }}"
+      loop: "{{ result.stdout_lines }}"
+
+    - name: "{{ package_name  }} - {{ app_name }} | Collect deployed resources and write them into resources.txt"
+      copy:
+        content: "{{ resources | join(' ') }}"
+        dest: "{{ app_dir }}/resources.txt"
+      delegate_to: localhost
+
+  always:
+    - name: "{{ package_name  }} - {{ app_name }} | Remove resources tmp dir"
+      file:
+        path: "{{ resources_dir.path }}"
+        state: absent
+      when:
+        - resources_dir.path is defined
+        - not debug
+
+    - name: "{{ package_name  }} - {{ app_name }} | Warn about not deleted tmp folder"
+      debug:
+        msg:
+          - "DEBUG: the temporary folder containing the k8s resources has been kept tfor debugging purpose"
+          - "{{ resources_dir.path }}"
+          - "DO NOT FORGET TO DELETE IT WHEN YOU ARE DONE"
+      when:
+        - debug

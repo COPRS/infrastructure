@@ -1,0 +1,20 @@
+commonLabels:
+  app.kubernetes.io/instance: {{ app_name }}
+
+namespace: monitoring
+
+resources:
+  - prometheus-priority.yaml
+
+helmCharts:
+- name: kube-prometheus-stack
+  repo: https://prometheus-community.github.io/helm-charts
+  version: 21.0.0
+  releaseName: {{ app_name }}
+  valuesFile: values.yaml
+  namespace: monitoring
+
+secretGenerator:
+  - name: thanos-bucket-credentials
+    files: 
+      - objstore.yml

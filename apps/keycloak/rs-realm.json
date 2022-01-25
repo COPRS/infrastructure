@@ -256,9 +256,9 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "APISIX_OIDC_CLIENT_SECRET",
+      "secret": "{{ apisix.oidc_client_secret }}",
       "redirectUris": [
-          "https://apisix.DOMAIN_NAME/*"
+          "https://apisix.{{ rs_domain_name }}/*"
       ],
       "webOrigins": [],
       "directAccessGrantsEnabled": true,
@@ -274,9 +274,9 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "GRAFANA_OIDC_CLIENT_SECRET",
+      "secret": "{{ grafana.oidc_client_secret }}",
       "redirectUris": [
-        "https://monitoring.DOMAIN_NAME/login/generic_oauth"
+        "https://monitoring.{{ rs_domain_name }}/login/generic_oauth"
       ],
       "webOrigins": [],
       "bearerOnly": false,
@@ -321,9 +321,9 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "GRAYLOG_OIDC_CLIENT_SECRET",
+      "secret": "graylog.oidc_client_secret",
       "redirectUris": [
-          "https://security.DOMAIN_NAME/*"
+          "https://security.{{ rs_domain_name }}/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -346,9 +346,9 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "KIBANA_OIDC_CLIENT_SECRET",
+      "secret": "kibana.oidc_clienet_secret",
       "redirectUris": [
-          "https://infra.DOMAIN_NAME/*"
+          "https://infra.{{ rs_domain_name }}/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -371,9 +371,9 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "LINKERD_OIDC_CLIENT_SECRET",
+      "secret": "{{ linkerd.oidc_client_secret }}",
       "redirectUris": [
-          "https://linkerd.DOMAIN_NAME/*"
+          "https://linkerd.{{ rs_domain_name }}/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -396,9 +396,9 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "PROMETHEUS_OIDC_CLIENT_SECRET",
+      "secret": "{{ prometheus.oidc_client_secret }}",
       "redirectUris": [
-          "https://monitoring.DOMAIN_NAME/*"
+          "https://monitoring.{{ rs_domain_name }}/*"
       ],
       "webOrigins": [],
       "notBefore": 0,
@@ -732,7 +732,7 @@
   ],
   "browserFlow": "Browser - restricted",
   "attributes": {
-    "frontendUrl": "https://security.DOMAIN_NAME/auth"
+    "frontendUrl": "https://security.{{ rs_domain_name }}/auth"
   },
   "components": {
     "org.keycloak.storage.UserStorageProvider": [
@@ -1180,7 +1180,7 @@
             "uid"
           ],
           "bindCredential": [
-            "adminpassword"
+            "{{ openldap.admin_user_password }}"
           ],
           "bindDn": [
             "cn=admin,dc=cluster,dc=local"

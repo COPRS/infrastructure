@@ -1,3 +1,0 @@
-chart_ref: fluent/fluent-bit
-chart_version: 0.19.6
-namespace: monitoring

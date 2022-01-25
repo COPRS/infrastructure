@@ -2,35 +2,5 @@
 helm_version: "v3.6.3"
 kustomize_version: "v4.4.0"
 
-helm_repositories:
-  - name: bitnami
-    repo_url: https://charts.bitnami.com/bitnami
-  - name: rook-release
-    repo_url: https://charts.rook.io/release
-  - name: kongz # for graylog
-    repo_url: https://charts.kong-z.com
-  - name: fluent
-    repo_url: https://fluent.github.io/helm-charts
-  - name: grafana
-    repo_url: https://grafana.github.io/helm-charts
-  - name: strimzi
-    repo_url: https://strimzi.io/charts/
-  - name: prometheus-community
-    repo_url: https://prometheus-community.github.io/helm-charts
-  - name: elastic
-    repo_url: https://helm.elastic.co
-  - name: appscode
-    repo_url: https://charts.appscode.com/stable/
-  - name: linkerd
-    repo_url: https://helm.linkerd.io/stable
-  - name: apisix
-    repo_url: https://charts.apiseven.com
-  - name: codecentric
-    repo_url: https://codecentric.github.io/helm-charts
-  - name: jetstack
-    repo_url: https://charts.jetstack.io
-  - name: rs-artifactory
-    repo_url: https://artifactory.coprs.esa-copernicus.eu/artifactory/cs-helm-local
-
-app_paths:
-  - "{{ playbook_dir }}/../../apps"
+package_paths:
+  - "{{ playbook_dir }}/apps"

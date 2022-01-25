@@ -1,0 +1,6 @@
+# CephCluster .spec.monitor.namespaceOverride does not exist in CRD schema
+- op: replace
+  path: /spec/monitoring
+  value:
+    enabled: true
+    rulesNamespace: infra

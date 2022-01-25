@@ -1,12 +1,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  labels:
-    app.kubernetes.io/instance: apisix
-    app.kubernetes.io/managed-by: Kustomize
-    app.kubernetes.io/name: apisix
   name: apisix
-  namespace: infra
 spec:
   endpoints:
   - interval: 15s

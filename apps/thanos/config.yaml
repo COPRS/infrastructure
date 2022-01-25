@@ -1,3 +1,0 @@
-chart_ref: bitnami/thanos
-chart_version: 8.1.2
-namespace: monitoring

@@ -71,13 +71,13 @@ externalDatabase:
   port: 5432
   driver: org.postgresql.Driver
   scheme: postgresql
-  password: scdfpassword
+  password: {{ scdf.database.password }}
   dataflow:
-    database: dataflow
-    username: scdf
+    database: {{ scdf.database.dataflow }}
+    username: {{ scdf.database.username }}
   skipper:
-    database: skipper
-    username: scdf
+    database: {{ scdf.database.skipper }}
+    username: {{ scdf.database.username }}
 externalKafka:
   enabled: true
   brokers: kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092

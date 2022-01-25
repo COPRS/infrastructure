@@ -1,0 +1,120 @@
+rs_domain_name: DOMAIN_NAME
+
+apisix:
+  oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  api_credentials:
+    admin: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+    viewer: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+
+linkerd:
+  ca_crt: |
+    -----BEGIN CERTIFICATE-----
+    YOUR MTLS ROOT CERTIFICATE HERE
+    Read the following documentationto generate your own
+    https://linkerd.io/2.10/tasks/generate-certificates/
+    -----END CERTIFICATE-----
+  issuer_crt: |
+    -----BEGIN CERTIFICATE-----
+    YOUR MTLS INTERMEDIATE CERTIFICATE ISSUER HERE
+    Read the following documentationto generate your own
+    https://linkerd.io/2.10/tasks/generate-certificates/
+    -----END CERTIFICATE-----
+  issuer_key: |
+    -----BEGIN EC PRIVATE KEY-----
+    YOUR MTLS INTERMEDIATE CERTIFICATE KEY HERE
+    Read the following documentationto generate your own
+    https://linkerd.io/2.10/tasks/generate-certificates/
+    -----END EC PRIVATE KEY-----
+  oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+
+prometheus:
+  oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+
+thanos_bucket:
+  name: BUCKET_NAME
+  s3_endpoint: S3_ENDPOINT
+  region: S3_REGION
+  access_key: XXXXXXXXXXXXX
+  secret_key: xxxxxxxxxxxx
+
+grafana:
+  admin_password: grafanapass
+  oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+
+eck_backup_bucket:
+  name: BUCKET_NAME
+  endpoint: S3_ENDPOINT
+  region: S3_REGION
+  access_key: XXXXXXXXXXXXX
+  secret_key: xxxxxxxxxxxx
+
+elasticsearch_trace:
+  operator_password_hash: $2a$10$/7vn2QXvp.tWbH7.Of3LpOU9zYqOL.tqeZk4/T1dZ/TqkqAmpImG6
+
+keycloak:
+  superadmin:
+    username: superadmin
+    password: keycloaksuperadmin
+  database:
+    name: keycloak
+    user: keycloak
+    password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+
+mongodb:
+  database: graylog
+  password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  username: graylog
+
+openldap:
+  admin_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  config_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  readonly_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+
+graylog:
+  mongodb_uri: "mongodb://{{ mongodb.username }}:{{ mongodb.password }}@mongodb.infra.svc.cluster.local/{{ mongodb.database }}"
+  oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+
+finops-object-storage-exporter:
+  s3:
+    endpoint: S3_ENDPOINT
+    region: S3_REGION
+    access_key: XXXXXXXXXXXXX
+    secret_key: xxxxxxxxxxxx
+
+scdf:
+  database:
+    password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+    username: scdf
+    dataflow: dataflow
+    skipper: skipper
+
+stash:
+  postgresql:
+    name: BUCKET_NAME
+    endpoint: S3_ENDPOINT
+    region: S3_REGION
+    access_key: XXXXXXXXXXXXX
+    secret_key: xxxxxxxxxxxx
+  openldap:
+    name: BUCKET_NAME
+    endpoint: S3_ENDPOINT
+    region: S3_REGION
+    access_key: XXXXXXXXXXXXX
+    secret_key: xxxxxxxxxxxx
+  restic_password: resticpass
+  license: |
+    -----BEGIN CERTIFICATE-----
+    Get a license here: https://license-issuer.appscode.com/?p=stash-community
+    -----END CERTIFICATE-----
+    
+rclone:
+  source:
+    endpoint: S3_ENDPOINT
+    region: S3_REGION
+    access_key: XXXXXXXXXXXXX
+    secret_key: xxxxxxxxxxxx
+  destination:
+    endpoint: S3_ENDPOINT
+    region: S3_REGION
+    access_key: XXXXXXXXXXXXX
+    secret_key: xxxxxxxxxxxx

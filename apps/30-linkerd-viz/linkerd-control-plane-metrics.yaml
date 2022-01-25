@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: linkerd-controller
+  namespace: infra
+spec:
+  selector:
+    matchLabels:
+      linkerd.io/control-plane-ns: linkerd
+  namespaceSelector:
+    matchNames:
+      - linkerd
+      - linkerd-viz
+  podMetricsEndpoints:
+    - path: /metrics
+      port: admin-http
+      relabelings:
+        - sourceLabels:
+          - __meta_kubernetes_pod_container_port_name
+          action: keep
+          regex: admin-http
+        - sourceLabels: [__meta_kubernetes_pod_container_name]
+          action: replace
+          targetLabel: component

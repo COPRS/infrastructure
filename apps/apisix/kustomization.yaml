@@ -1,9 +1,23 @@
 commonLabels:
-  app.kubernetes.io/instance: apisix
-  app.kubernetes.io/managed-by: Kustomize
+  app.kubernetes.io/instance: {{ app_name }}
+
+namespace: infra
+
+helmCharts:
+- name: {{ app_name }}
+  releaseName: {{ app_name }}
+  repo: https://charts.apiseven.com
+  version: 0.7.3
+  valuesFile: values.yaml
+  namespace: infra
 
 resources:
-  - manifest.yaml
+  - routes/apisix-apisixroute.yaml
+  - routes/infra-apisixroute.yaml
+  - routes/linkerd-apisixroute.yaml
+  - routes/monitoring-apisixroute.yaml
+  - routes/security-apisixroute.yaml
+  - routes/sni-tls.yaml
   - serviceMonitor.yaml
 
 patches:

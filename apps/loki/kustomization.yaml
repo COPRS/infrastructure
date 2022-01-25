@@ -1,0 +1,15 @@
+namespace: monitoring
+
+commonLabels:
+  app.kubernetes.io/instance: {{ app_name }}
+
+helmCharts:
+- name: {{ app_name }}
+  releaseName: {{ app_name }}
+  repo: https://grafana.github.io/helm-charts
+  version: 2.8.1
+  valuesFile: values.yaml
+
+resources:
+  - GrafanaDashboard/loki.yaml
+  - GrafanaDataSource/loki.yaml

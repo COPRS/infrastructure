@@ -1,10 +1,11 @@
-namespace: monitoring
 namePrefix: grafana-operator-
 
 commonLabels:
-  app.kubernetes.io/managed-by: Kustomize
-  app.kubernetes.io/instance: grafana-operator
-  app.kubernetes.io/component: grafana-operator
+  app.kubernetes.io/instance: {{ app_name }}
+  app.kubernetes.io/component: {{ app_name }}
 
 resources:
-  - crds.yaml
+  - crd-grafanadashboards.yaml
+  - crd-grafanadatasources.yaml
+  - crd-grafananotificationchannels.yaml
+  - crd-grafanas.yaml

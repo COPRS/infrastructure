@@ -4,10 +4,11 @@ tags:
 
 graylog:
   image:
-    repository: graylog/graylog:4.2.3-1
+    repository: graylog/graylog
+    tag: 4.2.3-1
 
   mongodb:
-    uri:  mongodb://graylog:grayl0gPassw0rd@mongodb.infra.svc.cluster.local/graylog
+    uri:  {{ graylog.mongodb_uri }}
 
   elasticsearch:
     hosts: http://elasticsearch-cluster-es-http.infra.svc.cluster.local:9200
@@ -35,7 +36,7 @@ graylog:
   env:
     GRAYLOG_TRUSTED_PROXIES: 10.244.0.0/16
 
-  externalUri: http://security.DOMAIN_NAME/graylog
+  externalUri: http://security.{{ rs_domain_name }}/graylog
   
   ingress:
     enabled: false

@@ -1,0 +1,12 @@
+commonLabels:
+  app.kubernetes.io/instance: {{ app_name }}
+
+helmCharts:
+- name: {{ app_name }}
+  repo: https://helm.linkerd.io/stable
+  version: 2.11.1
+  valuesFile: values.yaml
+
+resources:
+  - linkerd-control-plane-metrics.yaml
+  - linkerd-proxy-metrics.yaml

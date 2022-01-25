@@ -1,0 +1,16 @@
+- name: "{{ package_name  }} | Collect apps in package"
+  find:
+    file_type: directory
+    paths: "{{ package_path }}"
+  delegate_to: localhost
+  register: result
+
+- name: "{{ package_name  }} | Browse each app"
+  include_tasks: install_app.yaml
+  vars:
+    app_name: "{{ app_dir | basename | regex_search('^[0-9-]*([\\w-]+)', '\\1') | first }}"
+    regex: '.+/[\w-]+[\w\.-]+$'
+  loop: "{{  result.files | sort(attribute='path') | map(attribute='path') | map('regex_search', regex) }}"
+  loop_control:
+    loop_var: "app_dir"
+  when: APP_NAME is undefined or APP_NAME == app_name

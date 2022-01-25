@@ -10,6 +10,9 @@ spec:
     spec:
       backoffLimit: 0
       template:
+        metadata:
+          annotations:
+            linkerd.io/inject: disabled
         spec:
           securityContext:
             runAsUser: 16  # run as cron user instead of root
@@ -21,7 +24,7 @@ spec:
                 - /entrypoint.sh
               env:
                 - name: BUCKET
-                  value: S3_LDAP_BACKUP_BUCKET
+                  value: {{ stash.openldap.name }}
                 - name: RETENTION_DAYS
                   value: '7'
               volumeMounts:

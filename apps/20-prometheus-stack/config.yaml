@@ -1,3 +1,0 @@
-chart_ref: prometheus-community/kube-prometheus-stack
-chart_version: 21.0.0
-namespace: monitoring

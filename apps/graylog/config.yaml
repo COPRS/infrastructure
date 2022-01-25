@@ -1,4 +1,0 @@
-chart_ref: kongz/graylog
-chart_version: 1.9.2
-namespace: security
-atomic: true

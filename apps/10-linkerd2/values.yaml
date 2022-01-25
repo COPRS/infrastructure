@@ -199,28 +199,16 @@ identity:
     tls:
       # -- Issuer certificate (ECDSA). It must be provided during install.
       crtPEM: |
-        -----BEGIN CERTIFICATE-----
-        YOUR MTLS INTERMEDIATE CERTIFICATE ISSUER HERE
-        Read the following documentationto generate your own
-        https://linkerd.io/2.10/tasks/generate-certificates/
-        -----END CERTIFICATE-----
+        {{ linkerd.issuer_crt | indent( width=8 ) }}
 
       # -- Key for the issuer certificate (ECDSA). It must be provided during
       # install
       keyPEM: |
-        -----BEGIN EC PRIVATE KEY-----
-        YOUR MTLS INTERMEDIATE CERTIFICATE KEY HERE
-        Read the following documentationto generate your own
-        https://linkerd.io/2.10/tasks/generate-certificates/
-        -----END EC PRIVATE KEY-----
+        {{ linkerd.issuer_key | indent( width=8 ) }}
 
 # CA
 identityTrustAnchorsPEM: |
-  -----BEGIN CERTIFICATE-----
-  YOUR MTLS ROOT CERTIFICATE HERE
-  Read the following documentationto generate your own
-  https://linkerd.io/2.10/tasks/generate-certificates/
-  -----END CERTIFICATE-----
+  {{ linkerd.ca_crt | indent( width=2 ) }}
 
 # -|- CPU, Memory and Ephemeral Storage resources required by the identity controller (see `proxy.resources` for sub-fields)
 identityResources:

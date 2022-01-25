@@ -1,3 +1,0 @@
-chart_ref: jetstack/cert-manager
-chart_version: v1.6.1
-namespace: infra

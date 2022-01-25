@@ -1,13 +1,14 @@
 namespace: security
 
 commonLabels:
-  app.kubernetes.io/component: keycloak
-  app.kubernetes.io/instance: keycloak
-  app.kubernetes.io/managed-by: Kustomize
-  app.kubernetes.io/name: keycloak
+  app.kubernetes.io/instance: {{ app_name }}
 
-resources:
-  - manifest.yaml
+helmCharts:
+- name: {{ app_name }}
+  releaseName: {{ app_name }}
+  repo: https://codecentric.github.io/helm-charts
+  version: 16.0.5
+  valuesFile: values.yaml
 
 # patches:
   # - sa-enable-automountServiceAccountToken.yaml # mandatory to mesh with identity
@@ -15,12 +16,12 @@ resources:
 secretGenerator:
   - name: keycloak-database
     literals:
-      - user=keycloak
-      - password=keycloakpassword
+      - user={{ keycloak.database.user }}
+      - password={{ keycloak.database.password }}
   - name: keycloak
     literals:
-      - user=superadmin
-      - password=keycloaksuperadmin
+      - user={{ keycloak.superadmin.username }}
+      - password={{ keycloak.superadmin.password }}
   - name: realm-secret
     files:
     - master-realm.json

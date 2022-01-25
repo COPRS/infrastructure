@@ -1,0 +1,41 @@
+apiVersion: apisix.apache.org/v2beta2
+kind: ApisixRoute
+metadata:
+  name: linkerd-dashboard
+  namespace: linkerd-viz
+  labels:
+    app.kubernetes.io/instance: apisix
+    app.kubernetes.io/managed-by: additional_resources
+spec:
+  http:
+    - name: linkerd-dashboard
+      backends:
+        - serviceName: web
+          servicePort: 8084
+      match:
+        hosts: [ linkerd.{{ rs_domain_name }} ]
+        paths: [ /* ]
+        methods: [ GET ]
+      websocket: true
+      plugins:
+        - name: cors
+          enable: true
+          config:
+            allow_origins: "https://security.{{ rs_domain_name }}"
+        - name: proxy-rewrite
+          enable: true
+          config:
+            host: web.linkerd-viz.svc.cluster.local
+            headers:
+              Origin: ""
+        - name: openid-connect
+          enable: true
+          config:
+            client_id: linkerd
+            client_secret: {{ linkerd.oidc_client_secret }}
+            discovery: https://security.{{ rs_domain_name }}/auth/realms/RS/.well-known/openid-configuration
+            scope: openid
+            bearer_only: false
+            realm: RS
+            introspection_endpoint_auth_method: client_secret_post
+            redirect_uri: https://linkerd.{{ rs_domain_name }}/redirect_uri
