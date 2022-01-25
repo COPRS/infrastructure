@@ -1,0 +1,14 @@
+commonLabels:
+  app.kubernetes.io/instance: {{ app_name }}
+
+resources:
+  - crd-kafkabridges.yaml
+  - crd-kafkaconnectors.yaml
+  - crd-kafkaconnects.yaml
+  - crd-kafkamirrormaker2s.yaml
+  - crd-kafkamirrormakers.yaml
+  - crd-kafkarebalances.yaml
+  - crd-kafkas.yaml
+  - crd-kafkatopics.yaml
+  - crd-kafkausers.yaml
+  - crd-strimzipodsets.yaml
