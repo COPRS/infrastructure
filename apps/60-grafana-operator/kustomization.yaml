@@ -15,11 +15,11 @@ secretGenerator:
   - name: admin
     literals:
       - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD={{ admin_password}}
+      - GF_SECURITY_ADMIN_PASSWORD={{ grafana.admin_password }}
     options:
       disableNameSuffixHash: true
   - name: oidc-client-secret
     literals:
-      - GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET={{ oidc_client_secret }}
+      - GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET={{ grafana.oidc_client_secret }}
     options:
       disableNameSuffixHash: true
