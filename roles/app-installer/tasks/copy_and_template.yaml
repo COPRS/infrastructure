@@ -1,0 +1,10 @@
+- name: "{{ package_name  }} - {{ app_name }} - {{ item.path }} | Make sure file directory exists"
+  file:
+    path: "{{ resources_dir.path ~ '/' ~ item.path | dirname }}"
+    state: directory
+
+- name: "{{ package_name  }} - {{ app_name }} - {{ item.path }} | Template and send file to remote"
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ resources_dir.path }}/{{ item.path }}"
+    mode: "{{ item.mode }}"

@@ -14,22 +14,19 @@
     - name: "{{ package_name  }} - {{ app_name }} | Create tmp directory for k8s resources"
       tempfile:
         state: directory
-        suffix: k8s_resources
+        suffix: "k8s_resources_{{ app_name }}"
       register: resources_dir
 
     - name: "{{ package_name  }} - {{ app_name }} | Template and send resources to remote"
-      template:
-        src: "{{ item.src }}"
-        dest: "{{ resources_dir.path }}/{{ item.path }}"
-        mode: "{{ item.mode }}"
+      include_tasks: copy_and_template.yaml
       with_community.general.filetree: "{{ app_dir }}/"
       when: item.state == 'file'
 
     - name: "{{ package_name  }} - {{ app_name }} | Deploy resources"
-      shell: "{{ bin_dir }}/kustomize build --enable-helm {{ resources_dir.path }} | {{ bin_dir }}/kubectl apply -f - --server-side --prune -l app.kubernetes.io/instance={{ app_name }}"
+      shell: "{{ bin_dir }}/kustomize build --enable-helm {{ resources_dir.path }} | {{ bin_dir }}/kubectl apply -f - --server-side --force-conflicts --prune -l app.kubernetes.io/instance={{ app_name }}"
       register: result
 
-    - name: "{{ package_name  }} - {{ app_name }} | Extract deployed resources kind"
+    - name: "{{ package_name  }} - {{ app_name }} | Extract deployed resources"
       set_fact:
         resources: "{{ resources|d([]) + [item.split()[0]] }}"
       loop: "{{ result.stdout_lines }}"
