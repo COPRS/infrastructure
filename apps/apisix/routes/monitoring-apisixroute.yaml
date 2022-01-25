@@ -33,7 +33,7 @@ spec:
           enable: true
           config:
             client_id: prometheus
-            client_secret: PROMETHEUS_OIDC_CLIENT_SECRET
+            client_secret: {{ prometheus.oidc_client_secret }}
             discovery: https://security.{{ rs_domain_name }}/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false
@@ -61,7 +61,7 @@ spec:
           enable: true
           config:
             client_id: prometheus
-            client_secret: PROMETHEUS_OIDC_CLIENT_SECRET
+            client_secret: {{ prometheus.oidc_client_secret }}
             discovery: https://security.{{ rs_domain_name }}/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false
