@@ -15,7 +15,7 @@ query:
   dnsDiscovery:
     sidecarsService: prometheus-operated
     sidecarsNamespace: monitoring
-  affinity:
+  affinity: &affinity_infra
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
@@ -44,12 +44,7 @@ compactor:
       - ReadWriteOnce
     size: 20Gi
   affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-            - key: "node-role.kubernetes.io/infra"
-              operator: Exists
+    <<: *affinity_infra
   resources:
     limits:
       cpu: 500m
@@ -64,12 +59,7 @@ storegateway:
     enabled: false
   enabled: true
   affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-            - key: "node-role.kubernetes.io/infra"
-              operator: Exists
+    <<: *affinity_infra
   resources:
     limits:
       cpu: 500m
@@ -81,12 +71,7 @@ storegateway:
 ruler:
   enabled: false
   affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-            - key: "node-role.kubernetes.io/infra"
-              operator: Exists
+    <<: *affinity_infra
   resources:
     limits:
       cpu: 50m
@@ -96,26 +81,3 @@ ruler:
       memory: 64Mi
   alertmanagers:
     - http://prometheus-stack-kube-prom-alertmanager.monitoring.svc.cluster.local:9094
-  # alertmanagersConfig:
-  #   - http_config:
-  #     basic_auth:
-  #       username: ""
-  #       password: ""
-  #       password_file: ""
-  #     bearer_token: ""
-  #     bearer_token_file: ""
-  #     proxy_url: ""
-  #     tls_config:
-  #       ca_file: ""
-  #       cert_file: ""
-  #       key_file: ""
-  #       server_name: ""
-  #       insecure_skip_verify: false
-  #   static_configs: []
-  #   file_sd_configs:
-  #   - files: []
-  #     refresh_interval: 0s
-  #   scheme: http
-  #   path_prefix: ""
-  #   timeout: 10s
-  #   api_version: v1
