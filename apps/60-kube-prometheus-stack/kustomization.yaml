@@ -12,7 +12,6 @@ helmCharts:
   version: 21.0.0
   releaseName: {{ app_name }}
   valuesFile: values.yaml
-  includeCRDs: true
   namespace: monitoring
 
 secretGenerator:
