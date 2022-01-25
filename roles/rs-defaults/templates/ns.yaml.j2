@@ -6,5 +6,4 @@ metadata:
     name: {{ ns.name }}
     annotations:
       linkerd.io/inject: enabled
-      scheduler.alpha.kubernetes.io/node-selector: {{ ns.nodeSelectorAnnotation }}
 {% endfor %}
