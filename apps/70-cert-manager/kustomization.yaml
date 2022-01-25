@@ -4,6 +4,7 @@ commonLabels:
 helmCharts:
 - name: {{ app_name }}
   repo: https://charts.jetstack.io
+  releaseName: {{ app_name }}
   version: v1.6.1
   namespace: infra
   valuesFile: values.yaml
