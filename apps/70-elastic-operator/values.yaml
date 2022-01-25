@@ -28,3 +28,6 @@ affinity:
         - matchExpressions:
           - key: "node-role.kubernetes.io/infra"
             operator: Exists
+
+# CRD should be installed separately and before
+installCRDs: false

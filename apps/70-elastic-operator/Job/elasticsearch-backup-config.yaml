@@ -8,6 +8,8 @@ spec:
   template:
     metadata:
       name: elasticsearch-backup-config
+      annotations:
+        linkerd.io/inject: disabled
     spec:
       restartPolicy: OnFailure
       initContainers:
@@ -17,7 +19,7 @@ spec:
             [
               "sh",
               "-c",
-              "for i in $(seq 1 300); do nc -zvw1 elasticsearch-cluster-es-http.infra.svc.cluster.local 9200 && exit 0 || sleep 3; done; exit 1",
+              "for i in $(seq 1 300); do nc -zvw1 elasticsearch-trace-es-http.infra.svc.cluster.local 9200 && exit 0 || sleep 3; done; exit 1",
             ]
       containers:
         - name: backup-config
@@ -29,8 +31,8 @@ spec:
             - sh
             - -c
             - |
-              curl -X PUT "elasticsearch-cluster-es-http.infra.svc.cluster.local:9200/_snapshot/backup-repository?pretty" -H 'Content-Type: application/json' -d @/etc/backup-config/s3-repository.json
-              curl -X PUT "elasticsearch-cluster-es-http.infra.svc.cluster.local:9200/_slm/policy/daily-snapshots?pretty" -H 'Content-Type: application/json' -d @/etc/backup-config/snapshot-config.json
+              curl -X PUT "elasticsearch-trace-es-http.infra.svc.cluster.local:9200/_snapshot/backup-repository?pretty" -H 'Content-Type: application/json' -d @/etc/backup-config/s3-repository.json
+              curl -X PUT "elasticsearch-trace-es-http.infra.svc.cluster.local:9200/_slm/policy/daily-snapshots?pretty" -H 'Content-Type: application/json' -d @/etc/backup-config/snapshot-config.json
       volumes:
         - name: elasticsearch-backup-config
           configMap:

@@ -20,8 +20,8 @@ spec:
           roles: superuser
           authz_exception: false
         node.roles: ["master"]
-        s3.client.default.endpoint: "S3_ENDPOINT"
-        s3.client.default.region: "S3_REGION"
+        s3.client.default.endpoint: {{ eck_backup_bucket.endpoint }}
+        s3.client.default.region: {{ eck_backup_bucket.region }}
       volumeClaimTemplates:
         - metadata:
             name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
@@ -33,6 +33,10 @@ spec:
                 storage: 10Gi
             storageClassName: ceph-block
       podTemplate:
+        metadata:
+          annotations:
+            config.linkerd.io/skip-outbound-ports: "443"
+            config.linkerd.io/opaque-ports: "9300"
         spec:
           automountServiceAccountToken: true
           initContainers:
@@ -85,8 +89,8 @@ spec:
           roles: superuser
           authz_exception: false
         node.roles: ["data"]
-        s3.client.default.endpoint: "S3_ENDPOINT"
-        s3.client.default.region: "S3_REGION"
+        s3.client.default.endpoint: {{ eck_backup_bucket.endpoint }}
+        s3.client.default.region: {{ eck_backup_bucket.region }}
       volumeClaimTemplates:
         - metadata:
             name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
@@ -98,6 +102,10 @@ spec:
                 storage: 80Gi
             storageClassName: ceph-block
       podTemplate:
+        metadata:
+          annotations:
+            config.linkerd.io/skip-outbound-ports: "443"
+            config.linkerd.io/opaque-ports: "9300"
         spec:
           automountServiceAccountToken: true
           initContainers:
