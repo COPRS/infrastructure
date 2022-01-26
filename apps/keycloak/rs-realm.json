@@ -472,7 +472,7 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "SCDF_OIDC_CLIENT_SECRET",
       "redirectUris": [
-          "https://scdf.DOMAIN_NAME/*"
+          "https://scdf.{{ rs_domain_name }}/*"
       ],
       "webOrigins": [],
       "notBefore": 0,

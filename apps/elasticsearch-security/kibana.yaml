@@ -15,6 +15,6 @@ spec:
     spec:
       automountServiceAccountToken: true
   config:
-    server.publicBaseUrl: https://security.DOMAIN_NAME
+    server.publicBaseUrl: https://security.{{ rs_domain_name }}
     server.basePath: /kibana
   
