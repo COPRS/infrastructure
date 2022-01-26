@@ -13,4 +13,4 @@
   loop: "{{  result.files | sort(attribute='path') | map(attribute='path') | map('regex_search', regex) }}"
   loop_control:
     loop_var: "app_dir"
-  when: APP_NAME is undefined or APP_NAME == app_name
+  when: app is undefined or app == app_name
