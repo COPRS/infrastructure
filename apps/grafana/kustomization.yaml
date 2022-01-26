@@ -1,0 +1,12 @@
+namespace: monitoring
+
+commonLabels:
+  app.kubernetes.io/instance: {{ app_name }}
+
+resources:
+  - grafana.yaml
+
+secretGenerator:
+  - name: grafana-oidc-client-secret
+    literals:
+      - GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET={{ grafana.oidc_client_secret }}

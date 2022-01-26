@@ -2,7 +2,7 @@ commonLabels:
   app.kubernetes.io/instance: {{ app_name }}
 
 helmCharts:
-- name: {{ app_name }}
+- name: spring-cloud-dataflow
   releaseName: {{ app_name }}
   repo: https://charts.bitnami.com/bitnami
   version: 4.1.5

@@ -1,0 +1,65 @@
+apiVersion: integreatly.org/v1alpha1
+kind: Grafana
+metadata:
+  name: grafana
+spec:
+  baseImage: 'grafana/grafana:8.3.3-ubuntu'
+  client:
+    preferService: true
+  config:
+    log:
+      mode: "console"
+      level: "info"
+    log.frontend:
+      enabled: true
+    server:
+      domain: monitoring.{{ rs_domain_name }}
+      root_url: https://monitoring.{{ rs_domain_name }} 
+    auth:
+      oauth_auto_login: true
+      disable_login_form: true
+      signout_redirect_url: https://security.{{ rs_domain_name }}/auth/realms/RS/protocol/openid-connect/logout?redirect_uri=https%3A%2F%2Fmonitoring.{{ rs_domain_name }}
+    auth.generic_oauth:
+      enabled: true
+      allow_sign_up: true
+      client_id: grafana
+      scopes: profile
+      auth_url: https://security.{{ rs_domain_name }}/auth/realms/RS/protocol/openid-connect/auth
+      token_url: https://security.{{ rs_domain_name }}/auth/realms/RS/protocol/openid-connect/token
+      api_url: https://security.{{ rs_domain_name }}/auth/realms/RS/protocol/openid-connect/userinfo
+      role_attribute_path: contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
+      role_attribute_strict: true
+  
+  service:
+    name: "grafana-service"
+    labels:
+      app: "grafana"
+      type: "grafana-service"
+  dashboardLabelSelector:
+    - matchExpressions:
+      - key: "app.kubernetes.io/grafana-ignore"
+        operator: DoesNotExist
+  deployment:
+    skipCreateAdminAccount: true
+    envFrom:
+      - secretRef:
+          name: grafana-oidc-client-secret
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+              - key: "node-role.kubernetes.io/infra"
+                operator: Exists
+  dataStorage:
+    size: 8Gi
+    accessModes: 
+      - ReadWriteOnce
+    class: ceph-block
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 200m
+      memory: 256Mi

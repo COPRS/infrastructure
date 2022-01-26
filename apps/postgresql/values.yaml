@@ -4,8 +4,9 @@ image:
 persistence:
   enabled: true
   storageClass: ceph-block
-postgresqlPassword: p0stgrespassword
-postgresqlDatabase: infra
+# Default database not used
+postgresqlPassword: {{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}
+postgresqlDatabase: default
 metrics:
   enabled: true
   serviceMonitor:

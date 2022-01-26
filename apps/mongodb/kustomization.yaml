@@ -2,7 +2,7 @@ commonLabels:
   app.kubernetes.io/instance: {{ app_name }}
 
 helmCharts:
-- name: {{ app_name }}
+- name: mongodb
   repo: https://charts.bitnami.com/bitnami
   version: 10.29.0
   valuesFile: values.yaml

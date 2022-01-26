@@ -2,9 +2,14 @@ commonLabels:
   app.kubernetes.io/instance: {{ app_name }}
 
 helmCharts:
-- name: {{ app_name}}
+- name: thanos
   releaseName: {{ app_name }}
   repo: https://charts.bitnami.com/bitnami
   version: 8.1.2
   valuesFile: values.yaml
   namespace: monitoring
+
+secretGenerator:
+  - name: thanos-bucket-credentials
+    files: 
+      - objstore.yml

@@ -8,10 +8,10 @@ graylog:
     tag: 4.2.3-1
 
   mongodb:
-    uri:  {{ graylog.mongodb_uri }}
+    uri: "mongodb://{{ mongodb.username }}:{{ mongodb.password }}@mongodb.infra.svc.cluster.local/{{ mongodb.database }}"
 
   elasticsearch:
-    hosts: http://elasticsearch-cluster-es-http.infra.svc.cluster.local:9200
+    hosts: http://elasticsearch-security-es-http.security.svc.cluster.local:9200
     version: 7
     
   persistence:

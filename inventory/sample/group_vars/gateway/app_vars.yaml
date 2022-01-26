@@ -1,5 +1,12 @@
 rs_domain_name: DOMAIN_NAME
 
+common:
+  s3:
+    endpoint: S3_ENDPOINT
+    region: S3_REGION
+    secret_key: S3_SECRET_KEY
+    access_key: S3_ACCESS_KEY
+
 apisix:
   oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
   api_credentials:
@@ -30,34 +37,44 @@ linkerd:
 prometheus:
   oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
-thanos_bucket:
-  name: BUCKET_NAME
-  s3_endpoint: S3_ENDPOINT
-  region: S3_REGION
-  access_key: XXXXXXXXXXXXX
-  secret_key: xxxxxxxxxxxx
+thanos:
+  s3:
+    bucket: THANOS_BUCKET
+    endpoint: {{ common.s3.endpoint }}
+    region: {{ common.s3.region }}
+    access_key: {{ common.s3.access_key }}
+    secret_key: {{ common.s3.secret_key }}
 
 grafana:
-  admin_password: grafanapass
   oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
-eck_backup_bucket:
-  name: BUCKET_NAME
-  endpoint: S3_ENDPOINT
-  region: S3_REGION
-  access_key: XXXXXXXXXXXXX
-  secret_key: xxxxxxxxxxxx
+elasticsearch-security:
+  operator_password_hash: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  kibana_oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  backup:
+    s3:
+      bucket: ES_SECURITY_BACKUP_BUCKET
+      endpoint: {{ common.s3.endpoint }}
+      region: {{ common.s3.region }}
+      access_key: {{ common.s3.access_key }}
+      secret_key: {{ common.s3.secret_key }}
 
-elasticsearch_trace:
-  operator_password_hash: $2a$10$/7vn2QXvp.tWbH7.Of3LpOU9zYqOL.tqeZk4/T1dZ/TqkqAmpImG6
+elasticsearch-processing:
+  operator_password_hash: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  kibana_oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  backup:
+    s3:
+      bucket: ES_PROCESSING_BACKUP_BUCKET
+      endpoint: {{ common.s3.endpoint }}
+      region: {{ common.s3.region }}
+      access_key: {{ common.s3.access_key }}
+      secret_key: {{ common.s3.secret_key }}
 
 keycloak:
   superadmin:
     username: superadmin
-    password: keycloaksuperadmin
+    password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
   database:
-    name: keycloak
-    user: keycloak
     password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 mongodb:
@@ -69,39 +86,40 @@ openldap:
   admin_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
   config_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
   readonly_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  backup:
+    restic_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+    s3:
+      bucket: LDAP_BACKUP_BUCKET
+      endpoint: {{ common.s3.endpoint }}
+      region: {{ common.s3.region }}
+      access_key: {{ common.s3.access_key }}
+      secret_key: {{ common.s3.secret_key }}
+
+postgresql:
+  backup:
+    restic_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+    s3:
+      bucket: POSTGRESQL_BACKUP_BUCKET
+      endpoint: {{ common.s3.endpoint }}
+      region: {{ common.s3.region }}
+      access_key: {{ common.s3.access_key }}
+      secret_key: {{ common.s3.secret_key }}
 
 graylog:
-  mongodb_uri: "mongodb://{{ mongodb.username }}:{{ mongodb.password }}@mongodb.infra.svc.cluster.local/{{ mongodb.database }}"
   oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 finops-object-storage-exporter:
   s3:
-    endpoint: S3_ENDPOINT
-    region: S3_REGION
-    access_key: XXXXXXXXXXXXX
-    secret_key: xxxxxxxxxxxx
+    endpoint: {{ common.s3.endpoint }}
+    region: {{ common.s3.region }}
+    access_key: {{ common.s3.access_key }}
+    secret_key: {{ common.s3.secret_key }}
 
 scdf:
   database:
     password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
-    username: scdf
-    dataflow: dataflow
-    skipper: skipper
 
 stash:
-  postgresql:
-    name: BUCKET_NAME
-    endpoint: S3_ENDPOINT
-    region: S3_REGION
-    access_key: XXXXXXXXXXXXX
-    secret_key: xxxxxxxxxxxx
-  openldap:
-    name: BUCKET_NAME
-    endpoint: S3_ENDPOINT
-    region: S3_REGION
-    access_key: XXXXXXXXXXXXX
-    secret_key: xxxxxxxxxxxx
-  restic_password: resticpass
   license: |
     -----BEGIN CERTIFICATE-----
     Get a license here: https://license-issuer.appscode.com/?p=stash-community
@@ -109,12 +127,14 @@ stash:
     
 rclone:
   source:
-    endpoint: S3_ENDPOINT
-    region: S3_REGION
-    access_key: XXXXXXXXXXXXX
-    secret_key: xxxxxxxxxxxx
+    s3:
+      endpoint: {{ common.s3.endpoint }}
+      region: {{ common.s3.region }}
+      access_key: {{ common.s3.access_key }}
+      secret_key: {{ common.s3.secret_key }}
   destination:
-    endpoint: S3_ENDPOINT
-    region: S3_REGION
-    access_key: XXXXXXXXXXXXX
-    secret_key: xxxxxxxxxxxx
+    s3:
+      endpoint: {{ common.s3.endpoint }}
+      region: {{ common.s3.region }}
+      access_key: {{ common.s3.access_key }}
+      secret_key: {{ common.s3.secret_key }}

@@ -1,9 +1,0 @@
-commonLabels:
-  app.kubernetes.io/instance: {{ app_name }}
-
-helmCharts:
-- name: {{ app_name }}
-  repo: https://helm.linkerd.io/stable
-  version: 2.11.1
-  releaseName: {{ app_name }}
-  valuesFile: values.yaml

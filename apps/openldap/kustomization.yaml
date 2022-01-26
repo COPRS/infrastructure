@@ -4,25 +4,29 @@ commonLabels:
   app.kubernetes.io/instance: {{ app_name }}
 
 resources:
-- BackupConfiguration/openldap-daily.yaml
-- Repository/s3-backup.yaml
-- Secret/stash-s3-credentials.yaml
-- statefulset.yaml
-- service.yaml
-- svc-headless.yaml
+  - backup-backupconfiguration.yaml
+  - backup-repository.yaml
+  - statefulset.yaml
+  - service.yaml
+  - svc-headless.yaml
 
 configMapGenerator:
-- name: openldap-env
-  envs:
-  - openldap.env
-- name: openldap-bootstrap-database
-  files:
-  - bootstrap/custom.ldif
-  - bootstrap/02-security.ldif
+  - name: openldap-env
+    envs:
+      - openldap.env
+  - name: openldap-bootstrap-database
+    files:
+      - bootstrap/custom.ldif
+      - bootstrap/02-security.ldif
   
 secretGenerator:
-- name: openldap
-  literals:
-  - LDAP_ADMIN_PASSWORD={{ openldap.admin_user_password }}
-  - LDAP_CONFIG_PASSWORD={{ openldap.config_user_password }}
-  - LDAP_READONLY_USER_PASSWORD={{ openldap.readonly_user_password }}
+  - name: openldap
+    literals:
+      - LDAP_ADMIN_PASSWORD={{ openldap.admin_user_password }}
+      - LDAP_CONFIG_PASSWORD={{ openldap.config_user_password }}
+      - LDAP_READONLY_USER_PASSWORD={{ openldap.readonly_user_password }}
+  - name: openldap-backup-s3-credentials
+    literals:
+      - AWS_ACCESS_KEY_ID={{ openldap.backup.s3.access_key }}
+      - AWS_SECRET_ACCESS_KEY={{ openldap.backup.s3.secret_key }}
+      - RESTIC_PASSWORD={{ openldap.backup.restic_password }}

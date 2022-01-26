@@ -2,7 +2,7 @@ commonLabels:
   app.kubernetes.io/instance: {{ app_name }}
 
 helmCharts:
-- name: {{ app_name }}
+- name: falco
   releaseName: {{ app_name }}
   repo: https://falcosecurity.github.io/charts
   version: 1.16.2

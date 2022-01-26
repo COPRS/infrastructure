@@ -7,7 +7,7 @@ image:
 
 metrics:
   serviceMonitor:
-    interval: 15s
+    interval: 2m
     additionalLabels.release: prometheus-operator
 
 affinity: 

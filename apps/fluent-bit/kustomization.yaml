@@ -4,7 +4,7 @@ commonLabels:
 namespace: monitoring
 
 helmCharts:
-- name: {{ app_name }}
+- name: fluent-bit
   repo: https://fluent.github.io/helm-charts
   version: 0.19.6
   valuesFile: values.yaml

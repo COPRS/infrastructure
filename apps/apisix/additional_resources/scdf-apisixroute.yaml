@@ -13,7 +13,7 @@ spec:
         - serviceName: spring-cloud-dataflow-server
           servicePort: 8080
       match:
-        hosts: [ scdf.DOMAIN_NAME ]
+        hosts: [ scdf.{{ rs_domain_name }} ]
         paths: [ /* ]
         methods: [ GET, POST, PUT, OPTIONS, DELETE ]
       plugins:
@@ -22,9 +22,9 @@ spec:
           config:
             client_id: scdf
             client_secret: SCDF_OIDC_CLIENT_SECRET
-            discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
+            discovery: https://security.{{ rs_domain_name }}/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false
             realm: RS
             introspection_endpoint_auth_method: client_secret_post
-            redirect_uri: https://scdf.DOMAIN_NAME/
+            redirect_uri: https://scdf.{{ rs_domain_name }}/

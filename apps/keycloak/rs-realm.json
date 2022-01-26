@@ -111,7 +111,16 @@
           "attributes": {}
         }
       ],
-      "kibana": [
+      "kibana-security": [
+        {
+          "name": "restricted-access",
+          "description": "Only users with this role may access the client",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
+        }
+      ],
+      "kibana-processing": [
         {
           "name": "restricted-access",
           "description": "Only users with this role may access the client",
@@ -186,7 +195,7 @@
         "prometheus": [
           "restricted-access"
         ],
-        "kibana": [
+        "kibana-processing": [
           "restricted-access"
         ],
         "scdf": [
@@ -228,6 +237,9 @@
       "realmRoles": [],
       "clientRoles": {
         "graylog": [
+          "restricted-access"
+        ],
+        "kibana-security": [
           "restricted-access"
         ]
       },
@@ -333,7 +345,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "graylog.oidc_client_secret",
+      "secret": "{{ graylog.oidc_client_secret }}",
       "redirectUris": [
           "https://security.{{ rs_domain_name }}/*"
       ],
@@ -352,13 +364,38 @@
       "optionalClientScopes": []
     },
     {
-      "clientId": "kibana",
+      "clientId": "kibana-security",
       "name": "Oauth2 Proxy",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "kibana.oidc_clienet_secret",
+      "secret": "{{ elasticsearch-security.kibana_oidc_client_secret }}",
+      "redirectUris": [
+          "https://security.{{ rs_domain_name }}/*"
+      ],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "defaultClientScopes": [],
+      "optionalClientScopes": []
+    },
+    {
+      "clientId": "kibana-processing",
+      "name": "Oauth2 Proxy",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{ elasticsearch-processing.kibana_oidc_client_secret }}",
       "redirectUris": [
           "https://infra.{{ rs_domain_name }}/*"
       ],
@@ -435,7 +472,7 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "SCDF_OIDC_CLIENT_SECRET",
       "redirectUris": [
-          "https://scdf.DOMAIN_NAME/*"
+          "https://scdf.{{ rs_domain_name }}/*"
       ],
       "webOrigins": [],
       "notBefore": 0,

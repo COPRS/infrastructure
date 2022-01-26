@@ -4,7 +4,7 @@ commonLabels:
 namespace: security
 
 helmCharts:
-- name: {{ app_name }}
+- name: graylog
   releaseName: {{ app_name }}
   repo: https://charts.kong-z.com
   version: 1.9.2

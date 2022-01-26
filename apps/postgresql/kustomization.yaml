@@ -1,23 +1,31 @@
 commonLabels:
-    app.kubernetes.io/instance: {{ app_name }}
+  app.kubernetes.io/instance: {{ app_name }}
 
 namespace: infra
 
 helmCharts:
-- name: {{ app_name }}
+- name: postgresql
   repo:   https://charts.bitnami.com/bitnami
   version:  10.13.4
   valuesFile: values.yaml
   releaseName: {{ app_name }}
 
 resources:
-  - BackupConfiguration/postgresql-daily.yaml
-  - Repository/s3-backup.yaml
-  - Secret/stash-s3-credentials.yaml
+  - backup-backupconfiguration.yaml
+  - backup-repository.yaml
 
 secretGenerator:
-- name: init-postgres-db
-  files:
-    - init-db.sql
-  options:
-    disableNameSuffixHash: true
+  - name: init-postgres-db
+    files:
+      - init-db.sql
+    options:
+      disableNameSuffixHash: true
+  - name: postgresql-backup-s3-credentials
+    literals:
+      - AWS_ACCESS_KEY_ID={{ postgresql.backup.s3.access_key }}
+      - AWS_SECRET_ACCESS_KEY={{ postgresql.backup.s3.secret_key }}
+      - RESTIC_PASSWORD={{ postgresql.backup.restic_password }}
+  - name: postgresql-databases-passwords
+    literals:
+      - KEYCLOAK_DATABASE_PASSWORD={{ keycloak.database.password }}
+      - SCDF_DATABASE_PASSWORD={{ scdf.database.password }}
