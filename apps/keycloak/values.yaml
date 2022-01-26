@@ -30,7 +30,7 @@ extraEnv: |
   - name: DB_PORT
     value: "5432"
   - name: DB_DATABASE
-    value: {{ keycloak.database.name }}
+    value: keycloak
   - name: DB_USER_FILE
     value: /secrets/db-creds/user
   - name: DB_PASSWORD_FILE

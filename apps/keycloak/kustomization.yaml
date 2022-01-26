@@ -4,7 +4,7 @@ commonLabels:
   app.kubernetes.io/instance: {{ app_name }}
 
 helmCharts:
-- name: {{ app_name }}
+- name: keycloak
   releaseName: {{ app_name }}
   repo: https://codecentric.github.io/helm-charts
   version: 16.0.5
@@ -16,7 +16,7 @@ helmCharts:
 secretGenerator:
   - name: keycloak-database
     literals:
-      - user={{ keycloak.database.user }}
+      - user=keycloak
       - password={{ keycloak.database.password }}
   - name: keycloak
     literals:
@@ -24,5 +24,5 @@ secretGenerator:
       - password={{ keycloak.superadmin.password }}
   - name: realm-secret
     files:
-    - master-realm.json
-    - rs-realm.json
+      - master-realm.json
+      - rs-realm.json

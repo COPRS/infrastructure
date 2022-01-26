@@ -1,0 +1,11 @@
+apiVersion: stash.appscode.com/v1alpha1
+kind: Repository
+metadata:
+  name: s3-postgresql-backup
+spec:
+  backend:
+    s3:
+      endpoint: {{ postgresql.backup.s3.endpoint }}
+      bucket: {{ postgresql.backup.s3.bucket }}
+      region: {{ postgresql.backup.s3.region }}
+    storageSecretName: postgresql-backup-s3-credentials
