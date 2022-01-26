@@ -15,15 +15,15 @@ safescale cluster expand \
   --node-sizing cpu=CPU_COUNT,ram=MEMORY_AMOUNT,disk=STORAGE_MOUNT
 ```
 
-*Do not forget to update the ```WhitelistTemplateRegexp```/```BlacklistTemplateRegexp``` in your SafeScale tenants file to reflect the template of the node you want to add.  
+*Do not forget to update the `WhitelistTemplateRegexp`/`BlacklistTemplateRegexp` in your SafeScale tenants file to reflect the template of the node you want to add.  
 After modifying the _tenants_ file, you need to restart safescaled.  
 Read [safescale documenation](https://github.com/CS-SI/SafeScale/blob/d8b98cb28c29cbbd87162b33e3a84f159a6707d9/doc/SCANNER.md#safescale-scanner) for more information related to managing templates.*
 
-Secondly, manually update ```hosts.ini``` in your inventory and add the newly created nodes into their corresponding groups.
+Secondly, manually update `hosts.ini` in your inventory and add the newly created nodes into their corresponding groups.
 
 If the kind (group) of your node does not exist in the file, refer to the [new node kinds (processing, etc.)](#new_kinds) section.
 
-If ```hosts.ini```  is empty, you can update it using the following command:
+If `hosts.ini`  is empty, you can update it using the following command:
 
 ```Bash
 ansible-playbook cluster-setup.yaml -t hosts_update -i inventory/mycluster/hosts.ini
@@ -75,7 +75,7 @@ processing
 
 ```
 
-You can add specific labels and taints to your node by adding a section in ```hosts.ini``` like the example below.
+You can add specific labels and taints to your node by adding a section in `hosts.ini` like the example below.
 
 ```ini
 # hosts.ini
@@ -92,6 +92,8 @@ node_labels={"node-role.kubernetes.io/processing":""}
 # example: node_taints={"node-role.kubernetes.io/gateway:NoSchedule"}
 ```
 
+After that, reach to [Integrate a worker node into k8s](#worker_nodes) to resume the process.
+
 ## Configure the new nodes
 
 Once added to the Kubernetes cluster, you need to set some specific configuration on the node (firewall, DNS, public IP address, etc.).
@@ -102,7 +104,7 @@ Run the following command.
 ansible-playbook rs-setup.yaml -i inventory/cluster/hosts.ini
 ```
 
-You can focus the playbook for only a specific node adding the option ```--limit NODE_NAME```.
+You can focus the playbook for only a specific node adding the option `--limit NODE_NAME`.
 
 ## Gateways
 
@@ -112,7 +114,34 @@ A gateway node requires some additional configuration:
 
 1. Add a public IP address.
 2. Assign the following additional security groups.
-    - ```safescale-sg_subnet_publicip.SUBNET_NAME.NETWORK_NAME```
-    - ```safescale-sg_subnet_gateways.SUBNET_NAME.NETWORK_NAME```
+    - `safescale-sg_subnet_publicip.SUBNET_NAME.NETWORK_NAME`
+    - `safescale-sg_subnet_gateways.SUBNET_NAME.NETWORK_NAME`
 
 Default SUBNET_NAME and NETWORK_NAME are CLUSTER_NAME.
+
+# Delete a node
+
+> LIMITATION: You cannot remove the default gateways and masters deployed with the cluster. Only the worker nodes and the masters and gateway added with scaling.
+
+> LIMITATION: SafeScale do not support to delete a specific node by name. You can only remove the n last added nodes.
+
+
+While the node you want to delete is still present in the Ansible inventory, run the Kubespray playbook `remove-node.yml`.
+
+```Bash
+ansible-playbook collections/kubespray/remove-node.yml -b -i inventory/mycluster/hosts.ini -e node=NODE_NAME
+```
+
+If the node is not online, run:
+
+```Bash
+ansible-playbook collections/kubespray/remove-node.yml -b -i inventory/mycluster/hosts.ini -e reset_nodes=false -e allow_ungraceful_removal=true
+``` 
+
+Finally, you can remove the node from the cluster.
+
+```Bash
+safescale cluster shrink CLUSTER_NAME --count NUMBER_OF_NODES_TO_REMOVE
+``̀
+
+Do not forget to update your *hosts* file once the node is removed.
