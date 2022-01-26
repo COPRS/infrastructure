@@ -1,0 +1,7 @@
+{
+    "type": "s3",
+    "settings": {
+      "client": "default",
+      "bucket": "{{ lookup('vars', app_name).s3.bucket }}"
+    }
+  }

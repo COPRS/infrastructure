@@ -2,6 +2,6 @@
     "type": "s3",
     "settings": {
       "client": "default",
-      "bucket": "{{ eck_backup_bucket.name }}"
+      "bucket": "{{ lookup('vars', app_name).s3.bucket }}"
     }
   }

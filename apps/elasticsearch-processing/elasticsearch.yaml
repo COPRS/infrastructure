@@ -1,0 +1,112 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: {{ app_name }}
+spec:
+  auth:
+    fileRealm:
+      - secretName: {{ app_name }}-filerealm-secret
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  version: 7.15.2
+  nodeSets:
+    - name: elasticsearch-coordinating
+      count: 1
+      config:
+        xpack.security.authc.anonymous:
+          username: anonymous
+          roles: superuser
+          authz_exception: false
+        node.roles: [] # Coordinating only
+      podTemplate:
+        spec:
+          automountServiceAccountToken: true
+          affinity: &affinity_config
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                    - key: "node-role.kubernetes.io/infra"
+                      operator: Exists
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: elasticsearch.k8s.elastic.co/cluster-name
+                        operator: In
+                        values:
+                          - {{ app_name }}
+                  topologyKey: kubernetes.io/hostname
+          containers:
+            - name: elasticsearch-coordinating
+              resources:
+                limits:
+                  cpu: 2000m
+                  memory: 6Gi
+                requests:
+                  cpu: 1000m
+                  memory: 2Gi
+              readinessProbe: &readiness_config
+                exec:
+                  command:
+                  - bash
+                  - -c
+                  - /mnt/elastic-internal/scripts/readiness-probe-script.sh
+                failureThreshold: 3
+                initialDelaySeconds: 60
+                periodSeconds: 22
+                successThreshold: 1
+                timeoutSeconds: 22
+              env:
+                - name: READINESS_PROBE_TIMEOUT
+                  value: "20"
+    - name: elasticsearch-node
+      count: 2
+      config:
+        # no node.roles means all roles
+        xpack.security.authc.anonymous:
+          username: anonymous
+          roles: superuser
+          authz_exception: false
+        s3.client.default.endpoint: "{{ lookup('vars', app_name).s3.endpoint }}"
+        s3.client.default.region: "{{ lookup('vars', app_name).s3.region }}"
+      volumeClaimTemplates:
+        - metadata:
+            name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 80Gi
+            storageClassName: ceph-block
+      podTemplate:
+        spec:
+          automountServiceAccountToken: true
+          initContainers:
+            - name: install-plugin
+              envFrom:
+                - secretRef:
+                    name: {{ app_name }}-s3-credentials
+              readinessProbe:
+                <<: *readiness_config
+              command:
+                - sh
+                - -c
+                - |
+                  bin/elasticsearch-plugin install --batch repository-s3
+                  echo $S3_ACCESS_KEY | bin/elasticsearch-keystore add --stdin --force s3.client.default.access_key
+                  echo $S3_SECRET_KEY | bin/elasticsearch-keystore add --stdin --force s3.client.default.secret_key
+          affinity:
+            <<: *affinity_config
+          containers:
+            - name: elasticsearch-node
+              resources:
+                limits:
+                  cpu: 1500m
+                  memory: 4Gi
+                requests:
+                  cpu: 750m
+                  memory: 2Gi
