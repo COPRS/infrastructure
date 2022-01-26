@@ -85,17 +85,7 @@
   vars_files: 
     - "collections/kubespray/roles/download/defaults/main.yml"
     - "collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
-  roles:
-    - { role: "collections/kubespray/roles/kubernetes-apps/helm" }
-    - { role: "kustomize" }
-    - { role: "kubectl" }
-
-- name: Deploy reference system
-  hosts: gateway[0]
-  gather_facts: false
-  vars_files:
-  - "collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
-  pre_tasks:
+  pre_ tasks:
     - name: install pip modules for ansible kubernetes.core
       pip: 
         name: "{{ item }}"
@@ -103,7 +93,10 @@
         - pyyaml==5.3.1
         - openshift==0.12.1
         - kubernetes==12.0.1
-  roles: 
+  roles:
+    - { role: "collections/kubespray/roles/kubernetes-apps/helm" }
+    - { role: "kustomize" }
+    - { role: "kubectl" }
     - { role: "rs-defaults" }
 
 - name: Install etcd secrets in the cluster to monitor the cluster
