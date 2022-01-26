@@ -1,7 +1,9 @@
-:arrow_heading_up: Go back to the [Reference System Sotfware repository](https://github.com/COPRS/reference-system-software) :arrow_heading_up:  
-# How To
+:arrow_heading_up: Go back to the [Reference System Sotfware repository](https://github.com/COPRS/reference-system-software) :arrow_heading_up:
+
+# Installation manual
 
 ## Overview
+
 ![](./doc/img/deployment.png)
 
 > **Integrators' machine is called BASTION in the rest of the installation manual**
@@ -98,21 +100,16 @@ ansible-playbook rs-setup.yaml \
 # deploy apps
 ansible-playbook apps.yaml \
     -i inventory/mycluster/hosts.ini
-
-# Install graylog content packs (Optionnal)
-ansible-playbook configure-graylog.yaml \
-    -i inventory/mycluster/hosts.ini
 ```
 
 ## TLS configuration
 
-Reference System exploits APISIX Ingress Controller and Cert Manager for TLS configuration.
+Reference System exploits [APISIX Ingress Controller](https://apisix.apache.org/) and [Cert Manager](https://cert-manager.io/) for TLS configuration.
 
 You need to create an [issuer](https://cert-manager.io/docs/concepts/issuer/) and a [certificate](https://cert-manager.io/docs/concepts/certificate/) for your domain name with Cert Manager.
 
 APISIX does not work with Cert Manager for ACME HTTP01 challenges ([#781](https://github.com/apache/apisix-ingress-controller/issues/781)).  
 You must use the DNS01 challenge to generate a Let's encrypt certificate. The configuration is detailled on [Cert Manager documentation](https://cert-manager.io/docs/configuration/acme/dns01).
-
 
 ## Dependencies
 
@@ -120,47 +117,41 @@ This project exploits Kubespray to deploy Kubernetes.
 The fully detailed documentation and configuration options are available on its page: [https://kubespray.io/](https://kubespray.io/#/)
 
 ## Tree view
-The repository is made of the following main directories.
-- apps
-- doc
-- platform
-### Apps
-This folder gathers the configuration of the applications deployed on the platform.  
-Each application has its own folder inside apps with the values of the Helm chart, the kustomization files, the patches related, and any additional kubernetes resources.  
-The application's directory can be split by environment with subfolders like dev, prod, etc.
-### Doc
-Here we find all the documentation describing the infrastructure deployment and maintenance operations.
-### Platform
-This directory concentrates what is required to deploy the infrastructure with Ansible.
-- **collections/kubespray**: folder where kubespray is integrated into the project as a git submodule.
-    - `cluster.yaml` the Ansible playbook to run to deploy Kubernetes.
-- **inventory**: 
-    - **sample**: Ansible inventory for sample configuration.
-        - **group_vars**:
-            - `all/kubespray.yaml`: kubespray configuration.
-            - `bastion/app_installer.yaml`: application installer configuration: helm version, repositories, applications directory paths
-        - **host_vars/localhost**: safescale cluster configuration and image configuration.
-        - `hosts.ini`: host inventory.
-- **playbooks**: list of Ansible playbooks to run to deploy the platform.
-    - `clean.yaml`: remove the generated files by the different playbooks, delete the cluster and remove the volumes.
-    - `cluster-setup.yaml`: deploy the network, the machines and the volumes with safescale.
-    - `image.yaml`: build the image used to create the machines.
-    - `rs-setup.yaml`: prepare the necessary resources for the platform.
-    - `apps.yaml`: deploy the applications.
-    - `security.yaml`: deploy the security services.
-- **roles**: list of roles used to deploy the cluster.
-    - **security**: roles describing the installation of the different security tools.
-- `ansible.cfg`: Ansible configuration file. It includes the ssh configuration to allow Ansible to access the machines through the gateway.
 
-## Playbooks
+The repository is made of the following main directories and files.
+- **apps**: A package example, gathering default applications deployed with Reference System platform.
+- **collections/kubespray**: folder where kubespray is integrated into the project as a git submodule.
+    - `cluster.yml: The Ansible playbook to run to deploy Kubernetes or to add a master node.
+    - `scale.yml`: An Ansible playbook to add a worker node.
+    - `remove-node.yml`: An Ansible playbook to remove a node.
+- **doc**: Here we find all the documentation describing the infrastructure deployment and maintenance operations.
+- **inventory**:
+  - **sample**: An Ansible inventory for a sample configuration.
+      - **group_vars**:
+          - **gateway**:
+            - `app_installer.yaml`: The configuration of the app installer roles. It includes the list and paths of packages to install.
+            - `app_vars.yaml`: Reference the different variables to set and configure to deploy the applications.
+          - `k8s_cluster/kubespray.yaml`: The Kubespray configuration.
+      - **host_vars/localhost**: The configuration parameters for SafeScale cluster and the OS image.
+      - `hosts.ini`: The list of machines described in their respective groups.
+- **roles**: The list of roles used to deploy the cluster.
+- `ansible.cfg`: Ansible configuration file. It includes the ssh configuration to allow Ansible to access the machines through the gateway.
+- `apps.yaml`: An Ansible playbook to deploy the applications on the platform.
+- `cluster-setup.yaml`: An Ansible playbook to create the hosts, network and volumes with SafeScale.
+- `delete.yaml`: An Ansible playbook to delete a SafeScale cluster and remove all the generated resources.
+- `image.yaml`: An Ansible playbook to build a golden OS image.
+- `rs-setup.yaml`: An Ansible playbook to configure the nodes.
+- `security.yaml`: An Ansible playbook to install the security services on the nodes.
+
+### Playbooks manual
 
 | name | tags | utility | 
 |---|---|---|
+| apps.yaml | *none* |  *deploy applications*<br>Supported possible options:<br>**-e app=APP_NAME** Deploy only a specific application.<br>**-e debug=true** Keep the application resources generated for debugging.<br>**-e package=PACKAGE_NAME** Deploy only a specific package.|
 | cluster-setup.yaml | *none* <br> cluster_create <br> hosts_update <br> volumes_create | *all tags below are executed* <br> create safescale cluster <br> update hosts.ini with newly created machines, fill .ssh folder with machines ssh public keys, generate ansible ssh config, update config.cfg <br> attach disks to kubernetes nodes |
 | delete.yaml <br> :warning: this playbook has been developed with the only purpose of testing the project **not for production usage**| *none* <br> cleanup_generated <br> detach_volumes <br> delete_volumes <br> delete_cluster | *nothing* <br> **remove** ssh keys, added hosts in hosts.ini, ssh config file <br> detach added disks from k8s nodes <br> delete added disks from k8s nodes <br> delete safescale cluster|
 | image.yaml | *none* | *make reference system golden image for k8s nodes* |
-|rs-setup.yaml | *none* <br> gateway <br> apps | *all tags below are executed* <br> install tools on gateways <br> configure the cluster |
-| apps.yaml | *none* |  *deploy applications (adding -e name=APP_NAME deploy only the app matching APP_NAME)* |
+|rs-setup.yaml | *none* <br> gateway <br> | *all tags below are executed* <br> install the tools on gateways <br> configure the cluster |
 | security.yaml | *none* <br> auditd <br> wazuh <br> clamav <br> openvpn <br> suricata <br> uninstall_APP_NAME| *install all security tools* <br> install auditd <br> install wazuh <br> install clamav <br> install openvpn <br> install suricata <br> uninstall the app matching APP_NAME
 
 ## Apps
