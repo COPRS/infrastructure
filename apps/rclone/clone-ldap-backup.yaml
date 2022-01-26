@@ -24,7 +24,7 @@ spec:
                 - /entrypoint.sh
               env:
                 - name: BUCKET
-                  value: {{ stash.openldap.name }}
+                  value: {{ openldap.backup.s3.bucket }}
                 - name: RETENTION_DAYS
                   value: '7'
               volumeMounts:

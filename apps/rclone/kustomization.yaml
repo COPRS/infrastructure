@@ -1,11 +1,10 @@
 namespace: security
 
 commonLabels:
-  app.kubernetes.io/component: {{ app_name }}
   app.kubernetes.io/instance: {{ app_name }}
 
 resources:
-  - clone-elasticsearch-backup.yaml
+  - clone-elasticsearch-processing-backup.yaml
   - clone-postgresql-backup.yaml
   - clone-ldap-backup.yaml
 

@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: rclone-elasticsearch-backup
+  name: rclone-elasticsearch-processing-backup
 spec:
   schedule: "0 5 * * ?"
   failedJobsHistoryLimit: 3
@@ -24,7 +24,7 @@ spec:
                 - /entrypoint.sh
               env:
                 - name: BUCKET
-                  value: {{ eck_backup_bucket.name }}
+                  value: {{ elasticsearch-processing.backup.s3.bucket }}
                 - name: RETENTION_DAYS
                   value: '7'
               volumeMounts:
