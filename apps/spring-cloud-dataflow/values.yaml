@@ -73,11 +73,11 @@ externalDatabase:
   scheme: postgresql
   password: {{ scdf.database.password }}
   dataflow:
-    database: {{ scdf.database.dataflow }}
-    username: {{ scdf.database.username }}
+    database: dataflow
+    username: scdf
   skipper:
-    database: {{ scdf.database.skipper }}
-    username: {{ scdf.database.username }}
+    database: skipper
+    username: scdf
 externalKafka:
   enabled: true
   brokers: kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092

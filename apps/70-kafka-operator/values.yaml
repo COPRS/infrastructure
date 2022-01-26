@@ -13,11 +13,11 @@ affinity:
             operator: Exists
 resources:
   limits:
-    memory: 384Mi
-    cpu: 1000m
+    memory: 256Mi
+    cpu: 500m
   requests:
-    memory: 384Mi
-    cpu: 200m
+    memory: 128Mi
+    cpu: 250m
 
 imageTagOverride: "0.26.0"
 createGlobalResources: true

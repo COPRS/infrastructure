@@ -70,8 +70,8 @@ spec:
           username: anonymous
           roles: superuser
           authz_exception: false
-        s3.client.default.endpoint: "{{ lookup('vars', app_name).s3.endpoint }}"
-        s3.client.default.region: "{{ lookup('vars', app_name).s3.region }}"
+        s3.client.default.endpoint: "{{ lookup('vars', app_name).backup.s3.endpoint }}"
+        s3.client.default.region: "{{ lookup('vars', app_name).backup.s3.region }}"
       volumeClaimTemplates:
         - metadata:
             name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.

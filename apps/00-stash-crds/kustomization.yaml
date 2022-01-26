@@ -2,7 +2,7 @@ commonLabels:
   app.kubernetes.io/instance: {{ app_name }}
 
 helmCharts:
-- name: {{ app_name }}
+- name: stash-crds
   repo:  https://charts.appscode.com/stable/
   version: v2021.11.24
   namespace: infra

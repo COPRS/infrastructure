@@ -4,7 +4,7 @@ commonLabels:
 namespace: security
 
 helmCharts:
-- name: {{ app_name }}
+- name: falco-exporter
   releaseName: {{ app_name }}
   repo: https://falcosecurity.github.io/charts
   version: 0.7.1

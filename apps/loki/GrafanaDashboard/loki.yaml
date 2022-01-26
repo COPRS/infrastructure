@@ -2,8 +2,6 @@ apiVersion: integreatly.org/v1alpha1
 kind: GrafanaDashboard
 metadata:
   name: loki
-  labels:
-    app.kubernetes.io/instance: loki
 spec:
   customFolderName: cots/monitoring
   plugins:

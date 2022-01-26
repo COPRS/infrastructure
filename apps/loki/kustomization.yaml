@@ -4,7 +4,7 @@ commonLabels:
   app.kubernetes.io/instance: {{ app_name }}
 
 helmCharts:
-- name: {{ app_name }}
+- name: loki
   releaseName: {{ app_name }}
   repo: https://grafana.github.io/helm-charts
   version: 2.8.1

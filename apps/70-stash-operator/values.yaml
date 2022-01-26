@@ -16,7 +16,6 @@ pushgateway:
   registry: prom
   repository: pushgateway
   tag: v0.5.2
-  # Compute Resources required by the Prometheus pushgateway container
   resources:
     requests:
       cpu: 50m

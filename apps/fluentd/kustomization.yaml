@@ -17,7 +17,7 @@ configMapGenerator:
       - ./elasticsearch_templates/dynamic_trace.json
 
 helmCharts:
-- name: {{ app_name }}
+- name: fluentd
   repo: https://charts.bitnami.com/bitnami
   version: 4.4.1
   valuesFile: values.yaml
