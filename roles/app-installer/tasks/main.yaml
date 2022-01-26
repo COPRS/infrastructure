@@ -5,6 +5,6 @@
   loop: "{{ package_paths }}"
   loop_control:
     loop_var: package_path
-  when: PACKAGE_NAME is undefined or PACKAGE_NAME == package_name
+  when: package is undefined or package == package_name
     
 - meta: end_play
