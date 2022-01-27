@@ -1,5 +1,4 @@
 logs
-.ssh
 artifacts
 tenants.*
 ssh-main-gateway.*

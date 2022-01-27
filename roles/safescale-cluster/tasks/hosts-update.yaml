@@ -12,7 +12,7 @@
 - name: Setting some facts
   set_fact:
     main_gateway_ip: "{{ main_gateway_ip.stdout }}"
-    ssh_key_path: "{{ playbook_dir }}/.ssh"
+    ssh_key_path: "{{ inventory_dir }}/artifacts/.ssh"
 
 - name: Creating the .ssh folder for the cluster ssh keys
   file:
