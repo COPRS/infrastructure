@@ -2,10 +2,6 @@ apiVersion: apisix.apache.org/v2beta2
 kind: ApisixRoute
 metadata:
   name: scdf
-  namespace: processing
-  labels:
-    app.kubernetes.io/instance: apisix
-    app.kubernetes.io/managed-by: additional_resources
 spec:
   http:
     - name: scdf

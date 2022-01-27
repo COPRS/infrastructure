@@ -2,10 +2,6 @@ apiVersion: apisix.apache.org/v1
 kind: ApisixTls
 metadata:
   name: letsencrypt-tls
-  namespace: infra
-  labels:
-    app.kubernetes.io/instance: apisix
-    app.kubernetes.io/managed-by: additional_resources
 spec:
   hosts:
     - apisix.{{ rs_domain_name }}
@@ -13,6 +9,7 @@ spec:
     - linkerd.{{ rs_domain_name }}
     - monitoring.{{ rs_domain_name }}
     - security.{{ rs_domain_name }}
+    - scdf.{{ rs_domain_name }}
   secret:
     name: cert-letsencrypt
-    namespace: infra
+    namespace: networking
