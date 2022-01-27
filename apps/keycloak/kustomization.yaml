@@ -1,4 +1,4 @@
-namespace: security
+namespace: iam
 
 commonLabels:
   app.kubernetes.io/instance: {{ app_name }}

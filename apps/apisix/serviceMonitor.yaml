@@ -4,16 +4,15 @@ metadata:
   name: apisix
 spec:
   endpoints:
-  - interval: 15s
-    path: /apisix/prometheus/metrics
-    scheme: http
-    targetPort: prometheus
+    - interval: 2m
+      path: /apisix/prometheus/metrics
+      scheme: http
+      targetPort: prometheus
   namespaceSelector:
     matchNames:
-    - infra
+      - networking
   selector:
     matchLabels:
       app.kubernetes.io/instance: apisix
-      app.kubernetes.io/managed-by: Kustomize
       app.kubernetes.io/name: apisix
       app.kubernetes.io/service: apisix-gateway

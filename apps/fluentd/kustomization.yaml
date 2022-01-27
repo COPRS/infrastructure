@@ -1,7 +1,7 @@
 commonLabels:
   app.kubernetes.io/instance: {{ app_name }}
 
-namespace: monitoring
+namespace: logging
 
 configMapGenerator:
   - name: fluentd-custom-plugins

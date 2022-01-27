@@ -1,6 +1,6 @@
 # default values at https://github.com/rook/rook/blob/master/cluster/charts/rook-ceph-cluster/values.yaml
 
-operatorNamespace: infra
+operatorNamespace: rook-ceph
 
 clusterName: rook-ceph
 
@@ -168,11 +168,11 @@ cephBlockPools:
         imageFeatures: layering
         # The secrets contain Ceph admin credentials.
         csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
-        csi.storage.k8s.io/provisioner-secret-namespace: infra
+        csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
         csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
-        csi.storage.k8s.io/controller-expand-secret-namespace: infra
+        csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
         csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
-        csi.storage.k8s.io/node-stage-secret-namespace: infra
+        csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
         csi.storage.k8s.io/fstype: ext4
 
 cephFileSystems:
@@ -205,11 +205,11 @@ cephFileSystems:
         # /!\ THE PARAMETERS FOLLOWING ARE MANDATORY
         # The secrets contain Ceph admin credentials.
         csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
-        csi.storage.k8s.io/provisioner-secret-namespace: infra
+        csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
         csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
-        csi.storage.k8s.io/controller-expand-secret-namespace: infra
+        csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
         csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
-        csi.storage.k8s.io/node-stage-secret-namespace: infra
+        csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
         csi.storage.k8s.io/fstype: ext4
 
 cephObjectStores: []

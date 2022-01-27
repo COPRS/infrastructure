@@ -1,4 +1,4 @@
-namespace: infra
+namespace: database
 
 commonLabels:
   app.kubernetes.io/instance: {{ app_name }}

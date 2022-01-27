@@ -3,4 +3,4 @@
   path: /spec/monitoring
   value:
     enabled: true
-    rulesNamespace: infra
+    rulesNamespace: rook-ceph

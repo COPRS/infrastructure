@@ -19,7 +19,7 @@ prometheus:
     prometheusInstance: default
     targetPort: 9402
     path: /metrics
-    interval: 60s
+    interval: 2m
     scrapeTimeout: 30s
     labels: {}
     honorLabels: false

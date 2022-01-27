@@ -1,7 +1,7 @@
 commonLabels:
   app.kubernetes.io/instance: {{ app_name }}
 
-namespace: infra
+namespace: database
 
 helmCharts:
 - name: postgresql
