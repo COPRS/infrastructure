@@ -2,14 +2,14 @@ commonLabels:
   app.kubernetes.io/instance: {{ app_name }}
 
 # do not forget to update the patch with the namespace
-namespace: infra
+namespace: rook-ceph
 
 helmCharts:
 - name: rook-ceph-cluster
   repo: https://charts.rook.io/release
   version: v1.7.7
   valuesFile: values.yaml
-  namespace: infra
+  namespace: rook-ceph
 
 patches:
   - path: patch.yaml

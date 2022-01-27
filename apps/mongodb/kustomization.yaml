@@ -7,4 +7,4 @@ helmCharts:
   version: 10.29.0
   valuesFile: values.yaml
   releaseName: {{ app_name }}
-  namespace: infra
+  namespace: database
