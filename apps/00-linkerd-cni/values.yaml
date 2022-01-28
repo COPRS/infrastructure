@@ -1,7 +1,7 @@
 # -- CNI plugin plane namespace, default: linkerd-cni
-# namespace: linkerd-cni
+namespace: networking
 # -- Whether to create the CNI plugin plane namespace or not
-installNamespace: true
+installNamespace: false
 # -- Docker image for the CNI plugin
 cniPluginImage:   "cr.l5d.io/linkerd/cni-plugin"
 # -- Tag for the CNI container Docker image

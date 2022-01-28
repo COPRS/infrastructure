@@ -2,26 +2,14 @@
 
 ## a HA values sample file is available at https://github.com/linkerd/linkerd2/tree/main/charts/linkerd-control-plane/values-ha.yaml
 
-# -- Log level for the control plane components
-controllerLogLevel: info
-# -- Log format for the control plane components
-controllerLogFormat: plain
-# -- enables control plane tracing
-controlPlaneTracing: false
 # -- Control plane namespace
-# namespace: linkerd
-# -- enables the use of EndpointSlice informers for the destination service;
-# enableEndpointSlices should be set to true only if EndpointSlice K8s feature
-# gate is on
-enableEndpointSlices: true
+namespace: networking
 # -- enabling this omits the NET_ADMIN capability in the PSP
 # and the proxy-init container when injecting the proxy;
 # requires the linkerd-cni plugin to already be installed
 cniEnabled: true
 # -- Kubernetes priorityClassName for the Linkerd Pods
 priorityClassName: ""
-
-enablePodAntiAffinity: true
 
 # policy controller configuration
 policyController:
@@ -40,9 +28,6 @@ policyController:
   # "all-unauthenticated", "cluster-authenticated", "cluster-unauthenticated", "deny"
   # @default -- "all-unauthenticated"
   defaultAllowPolicy: "all-unauthenticated"
-
-  # -- Log level for the policy controller
-  logLevel: linkerd=info,warn
 
   # -- policy controller resource requests & limits
   # @default -- destinationResources
@@ -65,14 +50,6 @@ policyController:
 
 # proxy configuration
 proxy:
-  # -- Enable service profiles for non-Kubernetes services
-  enableExternalProfiles: false
-  # -- Maximum time allowed for the proxy to establish an outbound TCP
-  # connection
-  outboundConnectTimeout: 1000ms
-  # -- Maximum time allowed for the proxy to establish an inbound TCP
-  # connection
-  inboundConnectTimeout: 100ms
   image:
     # -- Docker image for the proxy
     name: cr.l5d.io/linkerd/proxy
@@ -82,19 +59,6 @@ proxy:
     # -- Tag for the proxy container Docker image
     # @default -- linkerdVersion
     version: ""
-  # -- Log level for the proxy
-  logLevel: warn,linkerd=info
-  # -- Log format (`plain` or `json`) for the proxy
-  logFormat: plain
-  ports:
-    # -- Admin port for the proxy container
-    admin: 4191
-    # -- Control port for the proxy container
-    control: 4190
-    # -- Inbound port for the proxy container
-    inbound: 4143
-    # -- Outbound port for the proxy container
-    outbound: 4140
   # -- The `cpu.limit` and `cores` should be kept in sync. The value of `cores`
   # must be an integer and should typically be set by rounding up from the
   # limit. E.g. if cpu.limit is '1500m', cores should be 2.
@@ -137,22 +101,14 @@ proxy:
   # disableIdentity: true
   # disableTap: true
 
-# -- Allow proxies to perform transparent HTTP/2 upgrading
-enableH2Upgrade: true
-
 # -- Add a PSP resource and bind it to the control plane ServiceAccounts. Note
 # PSP has been deprecated since k8s v1.21
 enablePSP: false
-
-# -- Failure policy for the proxy injector
-webhookFailurePolicy: Fail
 
 # controllerImage -- Docker image for the destination and identity components
 controllerImage: cr.l5d.io/linkerd/controller
 # -- Number of replicas for each control plane pod
 controllerReplicas: 3
-# -- User ID for the control plane components
-controllerUID: 2103
 
 controllerResources: &controller_resources
   cpu: &controller_resources_cpu
@@ -187,28 +143,11 @@ identity:
   # -- Use [Service Account token Volume projection](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection) for pod validation instead of the default token
   serviceAccountTokenProjection: true
   issuer:
-    scheme: linkerd.io/tls
-
-    # -- Amount of time to allow for clock skew within a Linkerd cluster
-    clockSkewAllowance: 20s
-
-    # -- Amount of time for which the Identity issuer should certify identity
-    issuanceLifetime: 24h0m0s
-
-    # -- Which scheme is used for the identity issuer secret format
-    tls:
-      # -- Issuer certificate (ECDSA). It must be provided during install.
-      crtPEM: |
-        {{ linkerd.issuer_crt | indent( width=8 ) }}
-
-      # -- Key for the issuer certificate (ECDSA). It must be provided during
-      # install
-      keyPEM: |
-        {{ linkerd.issuer_key | indent( width=8 ) }}
+    scheme: kubernetes.io/tls
 
 # CA
 identityTrustAnchorsPEM: |
-  {{ linkerd.ca_crt | indent( width=2 ) }}
+  {{ linkerd.ca.crt | indent( width=2 ) }}
 
 # -|- CPU, Memory and Ephemeral Storage resources required by the identity controller (see `proxy.resources` for sub-fields)
 identityResources:
@@ -229,26 +168,11 @@ heartbeatResources: *controller_resources
 # proxy injector configuration
 proxyInjector:
   # -- Do not create a secret resource for the profileValidator webhook. If this is set to `true`, the value `proxyInjector.caBundle` must be set (see below)
-  externalSecret: false
-
-  # -- Namespace selector used by admission webhook. If not set defaults to all
-  # namespaces without the annotation
-  # config.linkerd.io/admission-webhooks=disabled
-  namespaceSelector:
-    matchExpressions:
-    - key: config.linkerd.io/admission-webhooks
-      operator: NotIn
-      values:
-      - disabled
-
-  # -- Certificate for the proxy injector. If not provided then Helm will generate one.
-  crtPEM: |
-
-  # -- Certificate key for the proxy injector. If not provided then Helm will generate one.
-  keyPEM: |
+  externalSecret: true
 
   # -- Bundle of CA certificates for proxy injector. If not provided then Helm will use the certificate generated  for `proxyInjector.crtPEM`. If `proxyInjector.externalSecret` is set to true, this value must be set, as no certificate will be generated.
   caBundle: |
+    {{ linkerd.webhook.crt | indent( width=4 ) }}
 
 # -|- CPU, Memory and Ephemeral Storage resources required by the proxy injector (see
 #`proxy.resources` for sub-fields)
@@ -260,73 +184,35 @@ proxyInjectorResources: *controller_resources
 # service profile validator configuration
 profileValidator:
   # -- Do not create a secret resource for the profileValidator webhook. If this is set to `true`, the value `profileValidator.caBundle` must be set (see below).
-  externalSecret: false
-
-  # -- Namespace selector used by admission webhook
-  namespaceSelector:
-    matchExpressions:
-    - key: config.linkerd.io/admission-webhooks
-      operator: NotIn
-      values:
-      - disabled
-
-  # -- Certificate for the service profile validator. If not provided then Helm
-  # will generate one.
-  crtPEM: |
-
-  # -- Certificate key for the service profile validator. If not provided then
-  # Helm will generate one.
-  keyPEM: |
+  externalSecret: true
 
   # -- Bundle of CA certificates for service profile validator. If not provided
   # then Helm will use the certificate generated  for `profileValidator.crtPEM`.
   # If `profileValidator.externalSecret` is set to true, this value must be set,
   # as no certificate will be generated.
   caBundle: |
+    {{ linkerd.webhook.crt | indent( width=4 ) }}
 
 # policy validator configuration
 policyValidator:
   # -- Do not create a secret resource for the policyValidator webhook. If this is set to `true`, the value `policyValidator.caBundle` must be set (see below).
-  externalSecret: false
-
-  # -- Namespace selector used by admission webhook
-  namespaceSelector:
-    matchExpressions:
-    - key: config.linkerd.io/admission-webhooks
-      operator: NotIn
-      values:
-      - disabled
-
-  # -- Certificate for the policy validator. If not provided then Helm
-  # will generate one.
-  crtPEM: |
-
-  # -- Certificate key for the policy validator. If not provided then
-  # Helm will generate one.
-  keyPEM: |
+  externalSecret: true
 
   # -- Bundle of CA certificates for policy validator. If not provided
   # then Helm will use the certificate generated  for `policyValidator.crtPEM`.
   # If `policyValidator.externalSecret` is set to true, this value must be set,
   # as no certificate will be generated.
   caBundle: |
+    {{ linkerd.webhook.crt | indent( width=4 ) }}
 
 # -|- CPU, Memory and Ephemeral Storage resources required by the SP validator (see
 #`proxy.resources` for sub-fields)
 spValidatorResources: *controller_resources
 
-# If the namespace is controlled by an external tool or can't be installed with Helm
-# you can disable its installation. In this case:
-# - The namespace created by the external tool must match the namespace value above
-# - The external tool needs to create the namespace with the label:
-#     config.linkerd.io/admission-webhooks: disabled
+installNamespace: false
 
-# installNamespace -- Set to false when installing Linkerd in a custom namespace. See the
-# [Linkerd documentation](https://linkerd.io/2/tasks/install-helm#customizing-the-namespace) for more information.
-installNamespace: true
-
-# -- NodeSelector section, See the [K8S
-# documentation](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector)
-# for more information
 nodeSelector:
   kubernetes.io/os: linux
+
+podAnnotations:
+  linkerd.io/inject: disabled

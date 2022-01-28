@@ -2,13 +2,13 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: linkerd-proxy
-  namespace: infra
+  namespace: networking
 spec:
   selector:
-    matchLabels:
-      linkerd.io/control-plane-ns: linkerd
     matchExpressions:
       - key: linkerd.io/workload-ns
+        operator: Exists
+      - key: linkerd.io/control-plane-ns
         operator: Exists
   namespaceSelector:
     any: true

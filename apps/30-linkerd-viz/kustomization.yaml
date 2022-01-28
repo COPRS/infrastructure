@@ -1,12 +1,18 @@
 commonLabels:
   app.kubernetes.io/instance: {{ app_name }}
 
+# do not apply namespace globally as the chart
+# create a rolebinding in kube-system namespace
+
 helmCharts:
 - name: linkerd-viz
   repo: https://helm.linkerd.io/stable
   version: 2.11.1
   valuesFile: values.yaml
+  namespace: networking
 
 resources:
+  - certificate-linkerdtap.yaml
+  - certificate-linkerdtapinjector.yaml
   - linkerd-control-plane-metrics.yaml
   - linkerd-proxy-metrics.yaml

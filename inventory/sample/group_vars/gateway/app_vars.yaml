@@ -14,24 +14,33 @@ apisix:
     viewer: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 linkerd:
-  ca_crt: |
-    -----BEGIN CERTIFICATE-----
-    YOUR MTLS ROOT CERTIFICATE HERE
-    Read the following documentationto generate your own
-    https://linkerd.io/2.10/tasks/generate-certificates/
-    -----END CERTIFICATE-----
-  issuer_crt: |
-    -----BEGIN CERTIFICATE-----
-    YOUR MTLS INTERMEDIATE CERTIFICATE ISSUER HERE
-    Read the following documentationto generate your own
-    https://linkerd.io/2.10/tasks/generate-certificates/
-    -----END CERTIFICATE-----
-  issuer_key: |
-    -----BEGIN EC PRIVATE KEY-----
-    YOUR MTLS INTERMEDIATE CERTIFICATE KEY HERE
-    Read the following documentationto generate your own
-    https://linkerd.io/2.10/tasks/generate-certificates/
-    -----END EC PRIVATE KEY-----
+  ca:
+    crt: |
+      -----BEGIN CERTIFICATE-----
+      YOUR MTLS ROOT CERTIFICATE HERE
+      Read the following documentationto generate your own
+      https://linkerd.io/2.11/tasks/automatically-rotating-control-plane-tls-credentials/#save-the-signing-key-pair-as-a-secret
+      -----END CERTIFICATE-----
+    key: |
+      -----BEGIN EC PRIVATE KEY-----
+      YOUR MTLS ROOT CERTIFICATE KEY HERE
+      Read the following documentationto generate your own
+      https://linkerd.io/2.11/tasks/automatically-rotating-control-plane-tls-credentials/#save-the-signing-key-pair-as-a-secret
+      -----END EC PRIVATE KEY-----
+  webhook:
+    crt: |
+      -----BEGIN CERTIFICATE-----
+      YOUR WEBHOOK CERTIFICATE HERE
+      Read the following documentationto generate your own
+      https://linkerd.io/2.11/tasks/automatically-rotating-webhook-tls-credentials/#save-the-signing-key-pair-as-a-secret
+      -----END CERTIFICATE-----
+    key: |
+      -----BEGIN EC PRIVATE KEY-----
+      YOUR WEBHOOK CERTIFICATE KEY HERE
+      Read the following documentationto generate your own
+      https://linkerd.io/2.11/tasks/automatically-rotating-webhook-tls-credentials/#save-the-signing-key-pair-as-a-secret
+      -----END EC PRIVATE KEY-----
+
   oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 prometheus:
@@ -40,10 +49,10 @@ prometheus:
 thanos:
   s3:
     bucket: THANOS_BUCKET
-    endpoint: {{ common.s3.endpoint }}
-    region: {{ common.s3.region }}
-    access_key: {{ common.s3.access_key }}
-    secret_key: {{ common.s3.secret_key }}
+    endpoint: "{{ common.s3.endpoint }}"
+    region: "{{ common.s3.region }}"
+    access_key: "{{ common.s3.access_key }}"
+    secret_key: "{{ common.s3.secret_key }}"
 
 grafana:
   oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
@@ -54,10 +63,10 @@ elasticsearch-security:
   backup:
     s3:
       bucket: ES_SECURITY_BACKUP_BUCKET
-      endpoint: {{ common.s3.endpoint }}
-      region: {{ common.s3.region }}
-      access_key: {{ common.s3.access_key }}
-      secret_key: {{ common.s3.secret_key }}
+      endpoint: "{{ common.s3.endpoint }}"
+      region: "{{ common.s3.region }}"
+      access_key: "{{ common.s3.access_key }}"
+      secret_key: "{{ common.s3.secret_key }}"
 
 elasticsearch-processing:
   operator_password_hash: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
@@ -65,10 +74,10 @@ elasticsearch-processing:
   backup:
     s3:
       bucket: ES_PROCESSING_BACKUP_BUCKET
-      endpoint: {{ common.s3.endpoint }}
-      region: {{ common.s3.region }}
-      access_key: {{ common.s3.access_key }}
-      secret_key: {{ common.s3.secret_key }}
+      endpoint: "{{ common.s3.endpoint }}"
+      region: "{{ common.s3.region }}"
+      access_key: "{{ common.s3.access_key }}"
+      secret_key: "{{ common.s3.secret_key }}"
 
 keycloak:
   superadmin:
@@ -90,30 +99,30 @@ openldap:
     restic_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
     s3:
       bucket: LDAP_BACKUP_BUCKET
-      endpoint: {{ common.s3.endpoint }}
-      region: {{ common.s3.region }}
-      access_key: {{ common.s3.access_key }}
-      secret_key: {{ common.s3.secret_key }}
+      endpoint: "{{ common.s3.endpoint }}"
+      region: "{{ common.s3.region }}"
+      access_key: "{{ common.s3.access_key }}"
+      secret_key: "{{ common.s3.secret_key }}"
 
 postgresql:
   backup:
     restic_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
     s3:
       bucket: POSTGRESQL_BACKUP_BUCKET
-      endpoint: {{ common.s3.endpoint }}
-      region: {{ common.s3.region }}
-      access_key: {{ common.s3.access_key }}
-      secret_key: {{ common.s3.secret_key }}
+      endpoint: "{{ common.s3.endpoint }}"
+      region: "{{ common.s3.region }}"
+      access_key: "{{ common.s3.access_key }}"
+      secret_key: "{{ common.s3.secret_key }}"
 
 graylog:
   oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 finops-object-storage-exporter:
   s3:
-    endpoint: {{ common.s3.endpoint }}
-    region: {{ common.s3.region }}
-    access_key: {{ common.s3.access_key }}
-    secret_key: {{ common.s3.secret_key }}
+    endpoint: "{{ common.s3.endpoint }}"
+    region: "{{ common.s3.region }}"
+    access_key: "{{ common.s3.access_key }}"
+    secret_key: "{{ common.s3.secret_key }}"
 
 scdf:
   database:
@@ -128,13 +137,13 @@ stash:
 rclone:
   source:
     s3:
-      endpoint: {{ common.s3.endpoint }}
-      region: {{ common.s3.region }}
-      access_key: {{ common.s3.access_key }}
-      secret_key: {{ common.s3.secret_key }}
+      endpoint: "{{ common.s3.endpoint }}"
+      region: "{{ common.s3.region }}"
+      access_key: "{{ common.s3.access_key }}"
+      secret_key: "{{ common.s3.secret_key }}"
   destination:
     s3:
-      endpoint: {{ common.s3.endpoint }}
-      region: {{ common.s3.region }}
-      access_key: {{ common.s3.access_key }}
-      secret_key: {{ common.s3.secret_key }}
+      endpoint: "{{ common.s3.endpoint }}"
+      region: "{{ common.s3.region }}"
+      access_key: "{{ common.s3.access_key }}"
+      secret_key: "{{ common.s3.secret_key }}"
