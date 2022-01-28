@@ -2,15 +2,14 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: linkerd-controller
-  namespace: infra
+  namespace: networking
 spec:
   selector:
     matchLabels:
-      linkerd.io/control-plane-ns: linkerd
+      linkerd.io/control-plane-ns: networking
   namespaceSelector:
     matchNames:
-      - linkerd
-      - linkerd-viz
+      - networking
   podMetricsEndpoints:
     - path: /metrics
       port: admin-http
