@@ -1,6 +1,8 @@
 commonLabels:
   app.kubernetes.io/instance: "{{ app_name }}"
 
+namespace: monitoring
+
 helmCharts:
   - name: finops-resources-exporter
     releaseName: "{{ app_name }}"
@@ -22,3 +24,9 @@ patches:
       version: v1
       kind: Deployment
       name: finops-resources-exporter
+
+secretGenerator:
+  - name: rs-regcred
+    files:
+      - .dockerconfigjson
+    type: kubernetes.io/dockerconfigjson

@@ -117,7 +117,7 @@ postgresql:
 graylog:
   oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
-finops-object-storage-exporter:
+finops_object_storage_exporter:
   s3:
     endpoint: "{{ common.s3.endpoint }}"
     region: "{{ common.s3.region }}"
@@ -148,6 +148,6 @@ rclone:
       access_key: "{{ common.s3.access_key }}"
       secret_key: "{{ common.s3.secret_key }}"
 
-cs_helm_local:
+cs_registry:
   username: HELM_CS_USERNAME
   password: HELM_CS_PASSWORD

@@ -1,4 +1,4 @@
-imagePullSecrets: rs-artifactory
+imagePullSecrets: rs-regcred
 
 image:
   registry: artifactory.coprs.esa-copernicus.eu/cs-docker

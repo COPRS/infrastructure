@@ -1,0 +1,8 @@
+{
+    "auths": {
+        "https://artifactory.coprs.esa-copernicus.eu/cs-docker/": {
+            "username": "{{ cs_registry.username }}",
+            "password": "{{ cs_registry.password }}"
+        }
+    }
+}
