@@ -1,0 +1,4 @@
+helm_repositories:
+  - name: https://artifactory.coprs.esa-copernicus.eu/artifactory/cs-helm-local
+    username: "{{ cs_helm_local.username }}"
+    password: "{{ cs_helm_local.password }}"

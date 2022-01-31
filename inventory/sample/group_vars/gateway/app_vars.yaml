@@ -147,3 +147,7 @@ rclone:
       region: "{{ common.s3.region }}"
       access_key: "{{ common.s3.access_key }}"
       secret_key: "{{ common.s3.secret_key }}"
+
+cs_helm_local:
+  username: HELM_CS_USERNAME
+  password: HELM_CS_PASSWORD
