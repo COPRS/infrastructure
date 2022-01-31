@@ -80,6 +80,20 @@ The following links provide additional documentation related to Helm integration
 - [kustomization of a helm chart.](https://github.com/kubernetes-sigs/kustomize/blob/59c410a70af15ed330cfd5292b1a642692a7b773/examples/chart.md)
 - [HelmChart structure definition.](https://github.com/kubernetes-sigs/kustomize/blob/d9435bd1b13a6764b9d271001e61837199494d1c/api/types/helmchartargs.go#L33)
 
+#### Private Helm repositories
+
+To pull charts from a private repository, you need to add a specific file called `helm_repository_config.yaml` containing your repository configuration at your application root path.
+
+```yaml
+# .helm_repository_config.yaml
+
+helm_repositories:
+  - name: REPOSITORY_URL
+    username: "REPOSITORY_USERNAME"
+    password: "REPOSITORY_PASSWORD"
+
+```
+
 ### Supported variables
 
 Below is the list of the variables created specificaly by the app installer role.
