@@ -13,7 +13,7 @@ spec:
   version: 7.15.2
   nodeSets:
     - name: es-coordinating
-      count: 1
+      count: 2
       config:
         xpack.security.authc.anonymous:
           username: anonymous
@@ -43,10 +43,10 @@ spec:
             - name: es-coordinating
               resources:
                 limits:
-                  cpu: 2000m
-                  memory: 6Gi
+                  cpu: 400m
+                  memory: 8Gi
                 requests:
-                  cpu: 1000m
+                  cpu: 100m
                   memory: 2Gi
               readinessProbe: &readiness_config
                 exec:
@@ -63,7 +63,7 @@ spec:
                 - name: READINESS_PROBE_TIMEOUT
                   value: "20"
     - name: es-node
-      count: 2
+      count: 3
       config:
         # no node.roles means all roles
         xpack.security.authc.anonymous:
@@ -80,7 +80,7 @@ spec:
               - ReadWriteOnce
             resources:
               requests:
-                storage: 80Gi
+                storage: 2000Gi
             storageClassName: ceph-block
       podTemplate:
         spec:
@@ -105,8 +105,8 @@ spec:
             - name: es-node
               resources:
                 limits:
-                  cpu: 1500m
-                  memory: 4Gi
+                  cpu: 2
+                  memory: 10Gi
                 requests:
-                  cpu: 750m
-                  memory: 2Gi
+                  cpu: 100
+                  memory: 4Gi
