@@ -85,7 +85,7 @@
   vars_files: 
     - "collections/kubespray/roles/download/defaults/main.yml"
     - "collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
-  pre_ tasks:
+  pre_tasks:
     - name: install pip modules for ansible kubernetes.core
       pip: 
         name: "{{ item }}"
@@ -93,6 +93,7 @@
         - pyyaml==5.3.1
         - openshift==0.12.1
         - kubernetes==12.0.1
+        - hvac==0.11.2
   roles:
     - { role: "collections/kubespray/roles/kubernetes-apps/helm" }
     - { role: "kustomize" }

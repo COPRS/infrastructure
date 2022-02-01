@@ -1,3 +1,28 @@
+- name: Generate or reuse app_vars
+  block:
+    - name: Setting some facts
+      set_fact:
+        generated_app_vars_path: "{{ inventory_dir }}/artifacts/generated_app_vars.yaml"
+        app_vars_path: "{{ inventory_dir }}/group_vars/gateway/app_vars.yaml"
+
+    - name: Check whether generated_app_vars.yaml file exists
+      stat:
+        path: "{{ generated_app_vars_path }}"
+      delegate_to: localhost
+      register: generated_app_vars
+
+    - name: Generate app_vars
+      template:
+        src: "{{ app_vars_path }}"
+        dest: "{{ generated_app_vars_path }}"
+        mode: 0600
+      delegate_to: localhost
+      when: not generated_app_vars.stat.exists
+
+    - name: Load previously generated app_vars
+      include_vars: "{{ generated_app_vars_path }}"
+      delegate_to: localhost
+
 - name: Browse each package
   include_tasks: install_package.yaml
   vars:
