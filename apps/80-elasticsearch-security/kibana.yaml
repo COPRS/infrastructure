@@ -1,7 +1,7 @@
 apiVersion: kibana.k8s.elastic.co/v1
 kind: Kibana
 metadata:
-  name: kibana-processing
+  name: kibana-security
 spec:
   http:
     tls:
@@ -15,6 +15,6 @@ spec:
     spec:
       automountServiceAccountToken: true
   config:
-    server.publicBaseUrl: https://infra.{{ rs_domain_name }}
+    server.publicBaseUrl: https://security.{{ rs_domain_name }}/kibana
     server.basePath: /kibana
   

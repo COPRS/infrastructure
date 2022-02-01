@@ -35,10 +35,10 @@ spec:
             && /bin/chmod 777 /tmp/backup/*
       containerName: postgresql
   runtimeSettings:
-    envFrom:
-      - secretRef:
-          name: postgresql-databases-passwords
     container:
+      envFrom:
+        - secretRef:
+            name: postgresql-databases-passwords
       resources:
         requests:
           cpu: 100m
