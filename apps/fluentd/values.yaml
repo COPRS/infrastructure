@@ -138,7 +138,7 @@ aggregator:
         @type elasticsearch
         @log_level info
         type_name _doc
-        host elasticsearch-cluster-es-http.infra.svc.cluster.local
+        host elasticsearch-processing-es-es-coordinating.infra.svc.cluster.local
         port 9200
         scheme http
         ssl_verify false
