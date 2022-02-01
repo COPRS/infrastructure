@@ -23,12 +23,12 @@ spec:
           enable: true
           config:
             headers:
-              Authorization: "Basic {{ elasticsearch-processing.operator_password_hash | b64encode }}"
+              Authorization: "Basic {{ elasticsearch_processing.operator_password_hash | b64encode }}"
         - name: openid-connect
           enable: true
           config:
             client_id: kibana-processing
-            client_secret: {{ elasticsearch-processing.kibana_oidc_client_secret }}
+            client_secret: "{{ elasticsearch_processing.kibana_oidc_client_secret }}"
             discovery: https://security.{{ rs_domain_name }}/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false

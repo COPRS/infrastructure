@@ -1,7 +1,7 @@
-imagePullSecrets: rs-artifactory
+imagePullSecrets: rs-regcred
 
 image:
-  registry: artifactory.coprs.esa-copernicus.eu/artifactory/cs-docker-local
+  registry: artifactory.coprs.esa-copernicus.eu/cs-docker
   repository: finops-object-storage-exporter
   tag: release-0.3.0
 
@@ -11,10 +11,10 @@ metrics:
     additionalLabels.release: prometheus-operator
 
 env:
-  S3_ENDPOINT: {{ finops-object-storage-exporter.s3.endpoint }}
-  S3_REGION: {{ finops-object-storage-exporter.s3.region }}
-  S3_ACCESS_KEY: {{ finops-object-storage-exporter.s3.access_key }}
-  S3_SECRET_KEY: {{ finops-object-storage-exporter.s3.secret_key }}
+  S3_ENDPOINT: {{ finops_object_storage_exporter.s3.endpoint }}
+  S3_REGION: {{ finops_object_storage_exporter.s3.region }}
+  S3_ACCESS_KEY: {{ finops_object_storage_exporter.s3.access_key }}
+  S3_SECRET_KEY: {{ finops_object_storage_exporter.s3.secret_key }}
 
 affinity: 
   nodeAffinity:

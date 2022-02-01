@@ -1,5 +1,5 @@
 commonLabels:
-  app.kubernetes.io/instance: {{ app_name }}
+  app.kubernetes.io/instance: "{{ app_name }}"
 
 namespace: logging
 
@@ -21,4 +21,4 @@ helmCharts:
   repo: https://charts.bitnami.com/bitnami
   version: 4.4.1
   valuesFile: values.yaml
-  releaseName: {{ app_name }}
+  releaseName: "{{ app_name }}"

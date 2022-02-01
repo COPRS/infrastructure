@@ -4,12 +4,28 @@
       stat:
         path: "{{ app_dir }}/kustomization.yaml"
       delegate_to: localhost
-      register: kustomization
+      register: kustomization_file
 
-    - name: "{{ package_name  }} - {{ app_name }}"
+    - name: "{{ package_name  }} - {{ app_name }} | Fail if no kustomization file found"
       fail:
         msg: "No kustomization.yaml file found in {{ app_dir }}. Documentation available at https://github.com/COPRS/infrastructure/blob/release/0.3.0/doc/how-to/Add%20an%20application.md"
-      when: not kustomization.stat.exists
+      when: not kustomization_file.stat.exists
+
+    - name: "{{ package_name  }} - {{ app_name }} | Include vars from kustomization.yaml"
+      include_vars:
+        file: "{{ app_dir }}/kustomization.yaml"
+        name: kustomization
+
+    - name: "{{ package_name  }} - {{ app_name }} | Check whether .helm_repository_config.yaml exists"
+      stat:
+        path: "{{ app_dir }}/.helm_repository_config.yaml"
+      register: repository_config
+      delegate_to: localhost
+
+    - name: "{{ package_name  }} - {{ app_name }} | Include vars from .helm_repository_config.yaml"
+      include_vars:
+        file: "{{ app_dir }}/.helm_repository_config.yaml"
+      when: repository_config.stat.exists
 
     - name: "{{ package_name  }} - {{ app_name }} | Create tmp directory for k8s resources"
       tempfile:
@@ -17,14 +33,35 @@
         suffix: "k8s_resources_{{ app_name }}"
       register: resources_dir
 
+    - name: "{{ package_name  }} - {{ app_name }} | Pull charts from private repositories"
+      shell: |
+        helm pull \
+        --untar --untardir {{ resources_dir.path }}/charts \
+        --repo {{ item.0.repo }} {{ item.0.name }} \
+        {{ "--version " + item.0.version if item.0.version is defined else omit }} \
+        {{ "--username " + item.1.username if item.1.username is defined else omit }} \
+        {{ "--password " + item.1.password if item.1.password is defined else omit }}
+      loop: "{{ kustomization.helmCharts | product(helm_repositories) }}"
+      when: 
+        - repository_config.stat.exists
+        - helm_repositories is defined
+        - kustomization.helmCharts is defined
+        - item.0.repo == item.1.name 
+
     - name: "{{ package_name  }} - {{ app_name }} | Template and send resources to remote"
       include_tasks: copy_and_template.yaml
       with_community.general.filetree: "{{ app_dir }}/"
-      when: item.state == 'file'
+      when: 
+        - item.state == 'file'
+        - item.path not in ['.helm_repository_config.yaml', 'resources.txt']
 
     - name: "{{ package_name  }} - {{ app_name }} | Deploy resources"
       shell: "{{ bin_dir }}/kustomize build --enable-helm {{ resources_dir.path }} | {{ bin_dir }}/kubectl apply -f - --server-side --force-conflicts --prune -l app.kubernetes.io/instance={{ app_name }}"
       register: result
+
+    - name: "{{ package_name  }} - {{ app_name }} | reset facts"
+      set_fact:
+        resources: []
 
     - name: "{{ package_name  }} - {{ app_name }} | Extract deployed resources"
       set_fact:

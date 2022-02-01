@@ -80,7 +80,6 @@
 - name: Prepare gateways
   hosts: gateway
   gather_facts: false
-  become: true
   tags: gateway
   vars_files: 
     - "collections/kubespray/roles/download/defaults/main.yml"
@@ -95,10 +94,17 @@
         - kubernetes==12.0.1
         - hvac==0.11.2
   roles:
-    - { role: "collections/kubespray/roles/kubernetes-apps/helm" }
-    - { role: "kustomize" }
-    - { role: "kubectl" }
-    - { role: "rs-defaults" }
+    - { role: "collections/kubespray/roles/kubernetes-apps/helm", become: yes }
+    - { role: "kustomize", become: yes }
+    - { role: "kubectl", become: yes }
+    # - { role: "rs-defaults" }
+  tasks:
+    - name: Create namespace monitoring
+      kubernetes.core.k8s:
+        name: monitoring
+        api_version: v1
+        kind: Namespace
+        state: present
 
 - name: Install etcd secrets in the cluster to monitor the cluster
   hosts: kube_control_plane[0]

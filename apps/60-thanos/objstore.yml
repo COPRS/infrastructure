@@ -1,0 +1,23 @@
+type: S3
+config:
+  bucket: {{ thanos.s3.bucket }}
+  endpoint: {{ thanos.s3.endpoint.split('//')[1] }}
+  region: {{ thanos.s3.region }}
+  access_key: {{ thanos.s3.access_key }}
+  insecure: false
+  signature_version2: false
+  secret_key: {{ thanos.s3.secret_key }}
+  put_user_metadata: {}
+  http_config:
+    idle_conn_timeout: 0s
+    response_header_timeout: 0s
+    insecure_skip_verify: false
+  trace:
+    enable: false
+  list_objects_version: "v1"
+  part_size: 0
+  sse_config:
+    type: ""
+    kms_key_id: ""
+    kms_encryption_context: {}
+    encryption_key: ""

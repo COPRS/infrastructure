@@ -24,7 +24,7 @@ spec:
                 - /entrypoint.sh
               env:
                 - name: BUCKET
-                  value: {{ elasticsearch-processing.backup.s3.bucket }}
+                  value: "{{ elasticsearch_processing.backup.s3.bucket }}"
                 - name: RETENTION_DAYS
                   value: '7'
               volumeMounts:

@@ -1,5 +1,5 @@
 commonLabels:
-  app.kubernetes.io/instance: {{ app_name }}
+  app.kubernetes.io/instance: "{{ app_name }}"
 
 # do not apply namespace globally as the chart
 # create a rolebinding in kube-system namespace

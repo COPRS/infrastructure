@@ -1,0 +1,16 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+commonAnnotations:
+  linkerd.io/inject: enabled
+
+resources:
+  - ns-database.yaml
+  - ns-iam.yaml
+  - ns-infra.yaml
+  - ns-logging.yaml
+  - ns-monitoring.yaml
+  - ns-networking.yaml
+  - ns-processing.yaml
+  - ns-rook-ceph.yaml
+  - ns-security.yaml

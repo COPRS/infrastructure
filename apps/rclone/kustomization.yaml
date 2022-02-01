@@ -1,7 +1,7 @@
 namespace: security
 
 commonLabels:
-  app.kubernetes.io/instance: {{ app_name }}
+  app.kubernetes.io/instance: "{{ app_name }}"
 
 resources:
   - clone-elasticsearch-processing-backup.yaml

@@ -1,11 +1,11 @@
 commonLabels:
-  app.kubernetes.io/instance: {{ app_name }}
+  app.kubernetes.io/instance: "{{ app_name }}"
 
 namespace: networking
 
 helmCharts:
 - name: apisix
-  releaseName: {{ app_name }}
+  releaseName: "{{ app_name }}"
   repo: https://charts.apiseven.com
   version: 0.7.3
   valuesFile: values.yaml
@@ -24,8 +24,14 @@ resources:
 patches:
   # ingress controller deployment does not include the possibility to add any annotation
   # init container must be allowed to outbound to admin without mesh
-  - path: linkerd-annotation-ingress-controller.yaml
-    target: 
+  - patch: |-
+      - op: add
+        path: /spec/template/metadata/annotations
+        value:
+          config.linkerd.io/skip-outbound-ports: "9180"
+    target:
+      group: apps
+      version: v1
       kind: Deployment
       labelSelector: app.kubernetes.io/name=ingress-controller
   # Dashboard crashloopbackoff before getting ready
@@ -33,3 +39,12 @@ patches:
     target:
       kind: Deployment
       labelSelector: app.kubernetes.io/name=dashboard
+  # disabled injection with pod test-connection
+  - patch: |-
+      - op: add
+        path: /metadata/annotations
+        value:
+          linkerd.io/inject: disabled
+    target:
+      kind: Pod
+      name: apisix-dashboard-test-connection
