@@ -57,7 +57,7 @@ thanos:
 grafana:
   oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
-elasticsearch-security:
+elasticsearch_security:
   operator_password_hash: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
   kibana_oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
   backup:
@@ -68,7 +68,7 @@ elasticsearch-security:
       access_key: "{{ common.s3.access_key }}"
       secret_key: "{{ common.s3.secret_key }}"
 
-elasticsearch-processing:
+elasticsearch_processing:
   operator_password_hash: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
   kibana_oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
   backup:

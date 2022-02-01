@@ -18,5 +18,5 @@ configMapGenerator:
 secretGenerator:
   - name: {{ app_name }}-s3-credentials
     literals:
-      - S3_ACCESS_KEY={{ lookup('vars', app_name).backup.s3.access_key }}
-      - S3_SECRET_KEY={{ lookup('vars', app_name).backup.s3.secret_key }}
+      - S3_ACCESS_KEY={{ elasticsearch_security.backup.s3.access_key }}
+      - S3_SECRET_KEY={{ elasticsearch_security.backup.s3.secret_key }}
