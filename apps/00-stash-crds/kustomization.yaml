@@ -1,5 +1,5 @@
 commonLabels:
-  app.kubernetes.io/instance: {{ app_name }}
+  app.kubernetes.io/instance: "{{ app_name }}"
 
 helmCharts:
 - name: stash-crds
