@@ -1,5 +1,5 @@
 commonLabels:
-  app.kubernetes.io/instance: {{ app_name }}
+  app.kubernetes.io/instance: "{{ app_name }}"
 
 namespace: networking
 
@@ -7,7 +7,7 @@ helmCharts:
 - name: linkerd2-cni
   repo: https://helm.linkerd.io/stable
   version: 2.11.1
-  releaseName: {{ app_name }}
+  releaseName:  "{{ app_name }}"
   valuesFile: values.yaml
   namespace: networking
 
