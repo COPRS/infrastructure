@@ -1,0 +1,22 @@
+namespace: security
+
+commonLabels:
+  app.kubernetes.io/instance: elasticsearch-security
+
+resources:
+  - elasticsearch.yaml
+  - kibana.yaml
+  - filerealm-secret.yaml
+  - backup-config-job.yaml
+
+configMapGenerator:
+  - name: elasticsearch-security-backup-config
+    files:
+      - backup-config/snapshot-config.json
+      - backup-config/s3-repository.json
+
+secretGenerator:
+  - name: elasticsearch-security-s3-credentials
+    literals:
+      - S3_ACCESS_KEY=S3_ACCESS_KEY
+      - S3_SECRET_KEY=S3_SECRET_KEY

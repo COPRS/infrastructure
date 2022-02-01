@@ -1,0 +1,22 @@
+namespace: database
+
+commonLabels:
+  app.kubernetes.io/instance: elasticsearch-processing
+
+resources:
+  - elasticsearch.yaml
+  - kibana.yaml
+  - filerealm-secret.yaml
+  - backup-config-job.yaml
+
+configMapGenerator:
+  - name: elasticsearch-processing-backup-config
+    files:
+      - backup-config/snapshot-config.json
+      - backup-config/s3-repository.json
+
+secretGenerator:
+  - name: elasticsearch-processing-s3-credentials
+    literals:
+      - S3_ACCESS_KEY=S3_ACCESS_KEY
+      - S3_SECRET_KEY=S3_SECRET_KEY

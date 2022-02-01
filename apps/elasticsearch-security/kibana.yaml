@@ -1,0 +1,20 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: kibana-security
+spec:
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  version: 7.15.2
+  count: 1
+  elasticsearchRef:
+    name: elasticsearch-security
+  podTemplate:
+    spec:
+      automountServiceAccountToken: true
+  config:
+    server.publicBaseUrl: https://security.{{ rs_domain_name }}
+    server.basePath: /kibana
+  
