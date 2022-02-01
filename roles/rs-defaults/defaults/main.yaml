@@ -3,3 +3,7 @@ k8s_namespaces:
   - name: processing
   - name: security
   - name: infra
+  - name: rook-ceph
+  - name: database
+  - name: networking
+  - name: iam
