@@ -97,7 +97,14 @@
     - { role: "collections/kubespray/roles/kubernetes-apps/helm", become: yes }
     - { role: "kustomize", become: yes }
     - { role: "kubectl", become: yes }
-    - { role: "rs-defaults" }
+    # - { role: "rs-defaults" }
+  tasks:
+    - name: Create namespace monitoring
+      kubernetes.core.k8s:
+        name: monitoring
+        api_version: v1
+        kind: Namespace
+        state: present
 
 - name: Install etcd secrets in the cluster to monitor the cluster
   hosts: kube_control_plane[0]
