@@ -1,7 +1,7 @@
 apiVersion: integreatly.org/v1alpha1
 kind: GrafanaDataSource
 metadata:
-  name: {{ app_name }}
+  name: "{{ app_name }}"
 spec:
   name: thanos.yaml
   datasources:

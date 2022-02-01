@@ -1,7 +1,7 @@
 type: S3
 config:
   bucket: {{ thanos.s3.bucket }}
-  endpoint: {{ thanos.s3.endpoint }}
+  endpoint: {{ thanos.s3.endpoint.split('//')[1] }}
   region: {{ thanos.s3.region }}
   access_key: {{ thanos.s3.access_key }}
   insecure: false
