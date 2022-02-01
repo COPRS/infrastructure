@@ -4,16 +4,17 @@
       stat:
         path: "{{ app_dir }}/kustomization.yaml"
       delegate_to: localhost
-      register: kustomization
+      register: kustomization_file
 
     - name: "{{ package_name  }} - {{ app_name }} | Fail if no kustomization file found"
       fail:
         msg: "No kustomization.yaml file found in {{ app_dir }}. Documentation available at https://github.com/COPRS/infrastructure/blob/release/0.3.0/doc/how-to/Add%20an%20application.md"
-      when: not kustomization.stat.exists
+      when: not kustomization_file.stat.exists
 
     - name: "{{ package_name  }} - {{ app_name }} | Include vars from kustomization.yaml"
       include_vars:
         file: "{{ app_dir }}/kustomization.yaml"
+        name: kustomization
 
     - name: "{{ package_name  }} - {{ app_name }} | Check whether .helm_repository_config.yaml exists"
       stat:
@@ -40,11 +41,11 @@
         {{ "--version " + item.0.version if item.0.version is defined else omit }} \
         {{ "--username " + item.1.username if item.1.username is defined else omit }} \
         {{ "--password " + item.1.password if item.1.password is defined else omit }}
-      loop: "{{ helmCharts | product(helm_repositories) }}"
+      loop: "{{ kustomization.helmCharts | product(helm_repositories) }}"
       when: 
         - repository_config.stat.exists
         - helm_repositories is defined
-        - helmCharts is defined
+        - kustomization.helmCharts is defined
         - item.0.repo == item.1.name 
 
     - name: "{{ package_name  }} - {{ app_name }} | Template and send resources to remote"
@@ -53,11 +54,14 @@
       when: 
         - item.state == 'file'
         - item.path not in ['.helm_repository_config.yaml', 'resources.txt']
-        # - item.path | basename != '.helm_repository_config'
 
     - name: "{{ package_name  }} - {{ app_name }} | Deploy resources"
       shell: "{{ bin_dir }}/kustomize build --enable-helm {{ resources_dir.path }} | {{ bin_dir }}/kubectl apply -f - --server-side --force-conflicts --prune -l app.kubernetes.io/instance={{ app_name }}"
       register: result
+
+    - name: "{{ package_name  }} - {{ app_name }} | reset facts"
+      set_fact:
+        resources: []
 
     - name: "{{ package_name  }} - {{ app_name }} | Extract deployed resources"
       set_fact:
