@@ -1,8 +1,8 @@
 namespace: infra
-namePrefix: {{ app_name }}-
+namePrefix: "{{ app_name }}-"
 
 commonLabels:
-  app.kubernetes.io/instance: {{ app_name }}
+  app.kubernetes.io/instance: "{{ app_name }}"
 
 resources:
   - deployment.yaml

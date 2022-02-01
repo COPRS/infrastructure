@@ -1,11 +1,11 @@
 commonLabels:
-  app.kubernetes.io/instance: {{ app_name }}
+  app.kubernetes.io/instance: "{{ app_name }}"
 
 namespace: security
 
 helmCharts:
 - name: graylog
-  releaseName: {{ app_name }}
+  releaseName: "{{ app_name }}"
   repo: https://charts.kong-z.com
   version: 1.9.2
   valuesFile: values.yaml

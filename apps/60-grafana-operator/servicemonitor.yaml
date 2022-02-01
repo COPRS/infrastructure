@@ -8,4 +8,4 @@ spec:
       interval: 2m
   selector:
     matchLabels:
-      app.kubernetes.io/instance: {{ app_name }}
+      app.kubernetes.io/instance: "{{ app_name }}"

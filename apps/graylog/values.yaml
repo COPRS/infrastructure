@@ -4,11 +4,11 @@ tags:
 
 graylog:
   image:
-    repository: graylog/graylog
-    tag: 4.2.3-1
+    repository: "graylog/graylog"
+    tag: "4.2.3-1"
 
   mongodb:
-    uri: "mongodb://{{ mongodb.username }}:{{ mongodb.password }}@mongodb.infra.svc.cluster.local/{{ mongodb.database }}"
+    uri: "mongodb://{{ mongodb.username }}:{{ mongodb.password }}@mongodb.database.svc.cluster.local/{{ mongodb.database }}"
 
   elasticsearch:
     hosts: http://elasticsearch-security-es-http.security.svc.cluster.local:9200

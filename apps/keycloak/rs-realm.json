@@ -370,7 +370,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "{{ elasticsearch-security.kibana_oidc_client_secret }}",
+      "secret": "{{ elasticsearch_security.kibana_oidc_client_secret }}",
       "redirectUris": [
           "https://security.{{ rs_domain_name }}/*"
       ],
@@ -395,7 +395,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "{{ elasticsearch-processing.kibana_oidc_client_secret }}",
+      "secret": "{{ elasticsearch_processing.kibana_oidc_client_secret }}",
       "redirectUris": [
           "https://infra.{{ rs_domain_name }}/*"
       ],

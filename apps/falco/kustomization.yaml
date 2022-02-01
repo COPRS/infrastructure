@@ -1,9 +1,9 @@
 commonLabels:
-  app.kubernetes.io/instance: {{ app_name }}
+  app.kubernetes.io/instance: "{{ app_name }}"
 
 helmCharts:
 - name: falco
-  releaseName: {{ app_name }}
+  releaseName: "{{ app_name }}"
   repo: https://falcosecurity.github.io/charts
   version: 1.16.2
   valuesFile: values.yaml

@@ -67,7 +67,7 @@ mariadb:
 rabbitmq:
   enabled: false
 externalDatabase:
-  host: postgresql.infra.svc.cluster.local
+  host: postgresql.database.svc.cluster.local
   port: 5432
   driver: org.postgresql.Driver
   scheme: postgresql
