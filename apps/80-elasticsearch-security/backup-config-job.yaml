@@ -16,11 +16,9 @@ spec:
         - name: wait-for-elasticearch
           image: alpine
           command:
-            [
-              "sh",
-              "-c",
-              "for i in $(seq 1 300); do nc -zvw1 {{ app_name }}-es-http.{{ kustomization.namespace }}.svc.cluster.local 9200 && exit 0 || sleep 3; done; exit 1",
-            ]
+            - sh
+            - -c
+            - "for i in $(seq 1 300); do nc -zvw1 {{ app_name }}-es-http.{{ kustomization.namespace }}.svc.cluster.local 9200 && exit 0 || sleep 3; done; exit 1"
       containers:
         - name: curl-send-config
           image: appropriate/curl
