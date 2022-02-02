@@ -29,8 +29,8 @@ spec:
             - sh
             - -c
             - |
-              curl -X PUT "{{ app_name }}-es-http.{{ kustomization.namespace }}.svc.cluster.local:9200/_snapshot/backup-repository?pretty" -H 'Content-Type: application/json' -d @/etc/backup-config/s3-repository.json
-              curl -X PUT "{{ app_name }}-es-http.{{ kustomization.namespace }}.svc.cluster.local:9200/_slm/policy/daily-snapshots?pretty" -H 'Content-Type: application/json' -d @/etc/backup-config/snapshot-config.json
+              curl --fail -X PUT "{{ app_name }}-es-http.{{ kustomization.namespace }}.svc.cluster.local:9200/_snapshot/backup-repository?pretty" -H 'Content-Type: application/json' -d @/etc/backup-config/s3-repository.json
+              curl --fail -X PUT "{{ app_name }}-es-http.{{ kustomization.namespace }}.svc.cluster.local:9200/_slm/policy/daily-snapshots?pretty" -H 'Content-Type: application/json' -d @/etc/backup-config/snapshot-config.json
       volumes:
         - name: backup-config
           configMap:
