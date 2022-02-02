@@ -145,7 +145,7 @@ prometheus:
     image:
       repository: quay.io/prometheus/prometheus
       tag: v2.31.1
-    replicas: 1
+    replicas: 2
     serviceMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelector: {}
     podMonitorSelectorNilUsesHelmValues: false
