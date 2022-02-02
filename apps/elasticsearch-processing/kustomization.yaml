@@ -1,6 +1,7 @@
-namespace: database
+namespace: infra
 
 commonLabels:
+  app.kubernetes.io/managed-by: Kustomize
   app.kubernetes.io/instance: elasticsearch-processing
 
 resources:

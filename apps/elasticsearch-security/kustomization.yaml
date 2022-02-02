@@ -1,6 +1,7 @@
 namespace: security
 
 commonLabels:
+  app.kubernetes.io/managed-by: Kustomize
   app.kubernetes.io/instance: elasticsearch-security
 
 resources:
