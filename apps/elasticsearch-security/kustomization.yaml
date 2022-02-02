@@ -21,5 +21,6 @@ secretGenerator:
     literals:
       - S3_ACCESS_KEY=S3_ACCESS_KEY
       - S3_SECRET_KEY=S3_SECRET_KEY
-    options:
-      disableNameSuffixHash: true
+
+generatorOptions:
+  disableNameSuffixHash: true
