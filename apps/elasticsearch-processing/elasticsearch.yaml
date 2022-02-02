@@ -62,6 +62,8 @@ spec:
               env:
                 - name: READINESS_PROBE_TIMEOUT
                   value: "20"
+                - name: ES_JAVA_OPTS
+                  value: "-Xms4096m -Xmx4096m"
     - name: node
       count: 3
       config:
@@ -121,7 +123,7 @@ spec:
               resources:
                 limits:
                   cpu: 2
-                  memory: 10Gi
+                  memory: 8Gi
                 requests:
                   cpu: 100m
                   memory: 4Gi
@@ -139,3 +141,5 @@ spec:
               env:
                 - name: READINESS_PROBE_TIMEOUT
                   value: "20"
+                - name: ES_JAVA_OPTS
+                  value: "-Xms4096m -Xmx4096m"
