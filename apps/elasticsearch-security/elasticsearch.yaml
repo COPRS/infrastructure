@@ -95,8 +95,6 @@ spec:
               envFrom:
                 - secretRef:
                     name: elasticsearch-security-s3-credentials
-              readinessProbe:
-                <<: *readiness_config
               command:
                 - sh
                 - -c
