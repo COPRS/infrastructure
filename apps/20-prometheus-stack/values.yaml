@@ -189,7 +189,7 @@ prometheus:
           storageClassName: ceph-block
           resources:
             requests:
-              storage: 20Gi
+              storage: 150Gi
 
     externalUrl: http://monitoring.alam-dev.csgroup.space/prometheus/
     routePrefix: /prometheus/
