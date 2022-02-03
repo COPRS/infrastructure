@@ -3,6 +3,7 @@ image:
   tag: 14.1.0-debian-10-r12
 persistence:
   enabled: true
+  size: 30Gi
   storageClass: ceph-block
 postgresqlPassword: p0stgrespassword
 postgresqlDatabase: infra
@@ -50,5 +51,16 @@ primary:
   extraVolumes:
     - name: tmp-backup
       emptyDir: {}
+
+replication:
+  enabled: true
+  user: repl_user
+  password: repl_passwordq
+  readReplicas: 2
+  synchronousCommit: "off"
+  numSynchronousReplicas: 0
+  applicationName: my_application
+  singleService: true
+  uniqueServices: false
 
 initdbScriptsSecret: init-postgres-db
