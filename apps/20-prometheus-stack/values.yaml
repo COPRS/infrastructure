@@ -191,5 +191,5 @@ prometheus:
             requests:
               storage: 150Gi
 
-    externalUrl: http://monitoring.alam-dev.csgroup.space/prometheus/
+    externalUrl: http://monitoring.DOMAIN_NAME/prometheus/
     routePrefix: /prometheus/
