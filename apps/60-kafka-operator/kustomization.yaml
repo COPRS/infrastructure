@@ -13,15 +13,13 @@ helmCharts:
 configMapGenerator:
   - name: kafka-metrics
     files:
-      - metrics-config/kafka-metrics-config.yml
-      - metrics-config/zookeeper-metrics-config.yml
+      - kafka-metrics-config.yml
+      - zookeeper-metrics-config.yml
     options:
       disableNameSuffixHash: true
 
 resources:
-  - GrafanaDashboard/strimzi-kafka.yaml
-  - Kafka/kafka-cluster.yaml
-  - PodMonitor/bridge-metrics.yaml
-  - PodMonitor/cluster-operator-metrics.yaml
-  - PodMonitor/entity-operator-metrics.yaml
-  - PodMonitor/kafka-resources-metrics.yaml
+  - grafanadashboard-strimzi-kafka.yaml
+  - podmonitor-cluster-operator-metrics.yaml
+  - podmonitor-entity-operator-metrics.yaml
+  - podmonitor-kafka-resources-metrics.yaml
