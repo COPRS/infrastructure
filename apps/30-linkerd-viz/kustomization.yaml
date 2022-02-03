@@ -12,7 +12,7 @@ helmCharts:
   namespace: networking
 
 resources:
+  - apisixroute.yaml
   - certificate-linkerdtap.yaml
   - certificate-linkerdtapinjector.yaml
-  - linkerd-control-plane-metrics.yaml
   - linkerd-proxy-metrics.yaml

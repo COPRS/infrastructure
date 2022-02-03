@@ -1,6 +1,8 @@
 commonLabels:
   app.kubernetes.io/instance: "{{ app_name }}"
 
+namespace: processing
+
 helmCharts:
 - name: spring-cloud-dataflow
   releaseName: "{{ app_name }}"
@@ -8,3 +10,6 @@ helmCharts:
   version: 4.1.5
   valuesFile: values.yaml
   namespace: processing
+
+resources:
+  - apisixroute.yaml

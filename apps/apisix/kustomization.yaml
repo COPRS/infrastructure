@@ -12,13 +12,7 @@ helmCharts:
   namespace: networking
 
 resources:
-  - routes/apisix-apisixroute.yaml
-  - routes/infra-apisixroute.yaml
-  - routes/linkerd-apisixroute.yaml
-  - routes/monitoring-apisixroute.yaml
-  - routes/security-apisixroute.yaml
-  - routes/sni-tls.yaml
-  - routes/scdf-apisixroute.yaml
+  - apisixroute.yaml
   - serviceMonitor.yaml
 
 patches:

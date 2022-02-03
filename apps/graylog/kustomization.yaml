@@ -9,3 +9,6 @@ helmCharts:
   repo: https://charts.kong-z.com
   version: 1.9.2
   valuesFile: values.yaml
+
+resources:
+  - apisixroute.yaml

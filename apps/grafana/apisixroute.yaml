@@ -1,0 +1,27 @@
+apiVersion: apisix.apache.org/v2beta2
+kind: ApisixRoute
+metadata:
+  name: grafana
+spec:
+  http:
+    - name: grafana
+      backends:
+        - serviceName: grafana-service
+          servicePort: 3000
+      match:
+        hosts: [ monitoring.{{ rs_domain_name }} ]
+        paths:
+          - /*
+        methods: [ GET, POST ]
+      websocket: true
+---
+apiVersion: apisix.apache.org/v1
+kind: ApisixTls
+metadata:
+  name: sni-monitoring
+spec:
+  hosts:
+    - monitoring.{{ rs_domain_name }}
+  secret:
+    name: {{ apisix.tls_cert_secret.name }}
+    namespace:  {{ apisix.tls_cert_secret.namespace }}
