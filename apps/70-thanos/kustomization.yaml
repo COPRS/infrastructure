@@ -11,6 +11,10 @@ helmCharts:
   valuesFile: values.yaml
   namespace: monitoring
 
+resources:
+  - apisixroute.yaml
+  - grafanadatasource.yaml
+
 secretGenerator:
   - name: thanos-bucket-credentials
     files: 

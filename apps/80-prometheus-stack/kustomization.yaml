@@ -1,0 +1,31 @@
+namespace: monitoring
+
+# commonLabels is propagated to selectors
+# cf: https://github.com/kubernetes-sigs/kustomize/issues/1009
+transformers:
+  - metadataLabelTransformer.yaml
+
+resources:
+  - apisixroute-prometheus.yaml
+  - prometheus-priority.yaml
+
+helmCharts:
+- name: kube-prometheus-stack
+  repo: https://prometheus-community.github.io/helm-charts
+  version: 21.0.0
+  releaseName: "{{ app_name }}"
+  valuesFile: values.yaml
+  namespace: monitoring
+
+# patches:
+#   - patch: |-
+#       - op: replace
+#         path: /spec/selector
+#         values:
+#           - app.kubernetes.io/managed-by: prometheus-operator
+#           - app.kubernetes.io/name: prometheus
+#     target:
+#       version: v1
+#       kind: Service
+#       name: prometheus-stack-kube-prom-prometheus
+

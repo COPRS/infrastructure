@@ -9,7 +9,8 @@ helmCharts:
   repo: https://grafana.github.io/helm-charts
   version: 2.8.1
   valuesFile: values.yaml
+  namespace: logging
 
 resources:
-  - GrafanaDashboard/loki.yaml
-  - GrafanaDataSource/loki.yaml
+  - grafanadashboard.yaml
+  - grafanadatasource.yaml
