@@ -28,11 +28,11 @@ graylog:
               operator: Exists
   resources:
     limits:
-      cpu: 2000m
-      memory: 8Gi
+      cpu: 1
+      memory: 2Gi
     requests:
       cpu: 500m
-      memory: 3Gi
+      memory: 1024Mi
 
   env:
     GRAYLOG_TRUSTED_PROXIES: 10.244.0.0/16
