@@ -4,7 +4,7 @@ metadata:
   name: kafka-cluster
 spec:
   kafka:
-    replicas: 1
+    replicas: 2
     version: 2.8.1
     template:
       pod:
@@ -15,6 +15,15 @@ spec:
                 - matchExpressions:
                   - key: "node-role.kubernetes.io/infra"
                     operator: Exists
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: strimzi.io/name
+                  operator: In
+                  values:
+                  - kafka-cluster
+              topologyKey: kubernetes.io/hostname
     logging:
       type: inline
       loggers:
@@ -71,7 +80,7 @@ spec:
           name: kafka-metrics
           key: kafka-metrics-config.yml
   zookeeper:
-    replicas: 1
+    replicas: 2
     # uses version: 3.5.9 for kafka 2.8.1
     template:
       pod:
@@ -86,6 +95,15 @@ spec:
               - matchExpressions:
                 - key: "node-role.kubernetes.io/infra"
                   operator: Exists
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                - key: strimzi.io/name
+                  operator: In
+                  values:
+                  - kafka-cluster
+              topologyKey: kubernetes.io/hostname
     logging:
       type: inline
       loggers:

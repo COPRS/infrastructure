@@ -7,3 +7,4 @@ k8s_namespaces:
   - name: database
   - name: networking
   - name: iam
+  - name: logging

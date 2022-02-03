@@ -43,17 +43,17 @@ spec:
             - name: elasticsearch
               resources:
                 limits:
-                  cpu: 2000m
+                  cpu: 500m
                   memory: 6Gi
                 requests:
-                  cpu: 1000m
-                  memory: 2Gi
+                  cpu: 100m
+                  memory: 4Gi
               readinessProbe: &readiness_config
                 exec:
                   command:
-                  - bash
-                  - -c
-                  - /mnt/elastic-internal/scripts/readiness-probe-script.sh
+                    - bash
+                    - -c
+                    - /mnt/elastic-internal/scripts/readiness-probe-script.sh
                 failureThreshold: 3
                 initialDelaySeconds: 60
                 periodSeconds: 22
@@ -106,10 +106,10 @@ spec:
             - name: elasticsearch
               resources:
                 limits:
-                  cpu: 1500m
-                  memory: 4Gi
+                  cpu: 2000m
+                  memory: 10Gi
                 requests:
-                  cpu: 750m
-                  memory: 2Gi
+                  cpu: 100m
+                  memory: 4Gi
               readinessProbe:
                 *readiness_config
