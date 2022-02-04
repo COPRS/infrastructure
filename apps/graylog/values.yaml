@@ -5,12 +5,14 @@ tags:
 graylog:
   image:
     repository: graylog/graylog:4.2.3-1
-
+  
+  replicas: 2
+  
   mongodb:
     uri:  mongodb://graylog:grayl0gPassw0rd@mongodb.infra.svc.cluster.local/graylog
 
   elasticsearch:
-    hosts: http://elasticsearch-cluster-es-http.infra.svc.cluster.local:9200
+    hosts: http://elasticsearch-security-es-coordinating.security.svc.cluster.local:9200 
     version: 7
     
   persistence:
@@ -26,11 +28,11 @@ graylog:
               operator: Exists
   resources:
     limits:
-      cpu: 2000m
-      memory: 8Gi
+      cpu: 1
+      memory: 2Gi
     requests:
       cpu: 500m
-      memory: 3Gi
+      memory: 1024Mi
 
   env:
     GRAYLOG_TRUSTED_PROXIES: 10.244.0.0/16

@@ -1,11 +1,7 @@
 apiVersion: kibana.k8s.elastic.co/v1
 kind: Kibana
 metadata:
-  name: kibana
-  labels:
-    app.kubernetes.io/instance: elasticsearch-operator
-    app.kubernetes.io/managed-by: additional_resources
-  namespace: infra
+  name: kibana-security
 spec:
   http:
     tls:
@@ -14,10 +10,11 @@ spec:
   version: 7.15.2
   count: 1
   elasticsearchRef:
-    name: elasticsearch-cluster
+    name: elasticsearch-security
   podTemplate:
     spec:
       automountServiceAccountToken: true
   config:
-    server.publicBaseUrl: https://infra.DOMAIN_NAME
+    server.publicBaseUrl: https://security.{{ rs_domain_name }}
+    server.basePath: /kibana
   

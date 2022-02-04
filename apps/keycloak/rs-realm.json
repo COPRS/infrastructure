@@ -111,7 +111,16 @@
           "attributes": {}
         }
       ],
-      "kibana": [
+      "kibana-security": [
+        {
+          "name": "restricted-access",
+          "description": "Only users with this role may access the client",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
+        }
+      ],
+      "kibana-processing": [
         {
           "name": "restricted-access",
           "description": "Only users with this role may access the client",
@@ -177,7 +186,7 @@
         "prometheus": [
           "restricted-access"
         ],
-        "kibana": [
+        "kibana-processing": [
           "restricted-access"
         ]
       },
@@ -216,6 +225,9 @@
       "realmRoles": [],
       "clientRoles": {
         "graylog": [
+          "restricted-access"
+        ],
+        "kibana-security": [
           "restricted-access"
         ]
       },
@@ -340,13 +352,38 @@
       "optionalClientScopes": []
     },
     {
-      "clientId": "kibana",
+      "clientId": "kibana-security",
       "name": "Oauth2 Proxy",
       "surrogateAuthRequired": false,
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "KIBANA_OIDC_CLIENT_SECRET",
+      "secret": "KIBANA_SECU_OIDC_CLIENT_SECRET",
+      "redirectUris": [
+          "https://security.DOMAIN_NAME/*"
+      ],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "defaultClientScopes": [],
+      "optionalClientScopes": []
+    },
+    {
+      "clientId": "kibana-processing",
+      "name": "Oauth2 Proxy",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "KIBANA_PRO_OIDC_CLIENT_SECRET",
       "redirectUris": [
           "https://infra.DOMAIN_NAME/*"
       ],

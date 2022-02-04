@@ -145,7 +145,7 @@ prometheus:
     image:
       repository: quay.io/prometheus/prometheus
       tag: v2.31.1
-    replicas: 1
+    replicas: 2
     serviceMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelector: {}
     podMonitorSelectorNilUsesHelmValues: false
@@ -189,7 +189,7 @@ prometheus:
           storageClassName: ceph-block
           resources:
             requests:
-              storage: 20Gi
+              storage: 150Gi
 
-    externalUrl: http://monitoring.alam-dev.csgroup.space/prometheus/
+    externalUrl: http://monitoring.DOMAIN_NAME/prometheus/
     routePrefix: /prometheus/

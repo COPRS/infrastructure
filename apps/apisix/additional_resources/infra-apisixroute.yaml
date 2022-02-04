@@ -8,32 +8,34 @@ metadata:
     app.kubernetes.io/managed-by: additional_resources
 spec:
   http:
-    - name: kibana
+    - name: kibana-processing
       backends:
-        - serviceName: kibana-kb-http
+        - serviceName: kibana-processing-kb-http
           servicePort: 5601
       match:
         hosts: [ infra.DOMAIN_NAME ]
-        paths: [ /* ]
+        paths:
+          - /kibana
+          - /kibana/*
         methods: [ GET, PUT ]
       plugins:
         - name: cors
           enable: true
           config:
-            allow_origins: "https://security.DOMAIN_NAME"
+            allow_origins: "https://infra.DOMAIN_NAME"
         - name: proxy-rewrite
           enable: true
           config:
             headers:
-              Authorization: "Basic b3BlcmF0b3I6Nyp3dHd3YloyJXptSzZIWlc2KjU="
+              Authorization: "Basic ES_USER_OPERATOR_SECRET_HASH_BASE64ENCODED"
         - name: openid-connect
           enable: true
           config:
-            client_id: kibana
-            client_secret: KIBANA_OIDC_CLIENT_SECRET
+            client_id: kibana-processing
+            client_secret: KIBANA_PRO_OIDC_CLIENT_SECRET
             discovery: https://security.DOMAIN_NAME/auth/realms/RS/.well-known/openid-configuration
             scope: openid
             bearer_only: false
             realm: RS
             introspection_endpoint_auth_method: client_secret_post
-            redirect_uri: https://kibana.DOMAIN_NAME/redirect_uri
+            redirect_uri: https://infra.DOMAIN_NAME/kibana/redirect_uri

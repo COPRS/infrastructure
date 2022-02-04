@@ -1,15 +1,17 @@
 image:
   tag: 5.0.3-debian-10-r38
-architecture: standalone
+architecture: replicaset
 auth:
   enabled: true
   username: graylog
   password: grayl0gPassw0rd
   database: graylog
+  replicaSetKey: testtest
 persistence:
   enabled: true
   storageClass: ceph-block
-  size: 8Gi
+  size: 30Gi
+replicaCount: 3
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
@@ -17,6 +19,15 @@ affinity:
         - matchExpressions:
           - key: "node-role.kubernetes.io/infra"
             operator: Exists
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+    - labelSelector:
+        matchExpressions:
+        - key: app
+          operator: In
+          values:
+          - mongodb
+      topologyKey: kubernetes.io/hostname
 arbiter:
   enabled: false
 metrics:
