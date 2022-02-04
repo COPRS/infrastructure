@@ -23,3 +23,6 @@ helmCharts:
   valuesFile: values.yaml
   releaseName: "{{ app_name }}"
   namespace: fluentd
+
+resources:
+  - servicemonitor.yaml

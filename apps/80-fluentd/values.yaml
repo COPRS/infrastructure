@@ -6,9 +6,6 @@ config:
   auth_enabled: false
 metrics:
   enabled: true
-  serviceMonitor:
-    enabled: true
-    interval: 2m
 forwarder:
   enabled: false
 aggregator:

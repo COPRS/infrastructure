@@ -22,3 +22,4 @@ resources:
   - KafkaTopic/fluentbit.system.yaml
   - KafkaTopic/fluentbit.trace.yaml
   - KafkaTopic/fluentbit.wazuh.yaml
+  - servicemonitor.yaml

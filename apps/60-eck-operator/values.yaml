@@ -17,10 +17,6 @@ config:
   metricsPort: "9115"
   containerRegistry: docker.elastic.co
 
-podMonitor:
-  enabled: true
-  interval: 2m
-
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
