@@ -25,7 +25,7 @@ spec:
               topologyKey: kubernetes.io/hostname
       containers:
         - name: openldap
-          image: osixia/openldap-backup:1.5.0
+          image: osixia/openldap:1.5.0
           imagePullPolicy: IfNotPresent
           args:
             - -l
@@ -86,8 +86,6 @@ spec:
             - mountPath: /container/service/slapd/assets/config/bootstrap/ldif/02-security.ldif
               name: security-bootstrap-ldif
               subPath: 02-security.ldif
-            - mountPath: /data/backup
-              name: data-backup
       volumes:
         - name: custom-ldif-files
           configMap:
@@ -101,8 +99,6 @@ spec:
             items:
               - key: 02-security.ldif
                 path: 02-security.ldif
-        - name: data-backup
-          emptyDir: {}
   volumeClaimTemplates:
     - apiVersion: v1
       kind: PersistentVolumeClaim

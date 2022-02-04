@@ -46,12 +46,6 @@ primary:
           - matchExpressions:
             - key: "node-role.kubernetes.io/infra"
               operator: Exists
-  extraVolumeMounts:
-    - mountPath: /tmp/backup
-      name: tmp-backup
-  extraVolumes:
-    - name: tmp-backup
-      emptyDir: {}
 
 replication:
   enabled: true

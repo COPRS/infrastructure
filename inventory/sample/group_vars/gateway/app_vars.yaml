@@ -95,24 +95,8 @@ openldap:
   admin_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
   config_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
   readonly_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
-  backup:
-    restic_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
-    s3:
-      bucket: LDAP_BACKUP_BUCKET
-      endpoint: "{{ common.s3.endpoint }}"
-      region: "{{ common.s3.region }}"
-      access_key: "{{ common.s3.access_key }}"
-      secret_key: "{{ common.s3.secret_key }}"
 
 postgresql:
-  backup:
-    restic_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
-    s3:
-      bucket: POSTGRESQL_BACKUP_BUCKET
-      endpoint: "{{ common.s3.endpoint }}"
-      region: "{{ common.s3.region }}"
-      access_key: "{{ common.s3.access_key }}"
-      secret_key: "{{ common.s3.secret_key }}"
   replication:
     user: replication_user
     password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
