@@ -60,9 +60,9 @@ grafana:
 elasticsearch_security:
   operator_password_hash: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
   kibana_oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
-  backup:
+  repository:
     s3:
-      bucket: ES_SECURITY_BACKUP_BUCKET
+      bucket: ES_SECURITY_REPOSITORY_BUCKET
       endpoint: "{{ common.s3.endpoint }}"
       region: "{{ common.s3.region }}"
       access_key: "{{ common.s3.access_key }}"
@@ -71,9 +71,9 @@ elasticsearch_security:
 elasticsearch_processing:
   operator_password_hash: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
   kibana_oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
-  backup:
+  repository:
     s3:
-      bucket: ES_PROCESSING_BACKUP_BUCKET
+      bucket: ES_PROCESSING_REPOSITORY_BUCKET
       endpoint: "{{ common.s3.endpoint }}"
       region: "{{ common.s3.region }}"
       access_key: "{{ common.s3.access_key }}"
