@@ -1,0 +1,16 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDataSource
+metadata:
+  name: "{{ app_name }}"
+spec:
+  name: {{ app_name }}.yaml
+  datasources:
+    - name: Elasticsearch
+      type: elasticsearch
+      access: server
+      url: http://{{ app_name }}-es-coordinating.{{ kustomization.namespace }}.svc.cluster.local:9200
+      isDefault: false
+      version: 1
+      editable: true
+      jsonData:
+        tlsSkipVerify: true
