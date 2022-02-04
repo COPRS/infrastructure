@@ -13,7 +13,7 @@ spec:
   version: 7.15.2
   nodeSets:
     - name: coordinating
-      count: 1
+      count: 2
       config:
         xpack.security.authc.anonymous:
           username: anonymous
@@ -35,15 +35,14 @@ spec:
                 - labelSelector:
                     matchExpressions:
                       - key: elasticsearch.k8s.elastic.co/cluster-name
-                        operator: In
-                        values:
-                          - {{ app_name }}
+                        operator: Exists
                   topologyKey: kubernetes.io/hostname
+                  namespaceSelector: {}
           containers:
             - name: elasticsearch
               resources:
                 limits:
-                  cpu: 500m
+                  cpu: 400m
                   memory: 6Gi
                 requests:
                   cpu: 100m
@@ -63,7 +62,7 @@ spec:
                 - name: READINESS_PROBE_TIMEOUT
                   value: "20"
     - name: node
-      count: 2
+      count: 3
       config:
         # no node.roles means all roles
         xpack.security.authc.anonymous:
@@ -106,8 +105,8 @@ spec:
             - name: elasticsearch
               resources:
                 limits:
-                  cpu: 2000m
-                  memory: 10Gi
+                  cpu: 2
+                  memory: 8Gi
                 requests:
                   cpu: 100m
                   memory: 4Gi

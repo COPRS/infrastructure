@@ -13,7 +13,7 @@ serviceMonitor:
 persistence:  
   enabled: true
   storageClassName: ceph-block
-  size: 100Gi
+  size: 120Gi
 
 affinity:
   nodeAffinity:

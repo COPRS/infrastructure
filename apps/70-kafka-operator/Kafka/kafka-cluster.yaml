@@ -71,7 +71,7 @@ spec:
       auto.create.topics.enable: false
     storage:
       type: persistent-claim
-      size: 50Gi
+      size: 80Gi
       class: "ceph-block"
     metricsConfig:
       type: jmxPrometheusExporter

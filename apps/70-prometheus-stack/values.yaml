@@ -145,7 +145,7 @@ prometheus:
     image:
       repository: quay.io/prometheus/prometheus
       tag: v2.31.1
-    replicas: 1
+    replicas: 2
     serviceMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelector: {}
     podMonitorSelectorNilUsesHelmValues: false
@@ -176,10 +176,10 @@ prometheus:
                 operator: Exists
     resources:
       limits:
-        cpu: 4000m
+        cpu: 4
         memory: 20Gi
       requests:
-        cpu: 2000m
+        cpu: 2
         memory: 12Gi
     secrets:
       - etcd-client
@@ -189,7 +189,7 @@ prometheus:
           storageClassName: ceph-block
           resources:
             requests:
-              storage: 20Gi
+              storage: 80Gi
 
     externalUrl: http://monitoring.{{ rs_domain_name }}/prometheus/
     routePrefix: /prometheus/
