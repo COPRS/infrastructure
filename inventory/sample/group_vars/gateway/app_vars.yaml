@@ -113,6 +113,9 @@ postgresql:
       region: "{{ common.s3.region }}"
       access_key: "{{ common.s3.access_key }}"
       secret_key: "{{ common.s3.secret_key }}"
+  replication:
+    user: replication_user
+    password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 graylog:
   oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
