@@ -22,7 +22,7 @@ spec:
         - name: proxy-rewrite
           enable: true
           config:
-            host: web.linkerd-viz.svc.cluster.local
+            host: web.{{ kustomization.namespace }}.svc.cluster.local
             headers:
               Origin: ""
         - name: openid-connect
