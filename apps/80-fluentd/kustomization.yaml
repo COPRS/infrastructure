@@ -22,3 +22,4 @@ helmCharts:
   version: 4.4.1
   valuesFile: values.yaml
   releaseName: "{{ app_name }}"
+  namespace: fluentd

@@ -65,13 +65,13 @@ grafana:
 kubeApiServer:
   enabled: false
 kubelet:
-  enabled: true
+  enabled: false
 kubeControllerManager:
   enabled: false
 coreDns:
   enabled: false
 kubeEtcd:
-  enable: false
+  enabled: false
 kubeScheduler:
   enabled: false
 kubeProxy:

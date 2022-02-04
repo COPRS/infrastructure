@@ -9,6 +9,7 @@ helmCharts:
   version:  10.13.4
   valuesFile: values.yaml
   releaseName: "{{ app_name }}"
+  namespace: database
 
 resources:
   - backup-backupconfiguration.yaml
