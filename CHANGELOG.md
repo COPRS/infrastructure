@@ -11,6 +11,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+## [0.3.0-rc2] - 2022-02-04
+### Fixed
+- [#251 - [BUG] [Infra] Elasticsearch app sample configuration has no coordinating node](https://github.com/COPRS/SCRUM-Tickets/issues/251)
 
 ## [0.3.0-rc1] - 2021-12-15
 ### Added
