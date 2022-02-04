@@ -34,11 +34,12 @@ spec:
               requiredDuringSchedulingIgnoredDuringExecution:
                 - labelSelector:
                     matchExpressions:
-                      - key: elasticsearch.k8s.elastic.co/cluster-name
-                        operator: In
-                        values:
-                          - elasticsearch-processing
+                      - key: "elasticsearch.k8s.elastic.co/cluster-name"
+                        operator: Exists
                   topologyKey: kubernetes.io/hostname
+                  namespaces: 
+                    - security
+                    - infra
           containers:
             - name: elasticsearch
               resources:
