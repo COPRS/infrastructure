@@ -27,7 +27,7 @@ spec:
           enable: true
           config:
             headers:
-              Authorization: "Basic b3BlcmF0b3I6Nyp3dHd3YloyJXptSzZIWlc2KjU="
+              Authorization: "Basic ES_USER_OPERATOR_SECRET_HASH_BASE64ENCODED"
         - name: openid-connect
           enable: true
           config:
