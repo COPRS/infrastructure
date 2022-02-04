@@ -2,6 +2,7 @@ apiVersion: apisix.apache.org/v2beta2
 kind: ApisixRoute
 metadata:
   name: prometheus
+  namespace: monitoring
 spec:
   http:
     - name: prometheus

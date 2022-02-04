@@ -1,4 +1,7 @@
-namespace: monitoring
+
+# do not use global namespacing as prometheus node exporter is 
+# creating svc in kube-system ns
+# namespace: monitoring
 
 # commonLabels is propagated to selectors
 # cf: https://github.com/kubernetes-sigs/kustomize/issues/1009
