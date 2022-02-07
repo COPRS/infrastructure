@@ -23,22 +23,34 @@ cephClusterSpec:
     image: quay.io/ceph/ceph:v16.2.6
     allowUnsupported: false
 
+  mgr:
+    count: 2
+    module:
+      enabled: true
+      name: pg_autoscaler
+  
+  mon:
+    count: 3
+    allowMultiplePerNode: false
+  
+  priorityClassNames:
+    all: ceph-priority
+  
   resources:
-    limits:
-      cpu: 500m
-      memory: 1024Mi
-    requests:
-      cpu: 100m
-      memory: 256Mi
+    mgr:
+      limits:
+        cpu: 500m
+        memory: 1024Mi
+    mon:
+      limits:
+        cpu: 500m
+        memory: 1024Mi
+    osd:
+      limits:
+        cpu: 1
+        memory: 2Gi
 
   dataDirHostPath: /data/rook
-
-  mon:
-    count: 2
-    allowMultiplePerNode: false
-
-  mgr:
-    count: 1
 
   dashboard:
     enabled: true

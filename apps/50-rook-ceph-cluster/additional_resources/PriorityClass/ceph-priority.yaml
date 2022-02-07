@@ -1,0 +1,12 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: ceph-priority
+  labels:
+    app.kubernetes.io/instance: rook-ceph-cluster
+    app.kubernetes.io/managed-by: additional_resources
+  namespace: infra
+value: 10000000
+preemptionPolicy: PreemptLowerPriority
+globalDefault: false
+description: "This priority class should be used for rook-ceph-clusters service pods only."
