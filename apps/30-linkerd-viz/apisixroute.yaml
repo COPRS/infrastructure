@@ -22,7 +22,7 @@ spec:
         - name: proxy-rewrite
           enable: true
           config:
-            host: web.{{ kustomization.namespace }}.svc.cluster.local
+            host: web.networking.svc.cluster.local
             headers:
               Origin: ""
         - name: openid-connect
