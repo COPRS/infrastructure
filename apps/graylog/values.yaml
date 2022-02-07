@@ -10,8 +10,7 @@ graylog:
   replicas: 2
 
   mongodb:
-    uri: "mongodb://{{ mongodb.username }}:{{ mongodb.password }}@mongodb.database.svc.cluster.local/{{ mongodb.database }}"
-
+    uri: "mongodb://{{ mongodb.username }}:{{ mongodb.password }}@mongodb-0.mongodb-headless.database.svc.cluster.local,mongodb-1.mongodb-headless.database.svc.cluster.local,mongodb-2.mongodb-headless.database.svc.cluster.local/{{ mongodb.database }}"
   elasticsearch:
     hosts: http://elasticsearch-security-es-coordinating.security.svc.cluster.local:9200
     version: 7
