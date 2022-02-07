@@ -2,6 +2,7 @@ apiVersion: integreatly.org/v1alpha1
 kind: GrafanaDataSource
 metadata:
   name: "elasticsearch"
+  namespace: monitoring
 spec:
   name: elasticsearch.yaml
   datasources:

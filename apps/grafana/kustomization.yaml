@@ -6,7 +6,6 @@ commonLabels:
 resources:
   - apisixroute.yaml
   - grafana.yaml
-  - elasticsearch-datasource.yaml
 
 secretGenerator:
   - name: grafana-oidc-client-secret
