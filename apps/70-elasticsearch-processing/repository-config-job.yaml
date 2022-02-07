@@ -1,13 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ app_name }}-backup-config
+  name: {{ app_name }}-repository-config
 spec:
   parallelism: 1
   completions: 1
   template:
     metadata:
-      name: backup-config
+      name: repository-config
       annotations:
         linkerd.io/inject: disabled
     spec:
@@ -23,15 +23,13 @@ spec:
         - name: curl-send-config
           image: appropriate/curl
           volumeMounts:
-            - name: backup-config
-              mountPath: /etc/backup-config
+            - name: repository-config
+              mountPath: /etc/repository-config
           command:
             - sh
             - -c
-            - |
-              curl --fail -X PUT "{{ app_name }}-es-http.{{ kustomization.namespace }}.svc.cluster.local:9200/_snapshot/backup-repository?pretty" -H 'Content-Type: application/json' -d @/etc/backup-config/s3-repository.json
-              curl --fail -X PUT "{{ app_name }}-es-http.{{ kustomization.namespace }}.svc.cluster.local:9200/_slm/policy/daily-snapshots?pretty" -H 'Content-Type: application/json' -d @/etc/backup-config/snapshot-config.json
+            - "curl --fail -X PUT '{{ app_name }}-es-http.{{ kustomization.namespace }}.svc.cluster.local:9200/_snapshot/s3-repository?pretty' -H 'Content-Type: application/json' -d @/etc/repository-config/s3-repository.json"
       volumes:
-        - name: backup-config
+        - name: repository-config
           configMap:
-            name: {{ app_name }}-backup-config
+            name: {{ app_name }}-repository-config

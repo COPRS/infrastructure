@@ -4,6 +4,9 @@ commonLabels:
 # do not forget to update the patch with the namespace
 namespace: rook-ceph
 
+resources:
+  - ceph-priority.yaml
+
 helmCharts:
 - name: rook-ceph-cluster
   repo: https://charts.rook.io/release

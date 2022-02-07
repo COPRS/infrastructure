@@ -13,7 +13,7 @@ spec:
   version: 7.15.2
   nodeSets:
     - name: coordinating
-      count: 1
+      count: 2
       config:
         xpack.security.authc.anonymous:
           username: anonymous
@@ -35,10 +35,9 @@ spec:
                 - labelSelector:
                     matchExpressions:
                       - key: elasticsearch.k8s.elastic.co/cluster-name
-                        operator: In
-                        values:
-                          - {{ app_name }}
+                        operator: Exists
                   topologyKey: kubernetes.io/hostname
+                  namespaceSelector: {}
           containers:
             - name: elasticsearch
               resources:
@@ -62,16 +61,18 @@ spec:
               env:
                 - name: READINESS_PROBE_TIMEOUT
                   value: "20"
+                - name: ES_JAVA_OPTS
+                  value: "-Xms4096m -Xmx4096m"
     - name: node
-      count: 2
+      count: 3
       config:
         # no node.roles means all roles
         xpack.security.authc.anonymous:
           username: anonymous
           roles: superuser
           authz_exception: false
-        s3.client.default.endpoint: "{{ elasticsearch_processing.backup.s3.endpoint }}"
-        s3.client.default.region: "{{ elasticsearch_processing.backup.s3.region }}"
+        s3.client.default.endpoint: "{{ elasticsearch_processing.repository.s3.endpoint }}"
+        s3.client.default.region: "{{ elasticsearch_processing.repository.s3.region }}"
       volumeClaimTemplates:
         - metadata:
             name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
@@ -80,7 +81,7 @@ spec:
               - ReadWriteOnce
             resources:
               requests:
-                storage: 80Gi
+                storage: 500Gi
             storageClassName: ceph-block
       podTemplate:
         metadata:
@@ -106,10 +107,15 @@ spec:
             - name: elasticsearch
               resources:
                 limits:
-                  cpu: 2000m
-                  memory: 10Gi
+                  cpu: 2
+                  memory: 8Gi
                 requests:
                   cpu: 100m
                   memory: 4Gi
               readinessProbe:
                 *readiness_config
+              env:
+                - name: READINESS_PROBE_TIMEOUT
+                  value: "20"
+                - name: ES_JAVA_OPTS
+                  value: "-Xms4096m -Xmx4096m"

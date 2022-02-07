@@ -1,0 +1,16 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDataSource
+metadata:
+  name: "elasticsearch"
+spec:
+  name: elasticsearch.yaml
+  datasources:
+    - name: elasticsearch
+      type: elasticsearch
+      access: server
+      url: http://elasticsearch-processing-es-coordinating.database.svc.cluster.local:9200
+      isDefault: false
+      version: 1
+      editable: true
+      jsonData:
+        tlsSkipVerify: true

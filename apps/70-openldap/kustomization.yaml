@@ -4,8 +4,6 @@ commonLabels:
   app.kubernetes.io/instance: "{{ app_name }}"
 
 resources:
-  - backup-backupconfiguration.yaml
-  - backup-repository.yaml
   - statefulset.yaml
   - service.yaml
   - svc-headless.yaml
@@ -25,8 +23,3 @@ secretGenerator:
       - LDAP_ADMIN_PASSWORD={{ openldap.admin_user_password }}
       - LDAP_CONFIG_PASSWORD={{ openldap.config_user_password }}
       - LDAP_READONLY_USER_PASSWORD={{ openldap.readonly_user_password }}
-  - name: openldap-backup-s3-credentials
-    literals:
-      - AWS_ACCESS_KEY_ID={{ openldap.backup.s3.access_key }}
-      - AWS_SECRET_ACCESS_KEY={{ openldap.backup.s3.secret_key }}
-      - RESTIC_PASSWORD={{ openldap.backup.restic_password }}

@@ -4,6 +4,7 @@ image:
 persistence:
   enabled: true
   storageClass: ceph-block
+  size: 30Gi
 # Default database not used
 postgresqlPassword: {{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}
 postgresqlDatabase: default
@@ -45,11 +46,16 @@ primary:
           - matchExpressions:
             - key: "node-role.kubernetes.io/infra"
               operator: Exists
-  extraVolumeMounts:
-    - mountPath: /tmp/backup
-      name: tmp-backup
-  extraVolumes:
-    - name: tmp-backup
-      emptyDir: {}
+
+replication:
+  enabled: true
+  user: {{ postgresql.replication.user }}
+  password: {{ postgresql.replication.password }}
+  readReplicas: 2
+  synchronousCommit: "off"
+  numSynchronousReplicas: 0
+  applicationName: {{ app_name }}
+  singleService: true
+  uniqueServices: false
 
 initdbScriptsSecret: init-postgres-db

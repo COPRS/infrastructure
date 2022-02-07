@@ -7,6 +7,8 @@ graylog:
     repository: "graylog/graylog"
     tag: "4.2.3-1"
 
+  replicas: 2
+
   mongodb:
     uri: "mongodb://{{ mongodb.username }}:{{ mongodb.password }}@mongodb.database.svc.cluster.local/{{ mongodb.database }}"
 
@@ -27,11 +29,11 @@ graylog:
               operator: Exists
   resources:
     limits:
-      cpu: 2000m
-      memory: 8Gi
+      cpu: 1
+      memory: 2Gi
     requests:
       cpu: 500m
-      memory: 3Gi
+      memory: 1Gi
 
   env:
     GRAYLOG_TRUSTED_PROXIES: 10.244.0.0/16

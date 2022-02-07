@@ -1,17 +1,17 @@
 # Cluster configuration
 cluster:
-  name: dev-cluster
-  complexity: Small
+  name: rs-cluster
+  complexity: Large
   cidr: 192.168.0.0/16
   os: "csc-rs-ubuntu"
 
   master:
-    cpu: 2
-    ram: "[4-5]"
-    disk: 20
+    cpu: 4
+    ram: "[8-10]"
+    disk: 80
   node:
     # 3 workers min
-    count: 3
+    count: 10
     cpu: 4
     ram: "[8-10]"
     disk: 40
@@ -21,16 +21,16 @@ cluster:
     disk: 20
   egress:
     count: 1
-    cpu: 2
-    ram: "[4-5]"
-    disk: 20
+    cpu: 4
+    ram: "[8-10]"
+    disk: 40
   prometheus:
-    count: 1
+    count: 2
     cpu: 8
     ram: "[14-18]"
-    disk: 40
+    disk: 80
       
 volume:
   type: HDD
-  size: 100
+  size: 300
   count: 1  # /!\ safescale supports only 1 additional volume per node
