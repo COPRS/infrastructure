@@ -2,6 +2,7 @@ apiVersion: kibana.k8s.elastic.co/v1
 kind: Kibana
 metadata:
   name: kibana-processing
+  namespace: database
 spec:
   http:
     tls:

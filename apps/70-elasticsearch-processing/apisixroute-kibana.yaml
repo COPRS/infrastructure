@@ -2,6 +2,7 @@ apiVersion: apisix.apache.org/v2beta2
 kind: ApisixRoute
 metadata:
   name: kibana-processing
+  namespace: database
 spec:
   http:
     - name: kibana-processing
