@@ -189,7 +189,7 @@ prometheus:
           storageClassName: ceph-block
           resources:
             requests:
-              storage: 80Gi
+              storage: 150Gi
 
     externalUrl: http://monitoring.{{ rs_domain_name }}/prometheus/
     routePrefix: /prometheus/

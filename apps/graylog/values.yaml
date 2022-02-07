@@ -7,6 +7,8 @@ graylog:
     repository: "graylog/graylog"
     tag: "4.2.3-1"
 
+  replicas: 2
+
   mongodb:
     uri: "mongodb://{{ mongodb.username }}:{{ mongodb.password }}@mongodb.database.svc.cluster.local/{{ mongodb.database }}"
 
