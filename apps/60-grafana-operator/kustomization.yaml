@@ -1,4 +1,7 @@
-namespace: infra
+# grafana operator can only watch for grafana resources in its own namespace
+# cf: https://github.com/grafana-operator/grafana-operator/blob/master/documentation/multi_namespace_support.md#watching-for-datasources-in-all-namespaces
+
+namespace: monitoring
 namePrefix: "{{ app_name }}-"
 
 commonLabels:

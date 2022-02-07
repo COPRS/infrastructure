@@ -9,3 +9,6 @@ helmCharts:
   repo: https://falcosecurity.github.io/charts
   version: 0.7.1
   valuesFile: values.yaml
+
+resources:
+  - servicemonitor.yaml

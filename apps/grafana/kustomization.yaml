@@ -4,6 +4,7 @@ commonLabels:
   app.kubernetes.io/instance: "{{ app_name }}"
 
 resources:
+  - apisixroute.yaml
   - grafana.yaml
   - elasticsearch-datasource.yaml
 
@@ -11,3 +12,5 @@ secretGenerator:
   - name: grafana-oidc-client-secret
     literals:
       - GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET={{ grafana.oidc_client_secret }}
+    options:
+      disableNameSuffixHash: true

@@ -1,0 +1,45 @@
+apiVersion: apisix.apache.org/v2beta2
+kind: ApisixRoute
+metadata:
+  name: thanos
+spec:
+  http:
+    - name: thanos
+      backends:
+        - serviceName: thanos-query
+          servicePort: 9090
+      match:
+        hosts: [ monitoring.{{ rs_domain_name }} ]
+        paths:
+          - /thanos
+          - /thanos/*
+        methods: [ GET ]
+      plugins:
+        - name: proxy-rewrite
+          enable: true
+          config:
+            regex_uri: [ "^/thanos/(.*)$", "/$1" ]
+            headers:
+              X-Forwarded-Prefix: /thanos
+        - name: openid-connect
+          enable: true
+          config:
+            client_id: prometheus
+            client_secret: {{ prometheus.oidc_client_secret }}
+            discovery: https://iam.{{ rs_domain_name }}/auth/realms/RS/.well-known/openid-configuration
+            scope: openid
+            bearer_only: false
+            realm: RS
+            introspection_endpoint_auth_method: client_secret_post
+            redirect_uri: https://monitoring.{{ rs_domain_name }}/thanos/redirect_uri
+---
+apiVersion: apisix.apache.org/v1
+kind: ApisixTls
+metadata:
+  name: sni-monitoring
+spec:
+  hosts:
+    - monitoring.{{ rs_domain_name }}
+  secret:
+    name: {{ apisix.tls_cert_secret.name }}
+    namespace:  {{ apisix.tls_cert_secret.namespace }}

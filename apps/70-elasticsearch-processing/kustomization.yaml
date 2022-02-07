@@ -1,0 +1,24 @@
+namespace: database
+
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+resources:
+  - apisixroute-kibana.yaml
+  - elasticsearch.yaml
+  - kibana.yaml
+  - filerealm-secret.yaml
+  - repository-config-job.yaml
+
+configMapGenerator:
+  - name: "{{ app_name }}-repository-config"
+    files:
+      - s3-repository.json
+
+secretGenerator:
+  - name: "{{ app_name }}-s3-credentials"
+    literals:
+      - S3_ACCESS_KEY={{ elasticsearch_processing.repository.s3.access_key }}
+      - S3_SECRET_KEY={{ elasticsearch_processing.repository.s3.secret_key }}
+    options:
+      disableNameSuffixHash: true

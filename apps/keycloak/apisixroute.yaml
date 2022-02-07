@@ -1,0 +1,15 @@
+apiVersion: apisix.apache.org/v2beta2
+kind: ApisixRoute
+metadata:
+  name: keycloak
+spec:
+  http:
+    - name: keycloak
+      backends:
+        - serviceName: keycloak-http
+          servicePort: 80
+      match:
+        hosts: [ iam.{{ rs_domain_name }} ]
+        paths:
+          - /*
+        methods: [ GET, POST, PUT, OPTIONS, DELETE ]

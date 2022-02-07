@@ -1,0 +1,23 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: database
+
+helmCharts:
+- name: postgresql
+  repo:   https://charts.bitnami.com/bitnami
+  version:  10.13.4
+  valuesFile: values.yaml
+  releaseName: "{{ app_name }}"
+  namespace: database
+
+secretGenerator:
+  - name: init-postgres-db
+    files:
+      - init-db.sql
+    options:
+      disableNameSuffixHash: true
+  - name: postgresql-databases-passwords
+    literals:
+      - KEYCLOAK_DATABASE_PASSWORD={{ keycloak.database.password }}
+      - SCDF_DATABASE_PASSWORD={{ scdf.database.password }}

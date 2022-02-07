@@ -1,0 +1,25 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: logging
+
+helmCharts:
+- name: fluent-bit
+  repo: https://fluent.github.io/helm-charts
+  version: 0.19.6
+  valuesFile: values.yaml
+  releaseName: "{{ app_name }}"
+
+resources:
+  - KafkaTopic/fluentbit.docker-security.yaml
+  - KafkaTopic/fluentbit.auditd.yaml
+  - KafkaTopic/fluentbit.falco.yaml
+  - KafkaTopic/fluentbit.grafana.yaml
+  - KafkaTopic/fluentbit.ingress.yaml
+  - KafkaTopic/fluentbit.openldap.yaml
+  - KafkaTopic/fluentbit.processing.yaml
+  - KafkaTopic/fluentbit.scans.yaml
+  - KafkaTopic/fluentbit.system.yaml
+  - KafkaTopic/fluentbit.trace.yaml
+  - KafkaTopic/fluentbit.wazuh.yaml
+  - servicemonitor.yaml
