@@ -10,8 +10,8 @@ helmCharts:
   version: 16.0.5
   valuesFile: values.yaml
 
-# patches:
-  # - sa-enable-automountServiceAccountToken.yaml # mandatory to mesh with identity
+resources:
+  - apisixroute.yaml
 
 secretGenerator:
   - name: keycloak-database

@@ -806,12 +806,12 @@
   ],
   "browserFlow": "Browser - restricted",
   "attributes": {
-    "frontendUrl": "https://security.{{ rs_domain_name }}/auth"
+    "frontendUrl": "https://iam.{{ rs_domain_name }}/auth"
   },
   "components": {
     "org.keycloak.storage.UserStorageProvider": [
       {
-        "name": "openldap.security.svc.cluster.local",
+        "name": "openldap.iam.svc.cluster.local",
         "providerId": "ldap",
         "subComponents": {
           "org.keycloak.storage.ldap.mappers.LDAPStorageMapper": [
@@ -1272,7 +1272,7 @@
             "uid"
           ],
           "connectionUrl": [
-            "ldap://openldap.security.svc.cluster.local"
+            "ldap://openldap.iam.svc.cluster.local"
           ],
           "allowKerberosAuthentication": [
             "false"

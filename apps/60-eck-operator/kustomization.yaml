@@ -1,14 +1,14 @@
 commonLabels:
   app.kubernetes.io/instance: "{{ app_name }}"
 
-namespace: security
+namespace: infra
 
 helmCharts:
-- name: graylog
+- name: eck-operator
+  repo:  https://helm.elastic.co
+  version: 1.9.0
   releaseName: "{{ app_name }}"
-  repo: https://charts.kong-z.com
-  version: 1.9.2
   valuesFile: values.yaml
 
 resources:
-  - apisixroute.yaml
+  - podmonitor.yaml

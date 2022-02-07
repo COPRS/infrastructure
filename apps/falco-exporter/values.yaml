@@ -24,7 +24,3 @@ tolerations:
     key: node-role.kubernetes.io/master
   - effect: NoSchedule
     key: node-role.kubernetes.io/gateway
-
-serviceMonitor:
-  # Enable the deployment of a Service Monitor for the Prometheus Operator.
-  enabled: true

@@ -8,8 +8,8 @@ spec:
     matchExpressions:
       - key: linkerd.io/workload-ns
         operator: Exists
-      - key: linkerd.io/control-plane-ns
-        operator: Exists
+    matchLabels:
+      linkerd.io/control-plane-ns: networking
   namespaceSelector:
     any: true
   podMetricsEndpoints:
@@ -22,7 +22,7 @@ spec:
             - __meta_kubernetes_pod_container_port_name
             - __meta_kubernetes_pod_label_linkerd_io_control_plane_ns
           action: keep
-          regex: ^linkerd-proxy;linkerd-admin;linkerd$
+          regex: ^linkerd-proxy;linkerd-admin;networking$ # do not forget to update control plane ns
         - sourceLabels: [__meta_kubernetes_namespace]
           action: replace
           targetLabel: namespace

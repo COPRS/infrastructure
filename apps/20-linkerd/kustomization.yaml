@@ -19,6 +19,7 @@ resources:
   - webhook-certificates/certificate-linkerdproxyinjector.yaml
   - webhook-certificates/certificate-linkerdspvalidator.yaml
   - webhook-certificates/issuer-webhookissuer.yaml
+  - linkerd-control-plane-metrics.yaml
 
 secretGenerator:
   - name: linkerd-trust-anchor
