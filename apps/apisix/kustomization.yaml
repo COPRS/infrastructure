@@ -13,7 +13,7 @@ helmCharts:
 
 resources:
   - apisixroute.yaml
-  - serviceMonitor.yaml
+  - podmonitor-ingress-controller.yaml
 
 patches:
   # ingress controller deployment does not include the possibility to add any annotation

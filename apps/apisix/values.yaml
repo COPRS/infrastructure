@@ -230,7 +230,7 @@ autoscaling:
 # Observability configuration.
 # ref: https://apisix.apache.org/docs/apisix/plugins/prometheus/
 serviceMonitor:
-  enabled: false
+  enabled: true
   # namespace where the serviceMonitor is deployed, by default, it is the same as the namespace of the apisix
   namespace: ""
   # interval at which metrics should be scraped
@@ -280,6 +280,12 @@ etcd:
 
   podAnnotations:
     config.linkerd.io/skip-inbound-ports: "2379"
+  
+  metrics:
+    enabled: true
+    podMonitor:
+      enabled: true
+      interval: 2m
 
 dashboard:
   enabled: true

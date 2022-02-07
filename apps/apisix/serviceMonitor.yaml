@@ -9,11 +9,6 @@ spec:
       path: /apisix/prometheus/metrics
       scheme: http
       targetPort: prometheus
-  namespaceSelector:
-    matchNames:
-      - networking
   selector:
     matchLabels:
-      app.kubernetes.io/instance: apisix
       app.kubernetes.io/name: apisix
-      app.kubernetes.io/service: apisix-gateway
