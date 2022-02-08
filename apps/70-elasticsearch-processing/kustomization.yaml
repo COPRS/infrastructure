@@ -8,14 +8,17 @@ resources:
   - filerealm-secret.yaml
   - repository-config-job.yaml
   - grafanadatasource.yaml
+  - elasticsearch-priority.yaml
 
 configMapGenerator:
   - name: "{{ app_name }}-repository-config"
+    namespace: database
     files:
       - s3-repository.json
 
 secretGenerator:
   - name: "{{ app_name }}-s3-credentials"
+    namespace: database
     literals:
       - S3_ACCESS_KEY={{ elasticsearch_processing.repository.s3.access_key }}
       - S3_SECRET_KEY={{ elasticsearch_processing.repository.s3.secret_key }}

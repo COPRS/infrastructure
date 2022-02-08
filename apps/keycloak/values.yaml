@@ -26,7 +26,7 @@ extraEnv: |
   - name: DB_VENDOR
     value: postgres
   - name: DB_ADDR
-    value: postgresql.database.svc.cluster.local
+    value: postgresql-primary-hl.database.svc.cluster.local
   - name: DB_PORT
     value: "5432"
   - name: DB_DATABASE
