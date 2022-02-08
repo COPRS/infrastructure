@@ -5,8 +5,8 @@ namespace: database
 
 helmCharts:
 - name: postgresql
-  repo:   https://charts.bitnami.com/bitnami
-  version:  10.13.4
+  repo: https://charts.bitnami.com/bitnami
+  version:  11.0.2
   valuesFile: values.yaml
   releaseName: "{{ app_name }}"
   namespace: database
