@@ -32,6 +32,7 @@ apiVersion: apisix.apache.org/v1
 kind: ApisixTls
 metadata:
   name: sni-monitoring
+  namespace: monitoring
 spec:
   hosts:
     - monitoring.{{ rs_domain_name }}

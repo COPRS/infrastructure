@@ -13,7 +13,7 @@ spec:
         paths:
           - /kibana
           - /kibana/*
-        methods: [ GET, PUT ]
+        methods: [ GET, PUT, POST ]
       plugins:
         - name: cors
           enable: true
@@ -22,6 +22,7 @@ spec:
         - name: proxy-rewrite
           enable: true
           config:
+            regex_uri: [ "^/kibana/(.*)$", "/$1" ]
             headers:
               Authorization: "Basic {{ elasticsearch_security.operator_password_hash | b64encode }}"
         - name: openid-connect

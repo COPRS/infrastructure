@@ -14,7 +14,7 @@ spec:
         paths:
           - /kibana
           - /kibana/*
-        methods: [ GET, PUT ]
+        methods: [ GET, PUT, POST ]
       plugins:
         - name: cors
           enable: true
@@ -23,6 +23,7 @@ spec:
         - name: proxy-rewrite
           enable: true
           config:
+            regex_uri: [ "^/kibana/(.*)$", "/$1" ]
             headers:
               Authorization: "Basic {{ elasticsearch_processing.operator_password_hash | b64encode }}"
         - name: openid-connect
@@ -41,6 +42,7 @@ apiVersion: apisix.apache.org/v1
 kind: ApisixTls
 metadata:
   name: sni-infra
+  namespace: database
 spec:
   hosts:
     - infra.{{ rs_domain_name }}
