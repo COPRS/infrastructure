@@ -6,10 +6,10 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: "psp:baseline:networking:serviceaccounts"
+  name: "psp:privileged:networking:serviceaccounts"
 roleRef:
   kind: ClusterRole
-  name: psp:baseline
+  name: psp:privileged
   apiGroup: rbac.authorization.k8s.io
 subjects:
 - kind: Group
