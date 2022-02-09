@@ -39,6 +39,8 @@ extraEnv: |
     value: /secrets/creds/user
   - name: KEYCLOAK_PASSWORD_FILE
     value: /secrets/creds/password
+  - name: KEYCLOAK_STATISTICS
+    value: all
 
 extraVolumeMounts: |
   - name: db-creds
