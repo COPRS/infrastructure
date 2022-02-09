@@ -48,4 +48,4 @@ spec:
     - infra.{{ rs_domain_name }}
   secret:
     name: {{ apisix.tls_cert_secret.name }}
-    namespace:  database
+    namespace:  {{ apisix.tls_cert_secret.namespace }}
