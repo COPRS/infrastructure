@@ -9,6 +9,7 @@ resources:
   - kibana.yaml
   - filerealm-secret.yaml
   - repository-config-job.yaml
+  - elasticsearch-priority
 
 configMapGenerator:
   - name: "{{ app_name }}-repository-config"
