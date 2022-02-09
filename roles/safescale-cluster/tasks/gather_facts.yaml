@@ -1,5 +1,5 @@
 - name: Getting host list with safescale
-  shell: "{{ safescale_path }} cluster inspect {{ cluster.name }} | jq .result.nodes.masters[].name,.result.nodes.nodes[].name | tr -d '\"' | sort"
+  shell: "{{ safescale_path }} cluster inspect {{ cluster.name }} | jq .result.nodes.masters[].name,.result.nodes.nodes[].name | tr -d '\"' | sort -V"
   register: hosts
 
 - name: Check whether hosts exist for cluster {{ cluster.name }}
