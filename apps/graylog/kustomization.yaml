@@ -12,3 +12,10 @@ helmCharts:
 
 resources:
   - apisixroute.yaml
+
+secretGenerator:
+  - name: mongodb-access
+    literals:
+      - uri="mongodb://{{ mongodb.username }}:{{ mongodb.password }}@mongodb-0.mongodb-headless.database.svc.cluster.local,mongodb-1.mongodb-headless.database.svc.cluster.local,mongodb-2.mongodb-headless.database.svc.cluster.local/{{ mongodb.database }}"
+    options:
+      disableNameSuffixHash: true
