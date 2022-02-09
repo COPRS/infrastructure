@@ -8,7 +8,7 @@ resources:
   - filerealm-secret.yaml
   - repository-config-job.yaml
   - grafanadatasource.yaml
-  - elasticsearch-priority.yaml
+  - priorityclass.yaml
 
 configMapGenerator:
   - name: "{{ app_name }}-repository-config"
