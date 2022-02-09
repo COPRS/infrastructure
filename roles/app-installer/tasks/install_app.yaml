@@ -81,7 +81,7 @@
         state: absent
       when:
         - resources_dir.path is defined
-        - not debug
+        - not mode_debug
 
     - name: "{{ package_name  }} - {{ app_name }} | Warn about not deleted tmp folder"
       debug:
@@ -90,4 +90,4 @@
           - "{{ resources_dir.path }}"
           - "DO NOT FORGET TO DELETE IT WHEN YOU ARE DONE"
       when:
-        - debug
+        - mode_debug

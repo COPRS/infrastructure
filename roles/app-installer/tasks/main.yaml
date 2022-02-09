@@ -29,7 +29,7 @@
 
 - name: Send generated app_vars to vault
   block:
-    - shell: "cat {{ generated_app_vars_path }}"
+    - shell: "cat {{ generated_app_vars_path }}"
       register: cat_result
     - set_fact:
         cat_content: "{{ cat_result.stdout | from_yaml | to_json }}"
@@ -37,10 +37,10 @@
         content: '{"data": {{ cat_content }} }'
         dest: "{{ inventory_dir }}/artifacts/generated_app_vars.json"
     - uri:
-        url: "{{ vault.url }}/v1/{{ vault.path }}generated_app_vars"
+        url: "{{ vault.url }}/v1/{{ vault.path }}generated_app_vars"
         method: POST
         headers:
-          X-Vault-Token: "{{ vault.token }}"
+          X-Vault-Token: "{{ vault.token }}"
         body_format: json
         src: "{{ inventory_dir }}/artifacts/generated_app_vars.json"
     - ansible.builtin.file:
@@ -48,7 +48,6 @@
         state: absent
   delegate_to: localhost
   when: vault is defined and not vault.download_app_vars
-    
 
 - name: Browse each package
   include_tasks: install_package.yaml
