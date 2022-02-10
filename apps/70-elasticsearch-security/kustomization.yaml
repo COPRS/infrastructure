@@ -23,3 +23,11 @@ secretGenerator:
       - S3_SECRET_KEY={{ elasticsearch_security.repository.s3.secret_key }}
     options:
       disableNameSuffixHash: true
+
+helmCharts:
+- name: prometheus-elasticsearch-exporter
+  releaseName: "{{ app_name }}-exporter"
+  repo: https://prometheus-community.github.io/helm-charts
+  version: 4.11.0
+  valuesFile: exporter-values.yaml
+  namespace: security

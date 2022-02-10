@@ -1,6 +1,8 @@
 commonLabels:
   app.kubernetes.io/instance: "{{ app_name }}"
 
+namespace: database
+
 resources:
   - apisixroute-kibana.yaml
   - elasticsearch.yaml
@@ -12,15 +14,33 @@ resources:
 
 configMapGenerator:
   - name: "{{ app_name }}-repository-config"
-    namespace: database
     files:
       - s3-repository.json
 
 secretGenerator:
   - name: "{{ app_name }}-s3-credentials"
-    namespace: database
     literals:
       - S3_ACCESS_KEY={{ elasticsearch_processing.repository.s3.access_key }}
       - S3_SECRET_KEY={{ elasticsearch_processing.repository.s3.secret_key }}
     options:
       disableNameSuffixHash: true
+
+helmCharts:
+- name: prometheus-elasticsearch-exporter
+  releaseName: "{{ app_name }}-exporter"
+  repo: https://prometheus-community.github.io/helm-charts
+  version: 4.11.0
+  valuesFile: exporter-values.yaml
+  namespace: database
+
+# Put grafana datasource in the right namespace
+patchesJson6902:
+  - target:
+      group: integreatly.org
+      version: v1alpha1
+      kind: GrafanaDataSource
+      name: elasticsearch
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: monitoring
