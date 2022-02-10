@@ -7,25 +7,25 @@ dn: ou=users,dc=cluster,dc=local
 objectClass: organizationalUnit
 ou: users
 
-# rs-admin, users, cluster.local
-dn: uid=rs-admin,ou=users,dc=cluster,dc=local
+# {{ keycloak.admin.username }}, users, cluster.local
+dn: uid={{ keycloak.admin.username }},ou=users,dc=cluster,dc=local
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: shadowAccount
-uid: rs-admin
-userPassword:: e1NTSEF9MjhxSVdBSWhkVGh1WjlPdmJwOEpONjNGZE1sOHRYVHc=
+uid: {{ keycloak.admin.username }}
+userPassword:: {{ keycloak.admin.password | encode_ldap_password | b64encode }}
 loginShell: /bin/bash
 sn:: IA==
 gidNumber: 2000
-mail: rs-admin@rs.eu
+mail: {{ keycloak.admin.mail }}
 givenName:: IA==
 shadowInactive: -1
 shadowMax: 9999
 uidNumber: 2001
 shadowExpire: -1
 shadowWarning: 7
-cn: rs-admin
-homeDirectory: rs-admin
+cn: {{ keycloak.admin.username }}
+homeDirectory: {{ keycloak.admin.username }}
 
 # groups, cluster.local
 dn: ou=groups,dc=cluster,dc=local
@@ -38,7 +38,7 @@ objectClass: groupOfNames
 objectClass: posixGroup
 cn: sudo
 gidNumber: 27
-member: uid=rs-admin,ou=users,dc=cluster,dc=local
+member: uid={{ keycloak.admin.username }},ou=users,dc=cluster,dc=local
 
 # user, groups, cluster.local
 dn: cn=rs-user,ou=groups,dc=cluster,dc=local
@@ -46,15 +46,15 @@ objectClass: groupOfNames
 objectClass: posixGroup
 cn: rs-user
 gidNumber: 2000
-member: uid=rs-admin,ou=users,dc=cluster,dc=local
+member: uid={{ keycloak.admin.username }},ou=users,dc=cluster,dc=local
 
-# rs-admin, groups, cluster.local
-dn: cn=rs-admin,ou=groups,dc=cluster,dc=local
+# {{ keycloak.admin.username }}, groups, cluster.local
+dn: cn={{ keycloak.admin.username }},ou=groups,dc=cluster,dc=local
 objectClass: groupOfNames
 objectClass: posixGroup
-cn: rs-admin
+cn: {{ keycloak.admin.username }}
 gidNumber: 2001
-member: uid=rs-admin,ou=users,dc=cluster,dc=local
+member: uid={{ keycloak.admin.username }},ou=users,dc=cluster,dc=local
 
 # operator, groups, cluster.local
 dn: cn=operator,ou=groups,dc=cluster,dc=local
@@ -62,7 +62,7 @@ objectClass: groupOfNames
 objectClass: posixGroup
 cn: operator
 gidNumber: 2002
-member: uid=rs-admin,ou=users,dc=cluster,dc=local
+member: uid={{ keycloak.admin.username }},ou=users,dc=cluster,dc=local
 
 # security, groups, cluster.local
 dn: cn=security,ou=groups,dc=cluster,dc=local
@@ -70,7 +70,7 @@ objectClass: groupOfNames
 objectClass: posixGroup
 cn: security
 gidNumber: 2003
-member: uid=rs-admin,ou=users,dc=cluster,dc=local
+member: uid={{ keycloak.admin.username }},ou=users,dc=cluster,dc=local
 
 # networking, groups, cluster.local
 dn: cn=networking,ou=groups,dc=cluster,dc=local
@@ -78,4 +78,4 @@ objectClass: groupOfNames
 objectClass: posixGroup
 cn: networking
 gidNumber: 2004
-member: uid=rs-admin,ou=users,dc=cluster,dc=local
+member: uid={{ keycloak.admin.username }},ou=users,dc=cluster,dc=local

@@ -205,8 +205,8 @@
       "subGroups": []
     },
     {
-      "name": "rs-admin",
-      "path": "/rs-admin",
+      "name": "{{ keycloak.admin.username }}",
+      "path": "/{{ keycloak.admin.username }}",
       "attributes": {
         "gidNumber": [
           "2001"

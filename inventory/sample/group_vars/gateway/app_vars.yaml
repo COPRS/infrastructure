@@ -86,6 +86,10 @@ keycloak:
   superadmin:
     username: superadmin
     password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  admin:
+    username: rs-admin
+    password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+    mail: rs-admin@rs.eu
   database:
     password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
@@ -100,8 +104,7 @@ openldap:
   readonly_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 postgresql:
-  replication:
-    user: replication_user
+  postgres_user:
     password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 graylog:
