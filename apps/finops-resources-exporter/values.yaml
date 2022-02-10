@@ -1,8 +1,7 @@
-imagePullSecrets: rs-regcred
 
 image:
-  registry: artifactory.coprs.esa-copernicus.eu/cs-docker
-  repository: finops-resources-exporter
+  registry: artifactory.coprs.esa-copernicus.eu/rs-docker
+  repository: monitoring/finops-resources-exporter
   tag: release-0.3.0
 
 metrics:

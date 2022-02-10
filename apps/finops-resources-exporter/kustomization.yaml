@@ -6,7 +6,7 @@ namespace: monitoring
 helmCharts:
   - name: finops-resources-exporter
     releaseName: "{{ app_name }}"
-    repo: https://artifactory.coprs.esa-copernicus.eu/artifactory/cs-helm-local
+    repo: https://artifactory.coprs.esa-copernicus.eu/artifactory/rs-helm
     version: 1.0.0
     valuesFile: values.yaml
     namespace: monitoring
@@ -24,9 +24,3 @@ patches:
       version: v1
       kind: Deployment
       name: finops-resources-exporter
-
-secretGenerator:
-  - name: rs-regcred
-    files:
-      - .dockerconfigjson
-    type: kubernetes.io/dockerconfigjson
