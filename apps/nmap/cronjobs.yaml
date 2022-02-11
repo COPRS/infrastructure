@@ -35,7 +35,6 @@ spec:
                 drop:
                 - all
               privileged: false
-              readOnlyRootFilesystem: true
               runAsNonRoot: true
             terminationMessagePath: /dev/termination-log
             terminationMessagePolicy: File
