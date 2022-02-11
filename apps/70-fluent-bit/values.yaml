@@ -344,16 +344,16 @@ config:
       Mem_Buf_Limit    10MB
     [INPUT]
       Name             tail
-      Tag              security.container.*
-      Path             /var/log/containers/*_security_keycloak-*.log
+      Tag              security.keycloak.*
+      Path             /var/log/containers/keycloak-?_iam_keycloak-*.log
       DB               /var/log/keycloak.db
       DB.Sync          Normal
       Rotate_Wait      10
       Mem_Buf_Limit    10MB
     [INPUT]
       Name             tail
-      Tag              security.container.*
-      Path             /var/log/containers/apisix-*_infra_apisix-*.log
+      Tag              security.ingress.*
+      Path             /var/log/containers/apisix-*_networking_apisix-*.log
       DB               /var/log/fluentbit_apisix.db
       DB.Sync          Normal
       Rotate_Wait      10
@@ -385,7 +385,7 @@ config:
     [INPUT]
       Name             tail
       Tag              security.falco.*
-      Path             /var/log/containers/falco-*.log
+      Path             /var/log/containers/falco-?????_security_falco*.log
       DB               /var/log/fluentbit-security_falco.db
       DB.Sync          Normal
       Rotate_Wait      10
@@ -393,7 +393,7 @@ config:
     [INPUT]
       Name             tail
       Tag              security.scans.*
-      Path             /var/log/nmap/*.log
+      Path             /var/log/containers/nmap-job-*.log
       DB               /var/log/fluentbit-security_nmap.db
       DB.Sync          Normal
       Rotate_Wait      10
@@ -408,6 +408,10 @@ config:
       Name    grep
       Match   processing.log.*
       Exclude $log['header']['file'] ProductDistributionController.java
+    [FILTER]
+      Name    grep
+      Match   security.keycloak.*
+      Regex   log /.*type=LOGIN|LOGIN_ERROR.*/
     [FILTER]
       Name    grep
       Match   system.*
@@ -535,7 +539,18 @@ config:
       Match       security.scans.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.scans
- 
+    [OUTPUT]
+      Name        kafka
+      Format      json
+      Match       security.ingress.*
+      Brokers     kafka-cluster-kafka-brokers.infra.svc.cluster.local:9092
+      Topics      fluentbit.ingress
+    [OUTPUT]
+      Name        kafka
+      Format      json
+      Match       security.keycloak.*
+      Brokers     kafka-cluster-kafka-brokers.infra.svc.cluster.local:9092
+      Topics      fluentbit.keycloak 
 
 daemonSetVolumes:
   - name: varlog

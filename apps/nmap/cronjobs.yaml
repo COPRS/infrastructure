@@ -1,0 +1,49 @@
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nmap-job
+  namespace: security
+  annotations:
+    linkerd.io/inject: disabled
+spec:
+  schedule: "* */6 * * *"  
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      completionMode: NonIndexed
+      completions: 1
+      parallelism: 1
+      suspend: false
+      template:
+        metadata:
+          annotations:
+            linkerd.io/inject: disabled
+        spec:
+          restartPolicy: Never
+          containers:
+          - command: ["/bin/sh","-c"]
+            args: ["cat /tmp/ips/ips | while read line ; do nmap $line -Pn -oX /tmp/t > /dev/null && cat /tmp/t | xq -c  ; done"]
+            image: docker.io/hexdump81/security:latest
+            imagePullPolicy: IfNotPresent
+            name: nmap
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                - all
+              privileged: false
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+            volumeMounts:
+            - name: ips
+              mountPath: /tmp/ips
+          terminationGracePeriodSeconds: 30
+          volumes:
+          - name: ips
+            configMap: 
+              name: ips
