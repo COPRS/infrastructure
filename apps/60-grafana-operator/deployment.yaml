@@ -58,11 +58,11 @@ spec:
             periodSeconds: 10
           resources:
             limits:
-              cpu: 200m
-              memory: 300Mi
+              cpu: 400m
+              memory: 512Mi
             requests:
               cpu: 100m
-              memory: 100Mi
+              memory: 256Mi
           securityContext:
             allowPrivilegeEscalation: false
             runAsUser: 65532

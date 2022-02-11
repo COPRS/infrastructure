@@ -40,7 +40,7 @@ spec:
       - key: "app.kubernetes.io/grafana-ignore"
         operator: DoesNotExist
   deployment:
-    skipCreateAdminAccount: true
+    skipCreateAdminAccount: false
     envFrom:
       - secretRef:
           name: grafana-oidc-client-secret
