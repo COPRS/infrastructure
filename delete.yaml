@@ -54,3 +54,13 @@
             - "{{ playbook_dir }}/ssh-main-gateway.conf"
             - "{{ inventory_dir }}/artifacts"
       tags: [ 'never', 'cleanup_generated' ]
+
+    - block:
+        - name: Get bucket list
+          shell: "{{ safescale_path }} bucket list"
+          register: safescale_buckets
+
+        - name: Delete s3 buckets
+          shell: "{{ safescale_path }} bucket delete {{ item }}"
+          loop: "{{ (safescale_buckets.stdout | from_json).result.buckets | map(attribute='name') | select('match', cluster.name ~ '-.*') }}"
+      tags: [ 'never', 'delete_buckets' ]

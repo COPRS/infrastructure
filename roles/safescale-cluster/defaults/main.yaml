@@ -66,3 +66,8 @@ volume:
   # amount of volume mounted per node
   # /!\ safescale supports only 1 additional volume per node
   count: 1  
+
+buckets:
+  - elasticsearch-processing
+  - elasticsearch-security
+  - thanos

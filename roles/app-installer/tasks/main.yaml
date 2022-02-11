@@ -1,6 +1,16 @@
 - name: Generate or reuse app_vars
   delegate_to: localhost
   block:
+    - name : Include default from safescale_cluster
+      include_vars:
+        dir: "{{ playbook_dir }}/roles/safescale-cluster/defaults"
+        depth: 1
+
+    - name: Include localhost hostvars
+      include_vars:
+        dir: "{{ inventory_dir }}/host_vars/localhost"
+        depth: 1
+
     - name: Setting some facts
       set_fact:
         generated_app_vars_path: "{{ inventory_dir }}/artifacts/generated_app_vars.yaml"
@@ -57,5 +67,3 @@
   loop_control:
     loop_var: package_path
   when: package is undefined or package == package_name
-    
-- meta: end_play
