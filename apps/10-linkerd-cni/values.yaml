@@ -10,3 +10,11 @@ cniPluginVersion: stable-2.11.1
 # -- Add a PSP resource and bind it to the linkerd-cni ServiceAccounts.
 # Note PSP has been deprecated since k8s v1.21
 enablePSP: false
+
+tolerations:
+  - key: node-role.kubernetes.io/master
+    operator: "Exists"
+    effect: "NoSchedule"
+  - key: node-role.kubernetes.io/gateway
+    operator: "Exists"
+    effect: "NoSchedule"
