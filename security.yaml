@@ -9,7 +9,3 @@
   roles:
    - "security/suricata"
    - "security/openvpn"
-
-- hosts: kube_control_plane, gateway, egress
-  roles:
-      - "security/nmap"
