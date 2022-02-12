@@ -28,6 +28,11 @@ patches:
         value:
           annotations:
             linkerd.io/inject: disabled
+      - op: replace
+        path: /spec/template/spec/containers/0/command/2
+        value:
+          | 
+          apk update && apk add --no-cache curl bash jq && bash /configmap/script.sh
     target:
       version: v1
       kind: Job

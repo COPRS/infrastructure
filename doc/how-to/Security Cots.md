@@ -116,18 +116,3 @@ The `conf_files` is a list of file with th following structure :
 - A `name`.
 - The `content` of the file. 
 It can be used to add certificate and client configuration for the VPN client.
-
-## Nmap
-**Scope: Gateway,egress, master**
-Nmap is deployed on gateways and egress. During the installation of the COTS, the public ip
-of the node where nmap is installed is retrieved.
-Nmap is also installed on the frist master node, and require the user to fill the loadbalancer ip
-in order to perform scan on HTTP exposed port.
-
-| Name               | Description                                                         | Required |
-|--------------------|---------------------------------------------------------------------|----------|
-| nmap_version       | Version of nmap to be installed                                     | Yes      |
-| domain_balancer_ip | load balancer ip if cluster is exposed online and has a domain name | No       |
-
-To perform the scan everyday a cronis deployed, the `name` and the `hour` of work can be set
-by modifing this properties.
