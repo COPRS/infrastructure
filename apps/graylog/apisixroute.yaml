@@ -20,7 +20,7 @@ spec:
           config:
             regex_uri: [ "^/graylog/(.*)$", "/$1" ]
             headers:
-              X-Username: admin
+              X-Username: operator
         - name: openid-connect
           enable: true
           config:
