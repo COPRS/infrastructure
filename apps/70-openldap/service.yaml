@@ -4,12 +4,14 @@ metadata:
   name: openldap
 spec:
   ports:
-  - name: ldap-port
-    port: 389
-    protocol: TCP
-    targetPort: ldap-port
-  - name: ssl-ldap-port
-    port: 636
-    protocol: TCP
-    targetPort: ssl-ldap-port
-  type: ClusterIP
+    - name: ldap-port
+      port: 389
+      protocol: TCP
+      targetPort: ldap-port
+      nodePort: 30389
+    - name: ssl-ldap-port
+      port: 636
+      protocol: TCP
+      targetPort: ssl-ldap-port
+      nodePort: 30636
+  type: NodePort
