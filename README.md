@@ -20,67 +20,84 @@
 
 ## Infrastructure requirements
 
-- A **domain name** publicly available.  
-  Replace all occurences of ```DOMAIN_NAME``` in the repo by your own domain name.
-- A **load balancer** listening on a public IP address.  
+- A **domain name** publicly available with a wildcard **A** record.  
+- A **load balancer** listening on the public IP address pointed to by the domain name.  
   Configure the load balancer to forward incoming flow toward the cluster masters.
 
   | Load balancer port | masters port |
   | :---: | :---: |
   | 80 | 32080 |
   | 443 | 32443 |
+- A **Stash community** licence, to get [here](https://license-issuer.appscode.com/?p=stash-community) between the `kubespray.yaml` and the `apps.yaml` playbooks
 
 
 ## Quickstart
 
-```Bash
-## ON BASTION
-
-# get the infrastructure repository
+1. ### Get the infrastructure repository
+```shellsession
 git clone https://github.com/COPRS/infrastructure.git
+```
 
+2. ### Install requirements
+```shellsession
 cd infrastructure
 
-# install requirements
 git submodule update --init
+
 python3 -m pip install --user -r collections/kubespray/requirements.txt
 ansible-galaxy collection install \
     kubernetes.core \
     openstack.cloud
+```
 
-# Copy ``inventory/sample`` as ``inventory/mycluster``
+3. ### Copy the sample inventory
+```shellsession
 cp -rfp inventory/sample inventory/mycluster
+```
 
-# Review and change paramters under ``inventory/mycluster/group_vars`` or ``inventory/mycluster/host_vars``
-cat inventory/mycluster/host_vars/localhost/cluster.yaml
-cat inventory/mycluster/host_vars/localhost/image.yaml
-cat inventory/mycluster/group_vars/all/kubespray.yaml
-cat inventory/mycluster/group_vars/bastion/apps.yaml
 
-# If needed create an image for the machines with Packer
+4. ### Review and change the default configuration to match your needs
+
+ - Virtual machines amount and sizing in `inventory/mycluster/host_vars/localhost/cluster_safescale.yaml`
+ - Credentials, domain name, certificates (see below), S3 endpoints and buckets in `infrastructure/inventory/sample/group_vars/gateway/app_vars.yaml`
+ - Packages containing the apps to be deployed in `inventory/sample/group_vars/gateway/app_installer.yaml`
+
+5. ### If needed create an image for the machines with **Packer**
+```shellsession
 ansible-playbook image.yaml \
     -i inventory/mycluster/hosts.ini
+```
 
-# Deploy machines with safescale
+6. ### Deploy machines with safescale
+```shellsession
 ansible-playbook cluster-setup.yaml \
     -i inventory/mycluster/hosts.ini
+```
 
-# Install security services
+7. ### Install security services
+```shellsession
 ansible-playbook security.yaml \
     -i inventory/mycluster/hosts.ini \
     --become
+```
 
-# Deploy kubernetes with Kubespray - run the playbook as root
+8. ### Deploy kubernetes with Kubespray
+
+```shellsession
 # The option `--become` is required, for example writing SSL keys in /etc/,
 # installing packages and interacting with various systemd daemons.
 # Without --become the playbook will fail to run!
+
 ansible-playbook collections/kubespray/cluster.yml \
     -i inventory/mycluster/hosts.ini \
     --become
+```
 
-# Enable pod security policies on the cluster
-# /!\ you first need to create the psp and crb resources
+9. ### Enable pod security policies on the cluster
+```shellsession
+# /!\ create first the PSP and CRB resources
 # before enabling the admission plugin
+
 ansible-playbook collections/kubespray/upgrade-cluster.yml \
     -i inventory/mycluster/hosts.ini \
     --tags cluster-roles \
@@ -92,12 +109,16 @@ ansible-playbook collections/kubespray/upgrade-cluster.yml \
     --tags master \
     -e podsecuritypolicy_enabled=true \
     --become
+```
 
-# Prepare the cluster for Reference System
+10. ### Prepare the cluster for Reference System
+```shellsession
 ansible-playbook rs-setup.yaml \
     -i inventory/mycluster/hosts.ini
+```
 
-# deploy apps
+11. ### Deploy the apps 
+```shellsession
 ansible-playbook apps.yaml \
     -i inventory/mycluster/hosts.ini
 ```
@@ -158,7 +179,7 @@ The repository is made of the following main directories and files.
 
 Configurations proposed by default :
 - **Rook Ceph** 
-  - Chart Helm 
+  - Helm chart: 
     - URL : charts.rook.io/release
     - Version : 1.7.7
     - Documentation : https://github.com/rook/rook/blob/master/Documentation/helm-operator.md
@@ -190,7 +211,7 @@ Configurations proposed by default :
         - Registry : quay.io
         - Version : 0.1.0
 - **Rook Ceph Cluster**
-  - Chart Helm
+  - Helm chart:
     - URL : charts.rook.io/release
     - Version : 1.7.7
     - Documentation : https://github.com/rook/rook/blob/master/Documentation/helm-ceph-cluster.md
@@ -198,18 +219,18 @@ Configurations proposed by default :
     - Registry : quay.io
     - Version : 16.2.6
 - **Kafka Operator**
-  - Chart Helm
+  - Helm chart:
     - URL : strimzi.io/charts/
     - Version : 0.26.0
     - Documentation : https://github.com/strimzi/strimzi-kafka-operator/tree/main/helm-charts/helm3/strimzi-kafka-operator
   - Images
-    - Registry : quai.io
+    - Registry : quay.io
     - Versions
-      - Operator : 0.26.0
+      - Operator : 0.27.1
       - Kafka : 2.8.1
       - Zookeeper : 3.5.9
 - **Elasticsearch Operator**
-  - Chart Helm
+  - Helm chart:
     - URL : helm.elastic.co
     - Version : 1.9.0
     - Source : https://github.com/elastic/cloud-on-k8s/tree/master/deploy/eck-operator
@@ -220,9 +241,9 @@ Configurations proposed by default :
       - Elasticsearch : 7.15.2
       - Kibana : 7.15.2
 - **PostreSQL**
-  - Chart Helm
+  - Helm chart:
     - URL : charts.bitnami.com/bitnami
-    - Version : 10.13.4
+    - Version : 11.0.2
     - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/postgresql
   - Images
     - Registry : Docker Hub
@@ -231,27 +252,27 @@ Configurations proposed by default :
       - PostgreSQL : 14.1.0
       - Exporter : 0.10.0
 - **MongoDB**
-  - Chart Helm :
+  - Helm chart:
     - URL : charts.bitnami.com/bitnami
-    - Version : 10.29.0
+    - Version : 11.0.3
     - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/mongodb
   - Images
     - Registry : Docker Hub
     - Repository : bitnami
     - Versions
-      - MongoDB : 5.0.3
-      - Exporter : 0.11.2
+      - MongoDB : 5.0.6
+      - Exporter : 0.30.0
 - **Graylog**
-  - Chart Helm
+  - Helm chart:
     - URL : charts.kong-z.com
-    - Version : 1.8.10
+    - Version : 1.9.2
     - Documentation : https://github.com/KongZ/charts/tree/main/charts/graylog
   - Image
     - Registry : Docker Hub
     - Repository : graylog
     - Version : 4.2.3
 - **Spring Cloud Data Flow**
-  - Chart Helm
+  - Helm chart:
     - URL : charts.bitnami.com/bitnami
     - Version : 4.1.5
     - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/spring-cloud-dataflow
@@ -264,7 +285,7 @@ Configurations proposed by default :
       - WaitForBackend : 1.22.2
       - Exporter : 1.3.0
 - **Loki**
-  - Chart Helm
+  - Helm chart:
     - URL : grafana.github.io/helm-charts
     - Version : 2.8.1
     - Documentation : https://github.com/grafana/helm-charts/tree/main/charts/loki
@@ -273,7 +294,7 @@ Configurations proposed by default :
     - Repository : grafana
     - Version : 2.4.1
 - **Fluentbit**
-  - Chart Helm
+  - Helm chart:
     - URL : fluent.github.io/helm-charts
     - Version : 0.19.6
     - Documentation : https://github.com/fluent/helm-charts/tree/main/charts/fluent-bit
@@ -282,7 +303,7 @@ Configurations proposed by default :
     - Repository : fluent
     - Version : 1.8.10
 - **Fluentd**
-  - Chart Helm
+  - Helm chart:
     - URL : charts.bitnami.com/bitnami
     - Version : 4.4.1
     - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/fluentd
@@ -291,7 +312,7 @@ Configurations proposed by default :
     - Repository : bitnami
     - Version : 1.14.2
 - **Grafana**
-  - Chart Helm
+  - Helm chart:
     - URL : charts.bitnami.com/bitnami
     - Version : 7.2.2
     - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/grafana-operator
@@ -300,7 +321,7 @@ Configurations proposed by default :
     - Repository : bitnami
     - Version : 8.2.5
 - **Prometheus Stack**
-  - Chart Helm :
+  - Helm chart:
     - URL : prometheus-community.github.io/helm-charts
     - Version : 21.0.0
     - Documentation : https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
@@ -312,7 +333,7 @@ Configurations proposed by default :
       - Operator : 0.52.1
       - Prometheus : 2.31.1
 - **Thanos**
-  - Chart Helm
+  - Helm chart:
     - URL : charts.bitnami.com/bitnami
     - Version : 8.1.2
     - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/thanos
@@ -321,7 +342,7 @@ Configurations proposed by default :
     - Repository : bitnami
     - Version : 0.23.1
 - **Keycloack**
-  - Chart Helm
+  - Helm chart:
     - URL : charts.bitnami.com/bitnami
     - Version : 5.2.0
     - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/keycloak
@@ -330,13 +351,13 @@ Configurations proposed by default :
     - Repository : bitnami
     - Version : 15.0.2
 - **OpenLDAP**
-  - Chart Helm : use _kustomize_
+  - Helm chart: _None_
   - Image
     - Registry : Docker Hub
     - Repository : osixia
     - Version : 1.5.0
 - **Falco**
-  - Chart Helm
+  - Helm chart:
     - URL : https://github.com/falcosecurity/charts
     - Version : 1.16.2
     - Documentation : https://github.com/falcosecurity/charts
