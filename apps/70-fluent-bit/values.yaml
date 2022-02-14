@@ -13,7 +13,7 @@ serviceMonitor:
 resources:
   limits:
     cpu: 100m
-    memory: 256Mi
+    memory: 512Mi
   requests:
     cpu: 20m
     memory: 128Mi
@@ -496,6 +496,7 @@ config:
       Match       processing.log.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.processing
+      Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
       Format      json
@@ -503,36 +504,42 @@ config:
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.trace
       rdkafka.enable.idempotence true
+      Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
       Format      json
       Match       system.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.system
+      Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
       Format      json
       Match       security.container.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.docker-security
+      Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
       Format      json
       Match       security.wazuh.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.wazuh
+      Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
       Format      json
       Match       security.auditd.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.auditd
+      Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
       Format      json
       Match       security.falco.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.falco
+      Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
       Format      json
@@ -545,12 +552,14 @@ config:
       Match       security.ingress.*
       Brokers     kafka-cluster-kafka-brokers.infra.svc.cluster.local:9092
       Topics      fluentbit.ingress
+      Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
       Format      json
       Match       security.keycloak.*
       Brokers     kafka-cluster-kafka-brokers.infra.svc.cluster.local:9092
-      Topics      fluentbit.keycloak 
+      Topics      fluentbit.keycloak
+      Buffer_Size 64KB
 
 daemonSetVolumes:
   - name: varlog
