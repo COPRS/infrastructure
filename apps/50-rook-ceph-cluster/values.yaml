@@ -27,9 +27,6 @@ cephClusterSpec:
 
   mgr:
     count: 2
-    module:
-      enabled: true
-      name: pg_autoscaler
   
   mon:
     count: 3
