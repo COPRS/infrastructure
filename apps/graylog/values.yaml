@@ -72,6 +72,6 @@ graylog:
           curl -v -u "admin:$GRAYLOG_PASSWORD_SECRET" -X PUT --header 'Content-Type: application/json' --header 'X-Requested-By: localhost' --data-binary "${json_pipeline}" http://graylog-master.security.svc.cluster.local:9000/api/system/messageprocessors/config
         json_header='{"username_header": "Operator","enabled": "true"}'
           curl -v -u "admin:$GRAYLOG_PASSWORD_SECRET" -X PUT --header 'Content-Type: application/json' --header 'X-Requested-By: localhost' --data-binary "${json_header}" http://graylog-master.security.svc.cluster.local:9000/api/system/authentication/http-header-auth-config
-        json_user='{"first_name":"Operator","last_name":"Graylog","username":"operator","email":"operator@operator.fr","password":"{{ graylog.password_operator }}","roles":["Admin"], "permissions":[]}'
+        json_user='{"first_name":"Operator","last_name":"Graylog","username":"{{ keycloak.admin.username }}","email":"operator@operator.fr","password":"{{ graylog.password_operator }}","roles":["Admin"], "permissions":[]}'
           curl -v -u "admin:$GRAYLOG_PASSWORD_SECRET" -X POST --header 'Content-Type: application/json' --header 'X-Requested-By: localhost' --data-binary "${json_user}" http://graylog-master.security.svc.cluster.local:9000/api/users
       fi 
