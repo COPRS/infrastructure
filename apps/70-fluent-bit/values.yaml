@@ -321,22 +321,6 @@ config:
     [INPUT]
       Name             tail
       Tag              security.container.*
-      Path             /var/log/containers/postgresql-postgresql-*_infra_postgresql-*.log
-      DB               /var/log/fluentbit_postgresql-infra.db
-      DB.Sync          Normal
-      Rotate_Wait      10
-      Mem_Buf_Limit    10MB
-    [INPUT]
-      Name             tail
-      Tag              security.container.*
-      Path             /var/log/containers/mongodb-*_infra_mongodb-*-*.log
-      DB               /var/log/fluentbit_mongodb.db
-      DB.Sync          Normal
-      Rotate_Wait      10
-      Mem_Buf_Limit    10MB
-    [INPUT]
-      Name             tail
-      Tag              security.container.*
       Path             /var/log/containers/*_kube-system_*.log
       DB               /var/log/fluentbit_kube-system.db
       DB.Sync          Normal
@@ -355,14 +339,6 @@ config:
       Tag              security.ingress.*
       Path             /var/log/containers/apisix-*_networking_apisix-*.log
       DB               /var/log/fluentbit_apisix.db
-      DB.Sync          Normal
-      Rotate_Wait      10
-      Mem_Buf_Limit    10MB
-    [INPUT]
-      Name             tail
-      Tag              security.container.*
-      Path             /var/log/containers/openldap-*_security_openldap-*.log
-      DB               /var/log/fluentbit_openldap.db
       DB.Sync          Normal
       Rotate_Wait      10
       Mem_Buf_Limit    10MB
@@ -412,6 +388,10 @@ config:
       Name    grep
       Match   security.keycloak.*
       Regex   log /.*type=LOGIN|LOGIN_ERROR.*/
+    [FILTER]
+      Name    grep
+      Match   security.ingress.*
+      Regex   log /.*stdout.*/
     [FILTER]
       Name    grep
       Match   system.*
