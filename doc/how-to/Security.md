@@ -1,4 +1,5 @@
-# Purpose
+# Managing security COTS on the cluster's nodes
+
 The purpose of this document is to explain how to install and uninstall 
 security COTS on nodes.
 
@@ -13,9 +14,9 @@ infrastructure.
 
 According to the purpose of each COTS, the node where the installation is perfomed change.
 
-# To Improve
-Suricata => choose dynamically the interface to work on 
-Wazuh => handle wazuh password with a vault 
+## Future improvements
+Suricata: choose dynamically the interface to work on 
+Wazuh: handle wazuh password with a vault 
 
 ## AuditD
 **Scope: All**

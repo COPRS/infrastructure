@@ -1,14 +1,20 @@
-# Use the CRDs provided by the operators
+# Using the operators deployed in RS
 
-## Deploy Grafana related custom resources
+## Grafana operator
 
-There are a few custom resources deployed by default, see [here](https://github.com/grafana-operator/grafana-operator/tree/master/deploy/examples) for more examples.
+Find the documentation [here](https://github.com/grafana-operator/grafana-operator/tree/master/documentation) and examples [here](https://github.com/grafana-operator/grafana-operator/tree/master/deploy/examples).
+> *Note: Grafana version 8 is deployed, it has many useful features and is stable, but keep in mind that many dashboards and tools have not been thoroughly tested yet.*
 
-## Deploy Kafka related custom resources
+> *Note: The GrafanaDataSource and Grafana CRDs must be deployed in the monitoring namespace with the operator for now. (see [here](https://github.com/grafana-operator/grafana-operator/blob/master/documentation/multi_namespace_support.md#watching-for-datasources-in-all-namespaces)*
 
-There are a few custom resources deployed by default, see [here](https://github.com/strimzi/strimzi-kafka-operator/tree/0.26.0/examples) for more examples.
+## Kafka operator
 
-## Deploy Elastic cloud related custom resources
+Find the documentation [here](https://strimzi.io/docs/operators/latest/configuring.html) and examples [here](https://github.com/strimzi/strimzi-kafka-operator/tree/0.27.1/examples).
 
-There are a few custom resources deployed by default, see [here](https://www.elastic.co/guide/en/cloud-on-k8s/master/k8s-api-reference.html) for reference on these CRDs.
+## Elastic operator
 
+Find the documentation [here](https://www.elastic.co/guide/en/cloud-on-k8s/master/k8s-api-reference.html).
+
+## Stash operator
+
+Find the documentation [here](https://stash.run/docs/v2021.6.18/concepts/).

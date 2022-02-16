@@ -28,7 +28,15 @@
   | :---: | :---: |
   | 80 | 32080 |
   | 443 | 32443 |
-- A **Stash community** licence, to get [here](https://license-issuer.appscode.com/?p=stash-community) after creating the kubernetes cluster with the `kubespray.yaml` playbook and deploying stash with the `apps.yaml` playbook
+
+## Dependencies
+
+### Kubespray
+This project exploits Kubespray to deploy Kubernetes.  
+The fully detailed documentation and configuration options are available on its page: [https://kubespray.io/](https://kubespray.io/)
+
+### HashiCorp Vault (optional)
+This project can integrate credentials from a custom `HashiCorp Vault` instance, see the specific documentation [here](doc/how-to/Credentials.md).
 
 
 ## Quickstart
@@ -54,7 +62,6 @@ ansible-galaxy collection install \
 ```shellsession
 cp -rfp inventory/sample inventory/mycluster
 ```
-
 
 4. ### Review and change the default configuration to match your needs
 
@@ -118,29 +125,14 @@ ansible-playbook rs-setup.yaml \
     -i inventory/mycluster/hosts.ini
 ```
 
-11. ### Deploy the apps 
+11. ### Set up the SSL certificates and the Stash license
+See the documentation [here](doc/how-to/Certificates.md).
+
+12. ### Deploy the apps 
 ```shellsession
 ansible-playbook apps.yaml \
     -i inventory/mycluster/hosts.ini
 ```
-
-## TLS configuration
-
-Reference System exploits [APISIX Ingress Controller](https://apisix.apache.org/) and [Cert Manager](https://cert-manager.io/) for TLS configuration.
-
-You need to create an [issuer](https://cert-manager.io/docs/concepts/issuer/) and a [certificate](https://cert-manager.io/docs/concepts/certificate/) for your domain name with Cert Manager.
-
-APISIX does not work with Cert Manager for ACME HTTP01 challenges ([#781](https://github.com/apache/apisix-ingress-controller/issues/781)).  
-You must use the DNS01 challenge to generate a Let's encrypt certificate. The configuration is detailled on [Cert Manager documentation](https://cert-manager.io/docs/configuration/acme/dns01).
-
-## Dependencies
-
-### Kubespray
-This project exploits Kubespray to deploy Kubernetes.  
-The fully detailed documentation and configuration options are available on its page: [https://kubespray.io/](https://kubespray.io/#/)
-
-### HashiCorp Vault (optional)
-This project can integrate credentials from a custom `HashiCorp Vault` instance, see the specific documentation.
 
 ## Tree view
 
