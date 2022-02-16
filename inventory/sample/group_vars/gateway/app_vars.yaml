@@ -97,6 +97,7 @@ mongodb:
   database: graylog
   password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
   username: graylog
+  replica_set_key: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 openldap:
   admin_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
