@@ -128,20 +128,6 @@ stash:
     -----BEGIN CERTIFICATE-----
     Get a license here: https://license-issuer.appscode.com/?p=stash-community
     -----END CERTIFICATE-----
-    
-rclone:
-  source:
-    s3:
-      endpoint: "{{ common.s3.endpoint }}"
-      region: "{{ common.s3.region }}"
-      access_key: "{{ common.s3.access_key }}"
-      secret_key: "{{ common.s3.secret_key }}"
-  destination:
-    s3:
-      endpoint: "{{ common.s3.endpoint }}"
-      region: "{{ common.s3.region }}"
-      access_key: "{{ common.s3.access_key }}"
-      secret_key: "{{ common.s3.secret_key }}"
 
 cs_registry:
   username: HELM_CS_USERNAME
