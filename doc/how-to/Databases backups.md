@@ -6,7 +6,7 @@ To deploy theses CRDs using ansible templating and variables provided by the `ap
 The stash documentation can be found [here](https://stash.run/docs/v2021.11.24/concepts/crds/backupconfiguration/) and [here](https://stash.run/docs/v2021.11.24/concepts/crds/repository/).
 
 
-## Example S3 bucket as Repository
+## Example S3 bucket as Repository
 
 ```yaml
 apiVersion: v1 
@@ -203,7 +203,7 @@ The restore using `Stash restic driver` is done in the following steps:
 
 Use the documentation [here](https://stash.run/docs/v2021.11.24/concepts/crds/restoresession/) to configure the `RestoreSession` CRDs.
 
-## Postgresql restore
+## Postgresql restore
 
 Deploy the following:
 ```yaml

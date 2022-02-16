@@ -16,7 +16,7 @@
 
 - name: get Wazuh manager IP address
   set_fact:
-    wazuh_manager_ip: "{{ hostvars[groups['kube_control_plane'][0]]['ansible_default_ipv4']['address'] }}"
+    wazuh_manager_ip: "{{ hostvars[groups['kube_control_plane'][0]]['ansible_default_ipv4']['address'] }}"
 
 - name: Set Wazuh Manager remote IP address
   replace:

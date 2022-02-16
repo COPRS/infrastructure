@@ -75,4 +75,4 @@
 
 - name: Get list of already present nodes
   set_fact:
-    wazuh_nodes_list: "{{ wazuh_joined_machines_output.stdout | from_json | community.general.json_query('data[*].name')}}"
+    wazuh_nodes_list: "{{ wazuh_joined_machines_output.stdout | from_json | community.general.json_query('data[*].name')}}"

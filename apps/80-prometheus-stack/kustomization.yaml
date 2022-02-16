@@ -1,6 +1,6 @@
 
 # do not use global namespacing as prometheus node exporter is 
-# creating svc in kube-system ns
+# creating svc in kube-system ns
 # namespace: monitoring
 
 # commonLabels is propagated to selectors

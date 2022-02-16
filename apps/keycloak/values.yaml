@@ -101,6 +101,6 @@ extraInitContainers: |
         mountPath: /providers
 
 # init container cannot contact outside world
-# with linkerd.io/inject=enabled
+# with linkerd.io/inject=enabled
 podAnnotations:
   config.linkerd.io/skip-outbound-ports: "443"

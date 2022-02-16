@@ -305,7 +305,7 @@ dashboard:
 
 ingress-controller:
   enabled: true
-  # default values available at https://github.com/apache/apisix-helm-chart/blob/master/charts/apisix-ingress-controller/values.yaml
+  # default values available at https://github.com/apache/apisix-helm-chart/blob/master/charts/apisix-ingress-controller/values.yaml
   replicaCount: 1
 
   image:

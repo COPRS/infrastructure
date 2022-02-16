@@ -1,6 +1,6 @@
 # Add an application
 
-## Add a package
+## Add a package
 
 A *package*, in *RS*, is a folder containing *apps* to be deployed when running the `apps.yaml` playbook. The package's path must be referenced in the `package_paths` variable in the `app_installer.yaml` inventory file. Use `{{ playbook_dir }}` or `{{ inventory_dir }}` as reference folder for the path.
 
@@ -78,7 +78,7 @@ Below is the list of the variables created specifically by the `app-installer` r
 
 All variables defined in the inventory such as the `app_vars.yaml` variables can also be exploited in the applications.
 
-### More documentation
+### More documentation
 
 Reach out to the following links to help you starting your journey with Kustomize.
 

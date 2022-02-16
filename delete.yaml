@@ -14,7 +14,7 @@
           register: attached_volume_names
 
         - name: Detach volumes from nodes
-          shell: "{{ safescale_path }} volume detach {{ item }} {{ item | regex_search(cluster.name+\"-node-[0-9]+\",'\\0') | first }} "
+          shell: "{{ safescale_path }} volume detach {{ item }} {{ item | regex_search(cluster.name+\"-node-[0-9]+\",'\\0') | first }} "
           when: attached_volume_names.stdout_lines | length > 0
           loop: "{{ attached_volume_names.stdout_lines }}"
           async: 30

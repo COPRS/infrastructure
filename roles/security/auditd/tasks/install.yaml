@@ -6,7 +6,7 @@
 # Clean old rules files + conf (update case)
 - name: Ansible delete file glob
   find:
-    paths: ["{{ auditd.auditd_rules_dir }}"]
+    paths: ["{{ auditd.auditd_rules_dir }}"]
     patterns: '.*.(rules|conf)'
     use_regex: yes
   register: files_to_delete

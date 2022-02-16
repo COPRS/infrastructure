@@ -72,8 +72,8 @@ spec:
           username: anonymous
           roles: superuser
           authz_exception: false
-        s3.client.default.endpoint: "{{ elasticsearch_security.repository.s3.endpoint }}"
-        s3.client.default.region: "{{ elasticsearch_security.repository.s3.region }}"
+        s3.client.default.endpoint: "{{ elasticsearch_security.repository.s3.endpoint }}"
+        s3.client.default.region: "{{ elasticsearch_security.repository.s3.region }}"
       volumeClaimTemplates:
         - metadata:
             name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.

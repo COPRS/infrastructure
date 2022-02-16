@@ -1,4 +1,4 @@
-# default values at https://github.com/rook/rook/blob/master/cluster/charts/rook-ceph-cluster/values.yaml
+# default values at https://github.com/rook/rook/blob/master/cluster/charts/rook-ceph-cluster/values.yaml
 
 operatorNamespace: rook-ceph
 
@@ -161,7 +161,7 @@ cephBlockPools:
       allowVolumeExpansion: true
       # see https://github.com/rook/rook/blob/master/Documentation/ceph-block.md#provision-storage for available configuration
       parameters:
-        # /!\ THE PARAMETERS FOLLOWING ARE MANDATORY
+        # /!\ THE PARAMETERS FOLLOWING ARE MANDATORY
         # RBD image format. Defaults to "2".
         imageFormat: "2"
         # RBD image features. Available for imageFormat: "2". CSI RBD currently supports only `layering` feature.
@@ -202,7 +202,7 @@ cephFileSystems:
       reclaimPolicy: Delete
       # see https://github.com/rook/rook/blob/master/Documentation/ceph-filesystem.md#provision-storage for available configuration
       parameters:
-        # /!\ THE PARAMETERS FOLLOWING ARE MANDATORY
+        # /!\ THE PARAMETERS FOLLOWING ARE MANDATORY
         # The secrets contain Ceph admin credentials.
         csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
         csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph

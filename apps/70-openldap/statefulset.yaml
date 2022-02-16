@@ -30,7 +30,7 @@ spec:
           args:
             - -l
             - debug  # log level value: debug, info, warn
-            - --copy-service # necessary with custom ldif files
+            - --copy-service # necessary with custom ldif files
           env:
             - name: POD_NAME
               valueFrom:
