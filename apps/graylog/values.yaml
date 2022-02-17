@@ -28,6 +28,15 @@ graylog:
           - matchExpressions:
             - key: "node-role.kubernetes.io/infra"
               operator: Exists
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/instance
+                operator: In
+                values:
+                  - graylog
+          topologyKey: kubernetes.io/hostname
   resources:
     limits:
       cpu: 1
@@ -70,8 +79,8 @@ graylog:
           {"class_name":"org.graylog2.messageprocessors.MessageFilterChainProcessor","name":"Message Filter Chain"},
           {"class_name":"org.graylog.plugins.pipelineprocessor.processors.PipelineInterpreter","name":"Pipeline Processor"}]}'
           curl -v -u "admin:$GRAYLOG_PASSWORD_SECRET" -X PUT --header 'Content-Type: application/json' --header 'X-Requested-By: localhost' --data-binary "${json_pipeline}" http://graylog-master.security.svc.cluster.local:9000/api/system/messageprocessors/config
-        json_header='{"username_header": "Operator","enabled": "true"}'
+        json_header='{"username_header": "X-Username","enabled": "true"}'
           curl -v -u "admin:$GRAYLOG_PASSWORD_SECRET" -X PUT --header 'Content-Type: application/json' --header 'X-Requested-By: localhost' --data-binary "${json_header}" http://graylog-master.security.svc.cluster.local:9000/api/system/authentication/http-header-auth-config
-        json_user='{"first_name":"Operator","last_name":"Graylog","username":"{{ keycloak.realm.admin.username }}","email":"operator@operator.fr","password":"{{ keycloak.realm.admin.password }}","roles":["Admin"], "permissions":[]}'
+        json_user='{"first_name":"Operator","last_name":"Graylog","username":"operator","email":"operator@operator.fr","password":"{{ graylog.operator_password }}","roles":["Admin"], "permissions":[]}'
           curl -v -u "admin:$GRAYLOG_PASSWORD_SECRET" -X POST --header 'Content-Type: application/json' --header 'X-Requested-By: localhost' --data-binary "${json_user}" http://graylog-master.security.svc.cluster.local:9000/api/users
       fi 
