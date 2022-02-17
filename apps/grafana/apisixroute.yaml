@@ -12,7 +12,7 @@ spec:
         hosts: [ monitoring.{{ rs_domain_name }} ]
         paths:
           - /*
-        methods: [ GET, POST ]
+        methods: [ GET, POST, PUT, DELETE ]
       websocket: true
 ---
 apiVersion: apisix.apache.org/v1

@@ -64,7 +64,7 @@ extraVolumes: |
       secretName: keycloak-database
   - name: creds
     secret:
-      secretName: keycloak
+      secretName: keycloak-superadmin
   - name: realm-secret
     secret:
       secretName: realm-secret

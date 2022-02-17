@@ -11,13 +11,37 @@ spec:
       match:
         hosts: [ iam.{{ rs_domain_name }} ]
         paths:
-          - /*
+          - /auth/admin/{{ keycloak.realm.name }}/console/*
+          - /auth/realms/{{ keycloak.realm.name }}/account/*
+          - /auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/*
+          - /auth/realms/RS/login-actions/*
+          - /auth/resources/*
+          - /auth/js/*
+        methods: [ GET, POST, PUT, OPTIONS, DELETE ]
+      plugins:
+        - name: cors
+          enable: true
+          config:
+            allow_origins: "https://apisix.{{ rs_domain_name }},https://linkerd.{{ rs_domain_name }},https://monitoring.{{ rs_domain_name }},https://security.{{ rs_domain_name }},https://processing.{{ rs_domain_name }}"
+        - name: serverless-pre-function
+          enable: true
+          config:
+            phase: rewrite
+            functions:
+              - "return function(conf, ctx) ngx.var.var_x_forwarded_port = tostring(\"443\") end"
+    - name: keycloak-superadmin
+      backends:
+        - serviceName: keycloak-http
+          servicePort: 80
+      match:
+        hosts: [ iam.{{ rs_domain_name }} ]
+        paths: [ /* ]
         methods: [ GET, POST, PUT, OPTIONS, DELETE ]
 ---
 apiVersion: apisix.apache.org/v1
 kind: ApisixTls
 metadata:
-  name: sni-security
+  name: sni-iam
 spec:
   hosts:
     - iam.{{ rs_domain_name }}
