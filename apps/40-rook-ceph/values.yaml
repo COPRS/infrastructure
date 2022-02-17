@@ -14,10 +14,10 @@ resources:
 
 csi:
   enableRbdDriver: true
-  enableCephfsDriver: true
-  enableCephfsSnapshotter: true
   enableRBDSnapshotter: true
-  provisionerReplicas: 1
+  enableCephfsDriver: false
+  enableCephfsSnapshotter: false
+  provisionerReplicas: 2
 
   cephcsi.image: quay.io/cephcsi/cephcsi:v3.4.0
   registrar.image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
