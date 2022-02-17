@@ -24,12 +24,12 @@ spec:
         - name: openid-connect
           enable: true
           config:
-            client_id: prometheus
-            client_secret: {{ prometheus.oidc_client_secret }}
-            discovery: https://iam.{{ rs_domain_name }}/auth/realms/RS/.well-known/openid-configuration
+            client_id: thanos
+            client_secret: {{ thanos.oidc_client_secret }}
+            discovery: https://iam.{{ rs_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
             scope: openid
             bearer_only: false
-            realm: RS
+            realm: {{ keycloak.realm.name }}
             introspection_endpoint_auth_method: client_secret_post
             redirect_uri: https://monitoring.{{ rs_domain_name }}/thanos/redirect_uri
 ---
