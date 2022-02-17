@@ -122,6 +122,7 @@ finops_object_storage_exporter:
 scdf:
   database:
     password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 stash:
   license: |

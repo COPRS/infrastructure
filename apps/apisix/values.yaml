@@ -67,12 +67,12 @@ gateway:
   http:
     enabled: true
     servicePort: 80
-    containerPort: 9080
+    containerPort: 80
     nodePort: 32080
   tls:
     enabled: true
     servicePort: 443
-    containerPort: 9443
+    containerPort: 443
     nodePort: 32443
     existingCASecret: ""
     certCAFilename: ""
@@ -323,7 +323,7 @@ ingress-controller:
     # error
     # panic
     # fatal
-    logLevel: "info"
+    logLevel: "debug"
     # the output file path of error log, default is stderr, when
     # the file path is "stderr" or "stdout", logs are marshalled
     # plainly, which is more readable for human; otherwise logs
