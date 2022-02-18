@@ -11,6 +11,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+## [0.3.0-rc3] - 2022-02-18
+### Fixed
+- [#274 - [BUG] [Infra] Processing traces are not forwarded to elasticsearch](https://github.com/COPRS/SCRUM-Tickets/issues/274)
+- [#281 - [BUG] Several Grafana actions are forbidden](https://github.com/COPRS/SCRUM-Tickets/issues/281)
+
 ## [0.3.0-rc2] - 2022-02-04
 ### Fixed
 - [#251 - [BUG] [Infra] Elasticsearch app sample configuration has no coordinating node](https://github.com/COPRS/SCRUM-Tickets/issues/251)
