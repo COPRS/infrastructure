@@ -12,7 +12,6 @@ spec:
       match:
         hosts: [ linkerd.{{ rs_domain_name }} ]
         paths: [ /* ]
-        methods: [ GET ]
       websocket: true
       plugins:
         - name: cors

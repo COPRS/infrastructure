@@ -11,7 +11,6 @@ spec:
       match:
         hosts: [ apisix.{{ rs_domain_name }} ]
         paths: [ /* ]
-        methods: [ GET, POST, PUT, PATCH ]
       plugins:
         - name: openid-connect
           enable: true

@@ -13,7 +13,6 @@ spec:
         paths:
           - /thanos
           - /thanos/*
-        methods: [ GET ]
       plugins:
         - name: proxy-rewrite
           enable: true

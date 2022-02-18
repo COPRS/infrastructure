@@ -13,7 +13,6 @@ spec:
         paths: 
           - /graylog
           - /graylog/*
-        methods: [ GET, POST, PUT, OPTIONS, DELETE ]
       plugins:
         - name: proxy-rewrite
           enable: true
