@@ -16,7 +16,6 @@ spec:
         hosts: [ monitoring.DOMAIN_NAME ]
         paths:
           - /*
-        methods: [ GET, POST ]
       websocket: true
     - name: prometheus
       backends:
