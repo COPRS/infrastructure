@@ -41,6 +41,8 @@ extraEnv: |
     value: /secrets/creds/password
   - name: KEYCLOAK_STATISTICS
     value: all
+  - name: PROXY_ADDRESS_FORWARDING
+    value: "true"
   - name: KEYCLOAK_LOGLEVEL
     value: DEBUG
 

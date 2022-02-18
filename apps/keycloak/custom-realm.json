@@ -193,7 +193,7 @@
         "clientRoles": {
           "grafana": [
             "restricted-access",
-            "editor"
+            "admin"
           ],
           "prometheus": [
             "restricted-access"
@@ -842,9 +842,6 @@
       }
     ],
     "browserFlow": "Browser - restricted",
-    "attributes": {
-      "frontendUrl": "https://iam.{{ rs_domain_name }}/auth"
-    },
     "components": {
       "org.keycloak.storage.UserStorageProvider": [
         {
