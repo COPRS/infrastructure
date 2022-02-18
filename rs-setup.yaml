@@ -97,7 +97,14 @@
     - { role: "collections/kubespray/roles/kubernetes-apps/helm", become: yes }
     - { role: "kustomize", become: yes }
     - { role: "kubectl", become: yes }
-    # - { role: "rs-defaults" }
+
+- name: Create resources
+  hosts: gateway[0]
+  gather_facts: false
+  vars_files: 
+    - "roles/safescale-cluster/defaults/main.yaml"
+  roles:
+    - { role: "rs-defaults" }
   tasks:
     - name: Create necessary namespaces
       kubernetes.core.k8s:
@@ -109,14 +116,6 @@
         - monitoring
         - security
 
-- name: Create resources
-  hosts: gateway[0]
-  gather_facts: false
-  vars_files: 
-    - "roles/safescale-cluster/defaults/main.yaml"
-  roles:
-    # - { role: "rs-defaults" }
-  tasks:
     - name: Get informations from tenant file
       import_tasks: roles/safescale-cluster/tasks/tenant.yaml
       delegate_to: localhost
