@@ -12,3 +12,4 @@ helmCharts:
 
 resources:
   - servicemonitor.yaml
+  - grafanadashboard.yaml

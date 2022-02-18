@@ -7,7 +7,7 @@ metadata:
   annotations:
     linkerd.io/inject: disabled
 spec:
-  schedule: "* */6 * * *"  
+  schedule: "0 */6 * * *"  
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:
