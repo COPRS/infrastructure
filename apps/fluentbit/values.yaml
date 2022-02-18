@@ -292,6 +292,7 @@ config:
   inputs: |
     [INPUT]
       Name             tail
+      parser           cri
       Tag              processing.log.*
       Path             /var/log/containers/*.log
       Exclude_Path     /var/log/containers/*fluent*.log
@@ -301,6 +302,7 @@ config:
       buffer_max_size    10MB
     [INPUT]
       Name             tail
+      parser           cri
       Tag              processing.trace.*
       Path             /var/log/containers/*.log
       Exclude_Path     /var/log/containers/*fluent*.log
@@ -391,6 +393,10 @@ config:
   ## https://docs.fluentbit.io/manual/pipeline/filters
   filters: |
     [FILTER]
+      Name    modify
+      Match   processing.trace.*
+      Rename  message log
+    [FILTER]
       Name    grep
       Match   processing.log.*
       Exclude log /.*ignoring file with negative size file: .*: -1/
@@ -458,7 +464,7 @@ config:
       Kube_URL            https://kubernetes.default.svc:443
       Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
-      Merge_Log           On
+      Merge_Log           Off
       K8S-Logging.Parser  On
       K8S-Logging.Exclude On
       Keep_Log            Off
@@ -525,8 +531,15 @@ config:
       Match       security.scans.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.scans
+  customParsers: |
+    [PARSER]
+      Name        cri
+      Format      regex
+      Regex       ^(?<time>[^ ]+) (?<stream>stdout|stderr) (?<logtag>[^ ]*) (?<log>.*)$
+      Time_Key    time
+      Time_Format %Y-%m-%dT%H:%M:%S.%L%z
+      Time_Keep   On
  
-
 daemonSetVolumes:
   - name: varlog
     hostPath:
