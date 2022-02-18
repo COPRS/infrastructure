@@ -11,13 +11,17 @@ spec:
       match:
         hosts: [ iam.{{ rs_domain_name }} ]
         paths:
+          - /auth/admin/{{ keycloak.realm.name }}
+          - /auth/admin/{{ keycloak.realm.name }}/*
+          - /auth/admin/{{ keycloak.realm.name }}/console
           - /auth/admin/{{ keycloak.realm.name }}/console/*
+          - /auth/admin/realms
+          - /auth/admin/serverinfo
           - /auth/realms/{{ keycloak.realm.name }}/account/*
           - /auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/*
           - /auth/realms/RS/login-actions/*
           - /auth/resources/*
           - /auth/js/*
-        methods: [ GET, POST, PUT, OPTIONS, DELETE ]
       plugins:
         - name: cors
           enable: true
@@ -36,7 +40,6 @@ spec:
       match:
         hosts: [ iam.{{ rs_domain_name }} ]
         paths: [ /* ]
-        methods: [ GET, POST, PUT, OPTIONS, DELETE ]
 ---
 apiVersion: apisix.apache.org/v1
 kind: ApisixTls
