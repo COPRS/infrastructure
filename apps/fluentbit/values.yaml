@@ -298,7 +298,7 @@ config:
       DB               /var/log/fluentbit_processing.db
       DB.Sync          Normal
       Rotate_Wait      10
-      Mem_Buf_Limit    10MB
+      buffer_max_size    10MB
     [INPUT]
       Name             tail
       Tag              processing.trace.*
@@ -307,7 +307,6 @@ config:
       DB               /var/log/fluentbit_trace.db
       DB.Sync          full
       Rotate_Wait      10
-      #Storage.type    filesystem
     [INPUT]
       Name             tail
       Tag              system.*
@@ -315,7 +314,7 @@ config:
       DB               /var/log/fluentbit_system.db
       DB.Sync          Normal
       Rotate_Wait      10
-      Mem_Buf_Limit    10MB
+      buffer_max_size    10MB
       Buffer_Max_Size  1MB
     [INPUT]
       Name             tail
@@ -324,7 +323,7 @@ config:
       DB               /var/log/fluentbit_postgresql-infra.db
       DB.Sync          Normal
       Rotate_Wait      10
-      Mem_Buf_Limit    10MB
+      buffer_max_size    10MB
     [INPUT]
       Name             tail
       Tag              security.container.*
@@ -332,7 +331,7 @@ config:
       DB               /var/log/fluentbit_mongodb.db
       DB.Sync          Normal
       Rotate_Wait      10
-      Mem_Buf_Limit    10MB
+      buffer_max_size    10MB
     [INPUT]
       Name             tail
       Tag              security.container.*
@@ -340,7 +339,7 @@ config:
       DB               /var/log/fluentbit_kube-system.db
       DB.Sync          Normal
       Rotate_Wait      10
-      Mem_Buf_Limit    10MB
+      buffer_max_size    10MB
     [INPUT]
       Name             tail
       Tag              security.container.*
@@ -348,7 +347,7 @@ config:
       DB               /var/log/keycloak.db
       DB.Sync          Normal
       Rotate_Wait      10
-      Mem_Buf_Limit    10MB
+      buffer_max_size    10MB
     [INPUT]
       Name             tail
       Tag              security.container.*
@@ -356,7 +355,7 @@ config:
       DB               /var/log/fluentbit_apisix.db
       DB.Sync          Normal
       Rotate_Wait      10
-      Mem_Buf_Limit    10MB
+      buffer_max_size    10MB
     [INPUT]
       Name             tail
       Tag              security.container.*
@@ -364,7 +363,7 @@ config:
       DB               /var/log/fluentbit_openldap.db
       DB.Sync          Normal
       Rotate_Wait      10
-      Mem_Buf_Limit    10MB
+      buffer_max_size    10MB
     [INPUT]
       Name             tail
       Tag              security.wazuh.*
@@ -372,7 +371,7 @@ config:
       DB               /var/log/fluentbit-security_wazuh.db
       DB.Sync          Normal
       Rotate_Wait      10
-      Mem_Buf_Limit    10MB
+      buffer_max_size    10MB
     [INPUT]
       Name             tail
       Tag              security.auditd.*
@@ -380,7 +379,7 @@ config:
       DB               /var/log/fluentbit-security_auditd.db
       DB.Sync          Normal
       Rotate_Wait      10
-      Mem_Buf_Limit    10MB
+      buffer_max_size    10MB
     [INPUT]
       Name             tail
       Tag              security.falco.*
@@ -388,15 +387,7 @@ config:
       DB               /var/log/fluentbit-security_falco.db
       DB.Sync          Normal
       Rotate_Wait      10
-      Mem_Buf_Limit    10MB
-    [INPUT]
-      Name             tail
-      Tag              security.scans.*
-      Path             /var/log/nmap/*.log
-      DB               /var/log/fluentbit-security_nmap.db
-      DB.Sync          Normal
-      Rotate_Wait      10
-      Mem_Buf_Limit    10MB
+      buffer_max_size    10MB
   ## https://docs.fluentbit.io/manual/pipeline/filters
   filters: |
     [FILTER]
