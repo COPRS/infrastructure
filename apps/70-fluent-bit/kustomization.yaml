@@ -14,7 +14,6 @@ resources:
   - KafkaTopic/fluentbit.docker-security.yaml
   - KafkaTopic/fluentbit.auditd.yaml
   - KafkaTopic/fluentbit.falco.yaml
-  - KafkaTopic/fluentbit.grafana.yaml
   - KafkaTopic/fluentbit.ingress.yaml
   - KafkaTopic/fluentbit.openldap.yaml
   - KafkaTopic/fluentbit.processing.yaml

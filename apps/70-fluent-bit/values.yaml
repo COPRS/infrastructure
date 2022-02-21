@@ -181,11 +181,7 @@ config:
     [FILTER]
       Name    grep
       Match   system.*
-      Exclude log kubelet.*Pod status updated.*
-    [FILTER]
-      Name    grep
-      Match   system.*
-      Exclude log kubelet.*RemoveContainer.*
+      Exclude log kubelet.*Pod status updated|There were many similar errors|RemoveContainer.* 
     [FILTER]
       Name    grep
       Match   system.*
