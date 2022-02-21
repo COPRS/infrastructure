@@ -30,8 +30,8 @@ spec:
         kafka.root.logger.level: "INFO"
     resources:
       limits:
-        cpu: 1000m
-        memory: 5Gi
+        cpu: 1
+        memory: 4Gi
       requests:
         cpu: 250m
         memory: 2Gi
@@ -163,12 +163,12 @@ spec:
                 - key: "node-role.kubernetes.io/infra"
                   operator: Exists
     topicOperator:
-      watchedNamespace: monitoring
+      watchedNamespace: logging
+      reconciliationIntervalSeconds: 300
       resources:
         limits:
           cpu: 500m
-          memory: 256Mi
+          memory: 512Mi
         requests:
-          cpu: 100m
-          memory: 128Mi
-    userOperator: {}
+          cpu: 200m
+          memory: 256Mi

@@ -10,19 +10,18 @@
 
 ## _Bastion_ requirements
 
-- Safescale : **>= v21.11.0** (https://github.com/CS-SI/SafeScale)
-- openstacksdk : **>= v0.12.0** (https://pypi.org/project/openstacksdk/)
-- qemu-system : **>= v4.2.1** (https://packages.ubuntu.com/focal/qemu-kvm / https://packages.ubuntu.com/focal/qemu-system-x86)
-- Packer : **>= v1.7.8** (https://github.com/hashicorp/packer)
+- Safescale: **>= v21.11.0** (https://github.com/CS-SI/SafeScale)
+- openstacksdk: **>= v0.12.0** (https://pypi.org/project/openstacksdk/)
+- qemu-system: **>= v4.2.1** (https://packages.ubuntu.com/focal/qemu-kvm / https://packages.ubuntu.com/focal/qemu-system-x86)
+- Packer: **>= v1.7.8** (https://github.com/hashicorp/packer)
 - python3
 - python3-pip
 - git
 
 ## Infrastructure requirements
 
-- A **domain name** publicly available.  
-  Replace all occurences of ```DOMAIN_NAME``` in the repo by your own domain name.
-- A **load balancer** listening on a public IP address.  
+- A **domain name** publicly available with a wildcard **A** record.  
+- A **load balancer** listening on the public IP address pointed to by the domain name.  
   Configure the load balancer to forward incoming flow toward the cluster masters.
 
   | Load balancer port | masters port |
@@ -30,57 +29,83 @@
   | 80 | 32080 |
   | 443 | 32443 |
 
+## Dependencies
+
+### Kubespray
+This project exploits Kubespray to deploy Kubernetes.  
+The fully detailed documentation and configuration options are available on its page: [https://kubespray.io/](https://kubespray.io/)
+
+### HashiCorp Vault (optional)
+This project can integrate credentials from a custom `HashiCorp Vault` instance, see the specific documentation [here](doc/how-to/Credentials.md).
+
 
 ## Quickstart
 
-```Bash
-## ON BASTION
-
-# get the infrastructure repository
+1. ### Get the infrastructure repository
+```shellsession
 git clone https://github.com/COPRS/infrastructure.git
+```
 
+2. ### Install requirements
+```shellsession
 cd infrastructure
 
-# install requirements
 git submodule update --init
+
 python3 -m pip install --user -r collections/kubespray/requirements.txt
 ansible-galaxy collection install \
     kubernetes.core \
     openstack.cloud
+```
 
-# Copy ``inventory/sample`` as ``inventory/mycluster``
+3. ### Copy the sample inventory
+```shellsession
 cp -rfp inventory/sample inventory/mycluster
+```
 
-# Review and change paramters under ``inventory/mycluster/group_vars`` or ``inventory/mycluster/host_vars``
-cat inventory/mycluster/host_vars/localhost/cluster.yaml
-cat inventory/mycluster/host_vars/localhost/image.yaml
-cat inventory/mycluster/group_vars/all/kubespray.yaml
-cat inventory/mycluster/group_vars/bastion/apps.yaml
+4. ### Review and change the default configuration to match your needs
 
-# If needed create an image for the machines with Packer
+ - Virtual machines amount and sizing in `inventory/mycluster/host_vars/localhost/cluster_safescale.yaml`
+ - Credentials, domain name, certificates (see below), S3 endpoints and buckets in `infrastructure/inventory/sample/group_vars/gateway/app_vars.yaml`
+ - Packages paths containing the apps to be deployed in `inventory/sample/group_vars/gateway/app_installer.yaml`
+ - 
+
+5. ### If needed create an image for the machines with `packer`
+```shellsession
 ansible-playbook image.yaml \
     -i inventory/mycluster/hosts.ini
+```
 
-# Deploy machines with safescale
+6. ### Deploy machines with safescale
+```shellsession
 ansible-playbook cluster-setup.yaml \
     -i inventory/mycluster/hosts.ini
+```
 
-# Install security services
+7. ### Install security services
+```shellsession
 ansible-playbook security.yaml \
     -i inventory/mycluster/hosts.ini \
     --become
+```
 
-# Deploy kubernetes with Kubespray - run the playbook as root
+8. ### Deploy kubernetes with `kubespray`
+
+```shellsession
 # The option `--become` is required, for example writing SSL keys in /etc/,
 # installing packages and interacting with various systemd daemons.
 # Without --become the playbook will fail to run!
+
 ansible-playbook collections/kubespray/cluster.yml \
     -i inventory/mycluster/hosts.ini \
     --become
+```
 
-# Enable pod security policies on the cluster
-# /!\ you first need to create the psp and crb resources
+9. ### Enable pod security policies on the cluster
+```shellsession
+# /!\ create first the PSP and CRB resources
 # before enabling the admission plugin
+
 ansible-playbook collections/kubespray/upgrade-cluster.yml \
     -i inventory/mycluster/hosts.ini \
     --tags cluster-roles \
@@ -92,36 +117,29 @@ ansible-playbook collections/kubespray/upgrade-cluster.yml \
     --tags master \
     -e podsecuritypolicy_enabled=true \
     --become
+```
 
-# Prepare the cluster for Reference System
+10. ### Prepare the cluster for **Reference System**
+```shellsession
 ansible-playbook rs-setup.yaml \
-    -i inventory/mycluster/hosts.ini
-
-# deploy apps
-ansible-playbook apps.yaml \
     -i inventory/mycluster/hosts.ini
 ```
 
-## TLS configuration
+11. ### Set up the SSL certificates and the Stash license
+See the documentation [here](doc/how-to/Certificates.md).
 
-Reference System exploits [APISIX Ingress Controller](https://apisix.apache.org/) and [Cert Manager](https://cert-manager.io/) for TLS configuration.
-
-You need to create an [issuer](https://cert-manager.io/docs/concepts/issuer/) and a [certificate](https://cert-manager.io/docs/concepts/certificate/) for your domain name with Cert Manager.
-
-APISIX does not work with Cert Manager for ACME HTTP01 challenges ([#781](https://github.com/apache/apisix-ingress-controller/issues/781)).  
-You must use the DNS01 challenge to generate a Let's encrypt certificate. The configuration is detailled on [Cert Manager documentation](https://cert-manager.io/docs/configuration/acme/dns01).
-
-## Dependencies
-
-This project exploits Kubespray to deploy Kubernetes.  
-The fully detailed documentation and configuration options are available on its page: [https://kubespray.io/](https://kubespray.io/#/)
+12. ### Deploy the apps 
+```shellsession
+ansible-playbook apps.yaml \
+    -i inventory/mycluster/hosts.ini
+```
 
 ## Tree view
 
 The repository is made of the following main directories and files.
 - **apps**: A package example, gathering default applications deployed with Reference System platform.
 - **collections/kubespray**: folder where kubespray is integrated into the project as a git submodule.
-    - `cluster.yml: The Ansible playbook to run to deploy Kubernetes or to add a master node.
+    - `cluster.yml`: The Ansible playbook to run to deploy Kubernetes or to add a master node.
     - `scale.yml`: An Ansible playbook to add a worker node.
     - `remove-node.yml`: An Ansible playbook to remove a node.
 - **doc**: Here we find all the documentation describing the infrastructure deployment and maintenance operations.
@@ -132,7 +150,7 @@ The repository is made of the following main directories and files.
             - `app_installer.yaml`: The configuration of the app installer roles. It includes the list and paths of packages to install.
             - `app_vars.yaml`: Reference the different variables to set and configure to deploy the applications.
           - `k8s_cluster/kubespray.yaml`: The Kubespray configuration.
-      - **host_vars/localhost**: The configuration parameters for SafeScale cluster and the OS image.
+      - **host_vars/localhost**: The configuration parameters for the SafeScale cluster and the OS image.
       - `hosts.ini`: The list of machines described in their respective groups.
 - **roles**: The list of roles used to deploy the cluster.
 - `ansible.cfg`: Ansible configuration file. It includes the ssh configuration to allow Ansible to access the machines through the gateway.
@@ -156,191 +174,199 @@ The repository is made of the following main directories and files.
 
 ## Apps
 
-Configurations proposed by default :
+Configurations proposed by default:
+- **Cert manager**
+  - Helm chart:
+    - Repository: charts.jetstack.io
+    - Version: v1.6.1
+    - Source: https://github.com/cert-manager/cert-manager/blob/master/deploy/charts/cert-manager
+  - Images:
+    - quay.io/jetstack/cert-manager-cainjector:v1.6.1
+- **Linkerd CNI**
+  - Helm chart:
+    - Repository: helm.linkerd.io/stable
+    - Version: 2.11.1
+    - Source: https://github.com/linkerd/linkerd2/tree/main/charts/linkerd2-cni
+  - Images:
+    - cr.l5d.io/linkerd/cni-plugin:stable-2.11.1
+- **Linkerd**
+  - Helm chart:
+    - Repository: helm.linkerd.io/stable
+    - Version: 2.11.1
+    - Source: https://github.com/linkerd/linkerd2/tree/main/charts/linkerd-control-plane
+  - Images:
+    - cr.l5d.io/linkerd/policy-controller:stable-2.11.1
+    - cr.l5d.io/linkerd/proxy:stable-2.11.1
+    - cr.l5d.io/linkerd/controller:stable-2.11.1
+    - cr.l5d.io/linkerd/debug:stable-2.11.1
+- **Linkerd Viz**
+  - Helm chart:
+    - Repository: helm.linkerd.io/stable
+    - Version: 2.11.1
+    - Source: https://github.com/linkerd/linkerd2/tree/main/viz/charts/linkerd-viz
+  - Images:
+    - cr.l5d.io/linkerd:stable-2.11.1
 - **Rook Ceph** 
-  - Chart Helm 
-    - URL : charts.rook.io/release
-    - Version : 1.7.7
-    - Documentation : https://github.com/rook/rook/blob/master/Documentation/helm-operator.md
-  - Images
-    - Ceph
-      - Registry : Docker Hub
-      - Repository : ceph
-      - Version : 1.7.7
-    - CSI
-      - Ceph
-        - Registry : quay.io
-        - Version : 3.4.0
-      - Registrar
-        - Registry : k8s.gcr.io
-        - Version : 2.3.0
-      - Resizer
-        - Registry : k8s.gcr.io
-        - Version : 1.3.0
-      - Provisioner
-        - Registry : k8s.gcr.io
-        - Version : 3.0.0
-      - Snapshotter
-        - Registry : k8s.gcr.io
-        - Version : 4.2.0
-      - Attacher
-        - Registry : k8s.gcr.io
-        - Version : 3.3.0
-      - Volume Replication
-        - Registry : quay.io
-        - Version : 0.1.0
+  - Helm chart: 
+    - Repository: charts.rook.io/release
+    - Version: v1.7.7
+    - Source: https://github.com/rook/rook/tree/master/deploy/charts/rook-ceph
+  - Images:
+    - quay.io/cephcsi/cephcsi:v3.4.0
+    - k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
+    - k8s.gcr.io/sig-storage/csi-resizer:v1.3.0
+    - k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
+    - k8s.gcr.io/sig-storage/csi-snapshotter:v4.2.0
+    - k8s.gcr.io/sig-storage/csi-attacher:v3.3.0
+    - quay.io/csiaddons/volumereplication-operator:v0.1.0
 - **Rook Ceph Cluster**
-  - Chart Helm
-    - URL : charts.rook.io/release
-    - Version : 1.7.7
-    - Documentation : https://github.com/rook/rook/blob/master/Documentation/helm-ceph-cluster.md
-  - Image
-    - Registry : quay.io
-    - Version : 16.2.6
+  - Helm chart:
+    - Repository: charts.rook.io/release
+    - Version: v1.7.7
+    - Source: https://github.com/rook/rook/tree/master/deploy/charts/rook-ceph-cluster
+  - Images:
+    - quay.io/ceph/ceph:v16.2.6
+- **ECK Operator**
+  - Helm chart:
+    - Repository: helm.elastic.co
+    - Version: 1.9.0
+    - Source: https://github.com/elastic/cloud-on-k8s/tree/master/deploy/eck-operator
+  - Images:
+    - docker.elastic.co/eck/eck-operator:1.9.0
+    - docker.elastic.co/elasticsearch/elasticsearch:7.15.2
+    - docker.elastic.co/kibana/kibana:7.15.2
+    - quay.io/prometheuscommunity/elasticsearch-exporter:v1.3.0
+- **Grafana Operator**
+  - Helm chart: *None*
+  - Images:
+    - quay.io/grafana-operator/grafana-operator:v4.1.1
+    - docker.io/grafana/grafana:8.3.3-ubuntu
 - **Kafka Operator**
-  - Chart Helm
-    - URL : strimzi.io/charts/
-    - Version : 0.26.0
-    - Documentation : https://github.com/strimzi/strimzi-kafka-operator/tree/main/helm-charts/helm3/strimzi-kafka-operator
-  - Images
-    - Registry : quai.io
-    - Versions
-      - Operator : 0.26.0
-      - Kafka : 2.8.1
-      - Zookeeper : 3.5.9
-- **Elasticsearch Operator**
-  - Chart Helm
-    - URL : helm.elastic.co
-    - Version : 1.9.0
-    - Source : https://github.com/elastic/cloud-on-k8s/tree/master/deploy/eck-operator
-  - Images
-    - Registry : docker.elastic.co
-    - Versions
-      - Operator :1.9.0
-      - Elasticsearch : 7.15.2
-      - Kibana : 7.15.2
-- **PostreSQL**
-  - Chart Helm
-    - URL : charts.bitnami.com/bitnami
-    - Version : 10.13.4
-    - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/postgresql
-  - Images
-    - Registry : Docker Hub
-    - Repository : bitnami
-    - Versions
-      - PostgreSQL : 14.1.0
-      - Exporter : 0.10.0
+  - Helm chart:
+    - Repository: strimzi.io/charts/
+    - Version: 0.27.1
+    - Source: https://github.com/strimzi/strimzi-kafka-operator/tree/main/helm-charts/helm3/strimzi-kafka-operator
+  - Images:
+    - quay.io/strimzi/operator:0.27.1
+    - quay.io/strimzi/kafka:0.27.1-kafka-2.8.1
+- **Prometheus Operator**
+  - Helm chart:
+    - Repository: prometheus-community.github.io/helm-charts
+    - Version: 21.0.0
+    - Source: https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
+  - Images:
+    - quay.io/prometheus-operator/prometheus-operator:v0.52.1-amd64
+    - quay.io/prometheus-operator/prometheus-config-reloader:v0.52.1-amd64
+    - quay.io/prometheus/node-exporter:v1.3.0
+    - quay.io/prometheus/alertmanager:v0.23.0
+    - quay.io/prometheus/prometheus:v2.31.1
+- **Stash Operator**
+  - Helm chart:
+    - Repository: charts.appscode.com/stable
+    - Version: v0.17.0
+    - Source: https://github.com/stashed/installer/tree/master/charts/stash-community
+  - Images:
+    - docker.io/appscode/stash:v0.17.0
+- **Fluent-bit**
+  - Helm chart:
+    - Repository: fluent.github.io/helm-charts
+    - Version: 0.19.6
+    - Source: https://github.com/fluent/helm-charts/tree/main/charts/fluent-bit
+  - Images:
+    - docker.io/fluent/fluent-bit:1.8.10
 - **MongoDB**
-  - Chart Helm :
-    - URL : charts.bitnami.com/bitnami
-    - Version : 10.29.0
-    - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/mongodb
-  - Images
-    - Registry : Docker Hub
-    - Repository : bitnami
-    - Versions
-      - MongoDB : 5.0.3
-      - Exporter : 0.11.2
-- **Graylog**
-  - Chart Helm
-    - URL : charts.kong-z.com
-    - Version : 1.8.10
-    - Documentation : https://github.com/KongZ/charts/tree/main/charts/graylog
-  - Image
-    - Registry : Docker Hub
-    - Repository : graylog
-    - Version : 4.2.3
-- **Spring Cloud Data Flow**
-  - Chart Helm
-    - URL : charts.bitnami.com/bitnami
-    - Version : 4.1.5
-    - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/spring-cloud-dataflow
-  - Images
-    - Registry : Docker Hub
-    - Repository : bitnami
-    - Versions
-      - Server : 2.9.1
-      - Skipper : 2.8.1
-      - WaitForBackend : 1.22.2
-      - Exporter : 1.3.0
-- **Loki**
-  - Chart Helm
-    - URL : grafana.github.io/helm-charts
-    - Version : 2.8.1
-    - Documentation : https://github.com/grafana/helm-charts/tree/main/charts/loki
-  - Image
-    - Registry : Docker Hub
-    - Repository : grafana
-    - Version : 2.4.1
-- **Fluentbit**
-  - Chart Helm
-    - URL : fluent.github.io/helm-charts
-    - Version : 0.19.6
-    - Documentation : https://github.com/fluent/helm-charts/tree/main/charts/fluent-bit
-  - Image
-    - Registry : Docker Hub
-    - Repository : fluent
-    - Version : 1.8.10
-- **Fluentd**
-  - Chart Helm
-    - URL : charts.bitnami.com/bitnami
-    - Version : 4.4.1
-    - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/fluentd
-  - Image
-    - Registry : Docker Hub
-    - Repository : bitnami
-    - Version : 1.14.2
-- **Grafana**
-  - Chart Helm
-    - URL : charts.bitnami.com/bitnami
-    - Version : 7.2.2
-    - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/grafana-operator
-  - Image
-    - Registry : Docker Hub
-    - Repository : bitnami
-    - Version : 8.2.5
-- **Prometheus Stack**
-  - Chart Helm :
-    - URL : prometheus-community.github.io/helm-charts
-    - Version : 21.0.0
-    - Documentation : https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
-  - Images
-    - Registry : quay.io
-    - Versions : 
-      - AlertManager : 0.23.0
-      - Node Exporter : 1.3.0
-      - Operator : 0.52.1
-      - Prometheus : 2.31.1
-- **Thanos**
-  - Chart Helm
-    - URL : charts.bitnami.com/bitnami
-    - Version : 8.1.2
-    - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/thanos
-  - Image
-    - Registry : Docker Hub
-    - Repository : bitnami
-    - Version : 0.23.1
-- **Keycloack**
-  - Chart Helm
-    - URL : charts.bitnami.com/bitnami
-    - Version : 5.2.0
-    - Documentation : https://github.com/bitnami/charts/tree/master/bitnami/keycloak
-  - Image
-    - Registry : Docker Hub
-    - Repository : bitnami
-    - Version : 15.0.2
+  - Helm chart:
+    - Repository: charts.bitnami.com/bitnami
+    - Version: 11.0.3
+    - Source: https://github.com/bitnami/charts/tree/master/bitnami/mongodb
+  - Images:
+    - docker.io/bitnami/mongodb:5.0.6-debian-10-r14
+    - docker.io/bitnami/mongodb-exporter:0.30.0-debian-10-r58
 - **OpenLDAP**
-  - Chart Helm : use _kustomize_
-  - Image
-    - Registry : Docker Hub
-    - Repository : osixia
-    - Version : 1.5.0
+  - Helm chart: *None*
+  - Images:
+    - docker.io/osixia/openldap:1.5.0
+- **PostreSQL**
+  - Helm chart:
+    - Repository: charts.bitnami.com/bitnami
+    - Version: 11.0.2
+    - Source: https://github.com/bitnami/charts/tree/master/bitnami/postgresql
+  - Images:
+    - docker.io/bitnami/postgresql:14.1.0-debian-10-r80
+    - quay.io/prometheuscommunity/postgres-exporter:v0.10.0
+- **Thanos**
+  - Helm chart:
+    - Repository: charts.bitnami.com/bitnami
+    - Version: 8.1.2
+    - Source: https://github.com/bitnami/charts/tree/master/bitnami/thanos
+  - Images:
+    - docker.io/bitnami/thanos:0.23.1-scratch-r3
+- **Fluentd**
+  - Helm chart:
+    - Repository: charts.bitnami.com/bitnami
+    - Version: 4.4.1
+    - Source: https://github.com/bitnami/charts/tree/master/bitnami/fluentd
+  - Images:
+    - docker.io/bitnami/fluentd:1.14.2-debian-10-r23
+- **Loki**
+  - Helm chart:
+    - Repository: grafana.github.io/helm-charts
+    - Version: 2.8.1
+    - Source: https://github.com/grafana/helm-charts/tree/main/charts/loki
+  - Images:
+    - docker.io/grafana/loki:2.4.1
+- **Apisix**
+  - Helm chart:
+    - Repository: charts.apiseven.com
+    - Version: 0.7.3
+    - Source: https://github.com/apache/apisix-helm-chart/tree/master/charts/apisix
+  - Images:
+    - docker.io/apache/apisix:2.10.0-alpine
+    - docker.io/apache/apisix-dashboard:2.10.1-alpine
+    - docker.io/apache/apisix-ingress-controller:1.3.0
+    - docker.io/bitnami/etcd:3.4.16-debian-10-r14
 - **Falco**
-  - Chart Helm
-    - URL : https://github.com/falcosecurity/charts
-    - Version : 1.16.2
-    - Documentation : https://github.com/falcosecurity/charts
-  - Image
-    - Registry : Docker Hub
-    - Repository : falcosecurity/falco
-    - Version : 0.30.0
+  - Helm chart:
+    - Repository: falcosecurity.github.io/charts
+    - Version: 1.16.2
+    - Source: https://github.com/falcosecurity/charts/tree/master/falco
+  - Images:
+    - docker.io/falcosecurity/falco:0.30.0
+    - docker.io/falcosecurity/falco-exporter:0.6.0
+- **FinOps object storage exporter**
+  - Helm chart:
+    - Repository: artifactory.coprs.esa-copernicus.eu/artifactory/rs-helm
+    - Version: 1.0.0
+    - Source: *Private*
+  - Images:
+    - artifactory.coprs.esa-copernicus.eu/cs-docker/finops-object-storage-exporter:release-0.3.0
+- **FinOps resources exporter**
+  - Helm chart:
+    - Repository: artifactory.coprs.esa-copernicus.eu/artifactory/rs-helm
+    - Version: 1.0.0
+    - Source: *Private*
+  - Images:
+    - artifactory.coprs.esa-copernicus.eu/cs-docker/finops-resources-exporter:release-0.3.0
+- **Graylog**
+  - Helm chart:
+    - Repository: charts.kong-z.com
+    - Version: 1.9.2
+    - Source: https://github.com/KongZ/charts/tree/main/charts/graylog
+  - Images:
+    - docker.io/graylog/graylog:4.2.3-1
+- **Keycloack**
+  - Helm chart:
+    - Repository: codecentric.github.io/helm-charts
+    - Version: 16.0.5
+    - Source: https://github.com/codecentric/helm-charts/tree/master/charts/keycloak
+  - Images:
+    - docker.io/jboss/keycloak:15.0.2
+- **Spring Cloud Data Flow**
+  - Helm chart:
+    - Repository: charts.bitnami.com/bitnami
+    - Version: 4.1.5
+    - Source: https://github.com/bitnami/charts/tree/master/bitnami/spring-cloud-dataflow
+  - Images:
+    - docker.io/bitnami/spring-cloud-dataflow:2.9.1-debian-10-r7
+    - docker.io/bitnami/spring-cloud-skipper:2.8.1-debian-10-r6
+    - docker.io/bitnami/prometheus-rsocket-proxy:1.3.0-debian-10-r334

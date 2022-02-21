@@ -1,1 +1,15 @@
+# Keep the temporary folder containing the applications resources to deploy
+# /!\ DO NOT FORGET TO DELETE THIS TEMPORARY FOLDER MANUALLY AFTER DEBUGGGING
+# AS IT MAY CONTAINS SENSITIVE DATA.
 debug: false
+
+vault:
+  # whether you want to download the generated app_vars file directly from Vault
+  download_app_vars: false
+  # whether you want to send the generated app_vars file to Vault.
+  upload_backup: false
+  # vault endpoint server url
+  url: ""
+  # vault token
+  token: ""
+

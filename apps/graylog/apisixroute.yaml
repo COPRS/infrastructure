@@ -13,23 +13,22 @@ spec:
         paths: 
           - /graylog
           - /graylog/*
-        methods: [ GET, POST, PUT, OPTIONS, DELETE ]
       plugins:
         - name: proxy-rewrite
           enable: true
           config:
             regex_uri: [ "^/graylog/(.*)$", "/$1" ]
             headers:
-              X-Username: admin
+              X-Username: operator
         - name: openid-connect
           enable: true
           config:
             client_id: graylog
             client_secret: {{ graylog.oidc_client_secret }}
-            discovery: https://iam.{{ rs_domain_name }}/auth/realms/RS/.well-known/openid-configuration
+            discovery: https://iam.{{ rs_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
             scope: openid
             bearer_only: false
-            realm: RS
+            realm: {{ keycloak.realm.name }}
             introspection_endpoint_auth_method: client_secret_post
             redirect_uri: https://security.{{ rs_domain_name }}/graylog/redirect_uri
             set_access_token_header: false

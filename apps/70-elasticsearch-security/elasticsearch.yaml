@@ -23,6 +23,7 @@ spec:
       podTemplate:
         spec:
           automountServiceAccountToken: true
+          priorityClassName: {{ app_name }}-priority
           affinity: &affinity_config
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
@@ -71,8 +72,8 @@ spec:
           username: anonymous
           roles: superuser
           authz_exception: false
-        s3.client.default.endpoint: "{{ elasticsearch_security.repository.s3.endpoint }}"
-        s3.client.default.region: "{{ elasticsearch_security.repository.s3.region }}"
+        s3.client.default.endpoint: "{{ elasticsearch_security.repository.s3.endpoint }}"
+        s3.client.default.region: "{{ elasticsearch_security.repository.s3.region }}"
       volumeClaimTemplates:
         - metadata:
             name: elasticsearch-data # Do not change this name unless you set up a volume mount for the data path.
@@ -81,7 +82,7 @@ spec:
               - ReadWriteOnce
             resources:
               requests:
-                storage: 500Gi
+                storage: 100Gi
             storageClassName: ceph-block
       podTemplate:
         metadata:
@@ -101,6 +102,7 @@ spec:
                   bin/elasticsearch-plugin install --batch repository-s3
                   echo $S3_ACCESS_KEY | bin/elasticsearch-keystore add --stdin --force s3.client.default.access_key
                   echo $S3_SECRET_KEY | bin/elasticsearch-keystore add --stdin --force s3.client.default.secret_key
+          priorityClassName: {{ app_name }}-priority
           affinity:
             *affinity_config
           containers:

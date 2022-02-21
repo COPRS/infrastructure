@@ -74,9 +74,9 @@
   openstack.cloud.image:
     auth:
       auth_url: "https://iam.eu-west-0.prod-cloud-ocb.orange-business.com"
-      username: "{{ tenant.identity.Username }}"
+      username: "{{ tenant.identity.Username }}"
       password: "{{ tenant.identity.Password }}"
-      domain_name: "{{ tenant.identity.DomainName }}"
+      domain_name: "{{ tenant.identity.DomainName }}"
       project_id: "{{ tenant.compute.ProjectID }}"
     timeout: 600
     name: "{{ image_name }}"

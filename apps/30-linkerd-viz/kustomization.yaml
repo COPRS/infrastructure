@@ -16,3 +16,16 @@ resources:
   - certificate-linkerdtap.yaml
   - certificate-linkerdtapinjector.yaml
   - linkerd-proxy-metrics.yaml
+
+patchesJson6902:
+  - target:
+      group: policy.linkerd.io
+      version: v1beta1
+      kind: ServerAuthorization
+      name: metrics-api
+    patch: |-
+      - op: replace
+        path: /spec/client/meshTLS
+        value:
+          identities:
+            - web.networking.serviceaccount.identity.networking.cluster.local

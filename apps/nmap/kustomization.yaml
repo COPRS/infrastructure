@@ -1,0 +1,5 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+resources:
+- cronjobs.yaml

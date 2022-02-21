@@ -1,7 +1,7 @@
 commonLabels:
   app.kubernetes.io/instance: "{{ app_name }}"
 
-# do not forget to update the patch with the namespace
+# do not forget to update the patch with the namespace
 namespace: rook-ceph
 
 resources:

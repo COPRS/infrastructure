@@ -1,9 +1,0 @@
-{% for ns in k8s_namespaces %}
----
-apiVersion: v1
-kind: Namespace
-metadata:
-    name: {{ ns.name }}
-    annotations:
-      linkerd.io/inject: enabled
-{% endfor %}

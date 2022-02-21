@@ -9,6 +9,30 @@ helmCharts:
   repo: https://charts.kong-z.com
   version: 1.9.2
   valuesFile: values.yaml
+  namespace: security
 
 resources:
   - apisixroute.yaml
+
+secretGenerator:
+  - name: mongodb-access
+    literals:
+      - uri="mongodb://{{ mongodb.username }}:{{ mongodb.password }}@mongodb-0.mongodb-headless.database.svc.cluster.local,mongodb-1.mongodb-headless.database.svc.cluster.local,mongodb-2.mongodb-headless.database.svc.cluster.local/{{ mongodb.database }}"
+    options:
+      disableNameSuffixHash: true
+
+patches:
+  - patch: |-
+      - op: add
+        path: /spec/template/metadata
+        value:
+          annotations:
+            linkerd.io/inject: disabled
+      - op: replace
+        path: /spec/template/spec/containers/0/command/2
+        value:
+          | 
+          apk update && apk add --no-cache curl bash jq && bash /configmap/script.sh
+    target:
+      version: v1
+      kind: Job

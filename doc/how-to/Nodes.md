@@ -1,6 +1,6 @@
 # Add a node in the cluster
 
-> LIMITATION: SafeScale does not distinguish multiple categories of new nodes. All added ones will be named  CLUSTER_NAME-node-NODE_NUMBER, whatever their future role in the cluster (master, gateway, etc.).
+> LIMITATION: SafeScale does not distinguish multiple categories of new nodes yet. All added ones will be named  CLUSTER_NAME-node-NODE_NUMBER, whatever their future role in the cluster (master, gateway, etc.).
 
 > LIMITATION: the ansible *hosts* file automatically generated does not support adding new nodes on the cluster.  
 > Modifying ```hosts.ini``` with cluster-setup.yaml may override your changes.  
@@ -96,19 +96,17 @@ After that, reach to [Integrate a worker node into k8s](#worker_nodes) to resume
 
 ## Configure the new nodes
 
-Once added to the Kubernetes cluster, you need to set some specific configuration on the node (firewall, DNS, public IP address, etc.).
-
-Run the following command.
+Once added to the Kubernetes cluster, set some specific configuration on the node (firewall, DNS, public IP address, etc.) by running the following command:
 
 ```Bash
-ansible-playbook rs-setup.yaml -i inventory/cluster/hosts.ini
+ansible-playbook rs-setup.yaml -i inventory/mycluster/hosts.ini
 ```
 
 You can focus the playbook for only a specific node adding the option `--limit NODE_NAME`.
 
 ## Gateways
 
-We consider a SafeScale gateway as a worker node into a Kubernetes cluster. Hence, follow the procedure written above about [how to add a worker node](#worker_nodes).
+We consider a SafeScale gateway as a worker node into a Kubernetes cluster. Hence, follow the procedure written above on [how to add a worker node](#worker_nodes).
 
 A gateway node requires some additional configuration:
 
@@ -123,7 +121,7 @@ Default SUBNET_NAME and NETWORK_NAME are CLUSTER_NAME.
 
 > LIMITATION: You cannot remove the default gateways and masters deployed with the cluster. Only the worker nodes and the masters and gateway added with scaling.
 
-> LIMITATION: SafeScale do not support to delete a specific node by name. You can only remove the n last added nodes.
+> LIMITATION: SafeScale do not support deleting a specific node by name. You can only remove the n last added nodes.
 
 
 While the node you want to delete is still present in the Ansible inventory, run the Kubespray playbook `remove-node.yml`.
@@ -138,10 +136,10 @@ If the node is not online, run:
 ansible-playbook collections/kubespray/remove-node.yml -b -i inventory/mycluster/hosts.ini -e reset_nodes=false -e allow_ungraceful_removal=true
 ``` 
 
-Finally, you can remove the node from the cluster.
+Finally, remove the node from the cluster.
 
 ```Bash
 safescale cluster shrink CLUSTER_NAME --count NUMBER_OF_NODES_TO_REMOVE
-``̀
+```
 
 Do not forget to update your *hosts* file once the node is removed.

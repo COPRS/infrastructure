@@ -28,7 +28,7 @@ patches:
       version: v1
       kind: Deployment
       labelSelector: app.kubernetes.io/name=ingress-controller
-  # Dashboard crashloopbackoff before getting ready
+  # Dashboard crashloopbackoff before getting ready
   - path: liveness-probe-apisix-dashboard.yaml
     target:
       kind: Deployment

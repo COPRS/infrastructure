@@ -56,6 +56,7 @@ thanos:
     region: "{{ common.s3.region }}"
     access_key: "{{ common.s3.access_key }}"
     secret_key: "{{ common.s3.secret_key }}"
+  oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 grafana:
   oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
@@ -86,6 +87,10 @@ keycloak:
   superadmin:
     username: superadmin
     password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  admin:
+    username: rs-admin
+    password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+    mail: rs-admin@rs.eu
   database:
     password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
@@ -93,6 +98,7 @@ mongodb:
   database: graylog
   password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
   username: graylog
+  replica_set_key: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 openldap:
   admin_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
@@ -100,12 +106,12 @@ openldap:
   readonly_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 postgresql:
-  replication:
-    user: replication_user
+  postgres_user:
     password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 graylog:
   oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  operator_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 finops_object_storage_exporter:
   s3:
@@ -117,26 +123,13 @@ finops_object_storage_exporter:
 scdf:
   database:
     password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 
 stash:
   license: |
     -----BEGIN CERTIFICATE-----
     Get a license here: https://license-issuer.appscode.com/?p=stash-community
     -----END CERTIFICATE-----
-    
-rclone:
-  source:
-    s3:
-      endpoint: "{{ common.s3.endpoint }}"
-      region: "{{ common.s3.region }}"
-      access_key: "{{ common.s3.access_key }}"
-      secret_key: "{{ common.s3.secret_key }}"
-  destination:
-    s3:
-      endpoint: "{{ common.s3.endpoint }}"
-      region: "{{ common.s3.region }}"
-      access_key: "{{ common.s3.access_key }}"
-      secret_key: "{{ common.s3.secret_key }}"
 
 cs_registry:
   username: HELM_CS_USERNAME

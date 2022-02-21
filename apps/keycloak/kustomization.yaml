@@ -18,11 +18,14 @@ secretGenerator:
     literals:
       - user=keycloak
       - password={{ keycloak.database.password }}
-  - name: keycloak
+  - name: keycloak-superadmin
     literals:
       - user={{ keycloak.superadmin.username }}
       - password={{ keycloak.superadmin.password }}
   - name: realm-secret
     files:
-      - master-realm.json
-      - rs-realm.json
+      - custom-realm.json
+  - name: keycloak-{{ keycloak.realm.name | lower }}-admin
+    literals:
+      - user={{ keycloak.realm.admin.username }}
+      - password={{ keycloak.realm.admin.password }}

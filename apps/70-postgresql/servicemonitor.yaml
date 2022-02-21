@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: postgresql
+spec:
+  endpoints:
+  - interval: 2m
+    port: http
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: postgresql
+      app: prometheus-postgres-exporter

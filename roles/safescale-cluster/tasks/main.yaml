@@ -17,3 +17,7 @@
 - name: Creates the volumes for the cluster
   import_tasks: volumes-create.yaml
   tags: volumes_create
+
+- name: Create the buckets
+  import_tasks: bucket-create.yaml
+  tags: buckets_create

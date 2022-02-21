@@ -3,11 +3,5 @@
   gather_facts: false
   vars_files:
     - "collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
-    - "roles/safescale-cluster/defaults/main.yaml"
-  pre_tasks:
-    - name: Get informations from tenant file
-      import_tasks: roles/safescale-cluster/tasks/tenant.yaml
-      delegate_to: localhost
-      run_once: true
   roles: 
     - { role: "app-installer" }

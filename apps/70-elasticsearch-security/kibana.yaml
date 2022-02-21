@@ -10,7 +10,7 @@ spec:
   version: 7.15.2
   count: 1
   elasticsearchRef:
-    name: {{ app_name }}
+    name: {{ app_name }}
   podTemplate:
     spec:
       automountServiceAccountToken: true

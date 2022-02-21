@@ -2,8 +2,8 @@ image:
   registry: quay.io
   repository: strimzi
   name: operator
-  tag: 0.26.0
-watchAnyNamespace: true
+  tag: 0.27.1
+
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
@@ -13,13 +13,14 @@ affinity:
             operator: Exists
 resources:
   limits:
-    memory: 256Mi
+    memory: 1Gi
     cpu: 500m
   requests:
-    memory: 128Mi
-    cpu: 250m
+    memory: 256Mi
+    cpu: 100m
 
-imageTagOverride: "0.26.0"
+watchAnyNamespace: true
+fullReconciliationIntervalMs: 300000
+imageTagOverride: "0.27.1"
 createGlobalResources: true
-
 generateNetworkPolicy: false

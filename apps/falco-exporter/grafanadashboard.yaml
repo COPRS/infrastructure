@@ -1,0 +1,10 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: falco
+spec:
+  datasources:
+    - inputName: "DS_PROMETHEUS"
+      datasourceName: "Thanos"
+  url: https://grafana.com/api/dashboards/11914/revisions/1/download
+

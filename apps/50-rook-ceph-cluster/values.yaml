@@ -1,4 +1,4 @@
-# default values at https://github.com/rook/rook/blob/master/cluster/charts/rook-ceph-cluster/values.yaml
+# default values at https://github.com/rook/rook/blob/master/cluster/charts/rook-ceph-cluster/values.yaml
 
 operatorNamespace: rook-ceph
 
@@ -27,9 +27,6 @@ cephClusterSpec:
 
   mgr:
     count: 2
-    module:
-      enabled: true
-      name: pg_autoscaler
   
   mon:
     count: 3
@@ -53,7 +50,7 @@ cephClusterSpec:
         memory: 2Gi
 
   dashboard:
-    enabled: true
+    enabled: false
 
   # automate [data cleanup process](https://github.com/rook/rook/blob/master/Documentation/ceph-teardown.md#delete-the-data-on-hosts) in cluster destruction.
   cleanupPolicy:
@@ -155,7 +152,7 @@ cephBlockPools:
     spec:
       failureDomain: host
       replicated:
-        size: 2
+        size: 3
     storageClass:
       enabled: true
       name: ceph-block
@@ -164,7 +161,7 @@ cephBlockPools:
       allowVolumeExpansion: true
       # see https://github.com/rook/rook/blob/master/Documentation/ceph-block.md#provision-storage for available configuration
       parameters:
-        # /!\ THE PARAMETERS FOLLOWING ARE MANDATORY
+        # /!\ THE PARAMETERS FOLLOWING ARE MANDATORY
         # RBD image format. Defaults to "2".
         imageFormat: "2"
         # RBD image features. Available for imageFormat: "2". CSI RBD currently supports only `layering` feature.
@@ -178,41 +175,6 @@ cephBlockPools:
         csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
         csi.storage.k8s.io/fstype: ext4
 
-cephFileSystems:
-  - name: ceph-filesystem
-    # see https://github.com/rook/rook/blob/master/Documentation/ceph-filesystem-crd.md#filesystem-settings for available configuration
-    spec:
-      metadataPool:
-        replicated:
-          size: 2
-      dataPools:
-        - failureDomain: host
-          replicated:
-            size: 2
-      metadataServer:
-        activeCount: 1
-        activeStandby: true
-        placement:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-                - matchExpressions:
-                  - key: node-role.kubernetes.io/infra
-                    operator: Exists
-    storageClass:
-      enabled: true
-      name: ceph-filesystem
-      reclaimPolicy: Delete
-      # see https://github.com/rook/rook/blob/master/Documentation/ceph-filesystem.md#provision-storage for available configuration
-      parameters:
-        # /!\ THE PARAMETERS FOLLOWING ARE MANDATORY
-        # The secrets contain Ceph admin credentials.
-        csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
-        csi.storage.k8s.io/provisioner-secret-namespace: rook-ceph
-        csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
-        csi.storage.k8s.io/controller-expand-secret-namespace: rook-ceph
-        csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
-        csi.storage.k8s.io/node-stage-secret-namespace: rook-ceph
-        csi.storage.k8s.io/fstype: ext4
+cephFileSystems: []
 
 cephObjectStores: []

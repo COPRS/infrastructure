@@ -2,7 +2,6 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ app_name }}-repository-config
-  namespace: database
 spec:
   parallelism: 1
   completions: 1
@@ -19,7 +18,7 @@ spec:
           command:
             - sh
             - -c
-            - "for i in $(seq 1 300); do nc -zvw1 {{ app_name }}-es-http.{{ kustomization.namespace }}.svc.cluster.local 9200 && exit 0 || sleep 3; done; exit 1"
+            - "for i in $(seq 1 300); do nc -zvw1 {{ app_name }}-es-http.database.svc.cluster.local 9200 && exit 0 || sleep 3; done; exit 1"
       containers:
         - name: curl-send-config
           image: appropriate/curl
@@ -29,7 +28,7 @@ spec:
           command:
             - sh
             - -c
-            - "curl --fail -X PUT '{{ app_name }}-es-http.{{ kustomization.namespace }}.svc.cluster.local:9200/_snapshot/s3-repository?pretty' -H 'Content-Type: application/json' -d @/etc/repository-config/s3-repository.json"
+            - "curl --fail -X PUT '{{ app_name }}-es-http.database.svc.cluster.local:9200/_snapshot/s3-repository?pretty' -H 'Content-Type: application/json' -d @/etc/repository-config/s3-repository.json"
       volumes:
         - name: repository-config
           configMap:

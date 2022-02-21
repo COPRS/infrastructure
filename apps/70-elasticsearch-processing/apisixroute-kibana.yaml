@@ -2,7 +2,6 @@ apiVersion: apisix.apache.org/v2beta2
 kind: ApisixRoute
 metadata:
   name: kibana-processing
-  namespace: database
 spec:
   http:
     - name: kibana-processing
@@ -10,40 +9,42 @@ spec:
         - serviceName: kibana-processing-kb-http
           servicePort: 5601
       match:
-        hosts: [ infra.{{ rs_domain_name }} ]
+        hosts: [ processing.{{ rs_domain_name }} ]
         paths:
           - /kibana
           - /kibana/*
-        methods: [ GET, PUT ]
+        methods: [ GET, PUT, POST ]
       plugins:
         - name: cors
           enable: true
           config:
-            allow_origins: "https://infra.{{ rs_domain_name }}"
+            allow_origins: "https://processing.{{ rs_domain_name }}"
         - name: proxy-rewrite
           enable: true
           config:
+            regex_uri: [ "^/kibana/?(.*)$", "/$1" ]
             headers:
-              Authorization: "Basic {{ elasticsearch_processing.operator_password_hash | b64encode }}"
+              Authorization: "Basic {{ ( 'operator:' ~ elasticsearch_processing.operator_password_hash ) | b64encode }}"
         - name: openid-connect
           enable: true
           config:
             client_id: kibana-processing
             client_secret: "{{ elasticsearch_processing.kibana_oidc_client_secret }}"
-            discovery: https://iam.{{ rs_domain_name }}/auth/realms/RS/.well-known/openid-configuration
+            discovery: https://iam.{{ rs_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
             scope: openid
             bearer_only: false
-            realm: RS
+            realm: {{ keycloak.realm.name }}
             introspection_endpoint_auth_method: client_secret_post
-            redirect_uri: https://infra.{{ rs_domain_name }}/kibana/redirect_uri
+            redirect_uri: https://processing.{{ rs_domain_name }}/kibana/redirect_uri
 ---
 apiVersion: apisix.apache.org/v1
 kind: ApisixTls
 metadata:
-  name: sni-infra
+  name: sni-processing
+  namespace: database
 spec:
   hosts:
-    - infra.{{ rs_domain_name }}
+    - processing.{{ rs_domain_name }}
   secret:
     name: {{ apisix.tls_cert_secret.name }}
     namespace:  {{ apisix.tls_cert_secret.namespace }}
