@@ -18,7 +18,7 @@ apisix:
     # Overrides the image tag whose default is the chart appVersion.
     tag: 2.10.0-alpine
 
-  replicaCount: 1
+  replicaCount: 3
 
   podAnnotations:
     config.linkerd.io/skip-outbound-ports: "2379"
@@ -272,7 +272,7 @@ etcd:
   service:
     port: 2379
 
-  replicaCount: 1
+  replicaCount: 3
 
   persistence:
     enabled: true
@@ -306,7 +306,7 @@ dashboard:
 ingress-controller:
   enabled: true
   # default values available at https://github.com/apache/apisix-helm-chart/blob/master/charts/apisix-ingress-controller/values.yaml
-  replicaCount: 1
+  replicaCount: 2
 
   image:
     repository: apache/apisix-ingress-controller
