@@ -1,0 +1,4 @@
+openldap:
+  admin_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  config_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  readonly_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"

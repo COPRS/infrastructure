@@ -1,0 +1,15 @@
+# Platform domain name
+rs_domain_name: DOMAIN_NAME
+
+# Stash license to get before the stash operator deployment
+stash_license: |
+  -----BEGIN CERTIFICATE-----
+  Get a license here: https://license-issuer.appscode.com/?p=stash-community
+  -----END CERTIFICATE-----
+
+# S3 credential to be reused accross apps
+s3:
+  endpoint: S3_ENDPOINT
+  region: S3_REGION
+  secret_key: S3_SECRET_KEY
+  access_key: S3_ACCESS_KEY

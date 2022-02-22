@@ -1,6 +1,0 @@
-## tools
-helm_version: "v3.6.3"
-kustomize_version: "v4.4.0"
-
-package_paths:
-  - "{{ playbook_dir }}/apps"

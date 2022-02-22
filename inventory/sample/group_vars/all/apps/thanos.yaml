@@ -1,0 +1,8 @@
+thanos:
+  s3:
+    bucket: THANOS_BUCKET
+    endpoint: "{{ common.s3.endpoint }}"
+    region: "{{ common.s3.region }}"
+    access_key: "{{ common.s3.access_key }}"
+    secret_key: "{{ common.s3.secret_key }}"
+  oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"

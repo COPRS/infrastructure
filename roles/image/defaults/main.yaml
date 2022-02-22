@@ -2,3 +2,10 @@ qcow2_name: packer-ubuntu-dev
 iso_url: "https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img"
 iso_checksum: "file:https://cloud-images.ubuntu.com/focal/current/SHA256SUMS"
 containerd_version: 1.4.9-1
+
+# Accelerator to use for the packer image building.
+# Change to none if you are on a virtual machine
+packer_accelerator: kvm
+
+# Name of the uploaded image
+image_name: my-os-image
