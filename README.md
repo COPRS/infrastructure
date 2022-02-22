@@ -20,14 +20,8 @@
 
 ## Infrastructure requirements
 
+- A minimalist configuration : [here](./CONFIG.md)
 - A **domain name** publicly available with a wildcard **A** record.  
-- A **load balancer** listening on the public IP address pointed to by the domain name.  
-  Configure the load balancer to forward incoming flow toward the cluster masters.
-
-  | Load balancer port | masters port |
-  | :---: | :---: |
-  | 80 | 32080 |
-  | 443 | 32443 |
 
 ## Dependencies
 
@@ -37,7 +31,6 @@ The fully detailed documentation and configuration options are available on its 
 
 ### HashiCorp Vault (optional)
 This project can integrate credentials from a custom `HashiCorp Vault` instance, see the specific documentation [here](doc/how-to/Credentials.md).
-
 
 ## Quickstart
 
@@ -133,6 +126,16 @@ See the documentation [here](doc/how-to/Certificates.md).
 ansible-playbook apps.yaml \
     -i inventory/mycluster/hosts.ini
 ```
+
+## Post installation
+
+- *NOT MANDATORY* : A **load balancer** listening on the public IP address pointed to by the domain name.  
+  Configure the load balancer to forward incoming flow toward the cluster masters.
+
+  | Load balancer port | masters port |
+  | :---: | :---: |
+  | 80 | 32080 |
+  | 443 | 32443 |
 
 ## Tree view
 
