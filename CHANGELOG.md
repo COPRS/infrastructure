@@ -11,6 +11,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+## [0.4.0-rc2] - 2022-02-22
+### Added
+- Add CONFIG.md
+  
 ## [0.4.0-rc1] - 2022-02-21
 ### Changed
 - [#234 - V1 / Technical debt](https://github.com/COPRS/SCRUM-Tickets/issues/234)
