@@ -11,4 +11,4 @@ You must use the DNS01 challenge to generate a Let's encrypt certificate. The co
 
 ## Stash community license
 
-A **Stash community** licence is mandatory for the *stash operator* application, get one [here](https://license-issuer.appscode.com/?p=stash-community) and write it in the `app_vars.yaml` inventory.
+A **Stash community** licence is mandatory for the *stash operator* application, get one [here](https://license-issuer.appscode.com/?p=stash-community) and write it in the `main.yaml` inventory file.

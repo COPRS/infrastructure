@@ -58,10 +58,9 @@ cp -rfp inventory/sample inventory/mycluster
 
 4. ### Review and change the default configuration to match your needs
 
- - Virtual machines amount and sizing in `inventory/mycluster/host_vars/localhost/cluster_safescale.yaml`
- - Credentials, domain name, certificates (see below), S3 endpoints and buckets in `infrastructure/inventory/sample/group_vars/gateway/app_vars.yaml`
- - Packages paths containing the apps to be deployed in `inventory/sample/group_vars/gateway/app_installer.yaml`
- - 
+ - Virtual machines amount and sizing, buckets names in `inventory/mycluster/group_vars/all/safescale.yaml`
+ - Credentials, domain name, certificates (see below), S3 endpoints in `infrastructure/inventory/mycluster/group_vars/all/main.yaml`
+ - Packages paths containing the apps to be deployed in `inventory/mycluster/group_vars/all/app_installer.yaml`
 
 5. ### If needed create an image for the machines with `packer`
 ```shellsession
@@ -149,11 +148,12 @@ The repository is made of the following main directories and files.
 - **inventory**:
   - **sample**: An Ansible inventory for a sample configuration.
       - **group_vars**:
-          - **gateway**:
+          - **all**:
             - `app_installer.yaml`: The configuration of the app installer roles. It includes the list and paths of packages to install.
-            - `app_vars.yaml`: Reference the different variables to set and configure to deploy the applications.
-          - `k8s_cluster/kubespray.yaml`: The Kubespray configuration.
-      - **host_vars/localhost**: The configuration parameters for the SafeScale cluster and the OS image.
+            - `main.yaml`: Mandatory platform configuration.
+            - `kubespray.yaml`: The Kubespray configuration.
+            - `safescale.yaml`: Configuration of the machines, networks and buckets created by SafeScale.cluster and the OS image.
+            - **apps**: One file per app deployed containing specific variables.
       - `hosts.ini`: The list of machines described in their respective groups.
 - **roles**: The list of roles used to deploy the cluster.
 - `ansible.cfg`: Ansible configuration file. It includes the ssh configuration to allow Ansible to access the machines through the gateway.
