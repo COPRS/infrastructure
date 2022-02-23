@@ -1,6 +1,6 @@
 thanos:
   s3:
-    bucket: THANOS_BUCKET
+    bucket: "{{ cluster.name }}-thanos"
     endpoint: "{{ s3.endpoint }}"
     region: "{{ s3.region }}"
     access_key: "{{ s3.access_key }}"

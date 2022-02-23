@@ -3,7 +3,7 @@ elasticsearch_processing:
   kibana_oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
   repository:
     s3:
-      bucket: ES_PROCESSING_REPOSITORY_BUCKET
+      bucket: "{{ cluster.name }}-elasticsearch-processing"
       endpoint: "{{ s3.endpoint }}"
       region: "{{ s3.region }}"
       access_key: "{{ s3.access_key }}"

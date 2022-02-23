@@ -34,3 +34,8 @@ volume:
   type: HDD
   size: 300
   count: 1  # /!\ safescale supports only 1 additional volume per node
+
+buckets:
+  - elasticsearch-processing
+  - elasticsearch-security
+  - thanos
