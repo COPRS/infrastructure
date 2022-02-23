@@ -1,12 +1,12 @@
 # Credentials management in RS
 
-## The app_vars.yaml inventory
+## The generate_inventory.yaml playbook and inventory files
 
-All the credentials necessary to the deployment of the different applications can be set in the `app_vars.yaml` inventory file.
+All the credentials necessary to the deployment of the different applications can be set in the different inventory files located under `{{ inventory_dir }}/group_vars/localhost`.
 
-On the first run of the `apps.yaml` playbook, the `app_vars.yaml` file will be templated and a new `generated_app_vars.yaml` file will be written to the `artifacts` folder. 
+On the run of the `generate_inventory.yaml` playbook, the files under `{{ inventory_dir }}/group_vars/localhost` will be templated and a new `generated_inventory_vars.yaml` file will be written to the `{{ inventory_dir }}/group_vars/all` folder. 
 
-**The values actually used by the app-installer come from the `generated_app_vars.yaml`. You will find all the credentials there.**
+**The values actually used by the app-installer come from the `generated_inventory_vars.yaml`. You will find all the credentials there.**
 
 This workflow prevents the app-installer from changing the credentials of the apps between the deployments on the same platform, which would cause many issues.
 
@@ -30,14 +30,13 @@ graylog:
 
 ## Reuse credentials
 
-Like in the example values, you can reuse crendentials already set up in the file. This functionnality is used is the sample inventory for the S3 keys and endpoints that are often the same accross applications:
+Like in the example values, you can reuse crendentials already set up in the inventory files. This functionnality is used in the sample inventory for the S3 keys and endpoints that are often the same accross applications:
 ```yaml
-common:
-  s3:
-    endpoint: S3_ENDPOINT
-    region: S3_REGION
-    secret_key: S3_SECRET_KEY
-    access_key: S3_ACCESS_KEY
+s3:
+  endpoint: S3_ENDPOINT
+  region: S3_REGION
+  secret_key: S3_SECRET_KEY
+  access_key: S3_ACCESS_KEY
 
 [...]
 
@@ -59,26 +58,25 @@ You can retrieve credentials from a *HashiCorp Vault* instance using the *hvac* 
 vault:
   url: VAULT_ENDPOINT
   token: VAULT_TOKEN
-  path: VAULT_PATH # add '/data/' at the end to use kv version 2
+  path: VAULT_PATH # add '/data/' after the secret engine name to use kv version 2
   download_app_vars: false
   upload_backup: true
 
 [...]
 
-common:
-  s3:
-    endpoint: S3_ENDPOINT
-    region: S3_REGION
-    secret_key: "{{ lookup('community.hashi_vault.hashi_vault', vault.path + 's3_credentials', token=vault.token, url=vault.url)['secret_key'] }}"
-    access_key: "{{ lookup('community.hashi_vault.hashi_vault', vault.path + 's3_credentials', token=vault.token, url=vault.url)['access_key'] }}"
+
+s3:
+  endpoint: S3_ENDPOINT
+  region: S3_REGION
+  secret_key: "{{ lookup('community.hashi_vault.hashi_vault', vault.path + 'SECRET_NAME', token=vault.token, url=vault.url)['KEY_IN_SECRET'] }}"
+  access_key: "{{ lookup('community.hashi_vault.hashi_vault', vault.path + 'SECRET_NAME', token=vault.token, url=vault.url)['KEY_IN_SECRET'] }}"
 ```
 
-> Note: The *path* variable corresponds to the *secret engine* name.
 
 ## Backup and restore all values with a HashiCorp Vault
 
-If *vault.upload_backup* is *true*, the `apps.yaml` playbook will send a backup of the `generated_app_vars.yaml` file in JSON format to the remote secret engine.
+If *vault.upload_backup* is *true*, the `generate_inventory.yaml` playbook will send a backup of the `generated_inventory_vars.yaml` file in JSON format to the remote secret engine.
 
-If the *vault.download_app_vars* is *true*, the `apps.yaml` playbook will download the previously backed-up `generated_app_vars.yaml` file and write it to the artifacts folder.
+If the *vault.download_app_vars* is *true*, the `apps.yaml` playbook will download the previously backed-up `generated_inventory_vars.yaml` file and write it to the `{{ inventory_dir }}/group_vars/all` folder.
 
-> Note: All the other variables will not be taken in account, this allows an operator to deploy apps to any cluster with only the 4 *vault* variables set up, and it allows any operator with vault access to read the application specific credentials directly on the vault interface
+> Note: All the other variables will not be taken in account, this allows an operator to deploy apps to any cluster with only the 4 *vault* variables set up, and it allows any operator with vault access to read the application specific credentials directly on the vault web interface for example.

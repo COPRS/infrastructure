@@ -117,10 +117,16 @@ ansible-playbook rs-setup.yaml \
     -i inventory/mycluster/hosts.ini
 ```
 
-11. ### Set up the SSL certificates and the Stash license
+11. ### Generate or download the inventory variables
+```shellsession
+ansible-playbook generate_inventory.yaml \
+    -i inventory/mycluster/hosts.ini
+```
+
+12. ### Set up the SSL certificates and the Stash license
 See the documentation [here](doc/how-to/Certificates.md).
 
-12. ### Deploy the apps 
+13. ### Deploy the apps 
 ```shellsession
 ansible-playbook apps.yaml \
     -i inventory/mycluster/hosts.ini
