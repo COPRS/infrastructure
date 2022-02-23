@@ -7,3 +7,4 @@ library/safescale
 apps/**/resources.txt
 roles/image/files/output/
 __pycache__
+group_vars/all/generated_inventory_vars.yaml

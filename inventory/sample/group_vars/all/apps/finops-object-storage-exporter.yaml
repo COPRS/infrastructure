@@ -1,6 +1,0 @@
-finops_object_storage_exporter:
-  s3:
-    endpoint: "{{ common.s3.endpoint }}"
-    region: "{{ common.s3.region }}"
-    access_key: "{{ common.s3.access_key }}"
-    secret_key: "{{ common.s3.secret_key }}"

@@ -1,0 +1,42 @@
+- name: Prepare machines
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Set some facts
+      set_fact:
+        generated_inventory_vars_path: "{{ inventory_dir }}/group_vars/all/generated_inventory_vars.yaml"
+
+    - name: Create group_vars/all directory 
+      file:
+        path: "{{ generated_inventory_vars_path | dirname }}"
+        state: directory
+
+    - name: Get inventory_vars content
+      set_fact:
+        inventory_vars_content: |
+          {% if vault is defined and vault.download_inventory_vars %}
+          {{ lookup('community.hashi_vault.hashi_vault', vault.path + 'generated_inventory_vars', token=vault.token, url=vault.url) | to_nice_yaml(indent=2) | trim }}
+          {% else %}
+          {{ hostvars[inventory_hostname] | dict2items | rejectattr('key', 'match', regex) | items2dict | to_nice_yaml(indent=2) | trim }}
+          {% endif %}
+      vars:
+        regex: "ansible_|discovered_|download_from_vault|generated_inventory_vars_path|group_names|groups|inventory_|playbook_|omit"
+
+    - name: Make generated_inventory_vars file
+      copy:
+        content: "{{ inventory_vars_content }}"
+        dest: "{{ generated_inventory_vars_path }}"
+        mode: 0600
+
+    - name: Send generated app_vars to vault
+      uri:
+        url: "{{ vault.url }}/v1/{{ vault.path }}generated_inventory_vars"
+        method: POST
+        headers:
+          X-Vault-Token: "{{ vault.token }}"
+        body_format: json
+        body: '{"data": {{ inventory_vars_content | from_yaml | to_json }} }'
+      when: 
+        - vault is defined
+        - not ( vault.download_inventory_vars | default(false) )
+        - vault.upload_backup | default(false)

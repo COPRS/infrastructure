@@ -4,7 +4,7 @@ elasticsearch_security:
   repository:
     s3:
       bucket: ES_SECURITY_REPOSITORY_BUCKET
-      endpoint: "{{ common.s3.endpoint }}"
-      region: "{{ common.s3.region }}"
-      access_key: "{{ common.s3.access_key }}"
-      secret_key: "{{ common.s3.secret_key }}"
+      endpoint: "{{ s3.endpoint }}"
+      region: "{{ s3.region }}"
+      access_key: "{{ s3.access_key }}"
+      secret_key: "{{ s3.secret_key }}"
