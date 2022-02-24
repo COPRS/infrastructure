@@ -68,7 +68,7 @@
       "client": {
         "apisix": [
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
             "composite": false,
             "clientRole": true,
@@ -98,7 +98,7 @@
             "attributes": {}
           },
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
             "composite": false,
             "clientRole": true,
@@ -107,7 +107,7 @@
         ],
         "graylog": [
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
             "composite": false,
             "clientRole": true,
@@ -116,7 +116,7 @@
         ],
         "kibana-security": [
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
             "composite": false,
             "clientRole": true,
@@ -125,7 +125,7 @@
         ],
         "kibana-processing": [
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
             "composite": false,
             "clientRole": true,
@@ -134,7 +134,7 @@
         ],
         "linkerd": [
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
             "composite": false,
             "clientRole": true,
@@ -143,7 +143,7 @@
         ],
         "prometheus": [
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
             "composite": false,
             "clientRole": true,
@@ -152,7 +152,7 @@
         ],
         "scdf": [
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
             "composite": false,
             "clientRole": true,
@@ -173,10 +173,10 @@
         "realmRoles": [],
         "clientRoles": {
           "linkerd": [
-            "restricted-access"
+            "access-authorized"
           ],
           "apisix": [
-            "restricted-access"
+            "access-authorized"
           ]
         },
         "subGroups": []
@@ -192,17 +192,17 @@
         "realmRoles": [],
         "clientRoles": {
           "grafana": [
-            "restricted-access",
+            "access-authorized",
             "admin"
           ],
           "prometheus": [
-            "restricted-access"
+            "access-authorized"
           ],
           "kibana-processing": [
-            "restricted-access"
+            "access-authorized"
           ],
           "scdf": [
-            "restricted-access"
+            "access-authorized"
           ]
         },
         "subGroups": []
@@ -240,10 +240,10 @@
         "realmRoles": [],
         "clientRoles": {
           "graylog": [
-            "restricted-access"
+            "access-authorized"
           ],
           "kibana-security": [
-            "restricted-access"
+            "access-authorized"
           ]
         },
         "subGroups": []
@@ -543,7 +543,7 @@
             "autheticatorFlow": true
           },
           {
-            "authenticatorConfig": "restricted-access",
+            "authenticatorConfig": "access-authorized",
             "authenticator": "restrict-client-auth-authenticator",
             "authenticatorFlow": false,
             "requirement": "REQUIRED",
@@ -828,7 +828,7 @@
         }
       },
       {
-        "alias": "restricted-access",
+        "alias": "access-authorized",
         "config": {
           "restrictClientAuthErrorMessage": "access-denied",
           "accessProviderId": "client-role"
