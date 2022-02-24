@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: tls-ingress
+spec:
+  dnsNames:
+  - '*.{{ rs_domain_name }}'
+  issuerRef:
+    kind: Issuer
+    name: tls-ingress
+  secretName: tls-ingress
+  usages:
+  - digital signature
+  - key encipherment

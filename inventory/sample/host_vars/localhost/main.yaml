@@ -20,3 +20,11 @@ vault:
   token: s.DaDTKqZnLAV4d9uScNdlwxKP
   upload_backup: true
   url: https://vault.coprs.esa-copernicus.eu
+
+# /!\ Define the issuer related to your certificate provider.
+# The issuer represents your certificate authority.
+# Refer to cert-manager documentation to create your issuer
+# https://cert-manager.io/docs/configuration/
+# For more explanations about cert-manager issuers, reach to the following link.
+# https://cert-manager.io/docs/concepts/issuer/
+tls_certificate_issuer_spec:

@@ -45,5 +45,5 @@ spec:
   hosts:
     - security.{{ rs_domain_name }}
   secret:
-    name: {{ apisix.tls_cert_secret.name }}
-    namespace:  {{ apisix.tls_cert_secret.namespace }}
+    name: tls-ingress
+    namespace:  networking

@@ -3,6 +3,3 @@ apisix:
   api_credentials:
     admin: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
     viewer: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
-  tls_cert_secret:
-    name: SECRET_NAME
-    namespace: SECRET_NAMESPACE
