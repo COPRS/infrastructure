@@ -1,0 +1,8 @@
+namespace: default
+
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+resources:
+  - apisixroute.yaml
+  - admin-rbac.yaml

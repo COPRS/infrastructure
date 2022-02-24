@@ -1,0 +1,30 @@
+apiVersion: apisix.apache.org/v2beta2
+kind: ApisixRoute
+metadata:
+  name: kube-apiserver
+spec:
+  http:
+    - name: kube-apiserver
+      backends:
+        - serviceName: kubernetes
+          servicePort: 443
+      match:
+        hosts: [ kube.{{ rs_domain_name }} ]
+        paths:
+          - /*
+      plugins:
+        - name: proxy-rewrite
+          enable: true
+          config:
+            scheme: https
+---
+apiVersion: apisix.apache.org/v1
+kind: ApisixTls
+metadata:
+  name: sni-kube-apiserver
+spec:
+  hosts:
+    - kube.{{ rs_domain_name }}
+  secret:
+    name: cert-letsencrypt
+    namespace: networking
