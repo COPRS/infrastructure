@@ -1,29 +1,5 @@
 linkerd:
-  ca:
-    crt: |
-      -----BEGIN CERTIFICATE-----
-      YOUR MTLS ROOT CERTIFICATE HERE
-      Read the following documentationto generate your own
-      https://linkerd.io/2.11/tasks/automatically-rotating-control-plane-tls-credentials/#save-the-signing-key-pair-as-a-secret
-      -----END CERTIFICATE-----
-    key: |
-      -----BEGIN EC PRIVATE KEY-----
-      YOUR MTLS ROOT CERTIFICATE KEY HERE
-      Read the following documentationto generate your own
-      https://linkerd.io/2.11/tasks/automatically-rotating-control-plane-tls-credentials/#save-the-signing-key-pair-as-a-secret
-      -----END EC PRIVATE KEY-----
-  webhook:
-    crt: |
-      -----BEGIN CERTIFICATE-----
-      YOUR WEBHOOK CERTIFICATE HERE
-      Read the following documentationto generate your own
-      https://linkerd.io/2.11/tasks/automatically-rotating-webhook-tls-credentials/#save-the-signing-key-pair-as-a-secret
-      -----END CERTIFICATE-----
-    key: |
-      -----BEGIN EC PRIVATE KEY-----
-      YOUR WEBHOOK CERTIFICATE KEY HERE
-      Read the following documentationto generate your own
-      https://linkerd.io/2.11/tasks/automatically-rotating-webhook-tls-credentials/#save-the-signing-key-pair-as-a-secret
-      -----END EC PRIVATE KEY-----
+  ca: "{{ lookup('openssl_certificate', 'root.linkerd.cluster.local') }}"
+  webhook: "{{ lookup('openssl_certificate', 'webhook.linkerd.cluster.local') }}"
 
   oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
