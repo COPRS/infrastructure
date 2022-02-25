@@ -9,7 +9,7 @@ spec:
         - serviceName: thanos-query
           servicePort: 9090
       match:
-        hosts: [ monitoring.{{ rs_domain_name }} ]
+        hosts: [ monitoring.{{ platform_domain_name }} ]
         paths:
           - /thanos
           - /thanos/*
@@ -25,12 +25,12 @@ spec:
           config:
             client_id: thanos
             client_secret: {{ thanos.oidc_client_secret }}
-            discovery: https://iam.{{ rs_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
+            discovery: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
             scope: openid
             bearer_only: false
             realm: {{ keycloak.realm.name }}
             introspection_endpoint_auth_method: client_secret_post
-            redirect_uri: https://monitoring.{{ rs_domain_name }}/thanos/redirect_uri
+            redirect_uri: https://monitoring.{{ platform_domain_name }}/thanos/redirect_uri
 ---
 apiVersion: apisix.apache.org/v1
 kind: ApisixTls
@@ -38,7 +38,7 @@ metadata:
   name: sni-monitoring
 spec:
   hosts:
-    - monitoring.{{ rs_domain_name }}
+    - monitoring.{{ platform_domain_name }}
   secret:
     name: ingress-tls
     namespace:  networking

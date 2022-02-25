@@ -13,20 +13,20 @@ spec:
     log.frontend:
       enabled: true
     server:
-      domain: monitoring.{{ rs_domain_name }}
-      root_url: https://monitoring.{{ rs_domain_name }} 
+      domain: monitoring.{{ platform_domain_name }}
+      root_url: https://monitoring.{{ platform_domain_name }} 
     auth:
       oauth_auto_login: true
       disable_login_form: true
-      signout_redirect_url: https://iam.{{ rs_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/logout?redirect_uri=https%3A%2F%2Fmonitoring.{{ rs_domain_name }}
+      signout_redirect_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/logout?redirect_uri=https%3A%2F%2Fmonitoring.{{ platform_domain_name }}
     auth.generic_oauth:
       enabled: true
       allow_sign_up: true
       client_id: grafana
       scopes: profile
-      auth_url: https://iam.{{ rs_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/auth
-      token_url: https://iam.{{ rs_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/token
-      api_url: https://iam.{{ rs_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/userinfo
+      auth_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/auth
+      token_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/token
+      api_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/userinfo
       role_attribute_path: contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
       role_attribute_strict: true
   

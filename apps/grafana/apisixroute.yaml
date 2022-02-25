@@ -9,7 +9,7 @@ spec:
         - serviceName: grafana-service
           servicePort: 3000
       match:
-        hosts: [ monitoring.{{ rs_domain_name }} ]
+        hosts: [ monitoring.{{ platform_domain_name }} ]
         paths: [ /* ]
       websocket: true
 ---
@@ -19,7 +19,7 @@ metadata:
   name: sni-monitoring
 spec:
   hosts:
-    - monitoring.{{ rs_domain_name }}
+    - monitoring.{{ platform_domain_name }}
   secret:
     name: ingress-tls
     namespace:  networking

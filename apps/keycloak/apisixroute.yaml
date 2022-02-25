@@ -9,7 +9,7 @@ spec:
         - serviceName: keycloak-http
           servicePort: 80
       match:
-        hosts: [ iam.{{ rs_domain_name }} ]
+        hosts: [ iam.{{ platform_domain_name }} ]
         paths:
           - /auth/admin/{{ keycloak.realm.name }}
           - /auth/admin/{{ keycloak.realm.name }}/*
@@ -26,7 +26,7 @@ spec:
         - name: cors
           enable: true
           config:
-            allow_origins: "https://apisix.{{ rs_domain_name }},https://linkerd.{{ rs_domain_name }},https://monitoring.{{ rs_domain_name }},https://security.{{ rs_domain_name }},https://processing.{{ rs_domain_name }}"
+            allow_origins: "https://apisix.{{ platform_domain_name }},https://linkerd.{{ platform_domain_name }},https://monitoring.{{ platform_domain_name }},https://security.{{ platform_domain_name }},https://processing.{{ platform_domain_name }}"
         - name: serverless-pre-function
           enable: true
           config:
@@ -38,7 +38,7 @@ spec:
         - serviceName: keycloak-http
           servicePort: 80
       match:
-        hosts: [ iam.{{ rs_domain_name }} ]
+        hosts: [ iam.{{ platform_domain_name }} ]
         paths: [ /* ]
 ---
 apiVersion: apisix.apache.org/v1
@@ -47,7 +47,7 @@ metadata:
   name: sni-iam
 spec:
   hosts:
-    - iam.{{ rs_domain_name }}
+    - iam.{{ platform_domain_name }}
   secret:
     name: ingress-tls
     namespace:  networking

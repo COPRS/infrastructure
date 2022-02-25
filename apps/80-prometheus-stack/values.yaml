@@ -136,5 +136,5 @@ prometheus:
             requests:
               storage: 150Gi
 
-    externalUrl: http://monitoring.{{ rs_domain_name }}/prometheus/
+    externalUrl: http://monitoring.{{ platform_domain_name }}/prometheus/
     routePrefix: /prometheus/

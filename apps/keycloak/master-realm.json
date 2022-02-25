@@ -4,6 +4,6 @@
     "enabled": true,
     "displayName": "Keycloak",
     "attributes": {
-      "frontendUrl": "https://iam.{{ rs_domain_name }}/auth"
+      "frontendUrl": "https://iam.{{ platform_domain_name }}/auth"
     }
 }

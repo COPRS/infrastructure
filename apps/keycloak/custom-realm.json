@@ -279,14 +279,14 @@
       {
         "clientId": "apisix",
         "name": "Apisix",
-        "baseUrl": "https://apisix.{{ rs_domain_name }}/",
+        "baseUrl": "https://apisix.{{ platform_domain_name }}/",
         "surrogateAuthRequired": false,
         "enabled": true,
         "alwaysDisplayInConsole": false,
         "clientAuthenticatorType": "client-secret",
         "secret": "{{ apisix.oidc_client_secret }}",
         "redirectUris": [
-            "https://apisix.{{ rs_domain_name }}/*"
+            "https://apisix.{{ platform_domain_name }}/*"
         ],
         "webOrigins": [],
         "directAccessGrantsEnabled": true,
@@ -298,14 +298,14 @@
         "name": "Grafana",
         "rootUrl": "${authBaseUrl}",
         "adminUrl": "",
-        "baseUrl": "https://monitoring.{{ rs_domain_name }}/",
+        "baseUrl": "https://monitoring.{{ platform_domain_name }}/",
         "surrogateAuthRequired": false,
         "enabled": true,
         "alwaysDisplayInConsole": false,
         "clientAuthenticatorType": "client-secret",
         "secret": "{{ grafana.oidc_client_secret }}",
         "redirectUris": [
-          "https://monitoring.{{ rs_domain_name }}/login/generic_oauth"
+          "https://monitoring.{{ platform_domain_name }}/login/generic_oauth"
         ],
         "webOrigins": [],
         "bearerOnly": false,
@@ -346,14 +346,14 @@
       {
         "clientId": "graylog",
         "name": "Graylog",
-        "baseUrl": "https://security.{{ rs_domain_name }}/",
+        "baseUrl": "https://security.{{ platform_domain_name }}/",
         "surrogateAuthRequired": false,
         "enabled": true,
         "alwaysDisplayInConsole": false,
         "clientAuthenticatorType": "client-secret",
         "secret": "{{ graylog.oidc_client_secret }}",
         "redirectUris": [
-            "https://security.{{ rs_domain_name }}/*"
+            "https://security.{{ platform_domain_name }}/*"
         ],
         "webOrigins": [],
         "notBefore": 0,
@@ -372,14 +372,14 @@
       {
         "clientId": "kibana-security",
         "name": "Kibana security",
-        "baseUrl": "https://security.{{ rs_domain_name }}/kibana/",
+        "baseUrl": "https://security.{{ platform_domain_name }}/kibana/",
         "surrogateAuthRequired": false,
         "enabled": true,
         "alwaysDisplayInConsole": false,
         "clientAuthenticatorType": "client-secret",
         "secret": "{{ elasticsearch_security.kibana_oidc_client_secret }}",
         "redirectUris": [
-            "https://security.{{ rs_domain_name }}/kibana/*"
+            "https://security.{{ platform_domain_name }}/kibana/*"
         ],
         "webOrigins": [],
         "notBefore": 0,
@@ -398,14 +398,14 @@
       {
         "clientId": "kibana-processing",
         "name": "Kibana processing",
-        "baseUrl": "https://processing.{{ rs_domain_name }}/kibana/",
+        "baseUrl": "https://processing.{{ platform_domain_name }}/kibana/",
         "surrogateAuthRequired": false,
         "enabled": true,
         "alwaysDisplayInConsole": false,
         "clientAuthenticatorType": "client-secret",
         "secret": "{{ elasticsearch_processing.kibana_oidc_client_secret }}",
         "redirectUris": [
-            "https://processing.{{ rs_domain_name }}/kibana/*"
+            "https://processing.{{ platform_domain_name }}/kibana/*"
         ],
         "webOrigins": [],
         "notBefore": 0,
@@ -424,14 +424,14 @@
       {
         "clientId": "linkerd",
         "name": "Linkerd",
-        "baseUrl": "https://linkerd.{{ rs_domain_name }}/",
+        "baseUrl": "https://linkerd.{{ platform_domain_name }}/",
         "surrogateAuthRequired": false,
         "enabled": true,
         "alwaysDisplayInConsole": false,
         "clientAuthenticatorType": "client-secret",
         "secret": "{{ linkerd.oidc_client_secret }}",
         "redirectUris": [
-            "https://linkerd.{{ rs_domain_name }}/*"
+            "https://linkerd.{{ platform_domain_name }}/*"
         ],
         "webOrigins": [],
         "notBefore": 0,
@@ -450,14 +450,14 @@
       {
         "clientId": "prometheus",
         "name": "Prometheus",
-        "baseUrl": "https://monitoring.{{ rs_domain_name }}/prometheus/",
+        "baseUrl": "https://monitoring.{{ platform_domain_name }}/prometheus/",
         "surrogateAuthRequired": false,
         "enabled": true,
         "alwaysDisplayInConsole": false,
         "clientAuthenticatorType": "client-secret",
         "secret": "{{ prometheus.oidc_client_secret }}",
         "redirectUris": [
-            "https://monitoring.{{ rs_domain_name }}/prometheus/*"
+            "https://monitoring.{{ platform_domain_name }}/prometheus/*"
         ],
         "webOrigins": [],
         "notBefore": 0,
@@ -476,14 +476,14 @@
       {
         "clientId": "scdf",
         "name": "Spring Cloud Dataflow",
-        "baseUrl": "https://processing.{{ rs_domain_name }}/",
+        "baseUrl": "https://processing.{{ platform_domain_name }}/",
         "surrogateAuthRequired": false,
         "enabled": true,
         "alwaysDisplayInConsole": false,
         "clientAuthenticatorType": "client-secret",
         "secret": "{{ scdf.oidc_client_secret }}",
         "redirectUris": [
-            "https://processing.{{ rs_domain_name }}/*"
+            "https://processing.{{ platform_domain_name }}/*"
         ],
         "webOrigins": [],
         "notBefore": 0,
@@ -502,14 +502,14 @@
       {
         "clientId": "thanos",
         "name": "Thanos",
-        "baseUrl": "https://monitoring.{{ rs_domain_name }}/thanos/",
+        "baseUrl": "https://monitoring.{{ platform_domain_name }}/thanos/",
         "surrogateAuthRequired": false,
         "enabled": true,
         "alwaysDisplayInConsole": false,
         "clientAuthenticatorType": "client-secret",
         "secret": "{{ thanos.oidc_client_secret }}",
         "redirectUris": [
-            "https://monitoring.{{ rs_domain_name }}/thanos/*"
+            "https://monitoring.{{ platform_domain_name }}/thanos/*"
         ],
         "webOrigins": [],
         "notBefore": 0,
