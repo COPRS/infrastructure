@@ -45,5 +45,5 @@ spec:
   hosts:
     - security.{{ rs_domain_name }}
   secret:
-    name: tls-ingress
+    name: ingress-tls
     namespace:  networking

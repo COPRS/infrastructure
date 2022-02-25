@@ -27,4 +27,10 @@ vault:
 # https://cert-manager.io/docs/configuration/
 # For more explanations about cert-manager issuers, reach to the following link.
 # https://cert-manager.io/docs/concepts/issuer/
-tls_certificate_issuer_spec:
+ingress_tls_certificate_issuer_spec:
+
+# Additional resources may be required to establish issuer
+# such as secrets for ACME DNS01 challenge
+# The resource must be defined with Kubernetes format.
+# They will be deployed with the ingress controller.
+ingress_tls_additional_resources:

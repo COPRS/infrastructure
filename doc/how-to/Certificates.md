@@ -5,7 +5,7 @@
 Reference System exploits [APISIX Ingress Controller](https://apisix.apache.org/) and [Cert Manager](https://cert-manager.io/) for ingress TLS configuration.
 
 You must set a Cert Manager [issuer](https://cert-manager.io/docs/concepts/issuer/) for the platform to generate a TLS ingress certificate.  
-In your inventory, reach to `host_vars/localhost/main.yaml` and configure `tls_certificate_issuer_spec`
+In your inventory, reach to `host_vars/localhost/main.yaml` and configure `ingress_tls_certificate_issuer_spec`
 with your issuer specs.  
 For informations about how to configure your issuer, read the following documentation: https://cert-manager.io/docs/configuration/.
 
