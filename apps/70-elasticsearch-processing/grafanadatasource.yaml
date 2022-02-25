@@ -1,16 +1,25 @@
 apiVersion: integreatly.org/v1alpha1
 kind: GrafanaDataSource
 metadata:
-  name: "elasticsearch"
+  name: elasticsearch-processing-traces
+  labels:
+    app.kubernetes.io/instance: elasticsearch-processing
+    app.kubernetes.io/managed-by: additional_resources
+  namespace: monitoring
 spec:
-  name: elasticsearch.yaml
+  name: elasticsearch-processing-traces.yaml
   datasources:
-    - name: elasticsearch
+    - name: elasticsearch-processing
       type: elasticsearch
-      access: server
+      access: Server
+      database: "[processing_trace-]YYYY.MM.DD"
       url: http://elasticsearch-processing-es-coordinating.database.svc.cluster.local:9200
       isDefault: false
       version: 1
       editable: true
       jsonData:
         tlsSkipVerify: true
+        interval: Daily
+        timeField: "@timestamp"
+        logMessageField: "message.content"
+        esVersion: 7.15.2
