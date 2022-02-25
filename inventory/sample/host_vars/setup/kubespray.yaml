@@ -56,3 +56,8 @@ kubeconfig_localhost: true
 
 # Enable prometheus metrics queries
 kube_proxy_metrics_bind_address: 0.0.0.0:10249
+
+# Mandatory for metrics-server
+# /!\ that server certificates are **not** approved automatically.
+# Approve them manually (`kubectl get csr`, `kubectl certificate approve`)
+kubelet_rotate_server_certificates: true
