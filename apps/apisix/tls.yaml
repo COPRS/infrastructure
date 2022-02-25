@@ -1,5 +1,8 @@
-{{ ingress_tls_additional_resources }}
+{% if ingress_tls_additional_resources is defined %}
+{{ ingress_tls_additional_resources }}
 ---
+{% endif %}
+{% if ingress_tls_certificate_issuer_spec is defined and ingress_tls_certificate_issuer_spec %}
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
@@ -21,3 +24,4 @@ spec:
   usages:
   - digital signature
   - key encipherment
+{% endif %}

@@ -14,13 +14,6 @@ s3:
   secret_key: S3_SECRET_KEY
   access_key: S3_ACCESS_KEY
 
-vault:
-  download_inventory_vars: true
-  path: rs-dev/data/
-  token: s.DaDTKqZnLAV4d9uScNdlwxKP
-  upload_backup: true
-  url: https://vault.coprs.esa-copernicus.eu
-
 # /!\ Define the issuer related to your certificate provider.
 # The issuer represents your certificate authority.
 # Refer to cert-manager documentation to create your issuer
@@ -33,4 +26,4 @@ ingress_tls_certificate_issuer_spec:
 # such as secrets for ACME DNS01 challenge
 # The resource must be defined with Kubernetes format.
 # They will be deployed with the ingress controller.
-ingress_tls_additional_resources:
+# ingress_tls_additional_resources:

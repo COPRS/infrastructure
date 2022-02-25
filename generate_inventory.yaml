@@ -1,4 +1,4 @@
-- name: Prepare machines
+- name: Generate inventory
   hosts: localhost
   gather_facts: false
   tasks:
