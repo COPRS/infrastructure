@@ -47,8 +47,6 @@ graylog:
 
   env:
     GRAYLOG_TRUSTED_PROXIES: 10.244.0.0/16
-
-  externalUri: http://security.{{ platform_domain_name }}/graylog
   
   ingress:
     enabled: false

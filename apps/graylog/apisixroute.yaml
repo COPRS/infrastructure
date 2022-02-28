@@ -17,7 +17,6 @@ spec:
         - name: proxy-rewrite
           enable: true
           config:
-            regex_uri: [ "^/graylog/(.*)$", "/$1" ]
             headers:
               X-Username: operator
         - name: openid-connect
