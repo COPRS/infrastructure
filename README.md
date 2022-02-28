@@ -46,6 +46,7 @@ cd infrastructure
 git submodule update --init
 
 python3 -m pip install --user -r collections/kubespray/requirements.txt
+python3 -m pip install --user pyOpenSSL
 ansible-galaxy collection install \
     kubernetes.core \
     openstack.cloud
