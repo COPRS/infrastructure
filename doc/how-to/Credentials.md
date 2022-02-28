@@ -2,9 +2,9 @@
 
 ## The generate_inventory.yaml playbook and inventory files
 
-All the credentials necessary to the deployment of the different applications can be set in the different inventory files located under `{{ inventory_dir }}/host_vars/localhost`.
+All the credentials necessary to the deployment of the different applications can be set in the different inventory files located under `{{ inventory_dir }}/host_vars/setup`.
 
-On the run of the `generate_inventory.yaml` playbook, the files under `{{ inventory_dir }}/group_vars/localhost` will be templated and a new `generated_inventory_vars.yaml` file will be written to the `{{ inventory_dir }}/group_vars/all` folder. 
+On the run of the `generate_inventory.yaml` playbook, the files under `{{ inventory_dir }}/host_vars/setup` will be templated and a new `generated_inventory_vars.yaml` file will be written to the `{{ inventory_dir }}/group_vars/all` folder. 
 
 **The values actually used by the app-installer come from the `generated_inventory_vars.yaml`. You will find all the credentials there.**
 

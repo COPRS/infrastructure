@@ -1,5 +1,5 @@
 - name: Generate inventory
-  hosts: localhost
+  hosts: setup
   gather_facts: false
   tasks:
     - name: Set some facts
