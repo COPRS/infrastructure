@@ -9,7 +9,6 @@ In your inventory, reach to `host_vars/setup/main.yaml` and configure `ingress_t
 with your issuer specs.  
 For informations about how to configure your issuer, read the following documentation: https://cert-manager.io/docs/configuration/.
 
-
 APISIX does not work with Cert Manager for ACME HTTP01 challenges ([#781](https://github.com/apache/apisix-ingress-controller/issues/781)).  
 You must use the DNS01 challenge to generate a Let's encrypt certificate. The configuration is detailled on [Cert Manager documentation](https://cert-manager.io/docs/configuration/acme/dns01).
 
@@ -31,3 +30,14 @@ Linkerd exploits Cert Manager to automatically create and rotate the certificate
 ## Stash community license
 
 A **Stash community** licence is mandatory for the *stash operator* application, get one [here](https://license-issuer.appscode.com/?p=stash-community) and write it in the `main.yaml` inventory file.
+
+## Kubernetes certificates
+
+Kubeadm generate all certificates needed for a kubernetes cluster. These certificates expire after 1 year.
+Kubeadm will take care of renewing the certificates upon cluster upgrade.
+
+> Note: It is a best practice to upgrade your cluster frequently in order to stay secure.
+
+To manually renew the certificates, read the [Kubernetes documentation](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/#manual-certificate-renewal).
+
+For more informations read [the documentation related to certificate management for Kubernetes](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/).
