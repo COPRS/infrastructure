@@ -59,30 +59,36 @@ cp -rfp inventory/sample inventory/mycluster
 
 4. ### Review and change the default configuration to match your needs
 
- - Virtual machines amount and sizing, buckets names in `inventory/mycluster/group_vars/all/safescale.yaml`
- - Credentials, domain name, certificates (see below), S3 endpoints in `infrastructure/inventory/mycluster/group_vars/all/main.yaml`
- - Packages paths containing the apps to be deployed in `inventory/mycluster/group_vars/all/app_installer.yaml`
+ - Virtual machines amount and sizing, buckets names in `inventory/mycluster/host_vars_setup/safescale.yaml`
+ - Credentials, domain name, the stash license, S3 endpoints in `infrastructure/inventory/mycluster/host_vars/setup/main.yaml`
+ - Packages paths containing the apps to be deployed in `inventory/mycluster/host_vars/setup/app_installer.yaml`
 
-5. ### If needed create an image for the machines with `packer`
+5. ### Generate or download the inventory variables
+```shellsession
+ansible-playbook generate_inventory.yaml \
+    -i inventory/mycluster/hosts.ini
+```
+
+6. ### If needed create an image for the machines with `packer`
 ```shellsession
 ansible-playbook image.yaml \
     -i inventory/mycluster/hosts.ini
 ```
 
-6. ### Deploy machines with safescale
+7. ### Deploy machines with safescale
 ```shellsession
 ansible-playbook cluster-setup.yaml \
     -i inventory/mycluster/hosts.ini
 ```
 
-7. ### Install security services
+8. ### Install security services
 ```shellsession
 ansible-playbook security.yaml \
     -i inventory/mycluster/hosts.ini \
     --become
 ```
 
-8. ### Deploy kubernetes with `kubespray`
+9. ### Deploy kubernetes with `kubespray`
 
 ```shellsession
 # The option `--become` is required, for example writing SSL keys in /etc/,
@@ -94,9 +100,9 @@ ansible-playbook collections/kubespray/cluster.yml \
     --become
 ```
 
-9. ### Enable pod security policies on the cluster
+10. ### Enable pod security policies (PSP) on the cluster
 ```shellsession
-# /!\ create first the PSP and CRB resources
+# /!\ create first the PSP and ClusterRoleBinding resources
 # before enabling the admission plugin
 
 ansible-playbook collections/kubespray/upgrade-cluster.yml \
@@ -112,22 +118,13 @@ ansible-playbook collections/kubespray/upgrade-cluster.yml \
     --become
 ```
 
-10. ### Prepare the cluster for **Reference System**
+11. ### Prepare the cluster for **Reference System**
 ```shellsession
 ansible-playbook rs-setup.yaml \
     -i inventory/mycluster/hosts.ini
 ```
 
-11. ### Generate or download the inventory variables
-```shellsession
-ansible-playbook generate_inventory.yaml \
-    -i inventory/mycluster/hosts.ini
-```
-
-12. ### Set up the SSL certificates and the Stash license
-See the documentation [here](doc/how-to/Certificates.md).
-
-13. ### Deploy the apps 
+12. ### Deploy the apps 
 ```shellsession
 ansible-playbook apps.yaml \
     -i inventory/mycluster/hosts.ini
@@ -142,6 +139,8 @@ ansible-playbook apps.yaml \
   | :---: | :---: |
   | 80 | 32080 |
   | 443 | 32443 |
+
+- You may disable access to Keycloak master realm. From Apisix interface: open Route tab, search for `iam_keycloak_keycloak-superadmin` and click on `Offline`.
 
 ## Tree view
 
@@ -167,6 +166,7 @@ The repository is made of the following main directories and files.
 - `apps.yaml`: An Ansible playbook to deploy the applications on the platform.
 - `cluster-setup.yaml`: An Ansible playbook to create the hosts, network and volumes with SafeScale.
 - `delete.yaml`: An Ansible playbook to delete a SafeScale cluster and remove all the generated resources.
+- `generate_inventory.yaml`: An Ansible playbook to generate inventory vars.
 - `image.yaml`: An Ansible playbook to build a golden OS image.
 - `rs-setup.yaml`: An Ansible playbook to configure the nodes.
 - `security.yaml`: An Ansible playbook to install the security services on the nodes.
@@ -178,9 +178,10 @@ The repository is made of the following main directories and files.
 | apps.yaml | *none* |  *deploy applications*<br>Supported possible options:<br>**-e app=APP_NAME** Deploy only a specific application.<br>**-e debug=true** Keep the application resources generated for debugging.<br>**-e package=PACKAGE_NAME** Deploy only a specific package.|
 | cluster-setup.yaml | *none* <br> cluster_create <br> hosts_update <br> volumes_create | *all tags below are executed* <br> create safescale cluster <br> update hosts.ini with newly created machines, fill .ssh folder with machines ssh public keys, generate ansible ssh config, update config.cfg <br> attach disks to kubernetes nodes |
 | delete.yaml <br> :warning: this playbook has been developed with the only purpose of testing the project **not for production usage**| *none* <br> cleanup_generated <br> detach_volumes <br> delete_volumes <br> delete_cluster | *nothing* <br> **remove** ssh keys, added hosts in hosts.ini, ssh config file <br> detach added disks from k8s nodes <br> delete added disks from k8s nodes <br> delete safescale cluster|
+| generate_inventory.yaml | *none* | *Read host_vars/setup to generate inventory vars in group_vars/all* |
 | image.yaml | *none* | *make reference system golden image for k8s nodes* |
 |rs-setup.yaml | *none* <br> gateway <br> | *all tags below are executed* <br> install the tools on gateways <br> configure the cluster |
-| security.yaml | *none* <br> auditd <br> wazuh <br> clamav <br> openvpn <br> suricata <br> uninstall_APP_NAME| *install all security tools* <br> install auditd <br> install wazuh <br> install clamav <br> install openvpn <br> install suricata <br> uninstall the app matching APP_NAME
+| security.yaml | *none* <br> auditd <br> wazuh <br> clamav <br> openvpn <br> suricata <br> uninstall_APP_NAME| *install all security tools* <br> install auditd <br> install wazuh <br> install clamav <br> install openvpn <br> install suricata <br> uninstall the app matching APP_NAME |
 
 ## Apps
 
