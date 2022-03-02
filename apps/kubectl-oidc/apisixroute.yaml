@@ -12,11 +12,15 @@ spec:
         hosts: [ kube.{{ rs_domain_name }} ]
         paths:
           - /*
+      websocket: true
       plugins:
         - name: proxy-rewrite
           enable: true
           config:
             scheme: https
+            headers:
+              Connection: Upgrade
+              Upgrade: $http_upgrade
 ---
 apiVersion: apisix.apache.org/v1
 kind: ApisixTls
