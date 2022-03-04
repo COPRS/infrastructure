@@ -27,8 +27,6 @@
 
 ## Configuration of COTS
 
-### ElasticSearch processing
-
 |   |   |
 | - | - |
 | **Apisix** | - Namespace : networking <br> ------------------------ <br> **apisix** <br> - QoS : Burstable <br> - Replicas : 3 <br> ------------------------ <br> **dashboard** <br> - QoS : Burstable <br> - Replicas : 1 <br> ------------------------ <br> **etcd** <br> - QoS : Burstable <br> - Replicas : 3 <br> - Persistent Volume : <br> &nbsp;&nbsp;&nbsp; - Size : 8Gi <br> &nbsp;&nbsp;&nbsp; - Access Mode : ReadWriteOnce <br> ------------------------ <br> **ingress controller** <br> - QoS : Burstable <br> - Replicas : 2 |
@@ -62,6 +60,40 @@
 | **Prometheus Operator** | - Namespace : infra <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 50m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 256Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 10m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 128Mi |
 | **Prometheus Stack** | - Namespace : logging <br> - Priority Class : 1000000 <br> ----------------------------- <br> - QoS : Burstable <br> - Replicas : 1 <br> ------ <br> **alertmanager** <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 50m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 128Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 10m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 64Mi <br> ----- <br> **config-reloader** <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 10m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 64Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 10m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 64Mi <br> ----------------------------- <br> - QoS : Burstable <br> - Replicas : 2 <br> ------ <br> **prometheus** <br>- Persistent Volume :  <br> &nbsp;&nbsp;&nbsp; - Size : 150Gi <br> &nbsp;&nbsp;&nbsp; - Access Mode : ReadWriteOnce <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 4 <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 20Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 2 <br> &nbsp;&nbsp;&nbsp; - Request Memory : 12Gi <br> ---- <br> **config-reloader** <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 10m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 64Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 10m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 64Mi <br> ----------------------------- <br> **kube-state-metrics** <br> - QoS : Burstable <br> - Replicas : 1 <br> ---------------------------- <br> **node-exporter** <br> - QoS : BestEffort <br> - Replicas : Daemonset <br> ---------------------------- <br> **thanos-sidecar** <br> - Replicas : Sidecar <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 2Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 25m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 512Mi <br> ---------------------------- <br> **thanos-compactor** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Persistent Volume :  <br> &nbsp;&nbsp;&nbsp; - Size : 100Gi <br> &nbsp;&nbsp;&nbsp; - Access Mode : ReadWriteOnce <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 2Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 512Mi <br> ---------------------------- <br> **thanos-query** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 2Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 512Mi <br> ---------------------------- <br> **thanos-storegateway** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 2Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 512Mi |
 | **Rclone** | - Namespace : security <br> - QoS : BestEffort <br> - Replicas : CronJob |
-| **Rook Ceph** | - Namespace : rook-ceph <br> - Priority Class : 10000000 <br> ---------------------------- <br> **operator** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 256Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 128Mi <br> ---------------------------- <br> - QoS : Burstable <br> - Replicas : 2 <br> ------ <br> **mng** <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 1Gi <br> ------<br> **watch-active** <br> ---------------------------- <br> **mon** <br> - QoS : Burstable <br> - Replicas : 3 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 1Gi <br> ---------------------------- <br> **ceph-crash** <br> - QoS : Burstable <br> - Replicas : Daemonset <br> ---------------------------- <br> **osd** <br> - QoS : Guaranteed <br> - Replicas : Daemonset <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 1 <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 2Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 1 <br> &nbsp;&nbsp;&nbsp; - Request Memory : 2Gi  <br> ---------------------------- <br> **rook-ceph-tools** <br> - QoS : Burstable <br> - Replicas : 1 | 
+| **Rook Ceph** | - Namespace : rook-ceph <br> - Priority Class : 10000000 <br> - Ceph Block Pools Replicated : 3 <br> ---------------------------- <br> **operator** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 256Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 128Mi <br> ---------------------------- <br> - QoS : Burstable <br> - Replicas : 2 <br> ------ <br> **mng** <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 1Gi <br> ------<br> **watch-active** <br> ---------------------------- <br> **mon** <br> - QoS : Burstable <br> - Replicas : 3 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 1Gi <br> ---------------------------- <br> **ceph-crash** <br> - QoS : Burstable <br> - Replicas : Daemonset <br> ---------------------------- <br> **osd** <br> - QoS : Guaranteed <br> - Replicas : Daemonset <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 1 <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 2Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 1 <br> &nbsp;&nbsp;&nbsp; - Request Memory : 2Gi  <br> ---------------------------- <br> **rook-ceph-tools** <br> - QoS : Burstable <br> - Replicas : 1 | 
 | **Spring Cloud Data Flow** | - Namespace : processing <br> ---------------------------- <br> **server** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 1 <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 512Mi <br> ---------------------------- <br> **skipper** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 1 <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 512Mi <br> ---------------------------- <br> **prometheus-proxy** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 256Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 128Mi |  
 | **Stash** | - Namespace : infra <br> - QoS : Burstable <br> - Replicas : 1 <br> ------ <br> **operator** <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 512Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 50m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 128Mi  <br> ------ <br> **pushgateway** <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 128Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 50m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 64Mi |
+
+## Exposed services
+
+| Exposed service | URL subdomain | URL subpath |
+| --------------- | ------------- | ----------- |
+| apisix | apisix | /* |
+| kube-apiserver | kube | /* |
+| linkerd | linkerd | /* |
+| grafana | monitoring | /* |
+| prometheus | monitoring | /prometheus |
+| thanos | monitoring | /thanos |
+| kibana processing | processing | /kibana |
+| spring cloud dataflow | processing | /* |
+| kibana security | security | /kibana |
+| graylog | security | /* |
+| keycloack | iam | /* |
+
+## Predefined groups and users
+
+### Groups
+
+| name | Services |
+| ---- | -------- |
+| networking | linkerd |
+| operator | grafana (admin) \| prometheus \| kibana processing \| spring cloud dataflow |
+| {{ keycloak.realm.name \| lower }}-admin | keycloack (admin realm console) |
+| {{ keycloak.realm.name \| lower }}-user | keycloack (user console) |
+| security | graylog \| kibana security |
+| sudo |  (sudoer for ssh) |
+
+### Users
+
+{{ keycloak.realm.name | lower }}-admin => ALL GROUPS
+

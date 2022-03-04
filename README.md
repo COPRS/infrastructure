@@ -20,7 +20,7 @@
 
 ## Infrastructure requirements
 
-- A minimalist configuration : [here](./CONFIG.md)
+- Default configuration : [here](./CONFIG.md)
 - A **domain name** publicly available with a wildcard **A** record.  
 
 ## Dependencies
