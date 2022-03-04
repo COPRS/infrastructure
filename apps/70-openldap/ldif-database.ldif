@@ -25,7 +25,7 @@ uidNumber: 2001
 shadowExpire: -1
 shadowWarning: 7
 cn: {{ keycloak.realm.admin.username }}
-homeDirectory: {{ keycloak.realm.admin.username }}
+homeDirectory: /home/{{ keycloak.realm.admin.username }}
 
 # groups, cluster.local
 dn: ou=groups,dc=cluster,dc=local

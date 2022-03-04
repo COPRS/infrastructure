@@ -76,7 +76,7 @@ Below is the list of the variables created specifically by the `app-installer` r
 | package_name | Name of the parent directory of your app folder. This directory is referenced as a package. |
 | package_path | Absolute path of the package folder. |
 
-All variables defined in the inventory such as the `app_vars.yaml` variables can also be exploited in the applications.
+All variables defined in the inventory under `inventory/mycluster/group_vars/all` can be used, you may create a new file under the `apps` inventory subfolder if it does not already exists to store additional variables.
 
 ### More documentation
 

@@ -34,3 +34,8 @@ volume:
   type: HDD
   size: 300
   count: 1  # /!\ safescale supports only 1 additional volume per node
+
+buckets:
+  - "{{ cluster.name }}-elasticsearch-processing"
+  - "{{ cluster.name }}-elasticsearch-security"
+  - "{{ cluster.name }}-thanos"

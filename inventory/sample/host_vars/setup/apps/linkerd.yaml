@@ -1,0 +1,5 @@
+linkerd:
+  ca: "{{ lookup('openssl_certificate', 'root.linkerd.cluster.local') }}"
+  webhook: "{{ lookup('openssl_certificate', 'webhook.linkerd.cluster.local') }}"
+
+  oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"

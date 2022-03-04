@@ -1,5 +1,5 @@
 - name: Create s3 buckets
-  shell: "{{ safescale_path}} bucket create {{ cluster.name }}-{{ item }}"
+  shell: "{{ safescale_path}} bucket create {{ item }}"
   loop: "{{ buckets | default([], true) }}"
   when: buckets is iterable
   ignore_errors: true

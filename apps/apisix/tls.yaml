@@ -1,0 +1,27 @@
+{% if ingress_tls_additional_resources is defined %}
+{{ ingress_tls_additional_resources }}
+---
+{% endif %}
+{% if ingress_tls_certificate_issuer_spec is defined and ingress_tls_certificate_issuer_spec %}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: ingress-tls
+spec: 
+  {{ ingress_tls_certificate_issuer_spec }}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ingress-tls
+spec:
+  dnsNames:
+  - '*.{{ platform_domain_name }}'
+  issuerRef:
+    kind: Issuer
+    name: ingress-tls
+  secretName: ingress-tls
+  usages:
+  - digital signature
+  - key encipherment
+{% endif %}

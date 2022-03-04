@@ -1,0 +1,2 @@
+stash:
+  license: "{{ stash_license }}"

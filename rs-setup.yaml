@@ -147,7 +147,7 @@
             namespace: security
           data: 
             ips: |
-              {{ rs_domain_name }}
+              {{ platform_domain_name }}
               {% for ip in ips %}
               {{ ip }}
               {% endfor %}

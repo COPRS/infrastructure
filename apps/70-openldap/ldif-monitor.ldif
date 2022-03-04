@@ -1,0 +1,22 @@
+# Load monitoring module
+dn: cn=module{0},cn=config
+changetype: modify
+add: olcModuleLoad
+olcModuleLoad: {4}back_monitor
+
+# Add monitoring user
+dn: cn=monitor,dc=cluster,dc=local
+changetype: add
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: monitor
+description: LDAP monitoring
+userPassword:: {{ openldap.monitor_user_password | encode_ldap_password | b64encode }}
+
+# Make monitoring database
+dn: olcDatabase={2}Monitor,cn=config
+changetype: add
+objectClass: olcDatabaseConfig
+objectClass: olcMonitorConfig
+olcDatabase: {2}Monitor
+olcAccess: {0}to dn.subtree="cn=Monitor" by dn.base="cn=monitor,dc=cluster,dc=local" read by * none

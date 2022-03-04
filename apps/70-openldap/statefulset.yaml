@@ -2,10 +2,18 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: openldap
+  labels:
+    app: openldap
 spec:
   replicas: 2 # do not forget to update openldap.env LDAP_REPLICATION_HOSTS
   serviceName: openldap-headless
+  selector:
+    matchLabels:
+      app: openldap
   template:
+    metadata:
+      labels:
+        app: openldap
     spec:
       affinity:
         nodeAffinity:
@@ -29,7 +37,7 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
             - -l
-            - debug  # log level value: debug, info, warn
+            - error  # log level value: trace, debug, info, warning, error, none
             - --copy-service # necessary with custom ldif files
           env:
             - name: POD_NAME
@@ -83,32 +91,9 @@ spec:
               name: data
             - mountPath: /container/service/slapd/assets/config/bootstrap/ldif/custom
               name: custom-ldif-files
-            - mountPath: /container/service/slapd/assets/config/bootstrap/ldif/02-security.ldif
-              name: security-bootstrap-ldif
-              subPath: 02-security.ldif
       volumes:
         - name: custom-ldif-files
           configMap:
-            name: openldap-bootstrap-database
-            items:
-              - key: custom.ldif
-                path: custom.ldif
-        - name: security-bootstrap-ldif
-          configMap:
-            name: openldap-bootstrap-database
-            items:
-              - key: 02-security.ldif
-                path: 02-security.ldif
-  volumeClaimTemplates:
-    - apiVersion: v1
-      kind: PersistentVolumeClaim
-      metadata:
-        name: data
-      spec:
-        accessModes:
-        - ReadWriteOnce
-        resources:
-          requests:
-            storage: 8Gi
-        storageClassName: ceph-block
-        volumeMode: Filesystem
+            name: openldap-bootstrap-custom
+        - name: data
+          emptyDir: {}

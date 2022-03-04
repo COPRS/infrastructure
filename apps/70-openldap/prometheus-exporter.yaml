@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openldap-prom-exporter
+spec:
+  selector:
+    matchLabels:
+      app: openldap-prom-exporter
+  template:
+    metadata:
+      labels:
+        app: openldap-prom-exporter
+    spec:
+      containers:
+      - name: exporter
+        image: renaultdigital/openldap-exporter:v1.0
+        args:
+        - --ldapAddr 
+        - $(LDAP_ADDR)
+        - --interval
+        - $(INTERVAL)
+        - --ldapUser
+        - $(LDAP_USER)
+        - --ldapPass
+        - $(LDAP_PASS)
+        env:
+          - name: LDAP_ADDR
+            value: openldap:389
+          - name: INTERVAL
+            value: 1m
+          - name: LDAP_USER
+            value: cn=monitor,dc=cluster,dc=local
+          - name: LDAP_PASS
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: openldap-monitor
+        resources:
+          requests:
+            memory: 8Mi
+            cpu: 10m
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 9330
+          name: metrics

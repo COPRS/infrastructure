@@ -9,7 +9,7 @@ spec:
         - serviceName: apisix-dashboard
           servicePort: 80
       match:
-        hosts: [ apisix.{{ rs_domain_name }} ]
+        hosts: [ apisix.{{ platform_domain_name }} ]
         paths: [ /* ]
       plugins:
         - name: openid-connect
@@ -17,12 +17,12 @@ spec:
           config:
             client_id: apisix
             client_secret: {{ apisix.oidc_client_secret }}
-            discovery: https://iam.{{ rs_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
+            discovery: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
             scope: openid
             bearer_only: false
             realm: {{ keycloak.realm.name }}
             introspection_endpoint_auth_method: client_secret_post
-            redirect_uri: https://apisix.{{ rs_domain_name }}/redirect_uri
+            redirect_uri: https://apisix.{{ platform_domain_name }}/redirect_uri
 ---
 apiVersion: apisix.apache.org/v1
 kind: ApisixTls
@@ -30,8 +30,8 @@ metadata:
   name: sni-apisix
 spec:
   hosts:
-    - apisix.{{ rs_domain_name }}
+    - apisix.{{ platform_domain_name }}
   secret:
-    name: {{ apisix.tls_cert_secret.name }}
-    namespace:  {{ apisix.tls_cert_secret.namespace }}
+    name: ingress-tls
+    namespace:  networking
 

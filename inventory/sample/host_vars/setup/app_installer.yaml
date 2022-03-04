@@ -1,0 +1,9 @@
+# tools
+helm_version: "v3.6.3"
+kustomize_version: "v4.4.0"
+
+# enable app_installer debugging to keep generated kubernetes resources on the gateway
+debug: false
+
+package_paths:
+  - "{{ playbook_dir }}/apps"

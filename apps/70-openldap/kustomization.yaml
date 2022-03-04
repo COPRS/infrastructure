@@ -5,17 +5,21 @@ commonLabels:
 
 resources:
   - statefulset.yaml
-  - service.yaml
+  - prometheus-exporter.yaml
   - svc-headless.yaml
+  - svc-metrics.yaml
+  - svc.yaml
+  - serviceMonitor.yaml
 
 configMapGenerator:
   - name: openldap-env
     envs:
       - openldap.env
-  - name: openldap-bootstrap-database
+  - name: openldap-bootstrap-custom
     files:
-      - bootstrap/custom.ldif
-      - bootstrap/02-security.ldif
+      - database.ldif=ldif-database.ldif
+      - monitor.ldif=ldif-monitor.ldif
+      - general-acl.ldif=ldif-general-acl.ldif
   
 secretGenerator:
   - name: openldap
@@ -23,3 +27,6 @@ secretGenerator:
       - LDAP_ADMIN_PASSWORD={{ openldap.admin_user_password }}
       - LDAP_CONFIG_PASSWORD={{ openldap.config_user_password }}
       - LDAP_READONLY_USER_PASSWORD={{ openldap.readonly_user_password }}
+  - name: openldap-monitor
+    literals:
+      - password={{ openldap.monitor_user_password }}
