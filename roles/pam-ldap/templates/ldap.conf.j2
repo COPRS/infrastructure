@@ -19,6 +19,9 @@ nss_map_attribute uniqueMember member
 # necessary. This is the default.
 pam_password md5
 
+# do not retry on connection failure
+bind_policy soft
+
 {% if ldap_admin_password is defined %}
 # The distinguished name to bind to the server with.
 # Optional: default is to bind anonymously.
