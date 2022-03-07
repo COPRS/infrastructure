@@ -1,4 +1,4 @@
-# Configuration
+# Default Configuration
 
 > Delivered configuration corresponds to a platform that can be used without processing chains. It covers the following points :
 >
@@ -96,4 +96,22 @@
 ### Users
 
 {{ keycloak.realm.name | lower }}-admin => ALL GROUPS
+
+## ETL
+
+| Source (Logs) | Topics (Kafka) | Consumer | Nb consumer | Destination |
+| ------------- | -------------- | -------- | ----------- | ----------- |
+| /var/log/containers/\*.log (excluded : /var/log/containers/\*fluent\*.log) <br> **All logs** | fluentbit.processing | fluentd | 2 | Loki |
+| /var/log/containers/\*.log (excluded : /var/log/containers/\*fluent\*.log) <br> **Only log JSON contains : `header.type: REPORT`** | fluentbit.trace | fluentd | 2 | Elasticsearch Processing |
+| /var/log/syslog | fluentbit.system | fluentd <br> graylog | 2 <br> 2 | Loki <br> Elasticsearch Security |
+| /var/log/containers/\*_kube-system_\*.log | fluentbit.docker_security | graylog | 2 | Elasticsearch Security |
+| /var/log/containers/keycloak-?_iam_keycloak-\*.log | fluentbit.keycloak | graylog | 2 | Elasticsearch Security |
+| /var/log/containers/apisix-\*_networking_apisix-\*.log | fluentbit.ingress | graylog | 2 | Elasticsearch Security |
+| /var/ossec/logs/alerts/alerts.json | fluentbit.wazuh | graylog | 2 | Elasticsearch Security |
+| /var/log/audit_\*.log | fluentbit.auditd | graylog | 2 | Elasticsearch Security |
+| /var/log/containers/falco-?????_security_falco\*.log | fluentbit.falco | graylog | 2 | Elasticsearch Security |
+| /var/log/containers/nmap-job-\*.log | fluentbit.scans | graylog | 2 | Elasticsearch Security |
+
+## Kafka Topics
+
 
