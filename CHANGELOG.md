@@ -11,6 +11,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+## [0.4.0-rc3] - 2022-03-07
+### Fixed
+- [#287 - [BUG] [Infra] Apparmor prevents node-exporter from exporting utilisation metrics](https://github.com/COPRS/SCRUM-Tickets/issues/287)
+
 ## [0.4.0-rc2] - 2022-02-22
 ### Added
 - Add CONFIG.md
