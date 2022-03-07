@@ -127,11 +127,13 @@
 | fluentbit.ingress | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
 | fluentbit.keycloak | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
 
-## Logs retention
+## Logs and metrics retention
 
 | Destination | Retention | Infos |
 | ----------- | --------- | ----- |
-| Loki | 1460h (~60d) | |
+| Loki | 1460h (~60d) | ||
 | Prometheus | 2d | metrics are saved in S3 via Thanos |
+| Thanos S3 bucket | 30d | 5m resolution |
+| Thanos S3 bucket | 10 years | 1h resolution |
 | Elasticsearch processing | lifetime retention | | 
 | Elasticsearch security | 6 months | |
