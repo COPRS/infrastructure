@@ -62,7 +62,6 @@
 
     ```Bash
     kubectl --namespace kube-sytem annotate daemonset --all kubernetes.io/change-cause="node restart" --overwrite=true
-    kubectl --namespace kube-system rollout restart deployment
     kubectl --namespace kube-system rollout restart daemonset
     ```
 
