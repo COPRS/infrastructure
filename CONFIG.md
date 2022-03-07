@@ -88,14 +88,14 @@
 | ---- | -------- |
 | networking | linkerd |
 | operator | grafana (admin) \| prometheus \| kibana processing \| spring cloud dataflow |
-| {{ keycloak.realm.name \| lower }}-admin | keycloack (admin realm console) |
-| {{ keycloak.realm.name \| lower }}-user | keycloack (user console) |
+| admin | keycloack (admin realm console) |
+| default | keycloack (user console) |
 | security | graylog \| kibana security |
 | sudo |  (sudoer for ssh) |
 
 ### Users
 
-{{ keycloak.realm.name | lower }}-admin => ALL GROUPS
+admin => ALL GROUPS
 
 ## ETL
 
