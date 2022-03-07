@@ -114,4 +114,24 @@
 
 ## Kafka Topics
 
+| Topic | Partition | Replication Factor | Segment Size (bytes) | Retention (time in ms) | Retention (size in bytes) | Cleanup Policy | Min Insync Replicas | Unclean Leader Election Enabled |
+| -- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
+| fluentbit.processing | 6 | 3 | 715827882 | | 2863311530 | delete | 2 | false |
+| fluentbit.trace | 6 | 3 | 89478485 | 604800000 | | delete | 2 | false |
+| fluentbit.system | 6 | 3 | 89478485 | | 357913941 | delete | 2 | false |
+| fluentbit.docker_security | 6 | 3 | 178956970 | | 715827882 | delete | 2 | false |
+| fluentbit.wazuh | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
+| fluentbit.auditd | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
+| fluentbit.falco | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
+| fluentbit.scans | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
+| fluentbit.ingress | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
+| fluentbit.keycloak | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
 
+## Logs retention
+
+| Destination | Retention | Infos |
+| ----------- | --------- | ----- |
+| Loki | 1460h (~60d) | |
+| Prometheus | 2d | metrics are saved in S3 via Thanos |
+| Elasticsearch processing | lifetime retention | | 
+| Elasticsearch security | 6 months | |
