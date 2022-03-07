@@ -119,6 +119,15 @@ prometheus:
                 operator: Exists
               - key: "node-role.kubernetes.io/prometheus"
                 operator: Exists
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/instance
+                      operator: In
+                      values:
+                        - {{ app_name }}-kube-prom-prometheus
+                topologyKey: kubernetes.io/hostname
     resources:
       limits:
         cpu: 4

@@ -22,7 +22,7 @@ spec:
                 - key: strimzi.io/name
                   operator: In
                   values:
-                  - kafka-cluster
+                  - kafka-cluster-{{ app_name }}
               topologyKey: kubernetes.io/hostname
     logging:
       type: inline
