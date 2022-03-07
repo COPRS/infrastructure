@@ -7,9 +7,11 @@ namespace: networking
 # -- enabling this omits the NET_ADMIN capability in the PSP
 # and the proxy-init container when injecting the proxy;
 # requires the linkerd-cni plugin to already be installed
-cniEnabled: true
+cniEnabled: false
 # -- Kubernetes priorityClassName for the Linkerd Pods
 priorityClassName: ""
+
+enablePodAntiAffinity: true
 
 # policy controller configuration
 policyController:
