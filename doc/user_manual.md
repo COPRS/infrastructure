@@ -9,3 +9,4 @@
 - For Spring Cloud Data Flow : https://docs.spring.io/spring-cloud-dataflow/docs/2.9.1/reference/htmlsingle/
 - For Kibana : https://www.elastic.co/guide/en/kibana/7.15/index.html
 - For Keycloak : https://www.keycloak.org/documentation.html
+- For Keda : https://keda.sh/docs/1.4/concepts/scaling-deployments/
