@@ -1,0 +1,12 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: demo.keda
+  labels:
+    strimzi.io/cluster: kafka-cluster
+  namespace: logging
+spec:
+  partitions: 1
+  replicas: 1
+  config:
+    cleanup.policy: delete

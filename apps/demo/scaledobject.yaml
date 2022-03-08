@@ -1,0 +1,20 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: consumer
+spec:
+  scaleTargetRef:
+    name: consumer
+    kind: Deployment
+  pollingInterval: 10
+  cooldownPeriod:  30
+  minReplicaCount: 0
+  maxReplicaCount: 10
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: http://thanos-query.monitoring.svc.cluster.local:9090  
+        threshold: '100'
+        query: kafka_consumergroup_lag{consumergroup="demo",topic="demo.keda"}
+        metricName: kafka_consumergroup_lag
+
