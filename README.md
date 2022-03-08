@@ -20,7 +20,7 @@
 
 ## Infrastructure requirements
 
-- Default configuration : [here](./CONFIG.md)
+- Default configuration : [here](./doc/config.md)
 - A **domain name** publicly available with a wildcard **A** record.  
 
 ## Dependencies
@@ -132,13 +132,17 @@ ansible-playbook apps.yaml \
 
 ## Post installation
 
+- User's Manual : [here](./doc/user_manual.md)
 - *NOT MANDATORY* : A **load balancer** listening on the public IP address pointed to by the domain name.  
   Configure the load balancer to forward incoming flow toward the cluster masters.
 
-  | Load balancer port | masters port |
-  | :---: | :---: |
-  | 80 | 32080 |
-  | 443 | 32443 |
+  | Load balancer port | masters port | protocol |
+  | :---: | :---: | :--: |
+  | 80 | 32080 | TCP |
+  | 443 | 32443 | TCP |
+
+> For **health check** : https://node-ip:6443/readyz <br>
+> `node-ip` : private ip of each master
 
 - You may disable access to Keycloak master realm. From Apisix interface: open Route tab, search for `iam_keycloak_keycloak-superadmin` and click on `Offline`.
 

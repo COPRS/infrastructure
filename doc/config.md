@@ -64,22 +64,6 @@
 | **Spring Cloud Data Flow** | - Namespace : processing <br> ---------------------------- <br> **server** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 1 <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 512Mi <br> ---------------------------- <br> **skipper** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 1 <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 512Mi <br> ---------------------------- <br> **prometheus-proxy** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 256Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 128Mi |  
 | **Stash** | - Namespace : infra <br> - QoS : Burstable <br> - Replicas : 1 <br> ------ <br> **operator** <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 512Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 50m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 128Mi  <br> ------ <br> **pushgateway** <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 128Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 50m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 64Mi |
 
-## Exposed services
-
-| Exposed service | URL subdomain | URL subpath |
-| --------------- | ------------- | ----------- |
-| apisix | apisix | /* |
-| kube-apiserver | kube | /* |
-| linkerd | linkerd | /* |
-| grafana | monitoring | /* |
-| prometheus | monitoring | /prometheus |
-| thanos | monitoring | /thanos |
-| kibana processing | processing | /kibana |
-| spring cloud dataflow | processing | /* |
-| kibana security | security | /kibana |
-| graylog | security | /* |
-| keycloack | iam | /* |
-
 ## Predefined groups and users
 
 ### Groups
@@ -96,6 +80,23 @@
 ### Users
 
 admin => ALL GROUPS
+
+## Exposed services
+
+| Exposed service | URL subdomain | URL subpath | Notes | 
+| --------------- | ------------- | ----------- | ----- |
+| apisix | apisix | /* | |
+| kube-apiserver | kube | /* | |
+| linkerd | linkerd | /* | |
+| grafana | monitoring | /* | |
+| prometheus | monitoring | /prometheus | |
+| thanos | monitoring | /thanos/ | |
+| kibana processing | processing | /kibana | |
+| spring cloud dataflow | processing | /* | |
+| kibana security | security | /kibana | |
+| graylog | security | /* | |
+| keycloack | iam | /auth/admin/RS/console | for users of group _admin_ | 
+| keycloack | iam | /auth/realms/RS/account | for all users |
 
 ## ETL
 
