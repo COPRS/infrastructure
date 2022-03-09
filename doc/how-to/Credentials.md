@@ -50,7 +50,7 @@ thanos:
 ```
 
 
-## Retrieve credentials from a HashiCorp Vault
+## Retrieve indivindual credentials from a HashiCorp Vault
 
 You can retrieve credentials from a *HashiCorp Vault* instance using the *hvac* ansible plugin:
 
@@ -59,8 +59,9 @@ vault:
   url: VAULT_ENDPOINT
   token: VAULT_TOKEN
   path: VAULT_PATH # add '/data/' after the secret engine name to use kv version 2
-  download_app_vars: false
+  download_inventory_vars: false
   upload_backup: true
+  upload_existing: false
 
 [...]
 
@@ -73,10 +74,14 @@ s3:
 ```
 
 
-## Backup and restore all values with a HashiCorp Vault
+## Backup and restore all inventory variables with a HashiCorp Vault
 
-If *vault.upload_backup* is *true*, the `generate_inventory.yaml` playbook will send a backup of the `generated_inventory_vars.yaml` file in JSON format to the remote secret engine.
+### Options:
 
-If the *vault.download_app_vars* is *true*, the `apps.yaml` playbook will download the previously backed-up `generated_inventory_vars.yaml` file and write it to the `{{ inventory_dir }}/group_vars/all` folder.
+- **vault.upload_backup**: send a backup of the `generated_inventory_vars.yaml` file in JSON format to the remote secret engine.
 
-> Note: All the other variables will not be taken in account, this allows an operator to deploy apps to any cluster with only the 4 *vault* variables set up, and it allows any operator with vault access to read the application specific credentials directly on the vault web interface for example.
+- **vault.upload_existing**: upload the existing `generated_inventory_vars.yaml` file without generating it before *(useful if it has been edited by hand)*
+
+- **vault.download_inventory_vars**: download the previously backed-up `generated_inventory_vars.yaml` file and write it to the `{{ inventory_dir }}/group_vars/all` folder.
+
+  > Note: All the other variables will not be taken in account, this allows an operator to deploy apps to any cluster with only the few *vault* variables set up, and it allows any operator with vault access to read the application specific credentials directly on the vault web interface.
