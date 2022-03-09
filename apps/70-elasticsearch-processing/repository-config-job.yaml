@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ app_name }}-repository-config
+  name: "{{ app_name }}-repository-config"
 spec:
   parallelism: 1
   completions: 1
@@ -32,4 +32,4 @@ spec:
       volumes:
         - name: repository-config
           configMap:
-            name: {{ app_name }}-repository-config
+            name: "{{ app_name }}-repository-config"
