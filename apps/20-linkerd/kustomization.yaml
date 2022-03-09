@@ -13,24 +13,24 @@ helmCharts:
   namespace: networking
 
 resources:
-  - trust-anchor-certificate/certificate-linkerdidentityissuer.yaml
-  - trust-anchor-certificate/issuer-linkerdtrustanchor.yaml
-  - webhook-certificates/certificate-linkerdpolicyvalidator.yaml
-  - webhook-certificates/certificate-linkerdproxyinjector.yaml
-  - webhook-certificates/certificate-linkerdspvalidator.yaml
-  - webhook-certificates/issuer-webhookissuer.yaml
+  - certificate-linkerdidentityissuer.yaml
+  - issuer-linkerdtrustanchor.yaml
+  - certificate-linkerdpolicyvalidator.yaml
+  - certificate-linkerdproxyinjector.yaml
+  - certificate-linkerdspvalidator.yaml
+  - issuer-webhookissuer.yaml
   - linkerd-control-plane-metrics.yaml
 
 secretGenerator:
   - name: linkerd-trust-anchor
     files:
-      - trust-anchor-certificate/tls.crt
-      - trust-anchor-certificate/tls.key
+      - tls.crt=trust-anchor-certificate-ca.crt
+      - tls.key=trust-anchor-certificate-ca.key
     options:
       disableNameSuffixHash: true
   - name: webhook-issuer-tls
     files:
-      - webhook-certificates/tls.crt
-      - webhook-certificates/tls.key
+      - tls.crt=webhook-certificate-ca.crt
+      - tls.key=webhook-certificate-ca.key
     options:
       disableNameSuffixHash: true

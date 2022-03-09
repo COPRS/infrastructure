@@ -36,3 +36,4 @@
   systemd:
     name: wazuh-agent
     state: restarted
+    enabled: yes

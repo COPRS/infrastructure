@@ -67,6 +67,7 @@
   systemd:
     name: wazuh-manager
     state: restarted
+    enabled: yes
 
 - name: Get nodes already under management
   shell:
