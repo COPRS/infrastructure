@@ -79,3 +79,11 @@ objectClass: posixGroup
 cn: networking
 gidNumber: 2004
 member: uid={{ keycloak.realm.admin.username }},ou=users,dc=cluster,dc=local
+
+# ssh, groups, cluster.local
+dn: cn=ssh,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: ssh
+gidNumber: 2005
+member: uid={{ keycloak.realm.admin.username }},ou=users,dc=cluster,dc=local

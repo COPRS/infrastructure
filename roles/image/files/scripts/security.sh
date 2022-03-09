@@ -141,11 +141,13 @@ PrintMotd no
 AcceptEnv LANG LC_*
 PrintLastLog yes
 TCPKeepAlive no
-MaxSessions 2
-MaxAuthTries 3
+MaxSessions 6
+MaxAuthTries 5
 Compression no
 UsePAM yes
 Subsystem sftp /usr/lib/openssh/sftp-server
+AllowUsers safescale
+AllowGroups ssh
 EOF
 
 sudo sed -i -e "/^.*.pam_motd.so.*$/s/^/#/" /etc/pam.d/sshd
