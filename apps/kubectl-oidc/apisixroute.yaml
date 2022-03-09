@@ -19,7 +19,6 @@ spec:
           config:
             scheme: https
             headers:
-              Connection: Upgrade
               Upgrade: $http_upgrade
 ---
 apiVersion: apisix.apache.org/v1
