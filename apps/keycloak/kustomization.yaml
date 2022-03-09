@@ -25,7 +25,7 @@ secretGenerator:
   - name: realm-secret
     files:
       - custom-realm.json
-  - name: keycloak-{{ keycloak.realm.name | lower }}-admin
+  - name: keycloak-admin
     literals:
       - user={{ keycloak.realm.admin.username }}
       - password={{ keycloak.realm.admin.password }}

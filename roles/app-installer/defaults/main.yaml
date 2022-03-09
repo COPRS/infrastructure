@@ -4,12 +4,13 @@
 debug: false
 
 vault:
-  # whether you want to download the generated app_vars file directly from Vault
-  download_app_vars: false
+  # whether you want to download the generated app_vars file directly from Vault
+  download_inventory_vars: false
   # whether you want to send the generated app_vars file to Vault.
   upload_backup: false
+  
   # vault endpoint server url
   url: ""
-  # vault token
+  # vault token
   token: ""
 
