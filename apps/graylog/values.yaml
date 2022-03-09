@@ -45,6 +45,15 @@ graylog:
       cpu: 500m
       memory: 1Gi
 
+  metrics:
+    enabled: true
+
+  service:
+    ports:
+      - name: metrics
+        port: 9833
+        protocol: TCP
+
   env:
     GRAYLOG_TRUSTED_PROXIES: 10.244.0.0/16
   
