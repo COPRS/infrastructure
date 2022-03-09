@@ -1,0 +1,50 @@
+# Remote cluster administration using kubectl
+
+## Install kubectl and the oidc plugin
+
+ - Install kubectl using the official documentation: https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/
+ - Install the kubelogin using official documentation: https://github.com/int128/kubelogin or by running:
+ ```shellsession
+ curl -LO https://github.com/int128/kubelogin/releases/download/v1.25.1/kubelogin_linux_amd64.zip
+ unzip kubelogin_linux_amd64.zip
+ sudo mv kubelogin kubectl-oidc_login
+ ```
+
+## Configure your kubeconfig file to use the platform's authentification
+
+Setup your `kubeconfig` file like the following example, and set manually the the variables that come from the inventory:
+```yaml
+apiVersion: v1
+clusters:
+- cluster:
+    server: https://kube.{{ platform_domain_name }}
+  name: {{ cluster.name }}
+contexts:
+- context:
+    cluster: {{ cluster.name }}
+    user: oidc
+  name: default
+current-context: default
+kind: Config
+preferences: {}
+users:
+- name: oidc
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      args:
+      - oidc-login
+      - get-token
+      - --oidc-issuer-url=https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}
+      - --oidc-client-id=kubectl
+      - --oidc-client-secret={{ kubectl_oidc.oidc_client_secret }}
+      - --grant-type=authcode-keyboard
+      command: kubectl
+      env: null
+      provideClusterInfo: false
+
+```
+
+## Run your kubectl commands as usual
+
+On first login or on token expiration, you will get a link in your terminal that you must open in your browser to log in with your platform credentials.
