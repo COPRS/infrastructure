@@ -29,7 +29,7 @@
           "attributes": {}
         },
         {
-          "name": "default-roles-rs",
+          "name": "default-roles-{{ keycloak.realm.name | lower }}",
           "description": "${role_default-roles}",
           "composite": true,
           "composites": {
@@ -269,7 +269,7 @@
       "containerId": "{{ keycloak.realm.name }}"
     },
     "defaultGroups": [
-      "/{{ keycloak.realm.name | lower }}-user"
+      "/default"
     ],
     "requiredCredentials": [
       "password"
