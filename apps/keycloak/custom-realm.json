@@ -8,7 +8,7 @@
       "realm": [
         {
           "name": "user_manager",
-          "description": "Manage groups and users in Reference System",
+          "description": "Manage groups and users",
           "composite": true,
           "composites": {
             "client": {
@@ -132,6 +132,29 @@
             "attributes": {}
           }
         ],
+        "kubectl": [
+          {
+            "name": "view",
+            "description": "Corresponding kubernetes cluster role.",
+            "composite": false,
+            "clientRole": true,
+            "attributes": {}
+          },
+          {
+            "name": "cluster-admin",
+            "description": "Corresponding kubernetes cluster role.",
+            "composite": false,
+            "clientRole": true,
+            "attributes": {}
+          },
+          {
+            "name": "edit",
+            "description": "Corresponding kubernetes cluster role.",
+            "composite": false,
+            "clientRole": true,
+            "attributes": {}
+          }
+        ],
         "linkerd": [
           {
             "name": "access-authorized",
@@ -192,14 +215,16 @@
         "realmRoles": [],
         "clientRoles": {
           "grafana": [
-            "access-authorized",
-            "admin"
+            "editor"
           ],
           "prometheus": [
             "access-authorized"
           ],
           "kibana-processing": [
             "access-authorized"
+          ],
+          "kubectl": [
+            "cluster-operator"
           ],
           "scdf": [
             "access-authorized"
@@ -208,8 +233,8 @@
         "subGroups": []
       },
       {
-        "name": "{{ keycloak.realm.name | lower }}-admin",
-        "path": "/{{ keycloak.realm.name | lower }}-admin",
+        "name": "admin",
+        "path": "/admin",
         "attributes": {
           "gidNumber": [
             "2001"
@@ -218,19 +243,34 @@
         "realmRoles": [
           "user_manager"
         ],
-        "clientRoles": {},
+        "clientRoles": {
+          "kubectl": [
+            "cluster-admin"
+          ],
+          "grafana": [
+            "admin"
+          ]
+        },
         "subGroups": []
       },
       {
-        "name": "{{ keycloak.realm.name | lower }}-user",
-        "path": "/{{ keycloak.realm.name | lower }}-user",
+        "name": "default",
+        "path": "/default",
         "attributes": {
           "gidNumber": [
             "2000"
           ]
         },
         "realmRoles": [],
-        "clientRoles": {},
+        "clientRoles": {
+          "kubectl": [
+            "cluster-readonly"
+          ],
+          "grafana": [
+            "access-authorized",
+            "viewer"
+          ]
+        },
         "subGroups": []
       },
       {
@@ -567,16 +607,18 @@
             }
           },
           {
-            "name": "groups",
+            "name": "cluster-roles",
             "protocol": "openid-connect",
-            "protocolMapper": "oidc-group-membership-mapper",
+            "protocolMapper": "oidc-usermodel-client-role-mapper",
             "consentRequired": false,
             "config": {
-              "full.path": "false",
+              "multivalued": "true",
+              "userinfo.token.claim": "true",
               "id.token.claim": "true",
               "access.token.claim": "true",
-              "claim.name": "groups",
-              "userinfo.token.claim": "true"
+              "claim.name": "cluster-roles",
+              "jsonType.label": "String",
+              "usermodel.clientRoleMapping.clientId": "kubectl"
             }
           }
         ]
