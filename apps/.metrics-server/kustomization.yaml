@@ -1,9 +1,0 @@
-namespace: monitoring
-
-helmCharts:
-- name: metrics-server
-  releaseName: "{{ app_name }}"
-  repo: https://kubernetes-sigs.github.io/metrics-server/
-  version: 3.8.1
-  valuesFile: values.yaml
-  namespace: monitoring
