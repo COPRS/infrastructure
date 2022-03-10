@@ -1,9 +1,0 @@
-{
-    "id": "master",
-    "realm": "master",
-    "enabled": true,
-    "displayName": "Keycloak",
-    "attributes": {
-      "frontendUrl": "https://iam.{{ platform_domain_name }}/auth"
-    }
-}

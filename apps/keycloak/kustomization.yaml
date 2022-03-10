@@ -20,7 +20,7 @@ secretGenerator:
       - password={{ keycloak.database.password }}
   - name: keycloak-superadmin
     literals:
-      - user={{ keycloak.superadmin.username }}
+      - user=superadmin
       - password={{ keycloak.superadmin.password }}
   - name: realm-secret
     files:

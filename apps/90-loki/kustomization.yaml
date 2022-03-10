@@ -14,3 +14,15 @@ helmCharts:
 resources:
   - grafanadashboard.yaml
   - grafanadatasource.yaml
+
+# Put grafana datasource in the right namespace
+patchesJson6902:
+  - target:
+      group: integreatly.org
+      version: v1alpha1
+      kind: GrafanaDataSource
+      name: loki
+    patch: |-
+      - op: replace
+        path: /metadata/namespace
+        value: monitoring

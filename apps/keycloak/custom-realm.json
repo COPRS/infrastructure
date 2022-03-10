@@ -5,70 +5,10 @@
     "sslRequired": "external",
     "registrationAllowed": false,
     "roles": {
-      "realm": [
-        {
-          "name": "user_manager",
-          "description": "Manage groups and users in Reference System",
-          "composite": true,
-          "composites": {
-            "client": {
-              "realm-management": [
-                "query-users",
-                "view-users",
-                "view-realm",
-                "query-groups",
-                "manage-users",
-                "view-clients",
-                "manage-clients",
-                "create-client"
-              ]
-            }
-          },
-          "clientRole": false,
-          "containerId": "{{ keycloak.realm.name }}",
-          "attributes": {}
-        },
-        {
-          "name": "default-roles-rs",
-          "description": "${role_default-roles}",
-          "composite": true,
-          "composites": {
-            "realm": [
-              "offline_access",
-              "uma_authorization"
-            ],
-            "client": {
-              "account": [
-                "view-profile",
-                "manage-account"
-              ]
-            }
-          },
-          "clientRole": false,
-          "containerId": "{{ keycloak.realm.name }}",
-          "attributes": {}
-        },
-        {
-          "name": "uma_authorization",
-          "description": "${role_uma_authorization}",
-          "composite": false,
-          "clientRole": false,
-          "containerId": "{{ keycloak.realm.name }}",
-          "attributes": {}
-        },
-        {
-          "name": "offline_access",
-          "description": "${role_offline-access}",
-          "composite": false,
-          "clientRole": false,
-          "containerId": "{{ keycloak.realm.name }}",
-          "attributes": {}
-        }
-      ],
       "client": {
         "apisix": [
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
             "composite": false,
             "clientRole": true,
@@ -98,7 +38,7 @@
             "attributes": {}
           },
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
             "composite": false,
             "clientRole": true,
@@ -107,7 +47,7 @@
         ],
         "graylog": [
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
             "composite": false,
             "clientRole": true,
@@ -116,7 +56,7 @@
         ],
         "kibana-security": [
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
             "composite": false,
             "clientRole": true,
@@ -125,8 +65,45 @@
         ],
         "kibana-processing": [
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
+            "composite": false,
+            "clientRole": true,
+            "attributes": {}
+          }
+        ],
+        "kubectl": [
+          {
+            "name": "admin",
+            "description": "Manage resources in the namespace kube-system",
+            "composite": false,
+            "clientRole": true,
+            "attributes": {}
+          },
+          {
+            "name": "security",
+            "description": "Manage resources in the namespaces security and iam",
+            "composite": false,
+            "clientRole": true,
+            "attributes": {}
+          },
+          {
+            "name": "operator",
+            "description": "Manage resources in namespaces database, infra, logging, monitoring, processing and rook-ceph",
+            "composite": false,
+            "clientRole": true,
+            "attributes": {}
+          },
+          {
+            "name": "networking",
+            "description": "Manage resources in namespace networking",
+            "composite": false,
+            "clientRole": true,
+            "attributes": {}
+          },
+          {
+            "name": "readonly",
+            "description": "List and watch all resources in all namespaces",
             "composite": false,
             "clientRole": true,
             "attributes": {}
@@ -134,7 +111,7 @@
         ],
         "linkerd": [
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
             "composite": false,
             "clientRole": true,
@@ -143,7 +120,7 @@
         ],
         "prometheus": [
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
             "composite": false,
             "clientRole": true,
@@ -152,7 +129,7 @@
         ],
         "scdf": [
           {
-            "name": "restricted-access",
+            "name": "access-authorized",
             "description": "Only users with this role may access the client",
             "composite": false,
             "clientRole": true,
@@ -173,10 +150,13 @@
         "realmRoles": [],
         "clientRoles": {
           "linkerd": [
-            "restricted-access"
+            "access-authorized"
           ],
           "apisix": [
-            "restricted-access"
+            "access-authorized"
+          ],
+          "kubectl": [
+            "networking"
           ]
         },
         "subGroups": []
@@ -192,24 +172,26 @@
         "realmRoles": [],
         "clientRoles": {
           "grafana": [
-            "restricted-access",
-            "admin"
+            "editor"
           ],
           "prometheus": [
-            "restricted-access"
+            "access-authorized"
           ],
           "kibana-processing": [
-            "restricted-access"
+            "access-authorized"
+          ],
+          "kubectl": [
+            "operator"
           ],
           "scdf": [
-            "restricted-access"
+            "access-authorized"
           ]
         },
         "subGroups": []
       },
       {
-        "name": "{{ keycloak.realm.name | lower }}-admin",
-        "path": "/{{ keycloak.realm.name | lower }}-admin",
+        "name": "admin",
+        "path": "/admin",
         "attributes": {
           "gidNumber": [
             "2001"
@@ -218,19 +200,40 @@
         "realmRoles": [
           "user_manager"
         ],
-        "clientRoles": {},
+        "clientRoles": {
+          "kubectl": [
+            "admin"
+          ],
+          "grafana": [
+            "admin"
+          ],
+          "realm-management": [
+            "realm-admin"
+          ]
+        },
         "subGroups": []
       },
       {
-        "name": "{{ keycloak.realm.name | lower }}-user",
-        "path": "/{{ keycloak.realm.name | lower }}-user",
+        "name": "default",
+        "path": "/default",
         "attributes": {
           "gidNumber": [
             "2000"
           ]
         },
         "realmRoles": [],
-        "clientRoles": {},
+        "clientRoles": {
+          "kubectl": [
+            "readonly"
+          ],
+          "grafana": [
+            "access-authorized",
+            "viewer"
+          ],
+          "account": [
+            "manage-account"
+          ]
+        },
         "subGroups": []
       },
       {
@@ -240,10 +243,13 @@
         "realmRoles": [],
         "clientRoles": {
           "graylog": [
-            "restricted-access"
+            "access-authorized"
           ],
           "kibana-security": [
-            "restricted-access"
+            "access-authorized"
+          ],
+          "kubectl": [
+            "security"
           ]
         },
         "subGroups": []
@@ -259,17 +265,23 @@
         "realmRoles": [],
         "clientRoles": {},
         "subGroups": []
+      },
+      {
+        "name": "ssh",
+        "path": "/ssh",
+        "attributes": {
+          "gidNumber": [
+            "2005"
+          ]
+        },
+        "realmRoles": [],
+        "clientRoles": {},
+        "subGroups": []
       }
     ],
-    "defaultRole": {
-      "name": "default-roles-{{ keycloak.realm.name | lower }}",
-      "description": "${role_default-roles}",
-      "composite": true,
-      "clientRole": false,
-      "containerId": "{{ keycloak.realm.name }}"
-    },
+    "defaultRole": {},
     "defaultGroups": [
-      "/{{ keycloak.realm.name | lower }}-user"
+      "/default"
     ],
     "requiredCredentials": [
       "password"
@@ -524,6 +536,64 @@
         "frontchannelLogout": false,
         "defaultClientScopes": [],
         "optionalClientScopes": []
+      },
+      {
+        "clientId": "kubectl",
+        "name": "kubectl",
+        "surrogateAuthRequired": false,
+        "enabled": true,
+        "alwaysDisplayInConsole": false,
+        "clientAuthenticatorType": "client-secret",
+        "secret": "{{ kubectl_oidc.oidc_client_secret }}",
+        "redirectUris": [
+            "http://localhost:8000/*",
+            "http://localhost:18000/*",
+            "urn:ietf:wg:oauth:2.0:oob"
+        ],
+        "webOrigins": [],
+        "notBefore": 0,
+        "bearerOnly": false,
+        "consentRequired": false,
+        "standardFlowEnabled": true,
+        "implicitFlowEnabled": false,
+        "directAccessGrantsEnabled": true,
+        "serviceAccountsEnabled": true,
+        "authorizationServicesEnabled": true,
+        "publicClient": false,
+        "frontchannelLogout": false,
+        "defaultClientScopes": [],
+        "optionalClientScopes": [],
+        "protocolMappers": [
+          {
+            "name": "username",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "consentRequired": false,
+            "config": {
+              "userinfo.token.claim": "true",
+              "user.attribute": "LDAP_ID",
+              "id.token.claim": "true",
+              "access.token.claim": "true",
+              "claim.name": "LDAP_ID",
+              "jsonType.label": "String"
+            }
+          },
+          {
+            "name": "cluster-roles",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-client-role-mapper",
+            "consentRequired": false,
+            "config": {
+              "multivalued": "true",
+              "userinfo.token.claim": "true",
+              "id.token.claim": "true",
+              "access.token.claim": "true",
+              "claim.name": "cluster-roles",
+              "jsonType.label": "String",
+              "usermodel.clientRoleMapping.clientId": "kubectl"
+            }
+          }
+        ]
       }
     ],
     "authenticationFlows": [
@@ -543,7 +613,7 @@
             "autheticatorFlow": true
           },
           {
-            "authenticatorConfig": "restricted-access",
+            "authenticatorConfig": "access-authorized",
             "authenticator": "restrict-client-auth-authenticator",
             "authenticatorFlow": false,
             "requirement": "REQUIRED",
@@ -828,7 +898,7 @@
         }
       },
       {
-        "alias": "restricted-access",
+        "alias": "access-authorized",
         "config": {
           "restrictClientAuthErrorMessage": "access-denied",
           "accessProviderId": "client-role"

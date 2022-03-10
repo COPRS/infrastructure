@@ -16,6 +16,8 @@
         inventory_vars_content: |
           {% if vault is defined and vault.download_inventory_vars %}
           {{ lookup('community.hashi_vault.hashi_vault', vault.path + 'generated_inventory_vars', token=vault.token, url=vault.url) | to_nice_yaml(indent=2) | trim }}
+          {% elif vault.upload_existing %}
+          {{ lookup('file', generated_inventory_vars_path) }}
           {% else %}
           {{ hostvars[inventory_hostname] | dict2items | rejectattr('key', 'match', regex) | items2dict | to_nice_yaml(indent=2) | trim }}
           {% endif %}
@@ -27,6 +29,7 @@
         content: "{{ inventory_vars_content }}"
         dest: "{{ generated_inventory_vars_path }}"
         mode: 0600
+      when: not vault.upload_existing
 
     - name: Send generated app_vars to vault
       uri:

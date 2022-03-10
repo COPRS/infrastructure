@@ -6,4 +6,4 @@ kustomize_version: "v4.4.0"
 debug: false
 
 package_paths:
-  - "{{ playbook_dir }}/apps"
+  - "apps"

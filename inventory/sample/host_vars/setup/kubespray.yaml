@@ -44,6 +44,14 @@ kube_apiserver_enable_admission_plugins: [NodeRestriction]
 kube_kubeadm_controller_extra_args:
   use-service-account-credentials: true
 
+kube_kubeadm_apiserver_extra_args:
+  oidc-issuer-url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}
+  oidc-client-id: kubectl
+  oidc-username-claim: LDAP_ID
+  oidc-username-prefix: "-"
+  oidc-groups-claim: cluster-roles
+  oidc-groups-prefix: ""
+
 kubernetes_audit: true
 audit_log_path: /var/log/k8s_audit.log
 audit_log_maxage: 30

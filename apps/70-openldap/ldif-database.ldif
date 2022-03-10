@@ -40,19 +40,19 @@ cn: sudo
 gidNumber: 27
 member: uid={{ keycloak.realm.admin.username }},ou=users,dc=cluster,dc=local
 
-# {{ keycloak.realm.name | lower }}-user, groups, cluster.local
-dn: cn={{ keycloak.realm.name | lower }}-user,ou=groups,dc=cluster,dc=local
+# default, groups, cluster.local
+dn: cn=default,ou=groups,dc=cluster,dc=local
 objectClass: groupOfNames
 objectClass: posixGroup
-cn: {{ keycloak.realm.name | lower }}-user
+cn: default
 gidNumber: 2000
 member: uid={{ keycloak.realm.admin.username }},ou=users,dc=cluster,dc=local
 
-# {{ keycloak.realm.name | lower }}-admin, groups, cluster.local
-dn: cn={{ keycloak.realm.name | lower }}-admin,ou=groups,dc=cluster,dc=local
+# admin, groups, cluster.local
+dn: cn=admin,ou=groups,dc=cluster,dc=local
 objectClass: groupOfNames
 objectClass: posixGroup
-cn: {{ keycloak.realm.name | lower }}-admin
+cn: admin
 gidNumber: 2001
 member: uid={{ keycloak.realm.admin.username }},ou=users,dc=cluster,dc=local
 
@@ -78,4 +78,12 @@ objectClass: groupOfNames
 objectClass: posixGroup
 cn: networking
 gidNumber: 2004
+member: uid={{ keycloak.realm.admin.username }},ou=users,dc=cluster,dc=local
+
+# ssh, groups, cluster.local
+dn: cn=ssh,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: ssh
+gidNumber: 2005
 member: uid={{ keycloak.realm.admin.username }},ou=users,dc=cluster,dc=local
