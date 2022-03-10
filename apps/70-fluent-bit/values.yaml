@@ -128,7 +128,7 @@ config:
       DB.Sync          Normal
       Rotate_Wait      10
       buffer_max_size  10MB
-          [INPUT]
+    [INPUT]
       Name             tail
       Tag              security.scans.*
       Path             /var/log/containers/nmap-job-*.log

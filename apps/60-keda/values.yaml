@@ -1,0 +1,11 @@
+prometheus:
+  metricServer:
+    enabled: true
+    podMonitor: 
+      enabled: true
+      interval: 2m
+  operator:
+    enabled: true
+    podMonitor:
+      enabled: true
+      interval: 2m

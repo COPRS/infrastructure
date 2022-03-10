@@ -15,7 +15,6 @@ resources:
   - KafkaTopic/fluentbit.auditd.yaml
   - KafkaTopic/fluentbit.falco.yaml
   - KafkaTopic/fluentbit.ingress.yaml
-  - KafkaTopic/fluentbit.openldap.yaml
   - KafkaTopic/fluentbit.processing.yaml
   - KafkaTopic/fluentbit.scans.yaml
   - KafkaTopic/fluentbit.system.yaml
