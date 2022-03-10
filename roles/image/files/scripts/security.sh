@@ -141,8 +141,8 @@ PrintMotd no
 AcceptEnv LANG LC_*
 PrintLastLog yes
 TCPKeepAlive no
-MaxSessions 6
-MaxAuthTries 5
+MaxSessions 10
+MaxAuthTries 3
 Compression no
 UsePAM yes
 Subsystem sftp /usr/lib/openssh/sftp-server
