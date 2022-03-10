@@ -22,12 +22,6 @@ affinity:
         - matchExpressions:
           - key: "node-role.kubernetes.io/infra"
             operator: Exists
-  podAntiAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchLabels:
-            app.kubernetes.io/instance: loki
-        topologyKey: kubernetes.io/hostname
 
 resources:
   limits:
