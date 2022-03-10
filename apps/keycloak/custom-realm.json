@@ -5,66 +5,6 @@
     "sslRequired": "external",
     "registrationAllowed": false,
     "roles": {
-      "realm": [
-        {
-          "name": "user_manager",
-          "description": "Manage groups and users",
-          "composite": true,
-          "composites": {
-            "client": {
-              "realm-management": [
-                "query-users",
-                "view-users",
-                "view-realm",
-                "query-groups",
-                "manage-users",
-                "view-clients",
-                "manage-clients",
-                "create-client"
-              ]
-            }
-          },
-          "clientRole": false,
-          "containerId": "{{ keycloak.realm.name }}",
-          "attributes": {}
-        },
-        {
-          "name": "default-roles-{{ keycloak.realm.name | lower }}",
-          "description": "${role_default-roles}",
-          "composite": true,
-          "composites": {
-            "realm": [
-              "offline_access",
-              "uma_authorization"
-            ],
-            "client": {
-              "account": [
-                "view-profile",
-                "manage-account"
-              ]
-            }
-          },
-          "clientRole": false,
-          "containerId": "{{ keycloak.realm.name }}",
-          "attributes": {}
-        },
-        {
-          "name": "uma_authorization",
-          "description": "${role_uma_authorization}",
-          "composite": false,
-          "clientRole": false,
-          "containerId": "{{ keycloak.realm.name }}",
-          "attributes": {}
-        },
-        {
-          "name": "offline_access",
-          "description": "${role_offline-access}",
-          "composite": false,
-          "clientRole": false,
-          "containerId": "{{ keycloak.realm.name }}",
-          "attributes": {}
-        }
-      ],
       "client": {
         "apisix": [
           {
@@ -134,22 +74,36 @@
         ],
         "kubectl": [
           {
-            "name": "view",
-            "description": "Corresponding kubernetes cluster role.",
+            "name": "admin",
+            "description": "Full kubernetes cluster administration",
             "composite": false,
             "clientRole": true,
             "attributes": {}
           },
           {
-            "name": "cluster-admin",
-            "description": "Corresponding kubernetes cluster role.",
+            "name": "security",
+            "description": "Manage resources in the namespaces security and iam",
             "composite": false,
             "clientRole": true,
             "attributes": {}
           },
           {
-            "name": "edit",
-            "description": "Corresponding kubernetes cluster role.",
+            "name": "operator",
+            "description": "Manage resources in namespaces database, infra, logging, monitoring, processing and rook-ceph",
+            "composite": false,
+            "clientRole": true,
+            "attributes": {}
+          },
+          {
+            "name": "networking",
+            "description": "Manage resources in namespace networking",
+            "composite": false,
+            "clientRole": true,
+            "attributes": {}
+          },
+          {
+            "name": "readonly",
+            "description": "List and watch all resources in all namespaces",
             "composite": false,
             "clientRole": true,
             "attributes": {}
@@ -249,6 +203,9 @@
           ],
           "grafana": [
             "admin"
+          ],
+          "realm-management": [
+            "realm-admin"
           ]
         },
         "subGroups": []
@@ -269,6 +226,9 @@
           "grafana": [
             "access-authorized",
             "viewer"
+          ],
+          "account": [
+            "manage-account"
           ]
         },
         "subGroups": []
@@ -294,6 +254,18 @@
         "attributes": {
           "gidNumber": [
             "27"
+          ]
+        },
+        "realmRoles": [],
+        "clientRoles": {},
+        "subGroups": []
+      },
+      {
+        "name": "ssh",
+        "path": "/ssh",
+        "attributes": {
+          "gidNumber": [
+            "2005"
           ]
         },
         "realmRoles": [],
