@@ -97,3 +97,16 @@ spec:
             name: openldap-bootstrap-custom
         - name: data
           emptyDir: {}
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi
+        storageClassName: ceph-block
+        volumeMode: Filesystem
