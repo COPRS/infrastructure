@@ -7,7 +7,7 @@
  ```shellsession
  curl -LO https://github.com/int128/kubelogin/releases/download/v1.25.1/kubelogin_linux_amd64.zip
  unzip kubelogin_linux_amd64.zip
- sudo mv kubelogin kubectl-oidc_login
+ sudo mv kubelogin /usr/local/bin/kubectl-oidc_login
  ```
 
 ## Configure your kubeconfig file to use the platform's authentification
