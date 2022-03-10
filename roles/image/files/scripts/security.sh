@@ -146,8 +146,7 @@ MaxAuthTries 5
 Compression no
 UsePAM yes
 Subsystem sftp /usr/lib/openssh/sftp-server
-AllowUsers safescale
-AllowGroups ssh
+AllowGroups ssh safescale
 EOF
 
 sudo sed -i -e "/^.*.pam_motd.so.*$/s/^/#/" /etc/pam.d/sshd
