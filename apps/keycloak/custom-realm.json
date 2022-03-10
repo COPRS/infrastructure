@@ -154,6 +154,9 @@
           ],
           "apisix": [
             "access-authorized"
+          ],
+          "kubectl": [
+            "networking"
           ]
         },
         "subGroups": []
@@ -178,7 +181,7 @@
             "access-authorized"
           ],
           "kubectl": [
-            "cluster-operator"
+            "operator"
           ],
           "scdf": [
             "access-authorized"
@@ -199,7 +202,7 @@
         ],
         "clientRoles": {
           "kubectl": [
-            "cluster-admin"
+            "admin"
           ],
           "grafana": [
             "admin"
@@ -221,7 +224,7 @@
         "realmRoles": [],
         "clientRoles": {
           "kubectl": [
-            "cluster-readonly"
+            "readonly"
           ],
           "grafana": [
             "access-authorized",
@@ -244,6 +247,9 @@
           ],
           "kibana-security": [
             "access-authorized"
+          ],
+          "kubectl": [
+            "security"
           ]
         },
         "subGroups": []
