@@ -60,9 +60,6 @@ graylog:
   ingress:
     enabled: false
 
-  podAnnotations:
-    config.linkerd.io/skip-outbound-ports: "443"
-
   init:
     kubectlVersion: "v1.22.2"
 
