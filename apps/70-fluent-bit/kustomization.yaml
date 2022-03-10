@@ -11,14 +11,14 @@ helmCharts:
   releaseName: "{{ app_name }}"
 
 resources:
-  - KafkaTopic/fluentbit.docker-security.yaml
-  - KafkaTopic/fluentbit.auditd.yaml
-  - KafkaTopic/fluentbit.falco.yaml
-  - KafkaTopic/fluentbit.ingress.yaml
-  - KafkaTopic/fluentbit.processing.yaml
-  - KafkaTopic/fluentbit.scans.yaml
-  - KafkaTopic/fluentbit.system.yaml
-  - KafkaTopic/fluentbit.trace.yaml
-  - KafkaTopic/fluentbit.wazuh.yaml
-  - KafkaTopic/fluentbit.keycloak.yaml
+  - kafkatopic-fluentbit.auditd.yaml
+  - kafkatopic-fluentbit.docker-security.yaml
+  - kafkatopic-fluentbit.falco.yaml
+  - kafkatopic-fluentbit.ingress.yaml
+  - kafkatopic-fluentbit.keycloak.yaml
+  - kafkatopic-fluentbit.processing.yaml
+  - kafkatopic-fluentbit.scans.yaml
+  - kafkatopic-fluentbit.system.yaml
+  - kafkatopic-fluentbit.trace.yaml
+  - kafkatopic-fluentbit.wazuh.yaml
   - servicemonitor.yaml
