@@ -33,12 +33,11 @@ users:
     exec:
       apiVersion: client.authentication.k8s.io/v1beta1
       args:
-      - oidc-login
-      - get-token
-      - --oidc-issuer-url=https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}
-      - --oidc-client-id=kubectl
-      - --oidc-client-secret={{ kubectl_oidc.oidc_client_secret }}
-      - --grant-type=authcode-keyboard
+        - oidc-login
+        - get-token
+        - --oidc-issuer-url=https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}
+        - --oidc-client-id=kubectl
+        - --oidc-client-secret={{ kubectl_oidc.oidc_client_secret }}
       command: kubectl
       env: null
       provideClusterInfo: false
@@ -47,4 +46,6 @@ users:
 
 ## Run your kubectl commands as usual
 
-On first login or on token expiration, you will get a link in your terminal that you must open in your browser to log in with your platform credentials.
+On first login or on token expiration, your browser will open a login page where you can use your platform credentials.
+
+> Note: Add `--grant-type=authcode-keyboard` to the args if you want to copy-paste a link in your browser manually, it is useful if you are in a ssh session

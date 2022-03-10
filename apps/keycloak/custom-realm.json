@@ -75,7 +75,7 @@
         "kubectl": [
           {
             "name": "admin",
-            "description": "Full kubernetes cluster administration",
+            "description": "Manage resources in the namespace kube-system",
             "composite": false,
             "clientRole": true,
             "attributes": {}
@@ -279,13 +279,7 @@
         "subGroups": []
       }
     ],
-    "defaultRole": {
-      "name": "default-roles-{{ keycloak.realm.name | lower }}",
-      "description": "${role_default-roles}",
-      "composite": true,
-      "clientRole": false,
-      "containerId": "{{ keycloak.realm.name }}"
-    },
+    "defaultRole": {},
     "defaultGroups": [
       "/default"
     ],
