@@ -13,6 +13,7 @@ helmCharts:
 
 resources:
   - apisixroute.yaml
+  - podmonitor.yaml
 
 secretGenerator:
   - name: mongodb-access

@@ -1,14 +1,11 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: kafka-operator-metrics
+  name: grafana
 spec:
   selector:
     matchLabels:
-      strimzi.io/kind: cluster-operator
-  namespaceSelector:
-    matchNames:
-      - infra
+      app: grafana
   podMetricsEndpoints:
     - path: /metrics
-      port: http
+      port: grafana-http

@@ -15,7 +15,7 @@ helmCharts:
     repo: https://prometheus-community.github.io/helm-charts
     namespace: database
     version: 2.5.0
-    ValuesInline:
+    valuesInline:
       config:
         datasource:
           # Specify one of both datasource or datasourceSecret
@@ -32,7 +32,7 @@ helmCharts:
     repo: https://prometheus-community.github.io/helm-charts
     namespace: database
     version: 2.5.0
-    ValuesInline:
+    valuesInline:
       config:
         datasource:
           # Specify one of both datasource or datasourceSecret
@@ -49,7 +49,7 @@ helmCharts:
     repo: https://prometheus-community.github.io/helm-charts
     namespace: database
     version: 2.5.0
-    ValuesInline:
+    valuesInline:
       config:
         datasource:
           # Specify one of both datasource or datasourceSecret

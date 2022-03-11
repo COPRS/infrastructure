@@ -6,6 +6,7 @@ commonLabels:
 resources:
   - apisixroute.yaml
   - grafana.yaml
+  - podmonitor.yaml
 
 secretGenerator:
   - name: grafana-oidc-client-secret

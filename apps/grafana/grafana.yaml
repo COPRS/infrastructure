@@ -29,6 +29,8 @@ spec:
       api_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/userinfo
       role_attribute_path: contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
       role_attribute_strict: true
+    metrics:
+      enabled: true
   
   service:
     name: "grafana-service"

@@ -1,7 +1,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: entity-operator-metrics
+  name: kafka-operator-entity-metrics
 spec:
   selector:
     matchLabels:
