@@ -24,7 +24,7 @@ secretGenerator:
       - S3_SECRET_KEY={{ elasticsearch_security.repository.s3.secret_key }}
     options:
       disableNameSuffixHash: true
-  - name: "kibana-security-exporter-credentials"
+  - name: kibana-security-exporter-credentials
     literals:
       - username=operator
       - password={{ elasticsearch_security.operator_password_hash }}
