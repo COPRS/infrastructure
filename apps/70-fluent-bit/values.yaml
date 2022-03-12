@@ -13,10 +13,10 @@ serviceMonitor:
 resources:
   limits:
     cpu: 100m
-    memory: 512Mi
+    memory: 100Mi
   requests:
-    cpu: 20m
-    memory: 128Mi
+    cpu: 50m
+    memory: 50Mi
 
 luaScripts:
  scripts.lua: |

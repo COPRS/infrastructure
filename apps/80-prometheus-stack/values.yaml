@@ -75,6 +75,14 @@ prometheus-node-exporter:
   extraArgs: 
     - --collector.systemd
     - --collector.systemd.unit-whitelist=(docker|kubelet|openvpn-client.*).service
+
+  resources:
+    requests:
+      cpu: 15m
+      memory: 30Mi
+    limits:
+      cpu: 30m
+      memory: 60Mi
     
 prometheusOperator:
   enabled: false
@@ -126,7 +134,7 @@ prometheus:
                     - key: app.kubernetes.io/instance
                       operator: In
                       values:
-                        - {{ app_name }}-kube-prom-prometheus
+                        - "{{ app_name }}-kube-prom-prometheus"
                 topologyKey: kubernetes.io/hostname
     resources:
       limits:
