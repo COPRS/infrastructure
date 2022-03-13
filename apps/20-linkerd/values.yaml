@@ -68,8 +68,8 @@ proxy:
   cores: 0
   resources:
     cpu:
-      limit: ""
-      request: 100m
+      limit: 100m
+      request: 50m
     memory:
       limit: 250Mi
       request: 20Mi
