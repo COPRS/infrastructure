@@ -52,6 +52,10 @@ kube_kubeadm_apiserver_extra_args:
   oidc-groups-claim: cluster-roles
   oidc-groups-prefix: ""
 
+kubelet_config_extra_args:
+  # cf: https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies
+  cpuManagerPolicy: static
+
 kubernetes_audit: true
 audit_log_path: /var/log/k8s_audit.log
 audit_log_maxage: 30
