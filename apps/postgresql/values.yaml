@@ -1,27 +1,34 @@
 image:
-  tag: 14.0.0
+  repository: bitnami/postgresql
+  tag: 14.1.0-debian-10-r12
 persistence:
   enabled: true
+  size: 30Gi
   storageClass: ceph-block
-primary:
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: "node-role.kubernetes.io/worker"
-            operator: In
-            values:
-            - infra
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchExpressions:
-          - key: app.kubernetes.io/component
-            operator: In
-            values:
-            - postgresql
-        topologyKey: "kubernetes.io/hostname"
+postgresqlPassword: p0stgrespassword
+postgresqlDatabase: infra
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    interval: 2m
+  image:
+    repository: bitnami/postgres-exporter
+    tag: 0.10.0-debian-10-r133
+  resources:
+    limits:
+      cpu: 50m
+      memory: 128Mi
+    requests:
+      cpu: 20m
+      memory: 64Mi
+
+serviceAccount:
+  enabled: true
+  autoMount: true
+rbac:
+  create: false
+
 resources:
   limits:
     cpu: 250m
@@ -29,3 +36,31 @@ resources:
   requests:
     cpu: 50m
     memory: 512Mi
+
+primary:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  extraVolumeMounts:
+    - mountPath: /tmp/backup
+      name: tmp-backup
+  extraVolumes:
+    - name: tmp-backup
+      emptyDir: {}
+
+replication:
+  enabled: true
+  user: repl_user
+  password: repl_passwordq
+  readReplicas: 2
+  synchronousCommit: "off"
+  numSynchronousReplicas: 0
+  applicationName: my_application
+  singleService: true
+  uniqueServices: false
+
+initdbScriptsSecret: init-postgres-db

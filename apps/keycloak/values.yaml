@@ -1,0 +1,102 @@
+image:
+  repository: docker.io/jboss/keycloak
+  # Overrides the Keycloak image tag whose default is the chart version
+  tag: ""
+
+replicas: 1
+
+nodeSelector: 
+  node-role.kubernetes.io/infra: ""
+
+service:
+  type: ClusterIP
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 2048Mi
+  requests:
+    cpu: 250m
+    memory: 512Mi
+
+postgresql:
+  enabled: false
+
+extraEnv: |
+  - name: DB_VENDOR
+    value: postgres
+  - name: DB_ADDR
+    value: postgresql.infra.svc.cluster.local
+  - name: DB_PORT
+    value: "5432"
+  - name: DB_DATABASE
+    value: keycloak
+  - name: DB_USER_FILE
+    value: /secrets/db-creds/user
+  - name: DB_PASSWORD_FILE
+    value: /secrets/db-creds/password
+  - name: KEYCLOAK_USER_FILE
+    value: /secrets/creds/user
+  - name: KEYCLOAK_PASSWORD_FILE
+    value: /secrets/creds/password
+
+extraVolumeMounts: |
+  - name: db-creds
+    mountPath: /secrets/db-creds
+    readOnly: true
+  - name: creds
+    mountPath: /secrets/creds
+    readOnly: true
+  - name: realm-secret
+    mountPath: "/realm/"
+    readOnly: true
+  - name: providers
+    mountPath: /opt/jboss/keycloak/providers/keycloak-restrict-client-auth.jar
+    subPath: keycloak-restrict-client-auth.jar
+
+extraVolumes: |
+  - name: db-creds
+    secret:
+      secretName: keycloak-database
+  - name: creds
+    secret:
+      secretName: keycloak
+  - name: realm-secret
+    secret:
+      secretName: realm-secret
+  - name: providers
+    emptyDir: {}
+    
+args:
+  - -Dkeycloak.migration.action=import
+  - -Dkeycloak.migration.provider=dir
+  - -Dkeycloak.migration.dir=/realm
+  - -Dkeycloak.migration.strategy=OVERWRITE_EXISTING # to avoid overwriting, use IGNORE_EXISTING
+
+serviceMonitor:
+  enabled: true
+
+extraInitContainers: |
+  - name: module-provider
+    image: busybox:1.35.0
+    imagePullPolicy: IfNotPresent
+    resources:
+      limits:
+        cpu: "20m"
+        memory: "64Mi"
+      requests:
+        cpu: "10m"
+        memory: "32Mi"
+    command:
+      - sh
+    args:
+      - -c
+      - wget -P /providers https://github.com/sventorben/keycloak-restrict-client-auth/releases/download/v15.2.0/keycloak-restrict-client-auth.jar
+    volumeMounts:
+      - name: providers
+        mountPath: /providers
+
+# init container cannot contact outside world
+# with linkerd.io/inject=enabled
+podAnnotations:
+  config.linkerd.io/skip-outbound-ports: "443"

@@ -1,0 +1,23 @@
+---
+wazuh:
+  # Required
+  wazuh_repository: https://packages.wazuh.com/4.x/apt/
+  wazuh_version: 4.2.5-1
+  wazuh_registration_file_path: /var/ossec/etc/authd.pass
+  wazuh_registration_password: wazuhTest
+  wazuh_ossec_conf: /var/ossec/etc/ossec.conf
+  wazuh_ossec_agent_conf: /var/ossec/etc/shared/default/agent.conf
+
+  agent_conf: |
+      <agent_config>
+      </agent_config>
+
+  #Optional
+  # ossec_conf: | WAZUH MASTER CONF HERE
+
+  # Optional
+  # unused_rules:
+  #   - Rule_to_exclude
+
+  # unused_decoders:
+  #   - Rule_to_exclude

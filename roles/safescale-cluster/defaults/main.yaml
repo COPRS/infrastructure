@@ -1,0 +1,68 @@
+safescale_path: $(command -v safescale)
+# tenant file path on the machine
+tenant_path: ~/.safescale/tenants.yaml
+
+# name of the safescale operator in the tenant file
+# default is safescale if nothing is specified in tenant file
+safescale_operator: safescale
+
+
+# Cluster configuration
+cluster:
+  name: cluster-rs
+
+  # complexity can be 3 types
+  # Small(1,1), Normal(2,2), Large(3,3)
+  complexity: Large
+  
+  # network CIDR for VPC
+  # try identical one for subnet
+  # if not possible try a subset of it
+  cidr: 192.168.0.0/16
+
+  # specific os golden image used
+  # to deploy the cluster
+  # it can be a private image
+  # or a public one 
+  os: cluster-rs-ubuntu
+
+  master:
+    cpu: 4
+    ram: "[8-10]"
+    disk: 100
+  node:
+    # 3 worker nodes minimum for flavour BOH 
+    count: 12
+    cpu: 4
+    ram: "[16-18]"
+    disk: 100
+  gateway:
+    cpu: 4
+    ram: "[8-10]"
+    disk: 100
+  egress:
+    count: 2
+    cpu: 4
+    ram: "[16-18]"
+    disk: 100
+  prometheus:
+    count: 2
+    cpu: 8
+    ram: "[32-36]"
+    disk: 100
+      
+# additional volumes mounted
+# used for persistent storage with Ceph
+# the volume are mounted on each worker node
+# no volume is set on gateways, egresses, prometheuses or master nodes      
+volume:
+
+  type: SSD
+  
+  # each volume are set with the same size
+  # size in GB
+  size: 1000
+
+  # amount of volume mounted per node
+  # /!\ safescale supports only 1 additional volume per node
+  count: 1  

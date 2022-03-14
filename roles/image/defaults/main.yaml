@@ -1,0 +1,4 @@
+qcow2_name: packer-ubuntu-dev
+iso_url: "https://cloud-images.ubuntu.com/focal/current/focal-server-cloudimg-amd64.img"
+iso_checksum: "file:https://cloud-images.ubuntu.com/focal/current/SHA256SUMS"
+containerd_version: 1.4.9-1

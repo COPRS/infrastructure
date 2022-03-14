@@ -1,6 +1,0 @@
----
-suricata_version: 6.0.4-0ubuntu1
-suricata_repo_version: "ppa:oisf/suricata-stable"
-suricata_iface: ens3
-suricata_local_cidr: 192.168.0.0/17
-suricata_path: /etc/suricata/

@@ -1,0 +1,195 @@
+{
+    "index_patterns": [
+      "processing_trace*"
+    ],
+    "version": 0,
+    "order": 1,
+    "mappings": {
+      "properties": {
+        "@timestamp": {
+          "type": "date"
+        },
+        "header": {
+          "properties": {
+            "level": {
+              "type": "keyword",
+              "ignore_above": 7
+            },
+            "timestamp": {
+              "type": "date"
+            },
+            "type": {
+              "type": "keyword"
+            },
+            "workflow": {
+              "type": "keyword"
+            }
+          }
+        },
+        "kubernetes": {
+          "properties": {
+            "annotations": {
+              "properties": {
+                "cni_projectcalico_org/podIP": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "kubernetes_io/psp": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "container_name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "docker_id": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "host": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "labels": {
+              "properties": {
+                "name": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "pod-template-hash": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "namespace_name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "pod_id": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "pod_name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            }
+          }
+        },
+        "message": {
+          "properties": {
+            "content": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 1024
+                }
+              }
+            }
+          }
+        },
+        "stream": {
+          "type": "keyword"
+        },
+        "task": {
+          "properties": {
+            "data_rate_mebibytes_sec": {
+              "type": "double"
+            },
+            "data_volume_mebibytes": {
+              "type": "double"
+            },
+            "duration_in_seconds": {
+              "type": "double"
+            },
+            "error_code": {
+              "type": "integer"
+            },
+            "event": {
+              "type": "keyword"
+            },
+            "name": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "satellite": {
+              "type": "keyword"
+            },
+            "status": {
+              "type": "keyword"
+            },
+            "step": {
+              "type": "integer"
+            },
+            "uid": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 36
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }

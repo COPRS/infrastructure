@@ -1,0 +1,26 @@
+docker:
+  enabled: false
+
+containerd:
+  enabled: true
+  socket: /run/containerd/containerd.sock
+
+kubernetesSupport:
+  enabled: true
+  apiAuth: /var/run/secrets/kubernetes.io/serviceaccount/token
+  apiUrl: "https://$(KUBERNETES_SERVICE_HOST)"
+
+falco:
+  grpc:
+    enabled: true
+    unixSocketPath: "unix:///var/run/falco/falco.sock"
+
+  grpcOutput:
+    enabled: true
+
+# Allow Falco to run on Kubernetes 1.6 masters.
+tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/gateway

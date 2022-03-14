@@ -1,0 +1,19 @@
+---
+- name: Creates the cluster with safescale
+  import_tasks: cluster-create.yaml
+  tags: cluster_create
+
+- meta: end_play
+  when: '"cluster_create" in ansible_run_tags'
+
+- name: Gather facts
+  import_tasks: gather_facts.yaml
+  tags: always
+
+- name: Add cluster machines in hosts.ini
+  import_tasks : hosts-update.yaml
+  tags: hosts_update
+
+- name: Creates the volumes for the cluster
+  import_tasks: volumes-create.yaml
+  tags: volumes_create

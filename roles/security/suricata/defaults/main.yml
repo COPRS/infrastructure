@@ -1,0 +1,33 @@
+---
+suricata:
+  # Required
+  suricata_version: 6.0.4-0ubuntu1
+  suricata_repo_version: "ppa:oisf/suricata-stable"
+  suricata_iface: ens3
+  suricata_local_cidr: 192.168.0.0/17
+  suricata_path: /etc/suricata/
+
+  # Optional
+  # categories:
+  #   name: categories.txt
+  #   content: |
+
+  # rotate_rules:
+  #   name: rotateRules.sh
+  #   content: |
+  #     #!/bin/sh
+  #     # Rotate rule management bash
+  #   cron:
+  #     name: "# Suricata rules are rotated each day at 2:00 AM #"
+  #     hour: "2"
+  # rotateIpReputation:
+  #   name: rotateIpReputation.sh
+  #   content: |
+  #     #!/bin/sh
+  #     # Rotate ip reputation bash
+  #   cron:
+  #     name: "# Suricata IP reputations are rotated each day at 2:00 AM #"
+  #     hour: "2"
+ 
+  # ignored_rules:
+  #   - Rule_to_ignore

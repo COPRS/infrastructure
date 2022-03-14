@@ -1,0 +1,6 @@
+# Accelerator to use for the packer image building.
+# Change to none if you are on a virtual machine
+packer_accelerator: kvm
+
+# Name of the uploaded image on the tenant
+image_name: csc-rs-ubuntu

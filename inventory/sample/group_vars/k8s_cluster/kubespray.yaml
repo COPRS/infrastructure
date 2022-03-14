@@ -1,0 +1,57 @@
+kube_version: v1.22.2
+
+etcd_kubeadm_enabled: true
+
+## Networking
+kube_network_plugin: calico
+calico_version: "v3.19.2"
+ipip: false
+calico_vxlan_mode: Always
+# if a node may have several interfaces
+# set the ip autodetection method to the internal nodes network CIDR
+calico_ip_auto_method: "cidr=192.168.0.0/16"
+
+kube_proxy_mode: iptables
+
+kube_service_addresses: 10.96.0.0/12
+kube_pods_subnet: 10.244.0.0/16
+
+cluster_name: cluster.local
+
+## Container runtime
+## Kubernetes need to configure containerd cgroup driver.
+## Enabling kubespray container engine deployment ensure  containerd config file is set.
+## deploy_container_engine: false
+container_manager: containerd
+
+## last version on ubuntu 20.04 is 1.4.11-1 and kubespray doesn't support it yet
+## but it is already installed in fe ubuntu 20.04 base image
+## to fix this: downgrade containerd to last version supported by crictl: 1.4.9-1
+# containerd_package_info:
+#   pkgs:
+#     "containerd.io=1.4.11-1"
+
+## Kubeadm config
+## only for single master clusters for multiple master cluster,
+## enabling this feature prevent secondary masters to join the cluster
+## With multiple masters, you need to enable it through the 
+## upgrade-cluster.yml playbook. The related commands are describe
+## in the README.md
+# podsecuritypolicy_enabled: true
+
+kube_apiserver_enable_admission_plugins: [NodeRestriction]
+
+kube_kubeadm_controller_extra_args:
+  use-service-account-credentials: true
+
+kubernetes_audit: true
+audit_log_path: /var/log/k8s_audit.log
+audit_log_maxage: 30
+audit_log_maxbackups: 10
+audit_log_maxsize: 100
+
+##  to get kubectl config file generated in library/kubespray/inventory/mycluster/artifacts/
+kubeconfig_localhost: true
+
+# Enable prometheus metrics queries
+kube_proxy_metrics_bind_address: 0.0.0.0:10249

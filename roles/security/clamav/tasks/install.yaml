@@ -1,0 +1,37 @@
+- name: Install Clamav
+  apt: 
+    name: clamav={{ clamav.clamav_version }}
+    state: present
+
+- name: Stop service clamav-freshclam to update signature
+  systemd:
+    name: clamav-freshclam
+    state: stopped
+
+- name: Update Signature database
+  command:   
+    cmd: freshclam
+
+- name: Start service clamav-freshclam
+  systemd:
+    name: clamav-freshclam
+    state: started
+
+# Download signature base
+- name: Set cron ClamAV signature base is updated each day
+  cron:
+    name: "{{ clamav.cron_update.name | default('ClamAv') }}"
+    hour: "{{ clamav.cron_update.hour | default(2) }}"
+    minute: "0"
+    job: "freshclam"
+
+- name: Creates directory /var/log/clamav
+  file:
+    path: /var/log/clamav
+
+# - name: Set cron ClamAV scan
+#   cron:
+#     name: "{{ clamav.cron_scan.name | default('ClamAv Scan') }}"
+#     hour: "{{ clamav.cron_scan.hour | default(4) }}"
+#     minute: "0"
+#     job: "find / -not -path '/sys*' -not -path '/proc*' -mmin -60 -type f | xargs -P 1 clamscan --infected | logger -i -t clamd -p auth.alert"

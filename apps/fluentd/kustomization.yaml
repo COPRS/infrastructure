@@ -1,0 +1,18 @@
+resources:
+  - manifest.yaml
+commonLabels:
+  app.kubernetes.io/managed-by: Kustomize
+  app.kubernetes.io/instance: fluentd
+
+configMapGenerator:
+  - name: fluentd-custom-plugins
+    files:
+      - ./custom_plugins/filter_filename_properties.rb
+      - ./custom_plugins/filter_icd_formatter.rb
+      - ./custom_plugins/rename_key_util.rb
+      - ./custom_plugins/filter_rename_key.rb
+      - ./custom_plugins/out_loki.rb
+  - name: elasticsearch-templates
+    files:
+      - ./elasticsearch_templates/static_trace.json
+      - ./elasticsearch_templates/dynamic_trace.json

@@ -1,0 +1,5 @@
+k8s_namespaces:
+  - name: monitoring
+  - name: processing
+  - name: security
+  - name: infra

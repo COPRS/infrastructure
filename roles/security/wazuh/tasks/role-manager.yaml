@@ -1,0 +1,78 @@
+- name: Install Wazuh-Manager
+  apt:  
+    name: wazuh-manager={{ wazuh.wazuh_version }}
+    state: present
+    update_cache: yes
+    cache_valid_time: 86400
+
+- name: Create registration password file
+  copy:
+    dest: "{{ wazuh.wazuh_registration_file_path }}"
+    content: |
+        {{ wazuh.wazuh_registration_password }}
+    group: ossec
+    owner: root
+    mode: '0640'
+
+- name: Write conf from facts
+  copy:
+    dest: "{{ wazuh.wazuh_ossec_agent_conf }}"
+    content: "{{ wazuh.agent_conf }}"
+    mode: '0640'
+    owner: ossec
+    group: ossec
+
+- name: Write specific wazuh manager if wazuh.ossec_conf is defined
+  block:
+    
+    - name: Delete old ossec_conf
+      file:
+        state: absent
+        path: "{{ wazuh.wazuh_ossec_conf }}"
+
+    - name: Rewrite ossec_conf
+      copy:
+        dest: "{{ wazuh.wazuh_ossec_conf }}"
+        content: "{{ wazuh.ossec_conf }}"
+
+  when: wazuh.ossec_conf is defined 
+
+- name: Set Password authentication
+  replace:
+    path: "{{ wazuh.wazuh_ossec_conf }}"
+    after: '<use_password>'
+    before: '</use_password>'
+    regexp: '^(.+)$'
+    replace: "yes"
+
+- name: Disable all unused decoders
+  lineinfile:
+    path: "{{ wazuh.wazuh_ossec_conf }}"
+    insertafter: '</decoder_dir>'
+    line: '    <decoder_exclude>{{ item }}</decoder_exclude>'
+  loop: "{{ wazuh.unused_decoders }}"
+  no_log: true
+  when: "wazuh.unused_decoders is defined"
+
+- name: Disable all unused rules
+  lineinfile:
+    path: "{{ wazuh.wazuh_ossec_conf }}"
+    insertafter: '</rule_dir>'
+    line: '    <rule_exclude>{{ item }}</rule_exclude>'
+  loop: "{{ wazuh.unused_rules }}"
+  no_log: true
+  when: "wazuh.unused_rules is defined"
+
+- name: restart service wazuh-manager
+  systemd:
+    name: wazuh-manager
+    state: restarted
+
+- name: Get nodes already under management
+  shell:
+    cmd: '/var/ossec/bin/agent_control -lcj'
+  register: wazuh_joined_machines_output
+
+- name: Get list of already present nodes
+  set_fact:
+    wazuh_nodes_list: "{{ wazuh_joined_machines_output.stdout | from_json | community.general.json_query('data[*].name')}}"

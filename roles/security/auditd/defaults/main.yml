@@ -1,0 +1,21 @@
+---
+# default vars file for auditd
+auditd:
+  # Requiered
+  auditd_rules_dir: "/etc/audit/rules.d/"
+  auditd_dir: "/etc/audit/"
+  auditd_version: "1:2.8.5-2ubuntu6"
+
+  #Optional
+  # rules : 
+  #   - name: 000-auditConf.rules
+  #     rules : |
+  #       -D
+  #       -b 8192
+  #       -f 1
+  #       -i 
+  
+  # laurel:
+  #   laurel_url: https://github.com/threathunters-io/laurel/releases/download/v0.2.0/laurel-v0.2.0-x86_64-musl.tar.gz
+  #   laurel_audisp: | CONF HERE
+  #   laurel_config: | CONF HERE

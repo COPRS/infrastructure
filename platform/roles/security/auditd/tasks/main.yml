@@ -1,9 +1,0 @@
----
-- name: Install Auditd
-  import_tasks: install.yaml
-  tags: auditd
-
-- name: Uninstall Auditd
-  import_tasks: uninstall.yaml
-  tags: ['never', 'uninstall_auditd']
-  

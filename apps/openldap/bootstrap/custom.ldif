@@ -1,0 +1,81 @@
+# /!\ member attribute is mandatory for groupOfNames 
+# /!\ and each group must at least possess one user in member attribute
+# /!\ format used: "member: uid=myUser, ou=groups, dc=cluster, dc=local"
+
+# users, cluster.local
+dn: ou=users,dc=cluster,dc=local
+objectClass: organizationalUnit
+ou: users
+
+# rs-admin, users, cluster.local
+dn: uid=rs-admin,ou=users,dc=cluster,dc=local
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: shadowAccount
+uid: rs-admin
+userPassword:: e1NTSEF9MjhxSVdBSWhkVGh1WjlPdmJwOEpONjNGZE1sOHRYVHc=
+loginShell: /bin/bash
+sn:: IA==
+gidNumber: 2000
+mail: rs-admin@rs.eu
+givenName:: IA==
+shadowInactive: -1
+shadowMax: 9999
+uidNumber: 2001
+shadowExpire: -1
+shadowWarning: 7
+cn: rs-admin
+homeDirectory: rs-admin
+
+# groups, cluster.local
+dn: ou=groups,dc=cluster,dc=local
+objectClass: organizationalUnit
+ou: groups
+
+# sudo, groups, cluster.local
+dn: cn=sudo,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: sudo
+gidNumber: 27
+member: uid=rs-admin,ou=users,dc=cluster,dc=local
+
+# user, groups, cluster.local
+dn: cn=rs-user,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: rs-user
+gidNumber: 2000
+member: uid=rs-admin,ou=users,dc=cluster,dc=local
+
+# rs-admin, groups, cluster.local
+dn: cn=rs-admin,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: rs-admin
+gidNumber: 2001
+member: uid=rs-admin,ou=users,dc=cluster,dc=local
+
+# operator, groups, cluster.local
+dn: cn=operator,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: operator
+gidNumber: 2002
+member: uid=rs-admin,ou=users,dc=cluster,dc=local
+
+# security, groups, cluster.local
+dn: cn=security,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: security
+gidNumber: 2003
+member: uid=rs-admin,ou=users,dc=cluster,dc=local
+
+# networking, groups, cluster.local
+dn: cn=networking,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: networking
+gidNumber: 2004
+member: uid=rs-admin,ou=users,dc=cluster,dc=local

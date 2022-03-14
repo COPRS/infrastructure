@@ -10,11 +10,16 @@ server:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
-        - matchExpressions:
-          - key: "node-role.kubernetes.io/worker"
-            operator: In
-            values:
-            - processing
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
 skipper:
   image:
     tag: 2.8.1-debian-10-r6
@@ -22,19 +27,58 @@ skipper:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
-        - matchExpressions:
-          - key: "node-role.kubernetes.io/worker"
-            operator: In
-            values:
-            - processing
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+metrics:
+  enabled: true
+  image:
+    repository: bitnami/prometheus-rsocket-proxy
+    tag: 1.3.0-debian-10-r334
+  serviceMonitor:
+    enabled: true
+    interval: 2m
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 waitForBackends:
   image:
     tag: 1.22.2-debian-10-r39
 mariadb:
-  enabled: true
+  enabled: false
 rabbitmq:
   enabled: false
+externalDatabase:
+  host: postgresql.infra.svc.cluster.local
+  port: 5432
+  driver: org.postgresql.Driver
+  scheme: postgresql
+  password: scdfpassword
+  dataflow:
+    database: dataflow
+    username: scdf
+  skipper:
+    database: skipper
+    username: scdf
 externalKafka:
   enabled: true
-  brokers: kafka.infra.svc.cluster.local:9092
-  zkNodes: kafka-zookeeper.infra.svc.cluster.local:2181
+  brokers: kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+  zkNodes: kafka-cluster-zookeeper-client.infra.svc.cluster.local:2181

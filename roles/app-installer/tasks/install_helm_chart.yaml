@@ -1,0 +1,25 @@
+- name: "{{ app_name }} | Check whether the release is already installed"
+  community.kubernetes.helm_info:
+    name: "{{ app_name }}"
+    release_namespace: "{{ app_namespace | default(default) }}"
+  register: helm_info
+
+- name: "{{ app_name }} | Install helm charts"
+  kubernetes.core.helm:
+    chart_ref: "{{ app.chart_ref }}"
+    chart_repo_url: "{{ app.chart_repo_url | default(omit) }}"
+    chart_version: "{{ app.chart_version | default(omit) }}"
+    name: "{{ app_name }}"
+    release_namespace: "{{ app_namespace | default(default) }}"
+    create_namespace: "{{ create_namespace | default(false) }}"
+    values: "{{ lookup('file', app_dir + '/values.yaml') | from_yaml }}"
+    disable_hook: "{{ app.no_hooks | default(false) }}"
+    wait: "{{ app.wait | default(false) }}"
+    wait_timeout: "{{ app.wait_timeout | default('5m0s') }}"
+  register: helm
+  when: helm_info.status is not defined
+
+- name: "{{ app_name }} | Display informations"
+  debug:
+    msg: "{{ helm.stdout_lines }}"
+  when: helm_info.status is not defined

@@ -4,15 +4,40 @@ tags:
 
 graylog:
   image:
-    repository: graylog/graylog:4.2.1-1
-
+    repository: graylog/graylog:4.2.3-1
+  
+  replicas: 2
+  
   mongodb:
     uri:  mongodb://graylog:grayl0gPassw0rd@mongodb.infra.svc.cluster.local/graylog
 
   elasticsearch:
-    hosts: http://elasticsearch-master.infra.svc.cluster.local:9200
+    hosts: http://elasticsearch-security-es-coordinating.security.svc.cluster.local:9200 
     version: 7
     
   persistence:
     storageClass: ceph-block
     size: 10Gi
+  
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  resources:
+    limits:
+      cpu: 1
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1024Mi
+
+  env:
+    GRAYLOG_TRUSTED_PROXIES: 10.244.0.0/16
+
+  externalUri: http://security.DOMAIN_NAME/graylog
+  
+  ingress:
+    enabled: false

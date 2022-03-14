@@ -1,0 +1,11 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: controller-manager-metrics-monitor
+spec:
+  endpoints:
+    - port: metrics
+      interval: 2m
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: grafana-operator

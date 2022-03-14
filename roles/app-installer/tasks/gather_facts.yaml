@@ -1,0 +1,52 @@
+- name: "{{ app_name }} | Check whether kustomization exists"
+  stat:
+    path: "{{ app_dir }}/kustomization.yaml"
+  register: kustomization
+
+- name: "{{ app_name }} | Check whether values exists"
+  stat:
+    path: "{{ app_dir }}/values.yaml"
+  register: values
+
+- name: "{{ app_name }} | Check whether additional_resources directory exists"
+  stat:
+    path: "{{ app_dir }}/additional_resources"
+  register: additional_resources
+
+- name: "{{ app_name }} | Fail when neither file is present"
+  fail:
+    msg: "No kustomization.yaml or values.yaml file found in {{ app_dir }}"
+  when: 
+    - not kustomization.stat.exists
+    - not values.stat.exists
+
+- name: "{{ app_name }} | Check whether config.yaml file exists"
+  stat:
+    path: "{{ app_dir }}/config.yaml"
+  register: config_file
+
+- name: "{{ app_name }} | Config file does not exist"
+  fail:
+    msg: "No config.yaml file found in {{ app_dir }}"
+  when: 
+    - not config_file.stat.exists
+    - values.stat.exists
+
+- name: "{{ app_name }} | Get config from {{ config_file.stat.path }}"
+  include_vars:
+    file: "{{ config_file.stat.path }}"
+    name: "app"
+  when: config_file.stat.exists
+
+- name: "{{ app_name }} | Fallback for namespace: read kustomization.yaml"
+  include_vars:
+    file: "{{ app_dir }}/kustomization.yaml"
+  when:
+    - kustomization.stat.exists
+    - not config_file.stat.exists
+  register: fallback
+
+- name: "{{ app_name }} | Set facts"
+  set_fact:
+    app_namespace: "{% if  config_file.stat.exists and app.namespace is defined %}{{ app.namespace }}{% elif fallback.skipped is not defined and namespace is string %}{{ namespace }}{% else %}default{% endif %}"
+    create_namespace: "{{ app.create_namespace | d(helm_create_namespace, true) }}"

@@ -1,0 +1,7 @@
+{
+    "type": "s3",
+    "settings": {
+      "client": "default",
+      "bucket": "ES_SECU_BUCKET"
+    }
+  }

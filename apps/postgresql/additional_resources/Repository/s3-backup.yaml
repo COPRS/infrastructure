@@ -1,0 +1,14 @@
+apiVersion: stash.appscode.com/v1alpha1
+kind: Repository
+metadata:
+  name: s3-postgresql-backup
+  labels:
+    app.kubernetes.io/instance: postgresql
+    app.kubernetes.io/managed-by: additional_resources
+spec:
+  backend:
+    s3:
+      endpoint: S3_ENDPOINT
+      bucket: S3_POSTGRESQL_BACKUP_BUCKET
+      region: S3_REGION
+    storageSecretName: stash-s3-credentials

@@ -1,0 +1,37 @@
+# default values at https://github.com/rook/rook/blob/master/deploy/charts/rook-ceph/values.yaml
+
+image:
+  repository: rook/ceph
+  tag: v1.7.7
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+csi:
+  enableRbdDriver: true
+  enableCephfsDriver: true
+  enableCephfsSnapshotter: true
+  enableRBDSnapshotter: true
+  provisionerReplicas: 2
+
+  cephcsi.image: quay.io/cephcsi/cephcsi:v3.4.0
+  registrar.image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
+  resizer.image: k8s.gcr.io/sig-storage/csi-resizer:v1.3.0
+  provisioner.image: k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
+  snapshotter.image: k8s.gcr.io/sig-storage/csi-snapshotter:v4.2.0
+  attacher.image: k8s.gcr.io/sig-storage/csi-attacher:v3.3.0
+
+  volumeReplication:
+    enabled: false
+    image: quay.io/csiaddons/volumereplication-operator:v0.1.0
+
+  provisionerNodeAffinity: node-role.kubernetes.io/infra
+
+discover.nodeAffinity: node-role.kubernetes.io/infra
+admissionController.nodeAffinity: node-role.kubernetes.io/infra
+monitoring.enabled: true

@@ -1,0 +1,57 @@
+- name: Install app
+  block:
+    - name: "{{ app_name }} | Gather facts"
+      local_action:
+        module: import_tasks
+        file: gather_facts.yaml
+
+    - name: "{{ app_name }} | Deploy with kustomize"
+      include_tasks: kustomize.yaml
+      when: kustomization.stat.exists
+      
+    - name: "{{ app_name }} | Deploy with Helm"
+      include_tasks: install_helm_chart.yaml
+      when:
+        - not kustomization.stat.exists
+        - values.stat.exists
+
+    - name: "{{ app_name }} | Apply additional resources"
+      include_tasks: additional_resources.yaml
+      when: additional_resources.stat.exists
+
+    - name: "Add {{ app_name }} to parsed apps"
+      set_fact:
+        parsed_apps: "{{ parsed_apps + [ app_name ] }}"
+  
+  always:
+    - name: "{{ app_name }} | Remove kustomize tmp dir"
+      file:
+        path: "{{ kustomize_dir.path }}"
+        state: absent
+      when:
+        - kustomize_dir.path is defined
+        - not debug
+
+    - name: "{{ app_name }} | Remove additional tmp dir"
+      file:
+        path: "{{ additional_resources_dir.path }}"
+        state: absent
+      when: additional_resources_dir.path is defined
+
+    - name: "{{ app_name }} | Remove tmp file"
+      file:
+        path: "{{ temp_values.path }}"
+        state: absent
+      when: 
+        - temp_values.path is defined
+        - not debug
+
+    - name: Warn about not deleted tmp files/folders
+      debug:
+        msg:
+          - "DEBUG: temporary files/folders have been kept to ease debugging of your application:"
+          - "{% if kustomize_dir.path is defined %}{{ kustomize_dir.path }}{% endif %}"
+          - "{% if temp_values.path is defined %}{{ temp_values.path }}{% endif %}"
+          - "DO NOT FORGET TO DELETE THE TEMPORARY FILES/FOLDER WHEN YOU ARE DONE"
+      when:
+        - debug

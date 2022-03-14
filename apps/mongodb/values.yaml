@@ -1,37 +1,54 @@
 image:
   tag: 5.0.3-debian-10-r38
-architecture: standalone
+architecture: replicaset
 auth:
   enabled: true
   username: graylog
   password: grayl0gPassw0rd
   database: graylog
+  replicaSetKey: testtest
 persistence:
   enabled: true
   storageClass: ceph-block
-primary:
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
+  size: 30Gi
+replicaCount: 3
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
         - matchExpressions:
-          - key: "node-role.kubernetes.io/worker"
-            operator: In
-            values:
-            - infra
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchExpressions:
-          - key: app.kubernetes.io/component
-            operator: In
-            values:
-            - mongodb
-        topologyKey: "kubernetes.io/hostname"
+          - key: "node-role.kubernetes.io/infra"
+            operator: Exists
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+    - labelSelector:
+        matchExpressions:
+        - key: app
+          operator: In
+          values:
+          - mongodb
+      topologyKey: kubernetes.io/hostname
+arbiter:
+  enabled: false
+metrics:
+  enabled: true
+  image:
+    repository: bitnami/mongodb-exporter
+    tag: 0.11.2-debian-10-r354
+  serviceMonitor:
+    enabled: true
+    interval: 2m
+  resources:
+    limits:
+      cpu: 50m
+      memory: 128Mi
+    requests:
+      cpu: 20m
+      memory: 64Mi
 resources:
   limits:
     cpu: 300m
-    memory: 2048Mi
+    memory: 2Gi
   requests:
     cpu: 100m
     memory: 512Mi

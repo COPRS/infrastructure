@@ -1,0 +1,38 @@
+- name: install wazuh agent
+  apt:  
+    name: wazuh-agent={{ wazuh.wazuh_version }}
+    state: present
+    update_cache: yes
+    cache_valid_time: 86400
+
+- name: Create registration password file
+  copy:
+    dest: "{{ wazuh.wazuh_registration_file_path }}"
+    content: |
+        {{ wazuh.wazuh_registration_password }}
+    group: ossec
+    owner: root
+    mode: '0640'
+
+- name: get Wazuh manager IP address
+  set_fact:
+    wazuh_manager_ip: "{{ hostvars[groups['kube_control_plane'][0]]['ansible_default_ipv4']['address'] }}"
+
+- name: Set Wazuh Manager remote IP address
+  replace:
+    path: /var/ossec/etc/ossec.conf
+    after: '<address>'
+    before: '</address>'
+    regexp: '^(.+)$'
+    replace: "{{ wazuh_manager_ip }}"
+
+- name: Join Wazuh Manager
+  shell:
+    cmd: /var/ossec/bin/agent-auth -m {{ wazuh_manager_ip }}
+  no_log: True
+  when: "inventory_hostname not in hostvars[groups['kube_control_plane'][0]]['wazuh_nodes_list'] "
+
+- name: Restart Wazuh Agent to apply configuration
+  systemd:
+    name: wazuh-agent
+    state: restarted

@@ -1,0 +1,31 @@
+- name: "{{ app_name }} | tmp file for values.yaml"
+  tempfile:
+    state: file
+    suffix: values
+  register: temp_values
+
+- name: "{{ app_name }} | copy values.yaml to remote host"
+  copy:
+    src: "{{ values.stat.path }}"
+    dest: "{{ temp_values.path }}"
+
+- name: "{{ app_name }} | Create manifest.yaml from Helm chart with values"
+  shell:
+    cmd: >
+      helm template {{ app_name }} {{ app.chart_ref }}
+      {% if app.atomic is defined %}--atomic{% endif %}
+      {% if app.chart_version is defined %}--version {{ app.chart_version }}{% endif %}
+      {% if app.create_namespace is defined %}--create-namespace{% endif %}
+      {% if app_namespace is defined %}--namespace {{ app_namespace}}{% endif %}
+      {% if app.no_hooks is defined %}--no-hooks{% endif %}
+      {% if app.timeout is defined %}--timeout {{ app.timeout }}{% endif %}
+      {% if app.include_crds is defined %}--include-crds{% endif %}
+      {% if temp_values.path is defined %}--values {{ temp_values.path }}{% endif %}
+      {% if app.wait is defined %}--wait{% endif %}
+  register: manifest
+
+- name: "{{ app_name }} | Send manifest.yaml to controller"
+  copy:
+    content: "{{ manifest.stdout }}"
+    dest: "{{ values.stat.path | dirname }}/manifest.yaml"
+  delegate_to: localhost

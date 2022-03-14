@@ -1,3 +1,4 @@
 chart_ref: kongz/graylog
-chart_version: 1.8.10
+chart_version: 1.9.2
 namespace: security
+atomic: true

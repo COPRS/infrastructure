@@ -1,0 +1,8 @@
+---
+- name: Install nmap
+  import_tasks: install.yaml
+  tags: nmap
+
+- name: Uninstall nmap
+  import_tasks: uninstall.yaml
+  tags: ['never', 'uninstall_nmap']

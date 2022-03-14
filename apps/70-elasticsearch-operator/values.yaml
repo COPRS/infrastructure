@@ -1,0 +1,30 @@
+replicaCount: 1
+
+image:
+  repository: docker.elastic.co/eck/eck-operator
+  tag: 1.9.0
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+config:
+  logVerbosity: "0"
+  metricsPort: "9115"
+  containerRegistry: docker.elastic.co
+
+podMonitor:
+  enabled: true
+  interval: 2m
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/infra"
+            operator: Exists

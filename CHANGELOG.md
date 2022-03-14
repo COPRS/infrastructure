@@ -11,7 +11,47 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
-## [Unreleased]
+## [0.3.0-rc4] - 2022-03-07
+### Fixed
+- [#287 - [BUG] [Infra] Apparmor prevents node-exporter from exporting utilisation metrics](https://github.com/COPRS/SCRUM-Tickets/issues/287)
+
+## [0.3.0-rc3] - 2022-02-18
+### Fixed
+- [#274 - [BUG] [Infra] Processing traces are not forwarded to elasticsearch](https://github.com/COPRS/SCRUM-Tickets/issues/274)
+- [#281 - [BUG] Several Grafana actions are forbidden](https://github.com/COPRS/SCRUM-Tickets/issues/281)
+
+## [0.3.0-rc2] - 2022-02-04
+### Fixed
+- [#251 - [BUG] [Infra] Elasticsearch app sample configuration has no coordinating node](https://github.com/COPRS/SCRUM-Tickets/issues/251)
+
+## [0.3.0-rc1] - 2021-12-15
+### Added
+- [#102 - [Tradeoff] Using ISTIO ?](https://github.com/COPRS/SCRUM-Tickets/issues/102)
+- [#125 - Backup and restore databases - ELASTICSEARCH](https://github.com/COPRS/SCRUM-Tickets/issues/125)
+- [#126 - SECURITY: Monitor specific scenarios through the SIEM](https://github.com/COPRS/SCRUM-Tickets/issues/126)
+- [#175 - FinOPS: monitor & control system costs - RESOURCES](https://github.com/COPRS/SCRUM-Tickets/issues/175)
+- [#178 - Compliance to "Non Functional Requirements"](https://github.com/COPRS/SCRUM-Tickets/issues/178)
+- [#179 - Security: deploy, configure FALCO and link logs to the SIEM](https://github.com/COPRS/SCRUM-Tickets/issues/179)
+- [#185 - Backup and Restore databases - POSTGRESQL](https://github.com/COPRS/SCRUM-Tickets/issues/185)
+- [#186 - Backup and Restore databases - LDAP](https://github.com/COPRS/SCRUM-Tickets/issues/186)
+- [#187 - FinOPS: monitor & control system costs - STORAGE](https://github.com/COPRS/SCRUM-Tickets/issues/187)
+- [#188 - FinOPS: monitor & control system costs - NETWORK](https://github.com/COPRS/SCRUM-Tickets/issues/188)
+- [#189 - Ingress Controller](https://github.com/COPRS/SCRUM-Tickets/issues/189)
+  
+## [0.2.0-rc1] - 2021-12-15
+### Added
+- [#79 - SECURITY: live demonstration of FALCO](https://github.com/COPRS/SCRUM-Tickets/issues/79)
+- [#117 - MONITORING: Process new format of traces](https://github.com/COPRS/SCRUM-Tickets/issues/117)
+- [#119 - MONITORING: deploy LOKI](https://github.com/COPRS/SCRUM-Tickets/issues/119)
+- [#120 - Security : List of trusted sources](https://github.com/COPRS/SCRUM-Tickets/issues/120)
+- [#121 - INFRA/SECURITY: Deploy the new IAM solution](https://github.com/COPRS/SCRUM-Tickets/issues/121)
+- [#122 - SECURITY: Deploy the secret management solution](https://github.com/COPRS/SCRUM-Tickets/issues/122)
+- [#123 - INFRA: Provide a base image to use for future developments](https://github.com/COPRS/SCRUM-Tickets/issues/123)
+- [#124 - SECURITY: Provide a security clearance after deployment](https://github.com/COPRS/SCRUM-Tickets/issues/124)
+- [#145 - MONITORING: Deploy the metrics, log and trace chain](https://github.com/COPRS/SCRUM-Tickets/issues/145)
+
+### Fixed
+- [#154 - [Infra] Second master fails to join cluster during Kubernetes deployment](https://github.com/COPRS/SCRUM-Tickets/issues/154)
 
 ## [0.1.0-rc1] - 2021-11-17
 ### Added
@@ -25,18 +65,3 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 - [#90 - Deploy the latest version of Kafka](https://github.com/COPRS/SCRUM-Tickets/issues/90)
 - [#91 - Deploy Rook/CephFS into the cluster](https://github.com/COPRS/SCRUM-Tickets/issues/91)
 - [#97 - Deploy infrastructure](https://github.com/COPRS/SCRUM-Tickets/issues/97)
-
-### Changed
-None
-
-### Deprecated
-None
-
-### Removed
-None
-
-### Fixed
-None
-
-### Security
-None

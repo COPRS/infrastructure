@@ -1,0 +1,9 @@
+Host {{ main_gateway_ip }}
+    Hostname {{ main_gateway_ip }}
+    StrictHostKeyChecking no
+    ControlMaster auto
+    ControlPath ~/.ssh/ansible-%r@%h:%p
+    ControlPersist 5m
+
+Host *
+    ProxyCommand ssh -F /dev/null -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -W %h:%p -p 22 {{ safescale_operator }}@{{ main_gateway_ip }} -i {{ ssh_key_path }}/gw-{{ cluster.name }}.pem

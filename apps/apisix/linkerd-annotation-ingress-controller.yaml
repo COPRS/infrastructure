@@ -1,0 +1,9 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apisix-ingress-controller
+spec:
+  template:
+    metadata:
+      annotations:
+        config.linkerd.io/skip-outbound-ports: "9180"
