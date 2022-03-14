@@ -117,18 +117,23 @@ This project exploits Kubespray to deploy Kubernetes.
 The fully detailed documentation and configuration options are available on its page: [https://kubespray.io/](https://kubespray.io/#/)
 
 ## Tree view
-The repository is made of the following main directories.  
+The repository is made of the following main directories.
+
 - apps
 - doc
 - platform
+
 ### Apps
 This folder gathers the configuration of the applications deployed on the platform.  
 Each application has its own folder inside apps with the values of the Helm chart, the kustomization files, the patches related, and any additional kubernetes resources.  
 The application's directory can be split by environment with subfolders like dev, prod, etc.
+
 ### Doc
 Here we find all the documentation describing the infrastructure deployment and maintenance operations.
+
 ### Platform
 This directory concentrates what is required to deploy the infrastructure with Ansible.  
+
 - **collections/kubespray**: folder where kubespray is integrated into the project as a git submodule.
     - `cluster.yaml` the Ansible playbook to run to deploy Kubernetes.
 - **inventory**: 
@@ -162,7 +167,8 @@ This directory concentrates what is required to deploy the infrastructure with A
 
 ## Apps
 
-Configurations proposed by default :  
+Configurations proposed by default :
+
 - **Rook Ceph** 
   - Chart Helm 
     - URL : charts.rook.io/release
