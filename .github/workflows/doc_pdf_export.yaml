@@ -1,0 +1,77 @@
+name: Infrastructure Documentation Export 
+
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+-rc[0-9]+"
+  workflow_dispatch:
+
+jobs:
+  convert_readme_via_pandoc:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: make output dir
+        id: make_output_dir
+        run: mkdir output # create output dir
+
+      - name: Create PDF
+        uses: docker://ghcr.io/coprs/reference-system-software:dependencies_pandoc_latex
+        with:
+          args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/infrastructure_readme.pdf" --from=markdown README.md
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: documentation
+          path: output
+          
+  convert_docs_via_pandoc:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        document: [config, user_manual]
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: make output dir
+        id: make_output_dir
+        run: mkdir output # create output dir
+
+      - name: Create PDF
+        continue-on-error: true
+        uses: docker://ghcr.io/coprs/reference-system-software:dependencies_pandoc_latex
+        with:
+          args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc/how-to:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/${{ matrix.document }}.pdf" --from=markdown "doc/${{ matrix.document }}.md"
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: documentation
+          path: output
+
+  convert_howto_via_pandoc:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+            
+      - name: create file list
+        id: files_list
+        run: |
+          find "doc/how-to" -type f -name "*.md" | sort -V | awk '{ print "\""$0"\""}' | tr -s '\n' ' ' > list.txt
+          # this will also include README.md
+          # echo "::set-output name=files::$(printf '"%s" ' *.md)"
+          echo "::set-output name=files::$(cat list.txt)"
+          
+      - name: make output dir
+        id: make_output_dir
+        run: mkdir output # create output dir
+
+      - name: Create PDF
+        uses: docker://ghcr.io/coprs/reference-system-software:dependencies_pandoc_latex
+        with:
+          args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc/how-to:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/how-to.pdf" --from=markdown ${{ steps.files_list.outputs.files }}
+
+      - uses: actions/upload-artifact@master
+        with:
+          name: documentation
+          path: output
