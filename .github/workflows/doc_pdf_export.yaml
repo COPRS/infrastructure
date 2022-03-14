@@ -17,7 +17,7 @@ jobs:
         run: mkdir output # create output dir
 
       - name: Create PDF
-        uses: docker://ghcr.io/coprs/reference-system:dependencies_pandoc_latex
+        uses: docker://ghcr.io/coprs/reference-system-software:dependencies_pandoc_latex
         with:
           args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/infrastructure_readme.pdf" --from=markdown README.md
 
@@ -40,7 +40,7 @@ jobs:
 
       - name: Create PDF
         continue-on-error: true
-        uses: docker://ghcr.io/coprs/reference-system:dependencies_pandoc_latex
+        uses: docker://ghcr.io/coprs/reference-system-software:dependencies_pandoc_latex
         with:
           args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc/how-to:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/${{ matrix.document }}.pdf" --from=markdown "doc/${{ matrix.document }}.md"
 
@@ -67,7 +67,7 @@ jobs:
         run: mkdir output # create output dir
 
       - name: Create PDF
-        uses: docker://ghcr.io/coprs/reference-system:dependencies_pandoc_latex
+        uses: docker://ghcr.io/coprs/reference-system-software:dependencies_pandoc_latex
         with:
           args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc/how-to:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/how-to.pdf" --from=markdown ${{ steps.files_list.outputs.files }}
 
