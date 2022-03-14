@@ -149,6 +149,7 @@ ansible-playbook apps.yaml \
 ## Tree view
 
 The repository is made of the following main directories and files.
+
 - **apps**: A package example, gathering default applications deployed with Reference System platform.
 - **collections/kubespray**: folder where kubespray is integrated into the project as a git submodule.
     - `cluster.yml`: The Ansible playbook to run to deploy Kubernetes or to add a master node.
@@ -190,6 +191,7 @@ The repository is made of the following main directories and files.
 ## Apps
 
 Configurations proposed by default:
+
 - **Cert manager**
   - Helm chart:
     - Repository: charts.jetstack.io
