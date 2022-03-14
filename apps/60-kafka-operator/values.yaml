@@ -16,7 +16,7 @@ resources:
     memory: 1Gi
     cpu: 500m
   requests:
-    memory: 256Mi
+    memory: 512Mi
     cpu: 100m
 
 watchAnyNamespace: true
