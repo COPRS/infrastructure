@@ -28,5 +28,31 @@ startupapicheck:
   podAnnotations:
     linkerd.io/inject: disabled
 
+resources:
+  requests:
+    cpu: 10m
+    memory: 50Mi
+  limits:
+    cpu: 20m
+    memory: 100Mi
+
+webhook:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 20Mi
+    limits:
+      cpu: 20m
+      memory: 40Mi
+
+cainjector:
+  resources:
+    requests:
+      cpu: 10m
+      memory: 100Mi
+    limits:
+      cpu: 20m
+      memory: 200Mi
+
 # extraArgs:
 #   - --controllers=*,certificatesigningrequests-issuer-acme
