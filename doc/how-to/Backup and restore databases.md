@@ -11,6 +11,7 @@
 The documentation used to create the daily backup can be found [here](https://stash.run/docs/v2021.11.24/concepts/crds/backupconfiguration/).
 
 Configure the schedule and the S3 bucket credentials by setting the following variables:
+
   - **apps/postgresql/additional_resources/BackupConfiguration/postgresql-daily.yaml**:
     - *spec.schedule*
     - *spec.retentionPolicy.keepLast*
@@ -25,6 +26,7 @@ Configure the schedule and the S3 bucket credentials by setting the following va
 ### Restore a chosen backup
 
 The restore is done in two steps:
+
  - download chosen backup to the running pod (~3 minutes service interruption then ~3 minutes of downloading depending on network speed)
  - trigger a restore in the running pod (~1 minute, no service downtine using *psql*)
 
@@ -96,6 +98,7 @@ kubectl exec -n infra postgresql-postgresql-0 -c postgresql -- /bin/bash -c "\
 The documentation used to create the daily backup can be found [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshots-take-snapshot.html#create-slm-policy).
 
 Configure the schedule and the S3 bucket credentials by setting the following variables:
+
   - **apps/030-elasticsearch-operator/additional_resources/ConfigMap/elasticsearch-backup-config.yaml**:
     - *data.snapshot-config.json.schedule*
     - *data.snapshot-config.json.retention.expire_after*
@@ -110,6 +113,7 @@ Configure the schedule and the S3 bucket credentials by setting the following va
 ### Restore a chosen backup 
 
 The restore is done in two steps:
+
  - download chosen backup to the running pods (no service interruption thanks to replication, then ~2 minutes of downloading depending on network speed)
  - trigger a restore in the leader running pod (~1 minute, no service downtine using *slapd*)
 
@@ -122,6 +126,7 @@ Then navigate to `Management` - `Stack Management` - `Data` - `Snapshot and Rest
 The documentation used to create the daily backup can be found [here](https://stash.run/docs/v2021.11.24/concepts/crds/backupconfiguration/).
 
 Configure the schedule and the S3 bucket credentials by setting the following variables:
+
   - **apps/openldap/additional_resources/BackupConfiguration/openldap-daily.yaml**:
     - *spec.schedule*
     - *spec.retentionPolicy.keepLast*
