@@ -39,6 +39,7 @@ jobs:
         run: mkdir output # create output dir
 
       - name: Create PDF
+        continue-on-error: true
         uses: docker://ghcr.io/coprs/reference-system:dependencies_pandoc_latex
         with:
           args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc/how-to:." --listings -H /root/.pandoc/listings-setup.tex --table-of-contents --pdf-engine=xelatex --output="output/${{ matrix.document }}.pdf" --from=markdown "doc/${{ matrix.document }}.md"
