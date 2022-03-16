@@ -1,0 +1,5 @@
+- name: Deploy rs-addon
+  hosts: gateway[0]
+  gather_facts: false
+  roles: 
+    - { role: "rs-addon" }
