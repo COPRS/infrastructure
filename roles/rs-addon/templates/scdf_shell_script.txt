@@ -1,0 +1,6 @@
+
+app import --uri file://{{ rs_addon_dir.path }}/{{ rs_addon_name }}/{{ rs_addon_name }}_Executables/stream-application-list.properties
+
+stream create --name {{ stream_name }} --definition {{ stream_definition }}
+
+stream deploy --name {{ stream_name }} --properties "{{ stream_properties }}"
