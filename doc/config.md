@@ -46,6 +46,7 @@
 | **Grafana** | - Namespace : monitoring <br> ------------------------ <br> **grafana** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Persistent Volume :  <br> &nbsp;&nbsp;&nbsp; - Size : 8Gi <br> &nbsp;&nbsp;&nbsp; - Access Mode : ReadWriteOnce <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 200m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 256Mi <br> ----------------------------- <br>  - QoS : Burstable <br> - Replicas : 1 <br> ------ <br> **manager** <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 400m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 512Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 256Mi <br> ------ <br> **kube-rbac-proxy** | 
 | **Graylog** | - Namespace : security <br> - QoS : Burstable <br> - Replicas : 2 <br> - Persistent Volume :  <br> &nbsp;&nbsp;&nbsp; - Size : 10Gi <br> &nbsp;&nbsp;&nbsp; - Access Mode : ReadWriteOnce <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 1 <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 2Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 1Gi | 
 | **Kafka Cluster** | - Namespace : infra <br> ------------------------ <br> **operator** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 256Mi <br> ------------------------ <br> **kafka** <br> - QoS : Burstable <br> - Replicas : 3 <br> - Persistent Volume :  <br> &nbsp;&nbsp;&nbsp; - Size : 200Gi <br> &nbsp;&nbsp;&nbsp; - Access Mode : ReadWriteOnce <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 1 <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 4Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 250m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 2Gi <br> ------------------------ <br> - QoS : Burstable <br> - Replicas : 1 <br> ------ <br> **topic-operator** <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 256Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 128Mi  <br> ------ <br> **user-operator** <br> ------ <br> **tls-sidecar** <br> ------------------------ <br> **exporter** <br>  - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 256Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 128Mi <br> ------------------------ <br> **zookeeper** <br> - QoS : Burstable <br> - Replicas : 3 <br> - Persistent Volume :  <br> &nbsp;&nbsp;&nbsp; - Size : 50Gi <br> &nbsp;&nbsp;&nbsp; - Access Mode : ReadWriteOnce <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 256Mi |
+| **Keda** | --Namespace : infra <br> ------------------------ <br> **operator** <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 1 <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1000Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 100Mi <br> ------------------------ <br> **metrics apiserver** <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 1 <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1000Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 100Mi  |
 | **Keycloak** | - Namespace : iam <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 2Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 250m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 512Mi |
 | **Kibana processing** | - Namespace : database <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1Gi <br> &nbsp;&nbsp;&nbsp;  - Request Memory : 1Gi |
 | **Kibana security** | - Namespace : security <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1Gi <br> &nbsp;&nbsp;&nbsp;  - Request Memory : 1Gi |
@@ -64,22 +65,10 @@
 | **Spring Cloud Data Flow** | - Namespace : processing <br> ---------------------------- <br> **server** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 1 <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 512Mi <br> ---------------------------- <br> **skipper** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 1 <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 1Gi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 512Mi <br> ---------------------------- <br> **prometheus-proxy** <br> - QoS : Burstable <br> - Replicas : 1 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 256Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 128Mi |  
 | **Stash** | - Namespace : infra <br> - QoS : Burstable <br> - Replicas : 1 <br> ------ <br> **operator** <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 512Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 50m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 128Mi  <br> ------ <br> **pushgateway** <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 128Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 50m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 64Mi |
 
-## Predefined groups and users
+## Predefined user, groups and client roles
 
-### Groups
+![](img/groups_and_roles.svg)
 
-| name | Services |
-| ---- | -------- |
-| networking | linkerd |
-| operator | grafana (admin) \| prometheus \| kibana processing \| spring cloud dataflow |
-| admin | keycloack (admin realm console) |
-| default | keycloack (user console) |
-| security | graylog \| kibana security |
-| sudo |  (sudoer for ssh) |
-
-### Users
-
-admin => ALL GROUPS
 
 ## Exposed services
 
@@ -102,8 +91,8 @@ admin => ALL GROUPS
 
 | Source (Logs) | Topics (Kafka) | Consumer | Nb consumer | Destination |
 | ------------- | -------------- | -------- | ----------- | ----------- |
-| /var/log/containers/\*.log (excluded : /var/log/containers/\*fluent\*.log) <br> **All logs** | fluentbit.processing | fluentd | 2 | Loki |
-| /var/log/containers/\*.log (excluded : /var/log/containers/\*fluent\*.log) <br> **Only log JSON contains : `header.type: REPORT`** | fluentbit.trace | fluentd | 2 | Elasticsearch Processing |
+| /var/log/containers/\*.log <br><br>Excluded : <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/\*fluent\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/\*_kube-system_\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/keycloak-?_iam_keycloak-\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/apisix-\*_networking_apisix-\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/falco-?????_security_falco\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/nmap-job-\*.log </br></br> **All logs** | fluentbit.processing | fluentd | 2 | Loki |
+| /var/log/containers/\*.log <br><br>Excluded : <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/\*fluent\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/\*_kube-system_\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/keycloak-?_iam_keycloak-\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/apisix-\*_networking_apisix-\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/falco-?????_security_falco\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/nmap-job-\*.log </br></br> **Only log JSON contains : `header.type: REPORT`** | fluentbit.trace | fluentd | 2 | Elasticsearch Processing |
 | /var/log/syslog | fluentbit.system | fluentd <br> graylog | 2 <br> 2 | Loki <br> Elasticsearch Security |
 | /var/log/containers/\*_kube-system_\*.log | fluentbit.docker_security | graylog | 2 | Elasticsearch Security |
 | /var/log/containers/keycloak-?_iam_keycloak-\*.log | fluentbit.keycloak | graylog | 2 | Elasticsearch Security |
