@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Generate CSV and intermediate HTML report
+      - name: Add doc properties on top
         run: |
           echo "# Software Installation Manual" >> patch.md
           echo "" >> patch.md
