@@ -21,6 +21,8 @@ pam_password md5
 
 # do not retry on connection failure
 bind_policy soft
+# set bind timeout to 2 seconds
+bind_timelimit 2
 
 {% if ldap_admin_password is defined %}
 # The distinguished name to bind to the server with.

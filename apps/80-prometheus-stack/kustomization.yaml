@@ -9,7 +9,7 @@ transformers:
   - metadataLabelTransformer.yaml
 
 resources:
-  - apisixroute-prometheus.yaml
+  - apisixroute.yaml
   - prometheus-priority.yaml
 
 helmCharts:
@@ -19,16 +19,3 @@ helmCharts:
   releaseName: "{{ app_name }}"
   valuesFile: values.yaml
   namespace: monitoring
-
-# patches:
-#   - patch: |-
-#       - op: replace
-#         path: /spec/selector
-#         values:
-#           - app.kubernetes.io/managed-by: prometheus-operator
-#           - app.kubernetes.io/name: prometheus
-#     target:
-#       version: v1
-#       kind: Service
-#       name: prometheus-stack-kube-prom-prometheus
-
