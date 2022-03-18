@@ -131,13 +131,13 @@ config:
   ## https://docs.fluentbit.io/manual/pipeline/filters
   filters: |
     [FILTER]
-      Name    grep
-      Match   *
-      Exclude $log['message']['content'] WARNING: kubernetes.io/cinder built-in volume provider is now deprecated
-    [FILTER]
       Name    modify
       Match   processing.*
       Rename  message log
+    [FILTER]
+      Name    grep
+      Match   *
+      Exclude $log['message']['content'] WARNING: kubernetes.io/cinder built-in volume provider is now deprecated
     [FILTER]
       Name    grep
       Match   processing.log.*
