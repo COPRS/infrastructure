@@ -11,6 +11,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+## [0.5.0-rc1] - 2022-03-18
+### Added
+- [#221 - Software component to deploy a RS addon / RS core on RS Platform](https://github.com/COPRS/SCRUM-Tickets/issues/221)
+- [#232 - Procedure to uninstall a RS-core / RS-add-on](https://github.com/COPRS/SCRUM-Tickets/issues/232)
+- [#265 - [SCALER][IMPLEMENTATION] horizontal scalling of pods](https://github.com/COPRS/SCRUM-Tickets/issues/265)
+- [#267 - [SECURITY][MONITOR][OPENLDAP] Provide monitoring for Openldap in Grafana](https://github.com/COPRS/SCRUM-Tickets/issues/267)
+- [#271 - [SECURITY] Connecting kubectl with Keycloak (oAuth2)](https://github.com/COPRS/SCRUM-Tickets/issues/271)
+
 ## [0.4.0-rc3] - 2022-03-07
 ### Fixed
 - [#287 - [BUG] [Infra] Apparmor prevents node-exporter from exporting utilisation metrics](https://github.com/COPRS/SCRUM-Tickets/issues/287)
