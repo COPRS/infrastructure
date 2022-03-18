@@ -131,6 +131,10 @@ config:
   ## https://docs.fluentbit.io/manual/pipeline/filters
   filters: |
     [FILTER]
+      Name    grep
+      Match   *
+      Exclude $log['message']['content'] WARNING: kubernetes.io/cinder built-in volume provider is now deprecated
+    [FILTER]
       Name    modify
       Match   processing.*
       Rename  message log
@@ -142,6 +146,18 @@ config:
       Name    grep
       Match   processing.log.*
       Exclude $log['header']['file'] ProductDistributionController.java
+    [FILTER]
+      Name    grep
+      Match   processing.log.*
+      Exclude log /.*Error processing append operation on partition.*/
+    [FILTER]
+      Name    grep
+      Match   processing.log.*
+      Exclude log /.*The size of the current ISR Set.*/
+    [FILTER]
+      Name    grep
+      Match   system.*
+      Exclude log /.*systemd: Created|Removed slice libcontainer_.*_systemd_test_default.slice./
     [FILTER]
       Name    grep
       Match   security.keycloak.*
