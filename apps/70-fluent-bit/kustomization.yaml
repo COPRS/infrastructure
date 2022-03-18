@@ -12,7 +12,6 @@ helmCharts:
 
 resources:
   - kafkatopic-fluentbit.auditd.yaml
-  - kafkatopic-fluentbit.docker-security.yaml
   - kafkatopic-fluentbit.falco.yaml
   - kafkatopic-fluentbit.ingress.yaml
   - kafkatopic-fluentbit.keycloak.yaml

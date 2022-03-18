@@ -58,7 +58,7 @@ config:
       parser           cri
       Tag              processing.log.*
       Path             /var/log/containers/*.log
-      Exclude_Path     /var/log/containers/*fluent*.log,/var/log/containers/*_kube-system_*.log,/var/log/containers/keycloak-?_iam_keycloak-*.log,/var/log/containers/apisix-*_networking_apisix-*.log,/var/log/containers/falco-?????_security_falco*.log,/var/log/containers/nmap-job-*.log
+      Exclude_Path     /var/log/containers/*fluent*.log,/var/log/containers/keycloak-?_iam_keycloak-*.log,/var/log/containers/apisix-*_networking_apisix-*.log,/var/log/containers/falco-?????_security_falco*.log,/var/log/containers/nmap-job-*.log
       DB               /var/log/fluentbit_processing.db
       DB.Sync          Normal
       Rotate_Wait      10
@@ -68,7 +68,7 @@ config:
       parser           cri
       Tag              processing.trace.*
       Path             /var/log/containers/*.log
-      Exclude_Path     /var/log/containers/*fluent*.log,/var/log/containers/*_kube-system_*.log,/var/log/containers/keycloak-?_iam_keycloak-*.log,/var/log/containers/apisix-*_networking_apisix-*.log,/var/log/containers/falco-?????_security_falco*.log,/var/log/containers/nmap-job-*.log
+      Exclude_Path     /var/log/containers/*fluent*.log,/var/log/containers/keycloak-?_iam_keycloak-*.log,/var/log/containers/apisix-*_networking_apisix-*.log,/var/log/containers/falco-?????_security_falco*.log,/var/log/containers/nmap-job-*.log
       DB               /var/log/fluentbit_trace.db
       DB.Sync          full
       Rotate_Wait      10
@@ -77,14 +77,6 @@ config:
       Tag              system.*
       Path             /var/log/syslog
       DB               /var/log/fluentbit_system.db
-      DB.Sync          Normal
-      Rotate_Wait      10
-      buffer_max_size  10MB
-    [INPUT]
-      Name             tail
-      Tag              security.container.*
-      Path             /var/log/containers/*_kube-system_*.log
-      DB               /var/log/fluentbit_kube-system.db
       DB.Sync          Normal
       Rotate_Wait      10
       buffer_max_size  10MB
@@ -144,6 +136,10 @@ config:
       Rename  message log
     [FILTER]
       Name    grep
+      Match   *
+      Exclude $log['message']['content'] WARNING: kubernetes.io/cinder built-in volume provider is now deprecated
+    [FILTER]
+      Name    grep
       Match   processing.log.*
       Exclude log /.*ignoring file with negative size file: .*: -1/
     [FILTER]
@@ -152,40 +148,24 @@ config:
       Exclude $log['header']['file'] ProductDistributionController.java
     [FILTER]
       Name    grep
-      Match   security.keycloak.*
-      Regex   log /.*type=LOGIN|LOGIN_ERROR.*/
+      Match   processing.log.*
+      Exclude log /.*Error processing append operation on partition.*/
     [FILTER]
       Name    grep
-      Match   security.ingress.*
-      Regex   log /.*stdout.*/
+      Match   processing.log.*
+      Exclude log /.*The size of the current ISR Set.*/
     [FILTER]
       Name    grep
       Match   system.*
       Exclude log /.*systemd: Created|Removed slice libcontainer_.*_systemd_test_default.slice./
     [FILTER]
       Name    grep
-      Match   system.*
-      Exclude log level=info
+      Match   security.keycloak.*
+      Regex   log /.*type=LOGIN|LOGIN_ERROR.*/
     [FILTER]
       Name    grep
-      Match   system.*
-      Exclude log systemd.*Succeeded.
-    [FILTER]
-      Name    grep
-      Match   system.*
-      Exclude log containerd.*[INFO]
-    [FILTER]
-      Name    grep
-      Match   security.container.*
-      Exclude log /.*\[INFO\]\[.*\] felix.*/
-    [FILTER]
-      Name    grep
-      Match   system.*
-      Exclude log kubelet.*Pod status updated|There were many similar errors|RemoveContainer.* 
-    [FILTER]
-      Name    grep
-      Match   system.*
-      Exclude log kernel
+      Match   security.ingress.*
+      Regex   log /.*stdout.*/
     [FILTER]
       Name    lua
       Match   processing.trace.*
@@ -218,17 +198,6 @@ config:
       K8S-Logging.Parser  On
       K8S-Logging.Exclude On
       Keep_Log            Off
-    [FILTER]
-      Name                kubernetes
-      Match               security.container.*
-      Kube_Tag_Prefix     security.container.var.log.containers.
-      Kube_URL            https://kubernetes.default.svc:443
-      Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-      Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
-      Merge_Log           On
-      K8S-Logging.Parser  On
-      K8S-Logging.Exclude On
-      Keep_Log            Off
 
   ## https://docs.fluentbit.io/manual/pipeline/outputs
   outputs: |
@@ -253,13 +222,6 @@ config:
       Match       system.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.system
-      Buffer_Size 64KB
-    [OUTPUT]
-      Name        kafka
-      Format      json
-      Match       security.container.*
-      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
-      Topics      fluentbit.docker-security
       Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
