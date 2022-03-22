@@ -42,7 +42,6 @@ aggregator:
     - name: elasticsearch-templates
       mountPath: /etc/fluent/elasticsearch_templates
   configMapFiles:
-    {% raw %}
     fluentd.conf: |
       # Ignore fluentd own events
       <label @FLUENT_LOG>
@@ -53,10 +52,7 @@ aggregator:
       </label>
       @include fluentd-inputs.conf
       @include fluentd-output.conf
-      {{- if .Values.metrics.enabled }}
       @include metrics.conf
-      {{- end }}
-    {% endraw %}
     fluentd-inputs.conf: |
       <source>
         @type kafka_group

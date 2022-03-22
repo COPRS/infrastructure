@@ -6,15 +6,14 @@ namespace: logging
 configMapGenerator:
   - name: fluentd-custom-plugins
     files:
-      - ./custom_plugins/filter_filename_properties.rb
-      - ./custom_plugins/filter_icd_formatter.rb
-      - ./custom_plugins/rename_key_util.rb
-      - ./custom_plugins/filter_rename_key.rb
-      - ./custom_plugins/out_loki.rb
+      - filter_filename_properties.rb
+      - filter_icd_formatter.rb
+      - rename_key_util.rb
+      - filter_rename_key.rb
   - name: elasticsearch-templates
     files:
-      - ./elasticsearch_templates/static_trace.json
-      - ./elasticsearch_templates/dynamic_trace.json
+      - static_trace.json=es_template-static_trace.json
+      - dynamic_trace.json=es_template-dynamic_trace.json
 
 helmCharts:
 - name: fluentd
