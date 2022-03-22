@@ -90,13 +90,15 @@ As the Wazuh playbook, we strongly advise you to use the provided version in par
 
 The purpose of the object `rotateIpReputation` is to create a bash file that is going to be executed once a day to update the ip reputation of suricata.
 rotateIpReputation object is optional, it is composed of 3 attributes:
+
 - The name that should end by .sh.
 - The content, it is the actions that want to perform to update the ip reputation of suricata in bash.
 - The cron paramater, as the name and the hour of execution each day.
 
 The same object structure is available by updating `rotate_rules` object, here the purpose is to describe the bash file that is going to update the rules each day.
 
-`categories` Object is composed of two attributes: 
+`categories` Object is composed of two attributes:
+
 - a name fir the file.
 - the content of the file following `id,short name,description` format. 
 It is used to manage categories for ip reputation. 
@@ -112,7 +114,8 @@ The COTS can be configured by updating the file : ```infrastructure/platform/rol
 | openvpn_version    |   OpenVPN version     |   Yes   |
 | conf_files   | List of objects that describe configuration files for openvpn  |    No      |     
 
-The `conf_files` is a list of file with th following structure : 
+The `conf_files` is a list of file with th following structure :
+
 - A `name`.
 - The `content` of the file. 
 It can be used to add certificate and client configuration for the VPN client.
