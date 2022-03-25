@@ -60,6 +60,12 @@ aggregator:
         consumer_group fluentd
         topics fluentbit.trace
       </source>
+      <source>
+        @type kafka_group
+        brokers kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+        consumer_group fluentd
+        topics /.*(event|job)/
+      </source>
       # Readyness probes source
       <source>
         @type http
@@ -86,6 +92,25 @@ aggregator:
         replace_rule1 \. _
       </filter>
 
+      <filter {**event,**job}>
+        @type record_transformer
+        <record>
+          kafka_topic ${tag}
+        </record>
+      </filter>
+
+      <match {**event,**job}>
+        @type loki
+        url "http://loki.logging.svc.cluster.local:3100"
+        <label>
+          kafka_topic
+        </label>
+        flush_interval 10s
+        flush_at_shutdown true
+        buffer_chunk_limit 2m
+        #extract_kubernetes_labels true
+        #remove_keys kubernetes
+      </match>
 
       <match fluentbit.trace>
         @id elasticsearch_index_trace
