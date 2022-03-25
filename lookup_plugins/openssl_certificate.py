@@ -5,9 +5,9 @@ __metaclass__ = type
 DOCUMENTATION = """
     lookup: openssl_certificate
     author: Aubin Lambaré <aubin.lambare@csgroup.eu>
-    short_description: create openssl  certificate
+    short_description: create openssl certificate
     description:
-        - This lookup return either a CA certificate
+        - This lookup return a CA certificate with its private key.
     options:
         _terms:
             description:
@@ -16,7 +16,7 @@ DOCUMENTATION = """
             required: true
         notAfter:
             description:
-                - Amount of seconds before certificate expirations. 
+                - Number of seconds before the certificate expires. 
                 - Default to 315360000 (10 years: 10*365*24*60*60).
             type: integer
         san:
@@ -24,11 +24,6 @@ DOCUMENTATION = """
                 - Subject alternative names.
                 - Expected domain name value. Ex: mysubdomain.mydomain.root   
             type: string
-        size:
-            description: 
-                - Size of the private key. 
-                - Default is 2048.
-            type: integer
 """
 
 from ansible.errors import AnsibleError
@@ -36,22 +31,15 @@ from ansible.plugins.lookup import LookupBase
 from ansible.module_utils.common.text.converters import to_native
 from ansible.utils.display import Display
 from OpenSSL import crypto
-import random
+from ecdsa import SigningKey, NIST256p
+from random import getrandbits
 
 display = Display()
 
-DefaultRSAKeySize = 2048
-
-def generate_key(size: int) -> bytes:
-    key = crypto.PKey()
-
-    cryptoType = crypto.TYPE_RSA
-
-    display.vvv("Create RSA key of size %i" % size)
-
-    key.generate_key(cryptoType, size)
-
-    return crypto.dump_privatekey(crypto.FILETYPE_PEM, key)
+def generate_ecdsa_private_key():
+    display.vvv("Create ECDSA private key with curve NIST256p.")
+    
+    return SigningKey.generate(curve=NIST256p).to_pem()
 
 def generate_certificate(privateKey:bytes, cn:str, notAfter:int, san:bytes = None) -> str:
     
@@ -59,16 +47,19 @@ def generate_certificate(privateKey:bytes, cn:str, notAfter:int, san:bytes = Non
         key = crypto.load_privatekey(crypto.FILETYPE_PEM, privateKey)
 
         cert = crypto.X509()
-        cert.set_serial_number(random.getrandbits(64))
+        cert.set_version(2)
+        cert.set_serial_number(getrandbits(128))
         cert.get_subject().CN = cn
         cert.gmtime_adj_notBefore(0)
         cert.gmtime_adj_notAfter(notAfter)
 
         extensions = [
             crypto.X509Extension(
-                b'basicConstraints', False, b'CA:TRUE'),
+                b'keyUsage', True, b'keyCertSign,cRLSign'),
             crypto.X509Extension(
-                b'keyUsage', False, b'keyCertSign,cRLSign')
+                b'basicConstraints', True, b'CA:TRUE,pathlen:1'),
+            crypto.X509Extension(
+               b'subjectKeyIdentifier', False, b'hash', subject=cert)
         ]
 
         if san != None:
@@ -97,14 +88,7 @@ class LookupModule(LookupBase):
         
         ret = []
         for term in terms:
-
-            if self.has_option('size') and self.get_option('size') != None:
-                size = self.get_option('size')
-            else:
-                size = DefaultRSAKeySize
-            
-            privateKey = generate_key(size)
-            
+            privateKey = generate_ecdsa_private_key()
 
             if self.has_option('notAfter') and self.get_option('notAfter') != None:
                     notAfter:int = self.get_option('notAfter')

@@ -42,7 +42,6 @@ aggregator:
     - name: elasticsearch-templates
       mountPath: /etc/fluent/elasticsearch_templates
   configMapFiles:
-    {% raw %}
     fluentd.conf: |
       # Ignore fluentd own events
       <label @FLUENT_LOG>
@@ -53,16 +52,19 @@ aggregator:
       </label>
       @include fluentd-inputs.conf
       @include fluentd-output.conf
-      {{- if .Values.metrics.enabled }}
       @include metrics.conf
-      {{- end }}
-    {% endraw %}
     fluentd-inputs.conf: |
       <source>
         @type kafka_group
         brokers kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
         consumer_group fluentd
-        topics fluentbit.system,fluentbit.processing,fluentbit.trace
+        topics fluentbit.trace
+      </source>
+      <source>
+        @type kafka_group
+        brokers kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+        consumer_group fluentd
+        topics /.*(event|job)/
       </source>
       # Readyness probes source
       <source>
@@ -71,65 +73,43 @@ aggregator:
         port 9880
       </source>
     fluentd-output.conf: |
-      <filter fluentbit.system>
-        @type parser
-        key_name log
-        <parse>
-          @type regexp
-          expression /^(?<time>[^ ]*\s+[^ ]*\s+[^ ]*)\s+(?<hostname>[^ ]*)\s+(?<processus>[^ ]*)\:\s+(?<log>.*)$/
-          time_format %b %d %H:%M:%S 
-        </parse>
-      </filter>
-
-      <filter fluentbit.processing fluentbit.system fluentbit.trace>
+      <filter fluentbit.trace>
         @type icd_formatter
       </filter>
       
-      <filter fluentbit.trace fluentbit.processing fluentbit.system>
+      <filter fluentbit.trace>
         @type record_transformer
         remove_keys @timestamp, time
       </filter>
-       <filter fluentbit.trace>
-         @type filename_properties
-         key log
-       </filter>
+
+      <filter fluentbit.trace>
+        @type filename_properties
+        key log
+      </filter>
 
       <filter **>
         @type rename_key
         replace_rule1 \. _
       </filter>
 
-      <filter fluentbit.processing fluentbit.system>
+      <filter {**event,**job}>
         @type record_transformer
         <record>
-          fluentd_worker "#{hostname}-#{worker_id}"
+          kafka_topic ${tag}
         </record>
       </filter>
 
-      <match fluentbit.processing>
+      <match {**event,**job}>
         @type loki
         url "http://loki.logging.svc.cluster.local:3100"
-        extra_labels {"loki":"processing"}
         <label>
-          fluentd_worker
+          kafka_topic
         </label>
         flush_interval 10s
         flush_at_shutdown true
         buffer_chunk_limit 2m
-        extract_kubernetes_labels true
-        remove_keys kubernetes
-      </match>
-
-      <match fluentbit.system>
-        @type loki
-        url "http://loki.logging.svc.cluster.local:3100"
-        extra_labels {"loki":"system"}
-        <label>
-          fluentd_worker
-        </label>
-        flush_interval 10s
-        flush_at_shutdown true
-        buffer_chunk_limit 2m
+        #extract_kubernetes_labels true
+        #remove_keys kubernetes
       </match>
 
       <match fluentbit.trace>

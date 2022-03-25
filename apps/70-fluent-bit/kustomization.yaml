@@ -15,9 +15,7 @@ resources:
   - kafkatopic-fluentbit.falco.yaml
   - kafkatopic-fluentbit.ingress.yaml
   - kafkatopic-fluentbit.keycloak.yaml
-  - kafkatopic-fluentbit.processing.yaml
   - kafkatopic-fluentbit.scans.yaml
-  - kafkatopic-fluentbit.system.yaml
   - kafkatopic-fluentbit.trace.yaml
   - kafkatopic-fluentbit.wazuh.yaml
   - servicemonitor.yaml

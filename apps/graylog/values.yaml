@@ -9,6 +9,9 @@ graylog:
 
   replicas: 2
 
+  config: |
+    elasticsearch_mute_deprecation_warnings = true
+
   mongodb:
     uriSecretName: mongodb-access
     uriSecretKey: uri

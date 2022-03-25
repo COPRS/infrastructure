@@ -4,6 +4,8 @@ image:
 
 config:
   auth_enabled: false
+  limits_config:
+    reject_old_samples: false
   table_manager:
     retention_period: 1460h
 
@@ -25,8 +27,8 @@ affinity:
 
 resources:
   limits:
-    cpu: 500m
-    memory: 256Mi
+    cpu: 1
+    memory: 2Gi
   requests:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 300m
+    memory: 512Mi
