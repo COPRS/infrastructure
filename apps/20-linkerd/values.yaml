@@ -30,6 +30,7 @@ policyController:
   # "all-unauthenticated", "cluster-authenticated", "cluster-unauthenticated", "deny"
   # @default -- "all-unauthenticated"
   defaultAllowPolicy: "all-unauthenticated"
+  logLevel: linkerd=warn,warn
 
   # -- policy controller resource requests & limits
   # @default -- destinationResources
@@ -98,10 +99,10 @@ proxy:
   # - ElasticSearch (9300) server-first
   # - Memcached (11211) clients do not issue any preamble, which breaks detection
   opaquePorts: "25,587,3306,4444,5432,6379,9300,11211"
-
   # -- disable mtls
   # disableIdentity: true
   # disableTap: true
+  logLevel: warn,linkerd=warn
 
 # -- Add a PSP resource and bind it to the control plane ServiceAccounts. Note
 # PSP has been deprecated since k8s v1.21
