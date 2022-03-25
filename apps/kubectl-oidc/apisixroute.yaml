@@ -30,5 +30,5 @@ spec:
   hosts:
     - kube.{{ platform_domain_name }}
   secret:
-    name: cert-letsencrypt
+    name: ingress-tls
     namespace: networking
