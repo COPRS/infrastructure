@@ -7,9 +7,22 @@ helmCharts:
 - name: spring-cloud-dataflow
   releaseName: "{{ app_name }}"
   repo: https://charts.bitnami.com/bitnami
-  version: 4.1.5
+  version: 7.0.1
   valuesFile: values.yaml
   namespace: processing
 
 resources:
   - apisixroute.yaml
+
+secretGenerator:
+  - name: spring-cloud-dataflow-registry-dockersecret
+    files:
+      - .dockerconfigjson=registry-dockersecret.json
+    options:
+      disableNameSuffixHash: true
+    type: kubernetes.io/dockerconfigjson
+  - name: spring-cloud-dataflow-registry-config
+    files:
+      - SPRING_APPLICATION_JSON=registry-config.json
+    options:
+      disableNameSuffixHash: true
