@@ -20,7 +20,6 @@ configMapGenerator:
       disableNameSuffixHash: true
 
 resources:
-  - grafanadashboard-strimzi-kafka.yaml
   - podmonitor-cluster-operator-metrics.yaml
   - podmonitor-entity-operator-metrics.yaml
   - podmonitor-kafka-resources-metrics.yaml
