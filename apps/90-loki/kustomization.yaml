@@ -13,6 +13,7 @@ helmCharts:
 
 resources:
   - grafanadatasource.yaml
+  - scaledobject.yaml
 
 # Put grafana datasource in the right namespace
 patchesJson6902:
