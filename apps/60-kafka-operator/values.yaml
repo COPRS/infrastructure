@@ -19,6 +19,7 @@ resources:
     memory: 256Mi
     cpu: 100m
 
+logLevel: WARN
 watchAnyNamespace: true
 fullReconciliationIntervalMs: 300000
 imageTagOverride: "0.27.1"

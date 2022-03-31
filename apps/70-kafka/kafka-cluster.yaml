@@ -27,7 +27,7 @@ spec:
     logging:
       type: inline
       loggers:
-        kafka.root.logger.level: "INFO"
+        kafka.root.logger.level: "WARN"
     resources:
       limits:
         cpu: 1
@@ -107,7 +107,7 @@ spec:
     logging:
       type: inline
       loggers:
-        zookeeper.root.logger: "INFO"
+        zookeeper.root.logger: "WARN"
     resources:
       limits:
         cpu: 500m
@@ -128,7 +128,7 @@ spec:
   kafkaExporter:
     groupRegex: ".*"
     topicRegex: ".*"
-    logging: info
+    logging: warn
     enableSaramaLogging: false
     readinessProbe:
       initialDelaySeconds: 15

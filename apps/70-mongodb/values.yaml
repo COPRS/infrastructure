@@ -14,6 +14,9 @@ persistence:
   enabled: true
   storageClass: ceph-block
   size: 30Gi
+extraFlags:
+  - --slowms=1000
+  - --quiet
 replicaCount: 3
 affinity:
   nodeAffinity:
