@@ -18,4 +18,5 @@ resources:
   - kafkatopic-fluentbit.scans.yaml
   - kafkatopic-fluentbit.trace.yaml
   - kafkatopic-fluentbit.wazuh.yaml
+  - kafkatopic-fluentbit.clamd.yaml
   - servicemonitor.yaml

@@ -54,6 +54,11 @@ node_labels={"node-role.kubernetes.io/infra": ""}
 [gateway:vars]
 node_labels={"node-role.kubernetes.io/gateway":""}
 node_taints={"node-role.kubernetes.io/gateway:NoSchedule"}
+# Reserve resources for ClamAV
+kubelet_config_extra_args:
+  systemReserved:
+    cpu: "1"
+    memory: "2Gi"
 
 {% if egresses | length > 0 %}
 [egress:vars]

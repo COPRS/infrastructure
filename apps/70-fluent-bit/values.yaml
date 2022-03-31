@@ -62,6 +62,14 @@ config:
       DB.Sync          Normal
       Strip_Underscores On
     [INPUT]
+      Name             systemd
+      Tag              security.clamd.*
+      Systemd_Filter   SYSLOG_IDENTIFIER=clamd
+      Read_From_Tail   Off
+      DB               /var/log/fluentbit/systemd.db
+      DB.Sync          Normal
+      Strip_Underscores On
+    [INPUT]
       Name             tail
       Tag              security.keycloak.*
       Path             /var/log/containers/keycloak-?_iam_keycloak-*.log
@@ -160,7 +168,7 @@ config:
       K8S-Logging.Parser  On
       K8S-Logging.Exclude On
       Keep_Log            Off
-      Buffer_Size         1MB 
+      Buffer_Size         1MB
   ## https://docs.fluentbit.io/manual/pipeline/outputs
   outputs: |
     [OUTPUT]
@@ -184,6 +192,13 @@ config:
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.trace
       rdkafka.enable.idempotence true
+      Buffer_Size 64KB
+    [OUTPUT]
+      Name        kafka
+      Format      json
+      Match       security.clamd.*
+      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+      Topics      fluentbit.clamd
       Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
