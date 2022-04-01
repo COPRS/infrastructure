@@ -1,6 +1,6 @@
 - name: Uninstall Clamav
   apt: 
-    name: clamav
+    name: clamav-daemon
     state: absent
     purge: yes
     autoclean: yes
