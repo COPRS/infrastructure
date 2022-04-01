@@ -15,13 +15,12 @@ loki:
           kvstore:
             store: memberlist
           replication_factor: 1
-      chunk_idle_period: 30m
-      chunk_block_size: 262144
       chunk_encoding: snappy
       chunk_retain_period: 1m
       max_transfer_retries: 0
       wal:
         dir: /var/loki/wal
+      autoforget_unhealthy: true
 
     limits_config:
       retention_period: 1460h
@@ -72,11 +71,11 @@ ingester:
   replicas: 3
   resources:
     limits:
-      cpu: 200m
+      cpu: 250m
       memory: 1Gi
     requests:
-      cpu: 50m
-      memory: 256Mi
+      cpu: 150m
+      memory: 512Mi
   affinity: |
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
@@ -115,8 +114,8 @@ querier:
   replicas: 3
   resources:
     limits:
-      cpu: 300m
-      memory: 512Mi
+      cpu: 600m
+      memory: 1Gi
     requests:
       cpu: 50m
       memory: 128Mi
@@ -138,7 +137,7 @@ querier:
         name: loki-s3-credentials
 
 queryFrontend:
-  replicas: 3
+  replicas: 2
   resources:
     limits:
       cpu: 100m

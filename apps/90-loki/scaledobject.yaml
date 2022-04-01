@@ -29,7 +29,7 @@ spec:
               value: 20
               periodSeconds: 60
             - type: Pods
-              value: 4
+              value: 3
               periodSeconds: 60
           selectPolicy: Max
   triggers:
