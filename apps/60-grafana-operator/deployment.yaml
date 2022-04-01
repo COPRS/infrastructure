@@ -26,6 +26,13 @@ spec:
             - containerPort: 8080
               name: metrics
               protocol: TCP
+          resources:
+            requests:
+              cpu: 5m
+              memory: 10Mi
+            limits:
+              cpu: 10m
+              memory: 20Mi
         - name: manager
           args:
             - --health-probe-bind-address=:8081
