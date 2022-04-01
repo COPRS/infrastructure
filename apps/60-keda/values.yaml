@@ -9,3 +9,5 @@ prometheus:
     podMonitor:
       enabled: true
       interval: 2m
+crds:
+  install: false
