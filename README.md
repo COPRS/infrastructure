@@ -192,7 +192,7 @@ The repository is made of the following main directories and files.
 
 ## Apps
 
-Configurations proposed by default:
+Default configurations:
 
 - **Cert manager**
   - Helm chart:
@@ -258,7 +258,7 @@ Configurations proposed by default:
 - **Grafana Operator**
   - Helm chart: *None*
   - Images:
-    - quay.io/grafana-operator/grafana-operator:v4.1.1
+    - quay.io/grafana-operator/grafana-operator:v4.2.0
     - docker.io/grafana/grafana:8.3.3-ubuntu
 - **Kafka Operator**
   - Helm chart:
@@ -330,10 +330,10 @@ Configurations proposed by default:
 - **Loki**
   - Helm chart:
     - Repository: grafana.github.io/helm-charts
-    - Version: 2.8.1
-    - Source: https://github.com/grafana/helm-charts/tree/main/charts/loki
+    - Version: 0.46.4
+    - Source: https://github.com/grafana/helm-charts/tree/main/charts/loki-distributed
   - Images:
-    - docker.io/grafana/loki:2.4.1
+    - docker.io/grafana/loki:2.4.2
 - **Apisix**
   - Helm chart:
     - Repository: charts.apiseven.com
@@ -372,7 +372,7 @@ Configurations proposed by default:
     - Version: 1.9.2
     - Source: https://github.com/KongZ/charts/tree/main/charts/graylog
   - Images:
-    - docker.io/graylog/graylog:4.2.3-1
+    - docker.io/graylog/graylog:4.3.0-rc.1-1
 - **Keycloack**
   - Helm chart:
     - Repository: codecentric.github.io/helm-charts
@@ -383,7 +383,7 @@ Configurations proposed by default:
 - **Spring Cloud Data Flow**
   - Helm chart:
     - Repository: charts.bitnami.com/bitnami
-    - Version: 4.1.5
+    - Version: 7.0.1
     - Source: https://github.com/bitnami/charts/tree/master/bitnami/spring-cloud-dataflow
   - Images:
     - docker.io/bitnami/spring-cloud-dataflow:2.9.1-debian-10-r7
@@ -393,8 +393,7 @@ Configurations proposed by default:
   - Helm chart:
     - Repository: kedacore.github.io/charts
     - Version: 2.6.2
-    - Source: https://kedacore.github.io/charts
+    - Source: https://github.com/kedacore/charts/tree/main/keda
   - Images:
-    - ghcr.io/kedacore/keda
-    - ghcr.io/kedacore/keda-metrics-apiserver
-
+    - ghcr.io/kedacore/keda:2.6.1
+    - ghcr.io/kedacore/keda-metrics-apiserver:2.6.1
