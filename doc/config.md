@@ -90,10 +90,10 @@
 ## ETL
 
 | Source (Logs) | Topics (Kafka) | Consumer | Nb consumer | Destination |
-| ------------- | -------------- | -------- | ----------- | ----------- |
-| /var/log/containers/\*.log <br><br>Excluded : <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/\*fluent\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/keycloak-?_iam_keycloak-\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/apisix-\*_networking_apisix-\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/falco-?????_security_falco\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/nmap-job-\*.log </br></br> **All logs** | fluentbit.processing | fluentd | 2 | Loki |
+| ------------- | :------------: | :------: | :---------: | ----------- |
+| /var/log/containers/\*.log <br><br>Excluded : <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/\*fluent\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/keycloak-?_iam_keycloak-\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/apisix-\*_networking_apisix-\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/falco-?????_security_falco\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/nmap-job-\*.log </br></br> **All logs** | -- | -- | -- | Loki |
 | /var/log/containers/\*.log <br><br>Excluded : <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/\*fluent\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/keycloak-?_iam_keycloak-\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/apisix-\*_networking_apisix-\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/falco-?????_security_falco\*.log <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- /var/log/containers/nmap-job-\*.log </br></br> **Only log JSON contains : `header.type: REPORT`** | fluentbit.trace | fluentd | 2 | Elasticsearch Processing |
-| /var/log/syslog | fluentbit.system | fluentd | 2 <br> 2 | Loki <br> Elasticsearch Security |
+| /var/log/syslog <br><br> **Exclude `SYSLOG_IDENTIFIER clamd`**| -- | -- | -- | Loki |
 | /var/log/containers/keycloak-?_iam_keycloak-\*.log | fluentbit.keycloak | graylog | 2 | Elasticsearch Security |
 | /var/log/containers/apisix-\*_networking_apisix-\*.log | fluentbit.ingress | graylog | 2 | Elasticsearch Security |
 | /var/ossec/logs/alerts/alerts.json | fluentbit.wazuh | graylog | 2 | Elasticsearch Security |
@@ -105,15 +105,13 @@
 
 | Topic | Partition | Replication Factor | Segment Size (bytes) | Retention (time in ms) | Retention (size in bytes) | Cleanup Policy | Min Insync Replicas | Unclean Leader Election Enabled |
 | -- | :--: | :--: | :--: | :--: | :--: | :--: | :--: | :--: |
-| fluentbit.processing | 6 | 3 | 715827882 | | 2863311530 | delete | 2 | false |
-| fluentbit.trace | 6 | 3 | 89478485 | 604800000 | | delete | 2 | false |
-| fluentbit.system | 6 | 3 | 89478485 | | 357913941 | delete | 2 | false |
-| fluentbit.wazuh | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
 | fluentbit.auditd | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
 | fluentbit.falco | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
-| fluentbit.scans | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
 | fluentbit.ingress | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
 | fluentbit.keycloak | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
+| fluentbit.scans | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
+| fluentbit.trace | 6 | 3 | 89478485 | 604800000 | | delete | 2 | false |
+| fluentbit.wazuh | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
 
 ## Logs and metrics retention
 
