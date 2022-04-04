@@ -2,7 +2,8 @@ kind: DaemonSet
 
 image:
   repository: fluent/fluent-bit
-  tag: 1.8.10
+  tag: 1.9.1
+  pullPolicy: IfNotPresent
 
 logLevel: warn
 
@@ -127,7 +128,7 @@ config:
       Name    grep
       Match   security.keycloak.*
       Regex   log /.*type=LOGIN|LOGIN_ERROR.*/
-    # Do not send clamd logs with the rest of systemd logs
+    # Do not send clamd logs with the rest of systemd logs (rely on wazuh)
     [FILTER]
       Name    grep
       Match   system.*
@@ -184,56 +185,42 @@ config:
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.trace
       rdkafka.enable.idempotence true
-      Buffer_Size 64KB
-    [OUTPUT]
-      Name        kafka
-      Format      json
-      Match       security.clamd.*
-      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
-      Topics      fluentbit.clamd
-      Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
       Format      json
       Match       security.wazuh.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.wazuh
-      Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
       Format      json
       Match       security.auditd.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.auditd
-      Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
       Format      json
       Match       security.falco.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.falco
-      Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
       Format      json
       Match       security.scans.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.scans
-      Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
       Format      json
       Match       security.ingress.*
       Brokers     kafka-cluster-kafka-brokers.infra.svc.cluster.local:9092
       Topics      fluentbit.ingress
-      Buffer_Size 64KB
     [OUTPUT]
       Name        kafka
       Format      json
       Match       security.keycloak.*
       Brokers     kafka-cluster-kafka-brokers.infra.svc.cluster.local:9092
       Topics      fluentbit.keycloak
-      Buffer_Size 64KB
   ## https://docs.fluentbit.io/manual/pipeline/parsers
   customParsers: ""
  
