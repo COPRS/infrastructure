@@ -54,20 +54,12 @@ config:
       Buffer_Max_Size  1MB
       Mem_Buf_Limit    20MB
     [INPUT]
-      Name             systemd
-      Tag              system.*
-      Max_Entries      500
-      Read_From_Tail   On
-      DB               /var/log/fluentbit/systemd.db
-      DB.Sync          Normal
-      Strip_Underscores On
-    [INPUT]
-      Name             systemd
-      Tag              security.clamd.*
-      Systemd_Filter   SYSLOG_IDENTIFIER=clamd
-      Read_From_Tail   Off
-      DB               /var/log/fluentbit/systemd.db
-      DB.Sync          Normal
+      Name              systemd
+      Tag               system.*
+      Max_Entries       500
+      Read_From_Tail    Off
+      DB                /var/log/fluentbit/systemd.db
+      DB_Sync           Normal
       Strip_Underscores On
     [INPUT]
       Name             tail

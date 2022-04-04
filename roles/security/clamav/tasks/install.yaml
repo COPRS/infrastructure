@@ -16,6 +16,7 @@
   systemd:
     name: clamav-freshclam
     state: started
+    enabled: yes
 
 - name: Set cron ClamAV signature base is updated each day
   cron:
@@ -28,13 +29,7 @@
   copy:
     dest: "/etc/clamav/clamd.conf"
     src: "clamd.conf"
-    mode: '0600'
-
-- name: Setup virus-event script
-  copy:
-    dest: "/etc/clamav/virus-event.bash"
-    src: "virus-event.bash"
-    mode: '0700'
+    mode: "0600"
   
 - name: Allow the clamav user to sudo /usr/bin/notify-send
   copy:
@@ -42,7 +37,7 @@
     content: "clamav ALL = (ALL) NOPASSWD: SETENV: /usr/bin/notify-send\n"
     mode: "0644"
 
-- name: Start service clamav-daemon
+- name: Start and enable clamav-daemon service
   systemd:
     name: clamav-daemon
     state: started
