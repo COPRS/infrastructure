@@ -33,17 +33,17 @@ apisix:
     # runAsNonRoot: true
     # runAsUser: 1000
 
-  resources: {}
+  resources:
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
     # resources, such as Minikube. If you do want to specify resources, uncomment the following
     # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 128Mi
+    limits:
+      cpu: 100m
+      memory: 256Mi
 
   nodeSelector: {}
   tolerations: []
@@ -286,6 +286,14 @@ etcd:
     podMonitor:
       enabled: true
       interval: 2m
+  
+  resources:
+    requests:
+      cpu: 20m
+      memory: 100Mi
+    limits:
+      cpu: 40m
+      memory: 200Mi
 
 dashboard:
   enabled: true
@@ -323,7 +331,7 @@ ingress-controller:
     # error
     # panic
     # fatal
-    logLevel: "debug"
+    logLevel: "warn"
     # the output file path of error log, default is stderr, when
     # the file path is "stderr" or "stdout", logs are marshalled
     # plainly, which is more readable for human; otherwise logs
@@ -367,7 +375,13 @@ ingress-controller:
       servicePort: 9180
       adminKey: {{ apisix.api_credentials.admin }}
 
-  resources: {}
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 50m
+      memory: 128Mi
 
   initContainer:
     image: busybox

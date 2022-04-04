@@ -18,6 +18,14 @@ falco:
   grpcOutput:
     enabled: true
 
+resources:
+  requests:
+    cpu: 100m
+    memory: 50Mi
+  limits:
+    cpu: 200m
+    memory: 100Mi
+
 # Allow Falco to run on Kubernetes 1.6 masters.
 tolerations:
   - effect: NoSchedule

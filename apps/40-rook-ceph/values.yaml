@@ -36,6 +36,32 @@ csi:
 
   provisionerNodeAffinity: node-role.kubernetes.io/infra
 
+  csiRBDPluginResource: |
+    - name : driver-registrar
+      resource:
+        requests:
+          memory: 10Mi
+          cpu: 10m
+        limits:
+          memory: 20Mi
+          cpu: 20m
+    - name : csi-rbdplugin
+      resource:
+        requests:
+          memory: 100Mi
+          cpu: 5m
+        limits:
+          memory: 200Mi
+          cpu: 10m
+    - name : liveness-prometheus
+      resource:
+        requests:
+          memory: 20Mi
+          cpu: 5m
+        limits:
+          memory: 40Mi
+          cpu: 10m
+
 discover.nodeAffinity: node-role.kubernetes.io/infra
 admissionController.nodeAffinity: node-role.kubernetes.io/infra
 monitoring.enabled: true

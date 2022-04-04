@@ -7,6 +7,14 @@ dashboard:
   
   logLevel: info
 
+  resources:
+    cpu:
+      limit: 10m
+      request: 5m
+    memory:
+      limit: 64Mi
+      request: 32Mi
+
 grafana:
   enabled: false
 
@@ -22,14 +30,39 @@ installNamespace: false
 # -- Namespace in which the Linkerd Viz extension has to be installed. Default to linkerd-viz
 namespace: networking
 
+metricsAPI:
+  resources:
+    cpu:
+      limit: 50m
+      request: 5m
+    memory:
+      limit: 128Mi
+      request: 64Mi
+
 tap:
   externalSecret: true
+
+  resources:
+    cpu:
+      limit: 20m
+      request: 10m 
+    memory:
+      limit: 200Mi
+      request: 100Mi
 
   caBundle: |
     {{ linkerd.webhook.crt | indent( width=4 ) }}
 
 tapInjector:
   externalSecret: true
+
+  resources:
+    cpu:
+      limit: 10m
+      request: 5m 
+    memory:
+      limit: 40Mi
+      request: 20Mi
 
   caBundle: |
     {{ linkerd.webhook.crt | indent( width=4 ) }}

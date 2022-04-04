@@ -33,7 +33,7 @@ spec:
         cpu: 1
         memory: 4Gi
       requests:
-        cpu: 250m
+        cpu: 200m
         memory: 2Gi
     readinessProbe:
       initialDelaySeconds: 30
@@ -109,12 +109,12 @@ spec:
       loggers:
         zookeeper.root.logger: "INFO"
     resources:
-      limits:
-        cpu: 500m
-        memory: 1Gi
       requests:
         cpu: 100m
-        memory: 256Mi
+        memory: 750Mi
+      limits:
+        cpu: 200m
+        memory: 1500Mi
     storage:
       type: persistent-claim
       size: 50Gi
@@ -146,12 +146,12 @@ spec:
                 - key: "node-role.kubernetes.io/infra"
                   operator: Exists
     resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
       requests:
-        cpu: 100m
-        memory: 128Mi
+        cpu: 10m
+        memory: 20Mi
+      limits:
+        cpu: 50m
+        memory: 40Mi
   entityOperator:
     template:
       pod:
@@ -166,9 +166,17 @@ spec:
       watchedNamespace: logging
       reconciliationIntervalSeconds: 300
       resources:
-        limits:
-          cpu: 500m
-          memory: 512Mi
         requests:
+          cpu: 50m
+          memory: 200Mi
+        limits:
           cpu: 200m
-          memory: 256Mi
+          memory: 400Mi
+    userOperator:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 200Mi
+        limits:
+          cpu: 200m
+          memory: 400Mi
