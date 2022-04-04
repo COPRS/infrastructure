@@ -4,16 +4,16 @@ commonLabels:
   app.kubernetes.io/instance: "{{ app_name }}"
 
 helmCharts:
-- name: loki
+- name: loki-distributed
   releaseName: "{{ app_name }}"
   repo: https://grafana.github.io/helm-charts
-  version: 2.8.1
+  version: 0.46.4
   valuesFile: values.yaml
   namespace: logging
 
 resources:
-  - grafanadashboard.yaml
   - grafanadatasource.yaml
+  - scaledobject.yaml
 
 # Put grafana datasource in the right namespace
 patchesJson6902:
@@ -26,3 +26,9 @@ patchesJson6902:
       - op: replace
         path: /metadata/namespace
         value: monitoring
+
+secretGenerator:
+  - name: "loki-s3-credentials"
+    literals:
+      - S3_ACCESS_KEY={{ loki.s3.access_key }}
+      - S3_SECRET_KEY={{ loki.s3.secret_key }}

@@ -47,8 +47,8 @@ config:
       Multiline.parser cri
       Tag              processing.log.*
       Path             /var/log/containers/*.log
-      Exclude_Path     /var/log/containers/*fluent*.log,/var/log/containers/*_linkerd-proxy-*.log,/var/log/containers/keycloak-?_iam_keycloak-*.log,/var/log/containers/apisix-*_networking_apisix-*.log,/var/log/containers/falco-?????_security_falco*.log,/var/log/containers/nmap-job-*.log
-      DB               /var/log/fluentbit_processing_log.db
+      Exclude_Path     /var/log/containers/*fluent*.log,/var/log/containers/keycloak-?_iam_keycloak-*.log,/var/log/containers/apisix-*_networking_apisix-*.log,/var/log/containers/falco-?????_security_falco*.log,/var/log/containers/nmap-job-*.log
+      DB               /var/log/fluentbit/processing_log.db
       DB.Sync          Normal
       Rotate_Wait      10
       Buffer_Max_Size  1MB
@@ -58,14 +58,14 @@ config:
       Tag              system.*
       Max_Entries      500
       Read_From_Tail   On
-      DB               /var/log/fluentbit_systemd.db
+      DB               /var/log/fluentbit/systemd.db
       DB.Sync          Normal
       Strip_Underscores On
     [INPUT]
       Name             tail
       Tag              security.keycloak.*
       Path             /var/log/containers/keycloak-?_iam_keycloak-*.log
-      DB               /var/log/fluentbit_keycloak.db
+      DB               /var/log/fluentbit/keycloak.db
       DB.Sync          Normal
       Rotate_Wait      10
       Buffer_Max_Size  1MB
@@ -74,7 +74,7 @@ config:
       Name             tail
       Tag              security.ingress.*
       Path             /var/log/containers/apisix-*_networking_apisix-*.log
-      DB               /var/log/fluentbit_apisix.db
+      DB               /var/log/fluentbit/apisix.db
       DB.Sync          Normal
       Rotate_Wait      10
       Buffer_Max_Size  1MB
@@ -83,7 +83,7 @@ config:
       Name             tail
       Tag              security.wazuh.*
       Path             /var/ossec/logs/alerts/alerts.json
-      DB               /var/log/fluentbit_security_wazuh.db
+      DB               /var/log/fluentbit/security_wazuh.db
       DB.Sync          Normal
       Rotate_Wait      10
       Buffer_Max_Size  1MB
@@ -92,7 +92,7 @@ config:
       Name             tail
       Tag              security.auditd.*
       Path             /var/log/audit_*.json
-      DB               /var/log/fluentbit_security_auditd.db
+      DB               /var/log/fluentbit/security_auditd.db
       DB.Sync          Normal
       Rotate_Wait      10
       Buffer_Max_Size  1MB
@@ -101,7 +101,7 @@ config:
       Name             tail
       Tag              security.falco.*
       Path             /var/log/containers/falco-?????_security_falco*.log
-      DB               /var/log/fluentbit_security_falco.db
+      DB               /var/log/fluentbit/security_falco.db
       DB.Sync          Normal
       Rotate_Wait      10
       Buffer_Max_Size  1MB
@@ -110,21 +110,28 @@ config:
       Name             tail
       Tag              security.scans.*
       Path             /var/log/containers/nmap-job-*.log
-      DB               /var/log/fluentbit-security_nmap.db
+      DB               /var/log/fluentbit/security_nmap.db
       DB.Sync          Normal
       Rotate_Wait      10
       Buffer_Max_Size  1MB
       Mem_Buf_Limit    10MB
   ## https://docs.fluentbit.io/manual/pipeline/filters
   filters: |
+    # Rename CRI parser 'message' to 'log'
     [FILTER]
       Name    modify
       Match   processing.*
       Rename  message log
+    # Keep only logins related logs from keycloak
     [FILTER]
       Name    grep
       Match   security.keycloak.*
       Regex   log /.*type=LOGIN|LOGIN_ERROR.*/
+    # Do not send clamd logs with the rest of systemd logs
+    [FILTER]
+      Name    grep
+      Match   system.*
+      Exclude SYSLOG_IDENTIFIER clamd
     [FILTER]
       Name    grep
       Match   security.ingress.*
@@ -134,10 +141,12 @@ config:
       Match   security.auditd.*
       Script  /fluent-bit/scripts/scripts.lua
       Call    auditdLogfileNameParse
+    # Find and duplicate TRACE logs
     [FILTER]
       Name    rewrite_tag
       Match   processing.log.*
       Rule log .*"type":"REPORT".* processing.trace.* true
+    # Retrieve additional kubernetes information
     [FILTER]
       Name                kubernetes
       Match               processing.log.*
@@ -145,9 +154,11 @@ config:
       Kube_URL            https://kubernetes.default.svc:443
       Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
       Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
-      Merge_Log           On
-      K8S-Logging.Parser  Off
-      K8S-Logging.Exclude Off
+      Labels              Off
+      Annotations         Off
+      Merge_Log           Off
+      K8S-Logging.Parser  On
+      K8S-Logging.Exclude On
       Keep_Log            Off
       Buffer_Size         1MB 
   ## https://docs.fluentbit.io/manual/pipeline/outputs
@@ -156,14 +167,15 @@ config:
       Name loki
       Match processing.log.*
       Labels fluentbit=log
-      Auto_Kubernetes_Labels On
-      Host loki.logging.svc.cluster.local
+      Label_Keys $kubernetes['pod_name'],$kubernetes['namespace_name'],$kubernetes['host'],$kubernetes['container_name'],$kubernetes['container_image']
+      Host loki-loki-distributed-distributor.logging.svc.cluster.local
       Port 3100
     [OUTPUT]
       Name loki
       Match system.*
       Labels fluentbit=system
-      Host loki.logging.svc.cluster.local
+      Label_Keys $SYSLOG_IDENTIFIER,$HOSTNAME
+      Host loki-loki-distributed-distributor.logging.svc.cluster.local
       Port 3100
     [OUTPUT]
       Name        kafka

@@ -1,0 +1,7 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+resources:
+  - crd-scaledobjects.yaml
+  - crd-scaledjobs.yaml
+  - crd-clustertriggerauthentications.yaml
