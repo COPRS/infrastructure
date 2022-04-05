@@ -18,13 +18,6 @@
     state: started
     enabled: yes
 
-- name: Set cron ClamAV signature base is updated each day
-  cron:
-    name: "{{ clamav.cron_update.name | default('ClamAv') }}"
-    hour: "{{ clamav.cron_update.hour | default(2) }}"
-    minute: "0"
-    job: "freshclam"
-
 - name: Setup clamd conf
   copy:
     dest: "/etc/clamav/clamd.conf"
