@@ -23,6 +23,17 @@
     dest: "/etc/clamav/clamd.conf"
     src: "clamd.conf"
     mode: "0600"
+
+- name: Install clamav-clamonacc service
+  copy:
+    dest: "/lib/systemd/system/clamav-clamonacc.service"
+    src: "clamav-clamonacc.service"
+    mode: "0644"
+
+- name: Create a quarantine directory
+  file:
+    path: /root/quarantine
+    state: directory
   
 - name: Allow the clamav user to sudo /usr/bin/notify-send
   copy:
@@ -33,5 +44,12 @@
 - name: Start and enable clamav-daemon service
   systemd:
     name: clamav-daemon
+    daemon_reload: yes
+    state: started
+    enabled: yes
+
+- name: Start and enable clamav-clamonacc service
+  systemd:
+    name: clamav-clamonacc
     state: started
     enabled: yes
