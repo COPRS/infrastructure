@@ -292,7 +292,7 @@ Default configurations:
     - Version: 0.19.6
     - Source: https://github.com/fluent/helm-charts/tree/main/charts/fluent-bit
   - Images:
-    - docker.io/fluent/fluent-bit:1.8.10
+    - docker.io/fluent/fluent-bit:1.9.1
 - **MongoDB**
   - Helm chart:
     - Repository: charts.bitnami.com/bitnami
