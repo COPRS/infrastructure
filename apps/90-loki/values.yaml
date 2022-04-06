@@ -23,7 +23,7 @@ loki:
       autoforget_unhealthy: true
 
     limits_config:
-      retention_period: 1460h
+      retention_period: {{ loki.retention.retention_period }}
       enforce_metric_name: false
       reject_old_samples: true
       reject_old_samples_max_age: 168h

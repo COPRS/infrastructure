@@ -39,7 +39,7 @@
 | **Etcd** | - Namespace : kube-system <br> - QoS : Burstable <br> - Replicas: 3 <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 100Mi |
 | **Falco** | - Namespace : security <br> - QoS : Burstable <br> - Replicas : Daemonset <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 200m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 100Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 50Mi |  
 | **Falco Exporter** | - Namespace : security <br> - QoS : Burstable <br> - Replicas : Daemonset <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 10m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 20Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 5m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 10Mi |  
-| **Fluentbit** | - Namespace : logging <br> - QoS : Burstable <br> - Replicas : Daemonset <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 100Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 50m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 50Mi |
+| **Fluentbit** | - Namespace : logging <br> - QoS : Burstable <br> - Replicas : Daemonset <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 150m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 512Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 25m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 64Mi |
 | **Fluentd** | - Namespace : logging <br> - QoS : Burstable <br> - Replicas : 2 <br> - Persistent Volume :  <br> &nbsp;&nbsp;&nbsp; - Size : 10Gi <br> &nbsp;&nbsp;&nbsp; - Access Mode : ReadWriteOnce <br> - Ressources : <br> &nbsp;&nbsp;&nbsp; - Limits CPU : 500m <br> &nbsp;&nbsp;&nbsp; - Limits Memory : 512Mi <br> &nbsp;&nbsp;&nbsp; - Request CPU : 100m <br> &nbsp;&nbsp;&nbsp; - Request Memory : 256Mi |
 | **Finops Object Storage Exporter** | - Namespace : monitoring <br> - QoS : BestEffort <br> - Replicas : 1 |
 | **Finops Ressources Exporter** | - Namespace : monitoring <br> - QoS : Burstable <br> - Replicas : 1 |
@@ -117,7 +117,7 @@
 
 | Destination | Retention | Infos |
 | ----------- | --------- | ----- |
-| Loki | 1460h (~60d) | ||
+| Loki S3 bucket | 1460h (~60d) | ||
 | Prometheus | 2d | metrics are saved in S3 via Thanos |
 | Thanos S3 bucket | 30d | 5m resolution |
 | Thanos S3 bucket | 10 years | 1h resolution |

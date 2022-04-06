@@ -34,9 +34,9 @@ query:
 
 compactor:
   enabled: true
-  retentionResolutionRaw: 30d
-  retentionResolution5m: 30d
-  retentionResolution1h: 10y
+  retentionResolutionRaw: {{ thanos.retention.retentionResolutionRaw }}
+  retentionResolution5m: {{ thanos.retention.retentionResolution5m }}
+  retentionResolution1h: {{ thanos.retention.retentionResolution1h }}
   persistence:
     enabled: true
     storageClass: "ceph-block"
