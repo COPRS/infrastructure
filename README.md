@@ -386,8 +386,8 @@ Default configurations:
     - Version: 7.0.1
     - Source: https://github.com/bitnami/charts/tree/master/bitnami/spring-cloud-dataflow
   - Images:
-    - docker.io/bitnami/spring-cloud-dataflow:2.9.1-debian-10-r7
-    - docker.io/bitnami/spring-cloud-skipper:2.8.1-debian-10-r6
+    - docker.io/bitnami/spring-cloud-dataflow:2.9.4-debian-10-r7
+    - docker.io/bitnami/spring-cloud-skipper:2.8.4-debian-10-r6
     - docker.io/bitnami/prometheus-rsocket-proxy:1.3.0-debian-10-r334
 - **Keda**
   - Helm chart:
