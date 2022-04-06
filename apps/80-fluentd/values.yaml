@@ -64,7 +64,7 @@ aggregator:
         @type kafka_group
         brokers kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
         consumer_group fluentd
-        topics /.*(event|job)/
+        topics /{{ fluentd.topic_to_loki_regex }}/
       </source>
       # Readyness probes source
       <source>
@@ -92,14 +92,14 @@ aggregator:
         replace_rule1 \. _
       </filter>
 
-      <filter {**event,**job}>
+      <filter /{{ fluentd.topic_to_loki_regex }}/>
         @type record_transformer
         <record>
           kafka_topic ${tag}
         </record>
       </filter>
 
-      <match {**event,**job}>
+      <match /{{ fluentd.topic_to_loki_regex }}/>
         @type loki
         url "http://loki-loki-distributed-distributor.logging.svc.cluster.local:3100"
         <label>
