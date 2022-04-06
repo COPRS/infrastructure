@@ -39,21 +39,22 @@ Finally the release to be installed can be set by `using laurel_url`.
 NB if one property is set, all properties must be set too otherwise the installation will fail. 
 
 ## ClamAv
-**Scope: gateways and masters**
+**Scope: gateways**
 The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/clamav/defaults/main.yml`
 
 ClamAv is an antivirus controlled by systemd.  
-Rules bases are reloaded each days.  
+Rules bases are reloaded automatically by freshclam many times a day.  
 The version of this cots can be edited in ```/platform/roles/security/clamav/default/main.yaml```
-Two crons are created by default, you can change their name or hour of execution by updating the cots configuration.
 
 | Name | Function | Required |
 |------|----------|----------|
 |  clamav_version   | Clamav version  |    Yes      |     
-|  cron_update |  Object cron to update clamav rules each day | No  |
-|  cron_scan |  Object cron to run the clamav scan each day | No  |
 
-Be aware that the clamav cron use a lot of resources and can impact the stability of the plateform.
+Clamav is decomposed in 3 modules.
+- Freshclam for signature update.
+- clamd the daemon.
+- clamonacc which performs on access scanning. 
+
 ## Wazuh
 **Scope: The Manager is installed only on the first master node and agent that are installed on all remaining nodes.** 
 The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/wazuh/defaults/main.yml```

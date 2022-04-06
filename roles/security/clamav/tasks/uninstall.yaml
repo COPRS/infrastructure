@@ -1,17 +1,13 @@
+- name: Disable clamav-clamonacc service
+  systemd:
+    name: clamav-clamonacc
+    state: stopped
+    enabled: no
+
 - name: Uninstall Clamav
   apt: 
-    name: clamav
+    name: clamav-daemon
     state: absent
     purge: yes
     autoclean: yes
     autoremove: yes
-
-- name: Delete cron ClamAV signature base is updated each day
-  cron:
-    name: "{{ clamav.cron_update.name | default('ClamAv') }}"
-    state: absent
-
-- name: Delete cron ClamAV scan
-  cron:
-    name: "{{ clamav.cron_scan.name | default('ClamAv Scan') }}"
-    state: absent

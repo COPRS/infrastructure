@@ -17,6 +17,8 @@ kube_service_addresses: 10.96.0.0/12
 kube_pods_subnet: 10.244.0.0/16
 
 cluster_name: cluster.local
+kube_log_level: 1
+containerd_debug_level: warn
 
 ## Container runtime
 ## Kubernetes need to configure containerd cgroup driver.

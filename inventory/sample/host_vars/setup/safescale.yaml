@@ -39,3 +39,4 @@ buckets:
   - "{{ cluster.name }}-elasticsearch-processing"
   - "{{ cluster.name }}-elasticsearch-security"
   - "{{ cluster.name }}-thanos"
+  - "{{ cluster.name }}-loki"

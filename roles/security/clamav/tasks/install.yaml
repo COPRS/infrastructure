@@ -1,6 +1,6 @@
 - name: Install Clamav
   apt: 
-    name: clamav={{ clamav.clamav_version }}
+    name: clamav-daemon={{ clamav.clamav_version }}
     state: present
 
 - name: Stop service clamav-freshclam to update signature
@@ -16,22 +16,40 @@
   systemd:
     name: clamav-freshclam
     state: started
+    enabled: yes
 
-# Download signature base
-- name: Set cron ClamAV signature base is updated each day
-  cron:
-    name: "{{ clamav.cron_update.name | default('ClamAv') }}"
-    hour: "{{ clamav.cron_update.hour | default(2) }}"
-    minute: "0"
-    job: "freshclam"
+- name: Setup clamd conf
+  copy:
+    dest: "/etc/clamav/clamd.conf"
+    src: "clamd.conf"
+    mode: "0600"
 
-- name: Creates directory /var/log/clamav
+- name: Install clamav-clamonacc service
+  copy:
+    dest: "/lib/systemd/system/clamav-clamonacc.service"
+    src: "clamav-clamonacc.service"
+    mode: "0644"
+
+- name: Create a quarantine directory
   file:
-    path: /var/log/clamav
+    path: /root/quarantine
+    state: directory
+  
+- name: Allow the clamav user to sudo /usr/bin/notify-send
+  copy:
+    dest: "/etc/sudoers.d/clamav"
+    content: "clamav ALL = (ALL) NOPASSWD: SETENV: /usr/bin/notify-send\n"
+    mode: "0644"
 
-# - name: Set cron ClamAV scan
-#   cron:
-#     name: "{{ clamav.cron_scan.name | default('ClamAv Scan') }}"
-#     hour: "{{ clamav.cron_scan.hour | default(4) }}"
-#     minute: "0"
-#     job: "find / -not -path '/sys*' -not -path '/proc*' -mmin -60 -type f | xargs -P 1 clamscan --infected | logger -i -t clamd -p auth.alert"
+- name: Start and enable clamav-daemon service
+  systemd:
+    name: clamav-daemon
+    daemon_reload: yes
+    state: started
+    enabled: yes
+
+- name: Start and enable clamav-clamonacc service
+  systemd:
+    name: clamav-clamonacc
+    state: started
+    enabled: yes
