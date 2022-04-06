@@ -6,3 +6,7 @@ thanos:
     access_key: "{{ s3.access_key }}"
     secret_key: "{{ s3.secret_key }}"
   oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  retention:
+    retentionResolutionRaw: 7d
+    retentionResolution5m: 30d
+    retentionResolution1h: 10y
