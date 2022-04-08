@@ -98,6 +98,17 @@ patchesJson6902:
 ```
 On the next deployment, the datasource will be deployed during the deployment of `myapp`.
 
+## Keycloak
+
+To download a realm, in the administration console :
+- go to `Export`
+- choose the data you wish to export
+- download the realm and place it under `apps/keycloak/custom-realm.json`
+
+On the next deployment, the realm will be imported in keycloak.
+
+**Remark**: The current realm management policy is to overwrite configuration at each new deployment of keycloak. If you wish to change the policy, in `apps/keycloak/values.yaml`, line 80 change `OVERWRITE_EXISTING` to `IGNORE_EXISTING`.
+
 ## Graylog
 
 Graylog components such as dashboards or streams can be saved in content packs.
@@ -108,5 +119,7 @@ To create a content pack:
 - Select any resource you wish to save
 - Fill out the other mandatory fields
 - Download the content pack
+
+**Warning**: Some resources in the content pack may appear twice in the content pack. It will cause no error, however, on the restore of the content pack, the resource will appear twice in the HMI.
 
 To deploy this content pack, follow the instrictions in [the Graylog content pack  manual](Graylog%20content%20packs.md).
