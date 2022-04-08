@@ -8,7 +8,7 @@ After=clamav-daemon.service syslog.target network.target
 Type=simple
 User=root
 ExecStartPre=/bin/bash -c "while [ ! -S /run/clamav/clamd.ctl ]; do sleep 1; done"
-ExecStart=/usr/sbin/clamonacc --fdpass -F --config-file=/etc/clamav/clamd.conf --log=/var/log/clamav/clamonacc.log --move=/root/quarantine
+ExecStart=/usr/sbin/clamonacc --fdpass -F --config-file=/etc/clamav/clamd.conf --move=/root/quarantine
 
 [Install]
 WantedBy=multi-user.target
