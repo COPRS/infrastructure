@@ -120,6 +120,6 @@ To create a content pack:
 - Fill out the other mandatory fields
 - Download the content pack
 
-**Warning**: Some resources in the content pack may appear twice in the content pack. It will cause no error, however, on the restore of the content pack, the resource will appear twice in the HMI.
+**Warning**: Some resources may appear twice in the content pack. It will cause no error, however, on the restore of the content pack, the resource will appear twice in the HMI. The duplicate resources can be removed by hand in the json file before the restore.
 
 To deploy this content pack, follow the instrictions in [the Graylog content pack  manual](Graylog%20content%20packs.md).
