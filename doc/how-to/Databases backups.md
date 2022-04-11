@@ -14,8 +14,8 @@ kind: Secret
 metadata: 
   name: backup-s3-credentials
 stringData:
-  AWS_ACCESS_KEY_ID: {{ common.s3.secret_key }}
-  AWS_SECRET_ACCESS_KEY: {{ common.s3.access_key }}
+  AWS_ACCESS_KEY_ID: {{ s3.access_key }}
+  AWS_SECRET_ACCESS_KEY: {{ s3.secret_key }}
   RESTIC_PASSWORD: resticpass
 ---
 apiVersion: stash.appscode.com/v1alpha1
@@ -25,9 +25,9 @@ metadata:
 spec:
   backend:
     s3:
-      endpoint: {{ common.s3.endpoint }}
+      endpoint: {{ s3.endpoint }}
       bucket: BACKUP_BUCKET
-      region: {{ common.s3.region }}
+      region: {{ s3.region }}
     storageSecretName: backup-s3-credentials
 ```
 
@@ -42,6 +42,7 @@ primary:
   extraVolumes:
     - name: tmp-backup
       emptyDir: {}
+  extraEnvVarsSecret: postgresql-databases-passwords
 ```
 
 Deploy the following:
@@ -73,7 +74,7 @@ spec:
     preBackup:
       exec:
         command:
-          - /bin/bash
+          - /bin/sh
           - -c
           - >
             /bin/rm -rf /tmp/backup/* 
@@ -139,7 +140,7 @@ spec:
   driver: Restic
   repository:
     name: s3-backup
-  # Daily at 4 am
+  # Daily at 04:15
   schedule: "15 4 * * ?"
   paused: false
   backupHistoryLimit: 3
@@ -255,11 +256,11 @@ spec:
 
 Once the `RestoreSession` has the status **Success**, run the following commands to trigger a restore (change the databases credentials):
 ```bash
-kubectl -n infra wait --for condition=ready pod -l statefulset.kubernetes.io/pod-name=postgresql-postgresql-0
-kubectl exec -n infra postgresql-postgresql-0 -c postgresql -- /bin/bash -c "\
-  export PGPASSWORD='keycloakpassword' && psql -U keycloak keycloak < /tmp/backup/keycloak.sql \
-  && export PGPASSWORD='scdfpassword' && psql -U scdf skipper < /tmp/backup/skipper.sql \
-  && export PGPASSWORD='scdfpassword' && psql -U scdf dataflow < /tmp/backup/dataflow.sql"
+kubectl -n database wait --for condition=ready pod -l statefulset.kubernetes.io/pod-name=postgresql-postgresql-0
+kubectl exec -n database postgresql-postgresql-0 -c postgresql -- /bin/sh -c "\
+  export PGPASSWORD=$KEYCLOAK_DATABASE_PASSWORD && psql -U keycloak keycloak < /tmp/backup/keycloak.sql \
+  && export PGPASSWORD=$SCDF_DATABASE_PASSWORD && psql -U scdf skipper < /tmp/backup/skipper.sql \
+  && export PGPASSWORD=$SCDF_DATABASE_PASSWORD && psql -U scdf dataflow < /tmp/backup/dataflow.sql"
 ```
 
 ## LDAP restore
@@ -313,11 +314,14 @@ spec:
 
 Once the `RestoreSession` has the status **Success**, run the following commands to trigger a restore:
 ```bash
-kubectl -n security wait --for condition=ready pod -l statefulset.kubernetes.io/pod-name=openldap-0
-kubectl exec -n security openldap-0 -c openldap -- /bin/bash -c "/sbin/slapd-restore-config \$(ls /data/backup/*-config.gz | sed -e 's/\/.*\///g') \
+kubectl -n iam wait --for condition=ready pod -l statefulset.kubernetes.io/pod-name=openldap-0
+kubectl exec -n iam openldap-0 -c openldap -- /bin/bash -c "/sbin/slapd-restore-config \$(ls /data/backup/*-config.gz | sed -e 's/\/.*\///g') \
       && /sbin/slapd-restore-data \$(ls /data/backup/*-data.gz | sed -e 's/\/.*\///g')"
 ```
 
 ## Elasticsearch restore
 
 Navigate to the *Management - Stack Management - Data - Snapshot and Restore* in the *kibana* user interface and manually trigger a restore. The interface allows fine configuration of the restore settings.
+
+**Warning**: Indices beginning with a point such as `.geoip_database` are system indices and should not be restored.
+To avoid restoring these indices, in the first step of restoring the snapshot, unselect `All data streams and indices, including system indices`, then unselect the system indices.
