@@ -62,6 +62,7 @@ config:
       DB                /var/log/fluentbit/systemd.db
       DB_Sync           Normal
       Strip_Underscores On
+      Lowercase         On
     [INPUT]
       Name             tail
       Tag              security.keycloak.*
@@ -132,7 +133,14 @@ config:
     [FILTER]
       Name    grep
       Match   system.*
-      Exclude SYSLOG_IDENTIFIER clamd
+      Exclude syslog_identifier clamd
+    # Retain only used fields
+    [FILTER]
+      Name record_modifier
+      Match system.*
+      Allowlist_key hostname
+      Allowlist_key syslog_identifier
+      Allowlist_key message
     [FILTER]
       Name    grep
       Match   security.ingress.*
@@ -162,21 +170,38 @@ config:
       K8S-Logging.Exclude On
       Keep_Log            Off
       Buffer_Size         1MB
+    # Retain only used fields
+    [FILTER]
+      Name record_modifier
+      Match processing.log.*
+      Allowlist_key log
+      Allowlist_key kubernetes
+    # Lift kubernetes fields
+    [FILTER]
+      Name nest
+      Match processing.log.*
+      Operation lift
+      Nested_under kubernetes
   ## https://docs.fluentbit.io/manual/pipeline/outputs
   outputs: |
+    # Use fields as loki labels, and remove them to have only the actual log sent to loki as the payload
     [OUTPUT]
       Name loki
       Match processing.log.*
-      Labels fluentbit=log
-      Label_Keys $kubernetes['pod_name'],$kubernetes['namespace_name'],$kubernetes['host'],$kubernetes['container_name'],$kubernetes['container_image']
+      Labels log_type=container,pod=$pod_name,namespace=$namespace_name,node=$host,container=$container_name,container_image=$container_image
       Host loki-loki-distributed-distributor.logging.svc.cluster.local
+      Remove_keys container_hash,container_image,container_name,docker_id,host,namespace_name,pod_id,pod_name,pod_name
+      Drop_single_key true
+      Line_format key_value
       Port 3100
     [OUTPUT]
       Name loki
       Match system.*
-      Labels fluentbit=system
-      Label_Keys $SYSLOG_IDENTIFIER,$HOSTNAME
+      Labels log_type=system,syslog_identifier=$syslog_identifier,node=$hostname
       Host loki-loki-distributed-distributor.logging.svc.cluster.local
+      Remove_keys syslog_identifier,hostname
+      Drop_single_key true
+      Line_format key_value
       Port 3100
     [OUTPUT]
       Name        kafka
