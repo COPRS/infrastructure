@@ -7,7 +7,7 @@ helmCharts:
 - name: loki-distributed
   releaseName: "{{ app_name }}"
   repo: https://grafana.github.io/helm-charts
-  version: 0.46.4
+  version: 0.48.1
   valuesFile: values.yaml
   namespace: logging
 
