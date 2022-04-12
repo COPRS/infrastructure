@@ -330,10 +330,10 @@ Default configurations:
 - **Loki**
   - Helm chart:
     - Repository: grafana.github.io/helm-charts
-    - Version: 0.46.4
+    - Version: 0.48.1
     - Source: https://github.com/grafana/helm-charts/tree/main/charts/loki-distributed
   - Images:
-    - docker.io/grafana/loki:2.4.2
+    - docker.io/grafana/loki:2.5.0
 - **Apisix**
   - Helm chart:
     - Repository: charts.apiseven.com

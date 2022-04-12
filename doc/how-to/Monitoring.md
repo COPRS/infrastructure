@@ -11,10 +11,8 @@ The content of the topic(s) will be available in *Loki* using the label(s) `{kaf
 
 ## Monitor system logs
 
-System logs are accessible in *Loki* using the labels `SYSLOG_IDENTIFIER` and `HOSTNAME`.
-The log content is in `MESSAGE` field.
+System logs are accessible in *Loki* using the labels `syslog_identifier` and `node`.
 
 ## Monitor applications logs
 
-Applications logs are accessible in *Loki* using the labels `kubernetes_container_image`, `kubernetes_container_name`, `kubernetes_host`, `kubernetes_namespace_name` and `kubernetes_pod_name`.
-The applicative log is in the `log` field.
+Applications logs are accessible in *Loki* using the labels `container_image`, `container`, `node`, `namespace` and `pod`.
