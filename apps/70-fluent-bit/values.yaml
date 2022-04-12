@@ -189,7 +189,7 @@ config:
       Name loki
       Match processing.log.*
       Labels log_type=container,pod=$pod_name,namespace=$namespace_name,node=$host,container=$container_name,container_image=$container_image
-      Host loki-loki-distributed-distributor.logging.svc.cluster.local
+      Host loki-distributor.logging.svc.cluster.local
       Remove_keys container_hash,container_image,container_name,docker_id,host,namespace_name,pod_id,pod_name,pod_name
       Drop_single_key true
       Line_format key_value
@@ -198,7 +198,7 @@ config:
       Name loki
       Match system.*
       Labels log_type=system,syslog_identifier=$syslog_identifier,node=$hostname
-      Host loki-loki-distributed-distributor.logging.svc.cluster.local
+      Host loki-distributor.logging.svc.cluster.local
       Remove_keys syslog_identifier,hostname
       Drop_single_key true
       Line_format key_value

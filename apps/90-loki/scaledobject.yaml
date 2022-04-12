@@ -6,7 +6,7 @@ spec:
   scaleTargetRef:
     apiVersion:    apps/v1
     kind:          StatefulSet
-    name:          loki-loki-distributed-ingester
+    name:          loki-ingester
     envSourceContainerName: ingester
   pollingInterval:  30
   cooldownPeriod:   300

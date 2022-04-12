@@ -1,3 +1,4 @@
+fullnameOverride: loki
 loki:
   image:
     registry: docker.io
