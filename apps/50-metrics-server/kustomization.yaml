@@ -1,0 +1,11 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: kube-system
+
+helmCharts:
+  - name: metrics-server
+    releaseName: "{{ app_name }}"
+    repo: https://kubernetes-sigs.github.io/metrics-server
+    version: 3.8.2
+    valuesFile: values.yaml

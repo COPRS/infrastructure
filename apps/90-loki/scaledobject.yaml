@@ -6,12 +6,12 @@ spec:
   scaleTargetRef:
     apiVersion:    apps/v1
     kind:          StatefulSet
-    name:          loki-loki-distributed-ingester
+    name:          loki-ingester
     envSourceContainerName: ingester
   pollingInterval:  30
   cooldownPeriod:   300
   minReplicaCount:  3
-  maxReplicaCount:  12
+  maxReplicaCount:  15
   advanced:
     restoreToOriginalReplicaCount: false
     horizontalPodAutoscalerConfig:
@@ -36,8 +36,8 @@ spec:
     - type: cpu
       metadata:
         type: Utilization
-        value: "70"
+        value: "80"
     - type: memory
       metadata:
         type: Utilization
-        value: "70"
+        value: "80"

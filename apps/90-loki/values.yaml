@@ -1,8 +1,9 @@
+fullnameOverride: loki
 loki:
   image:
     registry: docker.io
     repository: grafana/loki
-    tag: 2.4.2
+    tag: 2.5.0
   structuredConfig:
     auth_enabled: false
 
@@ -34,7 +35,7 @@ loki:
         - from: 2021-01-01
           store: boltdb-shipper
           object_store: aws
-          schema: v11
+          schema: v12
           index:
             prefix: loki_index_
             period: 24h
@@ -74,7 +75,7 @@ ingester:
       cpu: 250m
       memory: 1Gi
     requests:
-      cpu: 150m
+      cpu: 100m
       memory: 512Mi
   affinity: |
     nodeAffinity:
@@ -114,8 +115,8 @@ querier:
   replicas: 3
   resources:
     limits:
-      cpu: 600m
-      memory: 1Gi
+      cpu: 1
+      memory: 2Gi
     requests:
       cpu: 50m
       memory: 128Mi

@@ -19,3 +19,4 @@ resources:
   - kafkatopic-fluentbit.trace.yaml
   - kafkatopic-fluentbit.wazuh.yaml
   - servicemonitor.yaml
+  - fluentbit-priority.yaml

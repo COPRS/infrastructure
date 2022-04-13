@@ -101,7 +101,7 @@ aggregator:
 
       <match /{{ fluentd.topic_to_loki_regex }}/>
         @type loki
-        url "http://loki-loki-distributed-distributor.logging.svc.cluster.local:3100"
+        url "http://loki-distributor.logging.svc.cluster.local:3100"
         <label>
           kafka_topic
         </label>
