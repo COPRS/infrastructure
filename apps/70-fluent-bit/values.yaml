@@ -11,6 +11,8 @@ serviceMonitor:
   enabled: true
   interval: 2m
 
+priorityClassName: fluentbit-priority
+
 resources:
   limits:
     cpu: 150m

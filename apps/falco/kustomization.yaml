@@ -1,6 +1,8 @@
 commonLabels:
   app.kubernetes.io/instance: "{{ app_name }}"
 
+namespace: security
+
 helmCharts:
 - name: falco
   releaseName: "{{ app_name }}"
@@ -8,3 +10,6 @@ helmCharts:
   version: 1.16.2
   valuesFile: values.yaml
   namespace: security
+
+resources:
+  - falco-priority.yaml

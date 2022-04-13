@@ -10,6 +10,8 @@ kubernetesSupport:
   apiAuth: /var/run/secrets/kubernetes.io/serviceaccount/token
   apiUrl: "https://$(KUBERNETES_SERVICE_HOST)"
 
+priorityClassName: falco-priority
+
 falco:
   grpc:
     enabled: true
