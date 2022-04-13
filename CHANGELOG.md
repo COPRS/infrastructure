@@ -11,6 +11,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+## [0.6.0-rc1] - 2022-04-13
+### Changed
+- [#301 - Data stored into LOKI to be improved](https://github.com/COPRS/SCRUM-Tickets/issues/301)
+### Security
+- [#294 - [SECURITY] Clamav - Deploy the daemon on RS Nodes accessible from internet](https://github.com/COPRS/SCRUM-Tickets/issues/294)
+
 ## [0.5.0-rc1] - 2022-03-18
 ### Added
 - [#221 - Software component to deploy a RS addon / RS core on RS Platform](https://github.com/COPRS/SCRUM-Tickets/issues/221)
