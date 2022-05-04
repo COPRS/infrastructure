@@ -11,12 +11,14 @@
     gateway:
       - name: gw-{{ cluster.name }}
         private_ip: "{{ sf_cluster.result.primary_gateway_ip }}"
+        id: "{{ lookup('pipe', safescale_path + ' host inspect ' + 'gw-' + cluster.name + '| jq -r .result.id') }}"
 
 - name: Read secondary gateway IP
   set_fact:
     gateway2: 
       - name: gw2-{{ cluster.name }}
         private_ip: "{{ sf_cluster.result.secondary_gateway_ip }}"
+        id: "{{ lookup('pipe', safescale_path + ' host inspect ' + 'gw2-' + cluster.name + '| jq -r .result.id') }}"
   when: sf_cluster.result.secondary_gateway_ip is defined
 
 - name: Create complete hosts list
@@ -27,6 +29,6 @@
   shell: "{{ safescale_path }} tag list | jq -c .result"
   register: tag_list
 
-- name: Parse safescale tags to node_groups
+- name: Parse safescale tags to nodegroups
   set_fact:
-    node_groups: "{{ tag_list.stdout | from_json }}"
+    nodegroups: "{{ tag_list.stdout | from_json }}"

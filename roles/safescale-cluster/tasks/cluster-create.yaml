@@ -1,39 +1,44 @@
 ---
 - name: Loading clusters list
-  shell: "{{ safescale_path }} cluster list | jq"
+  shell: "{{ safescale_path }} cluster list | jq -r '.result[].name'"
   register: cluster_list
 
-- name: Creating cluster with safescale
-  block:
-    - name: Create safescale cluster
-      shell: |
-        {{ safescale_path }} \
-        cluster create \
-        --complexity {{ cluster.complexity }} \
-        --flavor BOH \
-        {% if cluster.cidr is defined %}--cidr {{ cluster.cidr }}{% endif %} \
-        --disable remotedesktop \
-        --disable reverseproxy \
-        --os {{ cluster.os }} \
-        --master-sizing cluster.node_groups.kube_control_plane.sizing \
-        --node-sizing cluster.node_groups.infra.sizing \
-        --gw-sizing cluster.node_groups.gateway.sizing \
-        {{ cluster.name }}
+- name: Create safescale cluster
+  shell: |
+    {{ safescale_path }} \
+    cluster create \
+    --complexity {{ cluster.complexity }} \
+    --flavor BOH \
+    {% if cluster.cidr is defined %}--cidr {{ cluster.cidr }}{% endif %} \
+    --disable remotedesktop \
+    --disable reverseproxy \
+    --os {{ cluster.os }} \
+    --master-sizing cluster.nodegroups.kube_control_plane.sizing \
+    --node-sizing cluster.nodegroups.infra.sizing \
+    --gw-sizing cluster.nodegroups.gateway.sizing \
+    {{ cluster.name }}
+  when: cluster.name not in cluster_list.stdout_lines
 
-    - name: Tag created nodes
-      shell: |
-        for i in  $(./safescale cluster inspect rs-dev | jq -c -r '.result.nodes.masters[].name'); do \
-          ./safescale host tag $i kube_control_plane; done \
-        && for i in  $(./safescale cluster inspect rs-dev | jq -c -r '.result.nodes.nodes[].name'); do \
-          ./safescale host tag $i infra; done \
-        && ./safescale host tag gw-{{ cluster.name }} gateway \ 
-        {% if cluster.complexity == 'small' %} && ./safescale host tag gw2-{{ cluster.name }} gateway {% endif %}
+- name: Create node groups
+  include_tasks: nodegroup-create.yaml
+  loop: "{{ cluster.nodegroups }}"
+  loop_control:
+    loop_var: create_nodegroup
 
-    - name: Expand cluster to desired size
-      include_tasks: expand-cluster.yaml
-      loop: "{{ cluster.node_groups | dict2items }}"
-      loop_control:
-        loop_var: expand_node_group
-      when: node_group not in ['kube_control_plane', 'gateway'] 
+- name: Add created nodes to created nodegroups
+  shell: |
+    for i in  $({{ safescale_path }} cluster inspect rs-dev | jq -c -r '.result.nodes.masters[].name'); do \
+      {{ safescale_path }} host tag $i kube_control_plane; done \
+    && for i in  $({{ safescale_path }} cluster inspect rs-dev | jq -c -r '.result.nodes.nodes[].name'); do \
+      {{ safescale_path }} host tag $i infra; done \
+    && {{ safescale_path }} host tag gw-{{ cluster.name }} gateway \ 
+    {% if cluster.complexity | lower != 'small' %} && {{ safescale_path }} host tag gw2-{{ cluster.name }} gateway {% endif %}
 
-  when: not cluster.name in cluster_list.stdout
+- name: Expand cluster to desired node groups sizes
+  include_tasks: nodegroup-expand.yaml
+  loop: "{{ cluster.nodegroups }}"
+  loop_control:
+    loop_var: expand_nodegroup
+  when: 
+    - expand_nodegroup.name not in ['kube_control_plane', 'gateway'] 
+    - expand_nodegroup.count is defined and expand_nodegroup.count > 0

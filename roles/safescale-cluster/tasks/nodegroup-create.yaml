@@ -1,0 +1,12 @@
+# - name: Get existing node groups
+#   shell: "{{ safescale_path }} tag list | jq  -r '.result[].name'"
+#   register: tag_list
+
+# - name: Assert nodegroup does not exist
+#   fail:
+#     msg: Node group exists
+#   when: create_nodegroup.name in tag_list.stdout_lines
+
+- name: Create node group {{ create_nodegroup.name }}
+  shell: "{{ safescale_path }} tag create {{ create_nodegroup.name }}"
+  when: create_nodegroup.name not in tag_list.stdout_lines

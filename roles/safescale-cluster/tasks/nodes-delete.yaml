@@ -1,0 +1,21 @@
+- name: Find nodegroup for {{ item }}
+  set_fact:
+    node_nodegroup: "{{ hostvars[item]['nodegroup'] }}"
+
+- name: Read additional information on nodegroup from inventory if scaling
+  set_fact:
+    nodegroup_spec: "{{ cluster.nodegroups | selectattr('name', 'equalto', node_nodegroup) | first }}"
+
+- name: Detach the volume from node
+  shell: "{{ safescale_path }} volume detach {{ cluster.name }}-{{ nodegroup_spec.volume.type }}-{{ item }} {{ item }}"
+  when: nodegroup_spec.volume is defined
+
+- name: Delete the volume
+  shell: "{{ safescale_path }} volume delete {{ cluster.name }}-{{ nodegroup_spec.volume.type }}-{{ item }} "
+  when: nodegroup_spec.volume is defined
+
+- name: Untag {{ item }}
+  shell: "{{ safescale_path }} host untag {{ item }} {{ node_nodegroup }}"
+
+- name: Delete {{ item }}
+  shell: "{{ safescale_path }} cluster node delete -y -f {{ cluster.name }} {{ item }}"

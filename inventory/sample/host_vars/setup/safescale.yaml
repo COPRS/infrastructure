@@ -5,49 +5,42 @@ cluster:
   cidr: 192.168.0.0/16
   os: "csc-rs-ubuntu"
 
-  node_groups:
+  nodegroups:
     # kube_control_plane, infra and gateway are MANDATORY
-    kube_control_plane:
-      cpu: 4
-      ram: "[8-10]"
-      disk: 80
-    infra:
-      count: 3 # /!\ Only nodes not include in the cluster flavor
-      cpu: 4
-      ram: "[8-10]"
-      disk: 40
+    - name: kube_control_plane
+      sizing: "cpu=4,ram=[8-10],disk=80" # Safescale sizing format
+    - name: infra
+      count: 3 # /!\ Only nodes not included in the cluster flavor
+      volume:
+        type: HDD
+        size: 300
+      sizing: "cpu=8,ram=[14-18],disk=40"
       kubespray:
-        node_labels: "{'node-role.kubernetes.io/infra': ''}"
-    gateway:
-      cpu: 2
-      ram: "[4-5]"
-      disk: 20
+        node_labels: 
+          node-role.kubernetes.io/infra: ''
+    - name: gateway
+      sizing: "cpu=2,ram=[4-5],disk=20"
       kubespray:
-        node_labels: "{'node-role.kubernetes.io/gateway':''}"
-        node_taints: "{'node-role.kubernetes.io/gateway:NoSchedule'}"
+        node_labels:
+          node-role.kubernetes.io/gateway: ''
+        node_taints:
+          - node-role.kubernetes.io/gateway:NoSchedule
         kubelet_config_extra_args:
           systemReserved:
             cpu: "1"
             memory: "2Gi"
-    egress:
-      count: 1
-      cpu: 4
-      ram: "[8-10]"
-      disk: 40
+    - name: egress
+      sizing: "cpu=4,ram=[8-10],disk=40"
       kubespray:
-        node_labels: "node_labels={'node-role.kubernetes.io/egress': ''}"
-    prometheus:
+        node_labels:
+          node-role.kubernetes.io/egress: ''
+    - name: prometheus
       count: 2
-      cpu: 8
-      ram: "[14-18]"
-      disk: 80
+      sizing: "cpu=8,ram=[14-18],disk=80"
       kubespray:
-        node_labels: "{'node-role.kubernetes.io/infra': '', 'node-role.kubernetes.io/prometheus': ''}"
-       
-volume:
-  type: HDD
-  size: 300
-  count: 1  # /!\ safescale supports only 1 additional volume per node
+        node_labels:
+          node-role.kubernetes.io/infra: ''
+          node-role.kubernetes.io/prometheus: ''
 
 buckets:
   - "{{ cluster.name }}-elasticsearch-processing"

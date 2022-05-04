@@ -3,25 +3,32 @@
   import_tasks: cluster-create.yaml
   tags: cluster_create
 
-- meta: end_play
-  when: '"cluster_create" in ansible_run_tags'
+# - meta: end_play
+#   when: '"cluster_create" in ansible_run_tags'
 
 - name: Expand cluster with safescale
-  import_tasks: expand-cluster.yaml
-  when: expand_node_group is defined
-  tags: cluster_expand
+  import_tasks: nodegroup-expand.yaml
+  when: expand_nodegroup_name is defined
+  tags: nodegroup_expand
 
 - name: Gather facts
   import_tasks: gather_facts.yaml
   tags: always
 
-- name: Add cluster machines in hosts.yaml
+- debug: var=nodes_to_delete
+
+- name: Delete nodes from cluster
+  include_tasks:
+    file: nodes-delete.yaml
+    apply:
+      tags: nodes_delete
+  loop: "{{ nodes_to_delete.split(',') }}"
+  when: nodes_to_delete is defined
+  tags: nodes_delete
+
+- name: Sync hosts.yaml inventory with the cluster
   import_tasks : hosts-update.yaml
   tags: hosts_update
-
-- name: Create the volumes for the cluster
-  import_tasks: volumes-create.yaml
-  tags: volumes_create
 
 - name: Create the buckets
   import_tasks: bucket-create.yaml

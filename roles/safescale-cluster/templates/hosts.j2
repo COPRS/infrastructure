@@ -1,31 +1,38 @@
 {% for host in hosts %}
     {{ host.name }}:
       ansible_host: {{ host.private_ip }}
-      ansible_ssh_private_key_file: "{{ ssh_key_path }}/{{ host }}.pem"
+      ansible_ssh_private_key_file: "{{ ssh_key_path }}/{{ host.name }}.pem"
+      provider_id: {{ host.id }}
 {% endfor %}
 
-{% for node_group in node_groups %}
-{{ node_group.name }}:
+{% for nodegroup in nodegroups %}
+{% if nodegroup.hosts is defined %}
+{{ nodegroup.name }}:
   hosts:
-{% for node in node_group.hosts %}
+{% for node in nodegroup.hosts %}
     {{ node }}:
 {% endfor %}
-{% if cluster.node_groups[node_group.name] is defined and cluster.node_groups[node_group.name].kubespray is defined %}
   vars:
-{% for key, value in cluster.node_groups[node_group.name].kubespray.items() %}
-    {{ key }}: "{{ value }}"
-{% endfor %}
+    nodegroup: {{ nodegroup.name }}
+{% set spec = cluster.nodegroups | selectattr('name', 'equalto', nodegroup.name) | first %}
+{% if  spec.kubespray is defined %}
+{{ spec.kubespray | to_nice_yaml(indent=2) | indent(width=4, indentfirst=True) }}
+{% endif %}
 {% endif %}
 
 {% endfor %}
 
 kube_node:
   children:
-{% for node_group in node_groups %}
-{% if node_group.name != 'kube_control_plane' %}
-    {{ node_group.name }}:
+{% for nodegroup in nodegroups %}
+{% if nodegroup.name != 'kube_control_plane' %}
+    {{ nodegroup.name }}:
 {% endif %}
 {% endfor %}
+
+etcd:
+  children:
+    kube_control_plane:
 
 k8s_cluster:
   children:

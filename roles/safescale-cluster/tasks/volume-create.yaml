@@ -1,8 +1,6 @@
----
-# Add volumes on worker nodes to populate Ceph pool
 - name: Create the volumes
-  shell: "{{ safescale_path }} volume create --size {{ volume.size }} --speed {{ volume.type }} {{ item.0 }}-{{ volume.type }}-{{ item.1 }} "
-  loop: "{{ nodes | product(range(1, volume.count+1)) | list }}"
+  shell: "{{ safescale_path }} volume create --size {{ expand_nodegroup.volume.size }} --speed {{ expand_nodegroup.volume.type }} {{ cluster.name }}-{{ expand_nodegroup.volume.type }}-{{ item }} "
+  loop: "{{ expand_cmd.stdout_lines }}"
   async: 30
   poll: 0
   register: volumes
@@ -17,11 +15,11 @@
   until: job_result.finished
   retries: 6
   delay: 5
-  ignore_errors: yes
+  ignore_errors: true
 
 - name: Attach the volumes
-  shell: "{{ safescale_path }} volume attach --do-not-format --do-not-mount {{ item.0 }}-{{ volume.type }}-{{ item.1 }} {{ item.0 }} "
-  loop: "{{ nodes | product(range(1, volume.count+1)) | list }}"
+  shell: "{{ safescale_path }} volume attach --do-not-format --do-not-mount {{ cluster.name }}-{{ expand_nodegroup.volume.type }}-{{ item }} {{ item }} "
+  loop: "{{ expand_cmd.stdout_lines }}"
   async: 30
   poll: 0
   register: attachment
@@ -36,4 +34,4 @@
   until: job_result.finished
   retries: 6
   delay: 5
-  ignore_errors: yes
+  ignore_errors: true
