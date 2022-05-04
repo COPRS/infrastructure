@@ -167,3 +167,20 @@
         --from-file=/etc/kubernetes/pki/etcd/server.crt
         --namespace monitoring
       become: true
+      ignore_errors: yes
+
+- name: Add providerID spec to nodes for the autoscaler
+  hosts: gateway[0]
+  gather_facts: false
+  tags: providerids
+  tasks:
+    - name: Set providerID on node's spec
+      delegate_to: 
+      kubernetes.core.k8s:
+        state: patched
+        kind: Node
+        name: "{{ item }}"
+        definition:
+          spec:
+            providerID: "{{ hostvars[item].provider_id }}"
+      loop: "{{ groups['k8s_cluster'] }}"
