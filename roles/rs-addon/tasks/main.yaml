@@ -64,7 +64,7 @@
 
     - name: Parse stream-properties file
       set_fact:
-        stream_properties: "{{ stream_properties_content.content | b64decode | regex_replace('\\n', ',') }}"
+        stream_properties: "{{ stream_properties_content.content | b64decode | regex_replace('#.*\\n','') | regex_replace('\\n\\n', '\\n') | regex_replace('\\n', ',') }}"
 
     - name: Template script to gw
       template:
