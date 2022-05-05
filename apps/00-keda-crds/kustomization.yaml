@@ -5,3 +5,4 @@ resources:
   - crd-scaledobjects.yaml
   - crd-scaledjobs.yaml
   - crd-clustertriggerauthentications.yaml
+  - crd-triggerauthentications.keda.sh.yaml
