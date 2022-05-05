@@ -44,7 +44,7 @@
 
     - name: Get stream definition
       slurp:
-        src: "{{ rs_addon_dir.path }}/{{ rs_addon_name }}/{{ rs_addon_name }}_Executables/stream-definition.properties"
+        src: "{{ rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/stream-definition.properties"
       register: stream_definition_content
 
     - name: Parse stream-definition file
@@ -59,7 +59,7 @@
 
     - name: Get stream properties
       slurp:
-        src: "{{ rs_addon_dir.path }}/{{ rs_addon_name }}/{{ rs_addon_name }}_Executables/stream-parameters.properties"
+        src: "{{ rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/stream-parameters.properties"
       register: stream_properties_content
 
     - name: Parse stream-properties file
@@ -73,11 +73,11 @@
 
     - name: Check if additional_resources folder exists
       stat:
-        path: "{{ rs_addon_dir.path }}/{{ rs_addon_name }}/{{ rs_addon_name }}_Executables/additional_resources"
+        path: "{{ rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/additional_resources"
       register: additional_resources_dir    
 
     - name: Deploy the additional resources into the cluster
-      shell: "kubectl apply -f {{ rs_addon_dir.path }}/{{ rs_addon_name }}/{{ rs_addon_name }}_Executables/additional_resources/"
+      shell: "kubectl apply -f {{ rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/additional_resources/"
       register: deploy_log
       when: additional_resources_dir.stat.exists and additional_resources_dir.stat.isdir
 
