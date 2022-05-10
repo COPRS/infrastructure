@@ -79,3 +79,13 @@ kube_proxy_metrics_bind_address: 0.0.0.0:10249
 # Required for metrics-server.
 # By default the certificate expire after 1 year.
 kubelet_rotate_server_certificates: true
+
+# Set up cluster DNS
+dns_mode: coredns
+resolvconf_mode: host_resolvconf
+nameservers:
+  - 1.1.1.1
+  - 1.0.0.1
+upstream_dns_servers:
+  - 1.1.1.1
+  - 1.0.0.1
