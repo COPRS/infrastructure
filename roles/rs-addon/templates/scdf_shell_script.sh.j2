@@ -1,0 +1,15 @@
+{# Import applications list #}
+app import --uri file://{{ rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/stream-application-list.properties
+
+{% for stream_definition in stream_definitions %}
+{# Remove comments #}
+{% set stream_definition = stream_definition | regex_replace(' *#.*$','') %}
+{# Skip empty lines #}
+{% if stream_definition != "" %}
+
+{# create stream #}
+stream create --name {{ stream_name | replace ('.', '-') | replace ('_', '-') }}-part{{ loop.index }} --definition "{{ stream_definition | trim }}"
+{# deploy stream #}
+stream deploy --name {{ stream_name | replace ('.', '-') | replace ('_', '-') }}-part{{ loop.index }} --properties "{{ stream_properties | join(',') }}"
+{% endif %}
+{% endfor %}

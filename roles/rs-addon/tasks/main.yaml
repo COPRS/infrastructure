@@ -1,7 +1,7 @@
 - name: Check script variables
   assert:
     that:
-      - rs_addon_url is defined
+      - rs_addon_location is defined
       - stream_name is defined
 
 - name: Deploy RS add-on
@@ -10,11 +10,14 @@
       apt: 
         name: openjdk-17-jre-headless
         state: present
+      become: true
       
     - name: Setting some facts
       set_fact:
         shell_jar_path: "/home/safescale/{{ shell_jar_url | urlsplit('path') | basename }}"
-        rs_addon_name: "{{ rs_addon_url | basename | splitext | first }}" 
+        rs_addon_name: "{{ rs_addon_location | basename | splitext | first }}" 
+        rs_addon_zip: "{{ rs_addon_location | basename }}"
+        rs_addon_url: "{{ rs_addon_location | urlsplit }}"
 
     - name: Check if scdf shell jar exists
       stat:
@@ -23,12 +26,12 @@
 
     - name: Download scdf shell jar
       get_url:
-        url: "{{ shell_jar_url }}"
-        dest: "{{ shell_jar_path }}"
+        url: "{{ shell_jar_url }}"
+        dest: "{{ shell_jar_path }}"
         mode: 0755
         checksum: "sha1:{{ shell_jar_sha1 }}"
       when:
-        - "not shell_jar_file.stat.exists or shell_jar_file.stat.mode != 755 or shell_jar_file.stats.checksum != shell_jar_sha1"
+        - "not shell_jar_file.stat.exists or shell_jar_file.stat.mode != 755 or shell_jar_file.stats.checksum != shell_jar_sha1"
 
     - name: Create tmp directory
       tempfile:
@@ -36,61 +39,90 @@
         suffix: rs_addon
       register: rs_addon_dir
 
-    - name: Unzip rs_addon
+    - name: Download and unzip rs_addon
       unarchive:
-        src: "{{ rs_addon_url }}"
+        src: "{{ rs_addon_location }}"
         dest: "{{ rs_addon_dir.path }}"
         remote_src: yes
+      when: rs_addon_url.scheme != ''
 
-    - name: Get stream definition
+    - name: Copy and unzip rs_addon
+      unarchive:
+        src: "{{ rs_addon_location }}"
+        dest: "{{ rs_addon_dir.path }}"
+      when: rs_addon_url.scheme == ''
+
+    - name: Read stream-definition file
       slurp:
         src: "{{ rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/stream-definition.properties"
-      register: stream_definition_content
+      register: stream_definitions_content
 
-    - name: Parse stream-definition file
+    - name: Read streams from definition field if using ICD 3.0
+      block:
+        - name: Warn that stream description and definition fields are deprecated
+          debug:
+            msg: "[WARNING] 'description' and 'definition' fields in the stream-definition.properties are deprecated."
+
+        - name: Get all the streams definitions
+          set_fact:
+            stream_definitions: "{{ stream_definitions_content.content | b64decode | regex_search('definition ?= ?\"(.*)\"', '\\1') | first }}"          
+      when: stream_definitions_content.content | b64decode is search(' *definition ?= ?\"(.*)\"')
+
+    - name: Read streams definitions
       set_fact:
-        stream_definition: "{{ stream_definition_content.content | b64decode | regex_search('definition ?= ?(.*)', '\\1') | first }}"
+        stream_definitions: "{{ stream_definitions_content.content | b64decode }}"          
+      when: stream_definitions_content.content | b64decode is not search(' *definition ?= ?\"(.*)\"')
 
+    - name: Remove comments and split stream definition by lines
+      set_fact:
+        stream_definitions: "{{ (stream_definitions | regex_replace(' *#.*','')).splitlines() | select('match', '[^ ]+') }}"
+  
     - name: Assert successful stream parse
       assert:
         that:
-          stream_definition | length > 0
+          stream_definitions | length > 0
         quiet: true
 
-    - name: Get stream properties
+    - name: Read stream-parameters file
       slurp:
         src: "{{ rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/stream-parameters.properties"
       register: stream_properties_content
 
-    - name: Parse stream-properties file
+    - name: Parse streams properties
       set_fact:
-        stream_properties: "{{ stream_properties_content.content | b64decode | regex_replace('\\n', ',') }}"
+        stream_properties: "{{ (stream_properties_content.content | b64decode | regex_replace(' *#.*','')).splitlines() | select('match', '[^ ]') }}"
 
     - name: Template script to gw
       template:
-        src: scdf_shell_script.txt
-        dest: "{{ rs_addon_dir.path }}"
+        src: scdf_shell_script.sh.j2
+        dest: "{{ rs_addon_dir.path }}/scdf_shell_script.sh"
 
     - name: Check if additional_resources folder exists
       stat:
         path: "{{ rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/additional_resources"
-      register: additional_resources_dir    
+      register: additional_resources_dir
+
+    - name: Check if additional_resources folder contains yaml files
+      find:
+        paths: "{{ additional_resources_dir.stat.path }}"
+        patterns: "*.yaml,*.yml"
+      register: additional_files
 
     - name: Deploy the additional resources into the cluster
-      shell: "kubectl apply -f {{ rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/additional_resources/"
-      register: deploy_log
-      when: additional_resources_dir.stat.exists and additional_resources_dir.stat.isdir
-
-    - name: Print deployed resources
-      debug:
-        msg: "{{ deploy_log.stdout_lines }}"
-      when: additional_resources_dir.stat.exists and additional_resources_dir.stat.isdir
+      block:
+        - name: Apply the resources into the cluster
+          shell: "kubectl apply -f {{ rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/additional_resources/"
+          register: deploy_log
+        - name: Print the deployed resources
+          debug:
+            msg: "{{ deploy_log.stdout_lines }}"
+      when: additional_resources_dir.stat.exists and additional_resources_dir.stat.isdir and additional_files.matched > 0
 
     - name: Deploy executables with the scdf shell jar
       shell: |
-        java -jar {{ shell_jar_path }} \
+        java -jar {{ shell_jar_path }} \
         --dataflow.uri=http://spring-cloud-dataflow-server.processing.svc.cluster.local:8080 \
-        --spring.shell.commandFile={{ rs_addon_dir.path }}/scdf_shell_script.txt
+        --spring.shell.commandFile={{ rs_addon_dir.path }}/scdf_shell_script.sh
       register: deploy_log
 
     - name: Print deploy log
