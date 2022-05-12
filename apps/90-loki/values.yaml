@@ -86,7 +86,7 @@ ingester:
               operator: Exists
   persistence:
     enabled: true
-    size: 100Gi
+    size: 20Gi
     storageClass: ceph-block
   extraArgs:
     - -config.expand-env=true
