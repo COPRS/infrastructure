@@ -11,6 +11,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+## [0.7.0-rc1] - 2022-05-11
+### Changed
+- [#347 - Update software component to deploy a RS addon / RS core on RS Platform with several DSL lines.](https://github.com/COPRS/SCRUM-Tickets/issues/347)
+### Fixed
+- [#268 - [BUG][SECURITY][IAM] Remove double authentication for Graylog (for now, there is double authentication)](https://github.com/COPRS/SCRUM-Tickets/issues/268)
+
 ## [0.6.0-rc1] - 2022-04-13
 ### Changed
 - [#301 - Data stored into LOKI to be improved](https://github.com/COPRS/SCRUM-Tickets/issues/301)
