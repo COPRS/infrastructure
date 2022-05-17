@@ -12,7 +12,16 @@ First, expand the SafeScale cluster.
 safescale cluster expand \
   --os IMAGE_NAME \
   --count SUPPLEMENTARY_NODE_COUNT \
-  --node-sizing cpu=CPU_COUNT,ram=MEMORY_AMOUNT,disk=STORAGE_MOUNT
+  --node-sizing cpu=CPU_COUNT,ram=MEMORY_AMOUNT,disk=STORAGE_SIZE
+```
+
+This command will add $SUPPLEMENTARY_NODE_COUNT nodes using the os $IMAGE_NAME image. The node sizing part allows the user to specify a specific or a range of resources . The disk storage on this example will be used for the operating system, mounted on /.
+More information for the sizing part can be found on the [safescale documentation about cluster resource.](https://github.com/CS-SI/SafeScale/blob/d8b98cb28c29cbbd87162b33e3a84f159a6707d9/doc/USAGE.md#cluster)
+
+To add an additionnal disk storage one can uses the following command (also see [https://github.com/CS-SI/SafeScale/blob/d8b98cb28c29cbbd87162b33e3a84f159a6707d9/doc/USAGE.md#volume](the safescale volume documentation):
+```Bash
+safescale volume create --size DISK_SIZE_GB --speed DISK_TYPE DISK_NAME
+safescale volume attach  DISK_NAME NODE_NAME
 ```
 
 *Do not forget to update the `WhitelistTemplateRegexp`/`BlacklistTemplateRegexp` in your SafeScale tenants file to reflect the template of the node you want to add.  
