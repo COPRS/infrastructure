@@ -8,6 +8,12 @@
 - name: Getting the main gateway IP
   shell: "{{ safescale_path }} host inspect gw-{{ cluster.name }} | jq .result.public_ip | tr -d '\"'"
   register: main_gateway_ip
+  when: use_private_gateway_ip is defined
+
+- name: Getting the main gateway IP
+  shell: "{{ safescale_path }} host inspect gw-{{ cluster.name }} | jq .result.private_ip | tr -d '\"'"
+  register: main_gateway_ip
+  when: use_private_gateway_ip is defined
 
 - name: Setting some facts
   set_fact:
