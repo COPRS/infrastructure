@@ -107,6 +107,7 @@
         paths: "{{ additional_resources_dir.stat.path }}"
         patterns: "*.yaml,*.yml"
       register: additional_files
+      when: additional_resources_dir.stat.exists
 
     - name: Deploy the additional resources into the cluster
       block:
