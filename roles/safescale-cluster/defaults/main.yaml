@@ -2,6 +2,8 @@ safescale_path: $(command -v safescale)
 # tenant file path on the machine
 tenant_path: ~/.safescale/tenants.yaml
 
+ssh_key_path: "{{ inventory_dir }}/artifacts/.ssh"
+
 # name of the safescale operator in the tenant file
 # default is safescale if nothing is specified in tenant file
 safescale_operator: safescale

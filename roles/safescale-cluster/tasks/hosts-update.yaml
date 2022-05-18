@@ -5,20 +5,13 @@
     regexp: '^remote_user *=*'
     line: "remote_user       = {{ safescale_operator }}"
 
-- name: Getting the main gateway IP
-  shell: "{{ safescale_path }} host inspect gw-{{ cluster.name }} | jq .result.public_ip | tr -d '\"'"
-  register: main_gateway_ip
-  when: use_private_gateway_ip is not defined
+- name: Getting the gateway details
+  shell: "{{ safescale_path }} host inspect gw-{{ cluster.name }} | jq -r -c .result"
+  register: main_gateway_details
 
-- name: Getting the main gateway IP
-  shell: "{{ safescale_path }} host inspect gw-{{ cluster.name }} | jq .result.private_ip | tr -d '\"'"
-  register: main_gateway_ip
-  when: use_private_gateway_ip is defined
-
-- name: Setting some facts
+- name: Saving gateway's IP
   set_fact:
-    main_gateway_ip: "{{ main_gateway_ip.stdout }}"
-    ssh_key_path: "{{ inventory_dir }}/artifacts/.ssh"
+    main_gateway_ip: "{% if use_private_gateway_ip is defined %}{{ (main_gateway_details.stdout | from_json).private_ip }}{% else %}{{ (main_gateway_details.stdout | from_json).public_ip }}{% endif %}"
 
 - name: Creating the .ssh folder for the cluster ssh keys
   file:
@@ -32,7 +25,7 @@
   register: ssh_files
 
 - name: Create the ssh key files
-  shell: "echo \"$({{ safescale_path }} host show {{ item.name }} | jq .result.private_key )\" | tr -d '\"' | head -c -1 - >> {{ ssh_key_path }}/{{ item.name }}.pem && chmod 400 {{ ssh_key_path }}/{{ item.name }}.pem "
+  shell: "echo \"$({{ safescale_path }} host show {{ item.name }} | jq -r .result.private_key )\" | head -c -1 - >> {{ ssh_key_path }}/{{ item.name }}.pem && chmod 400 {{ ssh_key_path }}/{{ item.name }}.pem "
   when: not item.name in ( ssh_files.files |  map(attribute='path') | join(' ') )
   loop: "{{ hosts }}"
 
