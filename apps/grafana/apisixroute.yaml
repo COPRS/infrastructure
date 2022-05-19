@@ -1,4 +1,4 @@
-apiVersion: apisix.apache.org/v2beta2
+apiVersion: apisix.apache.org/v2beta3
 kind: ApisixRoute
 metadata:
   name: grafana
@@ -13,7 +13,7 @@ spec:
         paths: [ /* ]
       websocket: true
 ---
-apiVersion: apisix.apache.org/v1
+apiVersion: apisix.apache.org/2beta3
 kind: ApisixTls
 metadata:
   name: sni-monitoring
