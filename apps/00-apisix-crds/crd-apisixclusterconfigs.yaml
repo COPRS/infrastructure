@@ -1,6 +1,8 @@
 apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
+  labels:
+    apisix.apache.org/app: ingress-apisix
   name: apisixclusterconfigs.apisix.apache.org
 spec:
   group: apisix.apache.org
@@ -13,7 +15,7 @@ spec:
   preserveUnknownFields: false
   scope: Cluster
   versions:
-  - name: v2alpha1
+  - name: v2beta3
     schema:
       openAPIV3Schema:
         properties:
@@ -50,5 +52,45 @@ spec:
         type: object
     served: true
     storage: true
+    subresources:
+      status: {}
+  - name: v2alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          spec:
+            properties:
+              admin:
+                properties:
+                  adminKey:
+                    type: string
+                  baseURL:
+                    pattern: https?://[^:]+:(\d+)
+                    type: string
+                required:
+                - baseURL
+                type: object
+              monitoring:
+                properties:
+                  prometheus:
+                    properties:
+                      enable:
+                        type: boolean
+                    type: object
+                  skywalking:
+                    properties:
+                      enable:
+                        type: boolean
+                      sampleRatio:
+                        maximum: 1
+                        minimum: 1e-05
+                        type: number
+                    type: object
+                type: object
+            type: object
+        type: object
+    served: false
+    storage: false
+    deprecated: true
     subresources:
       status: {}
