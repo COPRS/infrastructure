@@ -10,7 +10,7 @@
 {{ nodegroup.name }}:
   hosts:
 {% for node in nodegroup.hosts %}
-    {{ node }}:
+    {{ node.name }}:
 {% endfor %}
   vars:
     nodegroup: {{ nodegroup.name }}
