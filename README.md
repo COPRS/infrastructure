@@ -337,12 +337,12 @@ Default configurations:
 - **Apisix**
   - Helm chart:
     - Repository: charts.apiseven.com
-    - Version: 0.7.3
+    - Version: 0.9.3
     - Source: https://github.com/apache/apisix-helm-chart/tree/master/charts/apisix
   - Images:
     - docker.io/apache/apisix:2.10.0-alpine
     - docker.io/apache/apisix-dashboard:2.10.1-alpine
-    - docker.io/apache/apisix-ingress-controller:1.3.0
+    - docker.io/apache/apisix-ingress-controller:1.4.1
     - docker.io/bitnami/etcd:3.4.16-debian-10-r14
 - **Falco**
   - Helm chart:
