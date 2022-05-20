@@ -397,3 +397,10 @@ Default configurations:
   - Images:
     - ghcr.io/kedacore/keda:2.6.1
     - ghcr.io/kedacore/keda-metrics-apiserver:2.6.1
+- **Prometheus blackbox exporter**
+  - Helm chart:
+    - Repository: https://prometheus-community.github.io/helm-charts
+    - Version: 5.8.1
+    - Source: https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-blackbox-exporter
+  - Images:
+    - docker.io/prom/blackbox-exporter:v0.20.0
