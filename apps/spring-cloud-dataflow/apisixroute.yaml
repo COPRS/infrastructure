@@ -1,4 +1,4 @@
-apiVersion: apisix.apache.org/v2beta2
+apiVersion: apisix.apache.org/v2beta3
 kind: ApisixRoute
 metadata:
   name: scdf
@@ -29,7 +29,7 @@ spec:
             introspection_endpoint_auth_method: client_secret_post
             redirect_uri: https://processing.{{ platform_domain_name }}/redirect_uri
 ---
-apiVersion: apisix.apache.org/v1
+apiVersion: apisix.apache.org/2beta3
 kind: ApisixTls
 metadata:
   name: sni-processing
