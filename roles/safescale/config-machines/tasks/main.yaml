@@ -19,3 +19,19 @@
     regexp: '^session optional pam_mkhomedir\.so skel=/etc/skel umask=077$'
     line: session optional pam_mkhomedir.so skel=/etc/skel umask=077
     insertbefore: '# end of pam-auth-update config'
+
+- name: Allow SSH connection with password
+  replace:
+    path: /etc/ssh/sshd_config
+    regexp: '^(.*)PasswordAuthentication(.*)$'
+    replace: PasswordAuthentication yes
+  notify:
+    - Restart sshd
+  
+- name: Config firewalld with coredns
+  firewalld:
+    permanent: yes
+    immediate: yes
+    source: "{{ kube_pods_subnet }}"
+    zone: trusted
+    state: enabled

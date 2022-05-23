@@ -1,0 +1,61 @@
+# SafeScale client binary path
+safescale_path: $(command -v safescale)
+# SafeScale tenants file path
+tenant_path: ~/.safescale/tenants.yaml
+# Ssh keys directory path
+ssh_key_path: "{{ inventory_dir }}/artifacts/.ssh"
+# SafeScale operator name
+safescale_operator: safescale
+
+# LDAP config
+base_dn: dc=cluster,dc=local
+ldap_server_url: ldap://127.0.0.1:30389
+
+etcd_metrics_service_labels:
+  k8s-app: etcd
+  app.kubernetes.io/managed-by: Kubespray
+  app: kube-prometheus-stack-kube-etcd
+  release: prometheus-stack
+
+# Cluster configuration
+cluster:
+  name: rs-cluster
+  complexity: Large
+  cidr: 192.168.0.0/16
+  os: "csc-rs-ubuntu"
+
+  nodegroups:
+    # kube_control_plane, infra and gateway are MANDATORY
+    - name: kube_control_plane
+      sizing: "cpu=4,ram=[8-10],disk=80" # Safescale sizing format
+    - name: infra
+      count: 3 # /!\ Only nodes not included in the cluster flavor
+      volume:
+        type: HDD
+        size: 300
+      sizing: "cpu=8,ram=[14-18],disk=40"
+      kubespray:
+        node_labels: 
+          node-role.kubernetes.io/infra: ''
+    - name: gateway
+      sizing: "cpu=2,ram=[4-5],disk=20"
+      kubespray:
+        node_labels:
+          node-role.kubernetes.io/gateway: ''
+        node_taints:
+          - node-role.kubernetes.io/gateway:NoSchedule
+        kubelet_config_extra_args:
+          systemReserved:
+            cpu: "1"
+            memory: "2Gi"
+    - name: egress
+      sizing: "cpu=4,ram=[8-10],disk=40"
+      kubespray:
+        node_labels:
+          node-role.kubernetes.io/egress: ''
+
+buckets:
+  - "{{ cluster.name }}-elasticsearch-processing"
+  - "{{ cluster.name }}-elasticsearch-security"
+  - "{{ cluster.name }}-thanos"
+  - "{{ cluster.name }}-loki"

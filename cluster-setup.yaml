@@ -1,4 +1,0 @@
-- name: Create the cluster with safescale
-  hosts: setup
-  roles: 
-    - { role: "safescale-cluster" }

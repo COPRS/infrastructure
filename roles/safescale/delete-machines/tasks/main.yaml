@@ -1,0 +1,5 @@
+- name: Delete each node in nodes_to_delete
+  include_tasks:
+    file: delete-machine.yaml
+  loop: "{{ nodes_to_delete.split(',') }}"
+  when: nodes_to_delete is defined

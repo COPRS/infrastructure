@@ -17,9 +17,6 @@
   shell: "{{ safescale_path }} host tag {{ item }} {{ expand_nodegroup.name }}"
   loop: "{{ expand_cmd.stdout_lines }}"
 
-- debug:
-    msg: "{{ expand_cmd.stdout_lines }}"
-
 - name: Create and attach the volumes on {{ expand_nodegroup.name }} nodes
   include_tasks: volume-create.yaml
   when: expand_nodegroup.volume is defined
