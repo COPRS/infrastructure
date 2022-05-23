@@ -36,7 +36,7 @@
   
 - name: Install Suricata
   apt:  
-    name: suricata={{ suricata.suricata_version }}
+    name: suricata
     state: present
     update_cache: yes
   
