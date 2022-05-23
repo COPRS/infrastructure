@@ -1,6 +1,6 @@
 - name: Install Clamav
   apt: 
-    name: clamav-daemon={{ clamav.clamav_version }}
+    name: clamav-daemon
     state: present
 
 - name: Stop service clamav-freshclam to update signature
