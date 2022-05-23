@@ -1,7 +1,7 @@
 logs
 artifacts
 tenants.*
-ssh-main-gateway.*
+ssh-main-gateway.conf
 !roles/safescale-cluster/templates/*
 library/safescale
 apps/**/resources.txt
