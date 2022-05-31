@@ -110,6 +110,11 @@ distributor:
           - matchExpressions:
             - key: "node-role.kubernetes.io/infra"
               operator: Exists
+  extraArgs:
+    - -config.expand-env=true
+  extraEnvFrom:
+    - secretRef:
+        name: loki-s3-credentials
 
 querier:
   replicas: 3
