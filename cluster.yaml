@@ -18,7 +18,7 @@
   hosts: k8s_cluster
   roles:
     - { role: "infra-defaults"}
-    - { role: "safescale/config-machines" }
+    - { role: "safescale/config-machines", become: yes }
   tags: config
 
 - name: Prepare gateways
