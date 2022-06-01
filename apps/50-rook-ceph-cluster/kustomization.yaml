@@ -6,6 +6,7 @@ namespace: rook-ceph
 
 resources:
   - ceph-priority.yaml
+  - apisixroute.yaml
 
 helmCharts:
 - name: rook-ceph-cluster

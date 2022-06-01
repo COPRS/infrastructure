@@ -50,7 +50,9 @@ cephClusterSpec:
         memory: 2Gi
 
   dashboard:
-    enabled: false
+    enabled: true
+    port: 7000
+    ssl: false
 
   # automate [data cleanup process](https://github.com/rook/rook/blob/master/Documentation/ceph-teardown.md#delete-the-data-on-hosts) in cluster destruction.
   cleanupPolicy:

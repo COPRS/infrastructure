@@ -135,6 +135,15 @@
             "clientRole": true,
             "attributes": {}
           }
+        ],
+        "ceph": [
+          {
+            "name": "access-authorized",
+            "description": "Only users with this role may access the client",
+            "composite": false,
+            "clientRole": true,
+            "attributes": {}
+          }
         ]
       }
     },
@@ -184,6 +193,9 @@
             "operator"
           ],
           "scdf": [
+            "access-authorized"
+          ],
+          "ceph": [
             "access-authorized"
           ]
         },
@@ -496,6 +508,32 @@
         "secret": "{{ scdf.oidc_client_secret }}",
         "redirectUris": [
             "https://processing.{{ platform_domain_name }}/*"
+        ],
+        "webOrigins": [],
+        "notBefore": 0,
+        "bearerOnly": false,
+        "consentRequired": false,
+        "standardFlowEnabled": true,
+        "implicitFlowEnabled": false,
+        "directAccessGrantsEnabled": true,
+        "serviceAccountsEnabled": true,
+        "authorizationServicesEnabled": true,
+        "publicClient": false,
+        "frontchannelLogout": false,
+        "defaultClientScopes": [],
+        "optionalClientScopes": []
+      },
+      {
+        "clientId": "ceph",
+        "name": "Ceph dashboard",
+        "baseUrl": "https://ceph.{{ platform_domain_name }}/",
+        "surrogateAuthRequired": false,
+        "enabled": true,
+        "alwaysDisplayInConsole": false,
+        "clientAuthenticatorType": "client-secret",
+        "secret": "{{ rook-ceph.oidc_client_secret }}",
+        "redirectUris": [
+            "https://ceph.{{ platform_domain_name }}/*"
         ],
         "webOrigins": [],
         "notBefore": 0,
