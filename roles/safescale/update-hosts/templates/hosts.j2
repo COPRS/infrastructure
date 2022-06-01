@@ -13,7 +13,7 @@
     {{ node.name }}:
 {% endfor %}
   vars:
-    nodegroup: {{ nodegroup.name }}
+    nodegroup: {{ nodegroup.name | replace('-', '_') }}
 {% set spec = cluster.nodegroups | selectattr('name', 'equalto', nodegroup.name) | first %}
 {% if  spec.kubespray is defined %}
 {{ spec.kubespray | to_nice_yaml(indent=2) | indent(width=4, indentfirst=True) }}
@@ -26,7 +26,7 @@ kube_node:
   children:
 {% for nodegroup in nodegroups %}
 {% if nodegroup.name != 'kube_control_plane' %}
-    {{ nodegroup.name }}:
+    {{ nodegroup.name | replace('-', '_') }}:
 {% endif %}
 {% endfor %}
 
