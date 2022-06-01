@@ -3,4 +3,4 @@ metrics:
 
 serviceMonitor:
   enabled: true
-  interval: 2m # default is 1m from the chart
+  interval: 2m # default is 1m from the chart

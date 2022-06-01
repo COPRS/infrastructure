@@ -19,7 +19,7 @@
         $node   
     done
 
-    # When all pods are pending except linkerd and daemonsets, delete linkerd pods too.
+    # When all pods are pending except linkerd and daemonsets, delete linkerd pods too.
     for node in $nodes; do
         kubectl drain \
             --ignore-daemonsets \
