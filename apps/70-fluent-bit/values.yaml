@@ -1,9 +1,8 @@
 kind: DaemonSet
 
 image:
-  repository: fluent/fluent-bit
+  repository: artifactory.coprs.esa-copernicus.eu/rs-docker/fluent-bit-plugin-loki
   tag: 1.9.3
-  pullPolicy: IfNotPresent
 
 logLevel: warn
 
@@ -199,25 +198,33 @@ config:
   outputs: |
     # Use fields as loki labels, and remove them to have only the actual log sent to loki as the payload
     [OUTPUT]
-      Name loki
+      Name grafana-loki
       Match processing.log.*
-      Labels log_type=container,pod=$pod_name,namespace=$namespace_name,node=$host,container=$container_name,container_image=$container_image
-      Host loki-distributor.logging.svc.cluster.local
-      Remove_keys container_hash,container_image,container_name,docker_id,host,namespace_name,pod_id,pod_name,pod_name
-      Drop_single_key true
-      Line_format key_value
-      Retry_Limit     4
-      Port 3100
+      Labels {log_type="container"}
+      LabelMapPath /fluent-bit/etc/labelmap/labelmap.json
+      Url http://loki-distributor.logging.svc.cluster.local:3100/loki/api/v1/push
+      RemoveKeys container_hash,container_image,container_name,docker_id,host,namespace_name,pod_id,pod_name,pod_name
+      DropSingleKey true
+      LogLevel warn
+      LineFormat key_value
+      MaxBackoff 30m
+      Buffer true
+      DqueDir /var/log/flb-storage/loki
+      DqueName dque-processing
     [OUTPUT]
-      Name loki
+      Name grafana-loki
       Match system.*
-      Labels log_type=system,syslog_identifier=$syslog_identifier,node=$hostname
-      Host loki-distributor.logging.svc.cluster.local
-      Remove_keys syslog_identifier,hostname
-      Drop_single_key true
-      Line_format key_value
-      Retry_Limit     4
-      Port 3100
+      Labels {log_type="system"}
+      LabelMapPath /fluent-bit/etc/labelmap/labelmap.json
+      Url http://loki-distributor.logging.svc.cluster.local:3100/loki/api/v1/push
+      RemoveKeys syslog_identifier,hostname
+      DropSingleKey true
+      LogLevel warn
+      LineFormat key_value
+      MaxBackoff 30m
+      Buffer true
+      DqueDir /var/log/flb-storage/loki
+      DqueName dquer-system
     [OUTPUT]
       Name        kafka
       Format      json
@@ -278,6 +285,9 @@ daemonSetVolumes:
   - name: wazuh-alert
     hostPath:
       path: /var/ossec/logs/alerts
+  - name: labelmap
+    configMap:
+      name: "fluent-bit-labelmap"
 
 daemonSetVolumeMounts:
   - name: varlog
@@ -291,6 +301,8 @@ daemonSetVolumeMounts:
   - name: wazuh-alert
     mountPath: /var/ossec/logs/alerts
     readOnly: true
+  - name: labelmap
+    mountPath: /fluent-bit/etc/labelmap
 
 tolerations:
   - effect: NoSchedule

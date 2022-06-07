@@ -1,0 +1,9 @@
+{
+  "host": "node",
+  "container_image": "container_image",
+  "container_name": "container",
+  "pod_name": "pod",
+  "namespace_name": "namespace",
+  "hostname": "node",
+  "syslog_identifier": "syslog_identifier"
+}
