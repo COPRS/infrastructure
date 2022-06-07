@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: externalgrpc-cloudconfig
+data:
+  cloud-config: |-
+    address: "rs-infra-scaler.{{ kustomization.namespace }}.svc.cluster.local:8086"

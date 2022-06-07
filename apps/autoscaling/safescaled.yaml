@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: safescaled
+  labels:
+    app.kubernetes.io/component: safescaled
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: safescaled
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: safescaled
+    spec:
+      containers:
+        - image: artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:0.8.0-rc1
+          name: safescaled
+          resources:
+            limits:
+              cpu: 200m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          command:
+            - ./safescaled
+            - -v 
+            - -l
+            - :50051
+          env:
+            - name: SAFESCALED_FROM_INSIDE
+              value: "true"
+          volumeMounts:
+            - name: tenants
+              mountPath: /etc/safescale
+              readOnly: true
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: "node-role.kubernetes.io/prometheus"
+                  operator: Exists
+      volumes:
+        - name: tenants
+          secret:
+            secretName: safescale-tenants
+            defaultMode: 0400
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: safescaled
+  labels:
+    app.kubernetes.io/component: safescaled
+spec:
+  ports:
+  - name: grpc
+    port: 50051
+    protocol: TCP
+    targetPort: 50051
+  selector:
+    app.kubernetes.io/component: safescaled
