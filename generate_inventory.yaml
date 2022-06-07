@@ -11,6 +11,10 @@
         path: "{{ generated_inventory_vars_path | dirname }}"
         state: directory
 
+    - name: Read infra default vars
+      include_vars:
+        file: "{{ playbook_dir }}/roles/infra-defaults/defaults/main.yaml"
+
     - name: Get inventory_vars content
       set_fact:
         inventory_vars_content: |

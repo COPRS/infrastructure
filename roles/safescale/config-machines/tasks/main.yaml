@@ -35,3 +35,7 @@
     source: "{{ kube_pods_subnet }}"
     zone: trusted
     state: enabled
+
+- name: Configure egress nodes
+  import_tasks: egress.yaml
+  tags: egress

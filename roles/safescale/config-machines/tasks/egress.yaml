@@ -1,13 +1,13 @@
 - name: Set egress networing
-  hosts: egress
-  gather_facts: false
-  vars_files:
-    - "roles/infra-defaults/defaults/main.yaml"
-  tasks:
-    - name: Get informations from tenant file
-      import_tasks: roles/safescale-cluster/tasks/tenant.yaml
-      delegate_to: localhost
-      run_once: true
+  when: inventory_hostname in groups['egress']
+  block:
+    - name: Include tenants file variables
+      include_vars:
+        file: "{{ tenants_path }}"
+
+    - name: Read safescale tenant credentials
+      set_fact:
+        tenant: "{{ tenants | selectattr('name', 'match', safescale_tenant) | first }}"
 
     - name: Add floating IP to egress
       os_floating_ip:
@@ -23,7 +23,7 @@
       delegate_to: localhost
       run_once: true
 
-    ## netplan add a new default route without removing the previous one
+    ## netplan adds a new default route without removing the previous one
     - name: Remove previous default route
       command: "ip route del default"
       become: true
@@ -48,5 +48,3 @@
     - name: Apply netplan config
       command: netplan apply
       become: true
-  when: "{{ cluster.nodegroups | selectattr('name', 'equalto', 'egress') | length > 0 }}"
-

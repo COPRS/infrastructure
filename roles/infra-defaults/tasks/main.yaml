@@ -1,0 +1,2 @@
+- name: Set safescale tenant
+  shell: "{{ safescale_path }} tenant set {{ safescale_tenant }}"

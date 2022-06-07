@@ -20,8 +20,8 @@
   when: cluster.name not in cluster_list.stdout_lines
 
 - name: Create node groups
-  include_role: 
-    name: safescale/create-nodegroup
+  include_tasks: 
+    file: create-nodegroup.yaml
   loop: "{{ cluster.nodegroups }}"
   loop_control:
     loop_var: create_nodegroup
@@ -35,15 +35,15 @@
     && {{ safescale_path }} host tag gw-{{ cluster.name }} gateway \ 
     {% if cluster.complexity | lower != 'small' %} && {{ safescale_path }} host tag gw2-{{ cluster.name }} gateway {% endif %}
 
-- name: Expand cluster to desired node groups sizes
-  include_role: 
-    name: safescale/expand-nodegroup
+- name: Expand cluster to minimum node groups sizes
+  include_tasks:
+    file: expand-post-creation.yaml
   loop: "{{ cluster.nodegroups }}"
   loop_control:
     loop_var: expand_nodegroup
-  when: 
+  when:
     - expand_nodegroup.name not in ['kube_control_plane', 'gateway'] 
-    - expand_nodegroup.count is defined and expand_nodegroup.count > 0
+    - expand_nodegroup.min_size is defined and expand_nodegroup.min_size > 0
 
 - name: Create the buckets
   import_tasks: create-buckets.yaml

@@ -1,13 +1,13 @@
 - name: Read additional information on nodegroup from inventory if scaling
   set_fact:
-    expand_nodegroup: "{{ cluster.nodegroups | selectattr('name', 'equalto', expand_nodegroup_name) | first | combine({'count': expand_count}) }}"
+    expand_nodegroup: "{{ cluster.nodegroups | selectattr('name', 'equalto', expand_nodegroup_name) | first }}"
   when: expand_nodegroup_name is defined
 
-- name: Create {{ expand_nodegroup.count }} {{ expand_nodegroup.name }} node(s)
+- name: Create {{ expand_count }} {{ expand_nodegroup.name }} node(s)
   shell: |
     {{ safescale_path }} \
     cluster expand \
-    --count {{ expand_nodegroup.count }} \
+    --count {{ expand_count }} \
     --os {{ cluster.os }} \
     --node-sizing '{{ expand_nodegroup.sizing }}' \
     {{ cluster.name }} | jq -r '.result.nodes[].name'

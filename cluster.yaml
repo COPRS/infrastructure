@@ -12,7 +12,9 @@
   roles:
     - { role: "infra-defaults"}
     - { role: "safescale/expand-nodegroup" }
-  tags: expand
+  tags:
+    - expand
+    - never
 
 - name: Configure the machines
   hosts: k8s_cluster
