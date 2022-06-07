@@ -8,9 +8,10 @@ cluster:
   nodegroups:
     # kube_control_plane, infra and gateway are MANDATORY
     - name: kube_control_plane
-      sizing: "cpu=4,ram=[8-10],disk=80" # Safescale sizing format
+      sizing: "cpu=4,ram=[8-10],disk=80"
     - name: infra
-      count: 3 # /!\ Only nodes not included in the cluster flavor
+      min_size: 7 # /!\ Must be superior or equal to the defaults worker amount in the chosen safescale complexity
+      max_size: 10
       volume:
         type: HDD
         size: 300
@@ -30,17 +31,29 @@ cluster:
             cpu: "1"
             memory: "2Gi"
     - name: egress
+      min_size: 1
+      max_size: 3
       sizing: "cpu=4,ram=[8-10],disk=40"
       kubespray:
         node_labels:
           node-role.kubernetes.io/egress: ''
     - name: prometheus
-      count: 2
+      min_size: 0
+      max_size: 2
       sizing: "cpu=8,ram=[14-18],disk=80"
       kubespray:
         node_labels:
           node-role.kubernetes.io/infra: ''
           node-role.kubernetes.io/prometheus: ''
+    - name: processing
+      min_size: 0
+      max_size: 6
+      sizing: "cpu=8,ram=[30-34],disk=40"
+      kubespray:
+        node_labels:
+          node-role.kubernetes.io/processing: ''
+
+safescale_tenant: rs-dev
 
 buckets:
   - "{{ cluster.name }}-elasticsearch-processing"
