@@ -1,71 +1,33 @@
-
-[all]
 {% for host in hosts %}
-{{host}}    ansible_host={{ ip_addresses[loop.index0] }}    ansible_ssh_private_key_file={{ ssh_key_path }}/{{ host }}.pem
+    {{ host.name }}:
+      ansible_host: {{ host.private_ip }}
+      ansible_ssh_private_key_file: "{{ ssh_key_path }}/{{ host }}.pem"
 {% endfor %}
 
-[gateway]
-{% for gateway in gateways %}
-{{ gateway }}
+{% for node_group in node_groups %}
+{{ node_group.name }}:
+  hosts:
+{% for node in node_group.hosts %}
+    {{ node }}:
+{% endfor %}
+{% if cluster.node_groups[node_group.name] is defined and cluster.node_groups[node_group.name].kubespray is defined %}
+  vars:
+{% for key, value in cluster.node_groups[node_group.name].kubespray.items() %}
+    {{ key }}: "{{ value }}"
+{% endfor %}
+{% endif %}
+
 {% endfor %}
 
-[worker]
-{% for node in nodes %}
-{{ node }}
+kube_node:
+  children:
+{% for node_group in node_groups %}
+{% if node_group.name != 'kube_control_plane' %}
+    {{ node_group.name }}:
+{% endif %}
 {% endfor %}
 
-{% if egresses | length > 0 %}
-[egress]
-{% for egress in egresses %}
-{{ egress }}
-{% endfor%}
-
-{% endif %}
-
-{% if prometheuses | length > 0 %}
-[prometheus]
-{% for prometheus in prometheuses %}
-{{ prometheus }}
-{% endfor%}
-{% endif %}
-
-[kube_control_plane]
-{% for master in masters %}
-{{ master }}
-{% endfor %}
-
-[kube_node:children]
-worker
-gateway
-{% if egresses | length > 0 %}
-egress
-{% endif %}
-{% if prometheuses | length > 0 %}
-prometheus
-{% endif %}
-
-[k8s_cluster:children]
-kube_control_plane
-kube_node
-
-[worker:vars]
-node_labels={"node-role.kubernetes.io/infra": ""}
-
-[gateway:vars]
-node_labels={"node-role.kubernetes.io/gateway":""}
-node_taints={"node-role.kubernetes.io/gateway:NoSchedule"}
-# Reserve resources for ClamAV
-kubelet_config_extra_args:
-  systemReserved:
-    cpu: "1"
-    memory: "2Gi"
-
-{% if egresses | length > 0 %}
-[egress:vars]
-node_labels={"node-role.kubernetes.io/egress": ""}
-{% endif %}
-
-{% if prometheuses | length > 0 %}
-[prometheus:vars]
-node_labels={"node-role.kubernetes.io/infra": "", "node-role.kubernetes.io/prometheus": ""}
-{% endif %}
+k8s_cluster:
+  children:
+    kube_control_plane:
+    kube_node:

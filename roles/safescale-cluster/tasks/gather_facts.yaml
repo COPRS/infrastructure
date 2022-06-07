@@ -1,38 +1,32 @@
-- name: Getting host list with safescale
-  shell: "{{ safescale_path }} cluster inspect {{ cluster.name }} | jq .result.nodes.masters[].name,.result.nodes.nodes[].name | tr -d '\"' | sort -V"
-  register: hosts
+- name: Get host list with safescale
+  shell: "{{ safescale_path }} cluster inspect {{ cluster.name }}"
+  register: cluster_inspect
 
-- name: Check whether hosts exist for cluster {{ cluster.name }}
-  fail:
-    msg: Getting host list with safescale returned an empty node list. Maybe the cluster does not exist yet or the cluster name has a mistake.
-  when: hosts.stdout | length == 0
-
-- name: Get masters and gateways
+- name: Parse inspect result
   set_fact:
-    nodes: "{{ hosts.stdout_lines |select('match','^.*node.*$') }}"
-    masters: "{{ hosts.stdout_lines | select('match','^.*master.*$') }}"
-    gateways: "{{ [ 'gw-' + cluster.name ] | list }}"
+    sf_cluster: "{{ cluster_inspect.stdout | from_json }}"
 
-- name: Get egresses and prometheuses
+- name: Read primary gateway IP
   set_fact:
-    prometheuses: "{% if cluster.prometheus.count is defined and cluster.prometheus.count > 0 %}{{ nodes[-cluster.prometheus.count:] }}{% else %}{{ [] }}{% endif %}"
-    egresses: "{{ nodes[-(cluster.egress.count + cluster.prometheus.count):-cluster.prometheus.count] }}"
-    
-- name: Get nodes
-  set_fact:
-    nodes: "{{ nodes[:-(cluster.egress.count + cluster.prometheus.count)] }}"
-  when:
-    - prometheuses|length > 0 or egresses|length > 0
+    gateway:
+      - name: gw-{{ cluster.name }}
+        private_ip: "{{ sf_cluster.result.primary_gateway_ip }}"
 
-- name: Check whether a second gateway is defined
-  shell: "{{ safescale_path }} cluster inspect {{ cluster.name }} | jq .result.secondary_gateway_ip"
-  register: gateway
-
-- name: Adding second gateway if defined
+- name: Read secondary gateway IP
   set_fact:
-    gateways: "{{ gateways + [ 'gw2-'+cluster.name ] }}"
-  when: gateway.stdout != 'null'
+    gateway2: 
+      - name: gw2-{{ cluster.name }}
+        private_ip: "{{ sf_cluster.result.secondary_gateway_ip }}"
+  when: sf_cluster.result.secondary_gateway_ip is defined
 
-- name: Making a list with all hosts
+- name: Create complete hosts list
   set_fact:
-    hosts: "{{ nodes + masters + gateways + egresses + prometheuses}}"
+    hosts: "{{ sf_cluster.result.nodes.nodes }} + {{ sf_cluster.result.nodes.masters }} + {{ gateway }} {%- if gateway2 is defined %} + {{ gateway2 }}{%- endif %}"
+
+- name: Getting the node groups from safescale tags
+  shell: "{{ safescale_path }} tag list | jq -c .result"
+  register: tag_list
+
+- name: Parse safescale tags to node_groups
+  set_fact:
+    node_groups: "{{ tag_list.stdout | from_json }}"

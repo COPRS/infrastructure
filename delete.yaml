@@ -43,7 +43,7 @@
       block:
         - name: clean hosts file
           blockinfile:
-            path: "{{ inventory_dir }}/hosts.ini"
+            path: "{{ inventory_dir }}/hosts.yaml"
             marker: "# {mark} ANSIBLE MANAGED BLOCK"
 
         - name: Deleting ssh keys, artifacts and ssh-main-gateway files

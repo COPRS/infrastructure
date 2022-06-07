@@ -68,25 +68,25 @@ cp -rfp inventory/sample inventory/mycluster
 5. ### Generate or download the inventory variables
 ```shellsession
 ansible-playbook generate_inventory.yaml \
-    -i inventory/mycluster/hosts.ini
+    -i inventory/mycluster/hosts.yaml
 ```
 
 6. ### If needed create an image for the machines with `packer`
 ```shellsession
 ansible-playbook image.yaml \
-    -i inventory/mycluster/hosts.ini
+    -i inventory/mycluster/hosts.yaml
 ```
 
 7. ### Deploy machines with safescale
 ```shellsession
 ansible-playbook cluster-setup.yaml \
-    -i inventory/mycluster/hosts.ini
+    -i inventory/mycluster/hosts.yaml
 ```
 
 8. ### Install security services
 ```shellsession
 ansible-playbook security.yaml \
-    -i inventory/mycluster/hosts.ini \
+    -i inventory/mycluster/hosts.yaml \
     --become
 ```
 
@@ -98,7 +98,7 @@ ansible-playbook security.yaml \
 # Without --become the playbook will fail to run!
 
 ansible-playbook collections/kubespray/cluster.yml \
-    -i inventory/mycluster/hosts.ini \
+    -i inventory/mycluster/hosts.yaml \
     --become
 ```
 
@@ -108,13 +108,13 @@ ansible-playbook collections/kubespray/cluster.yml \
 # before enabling the admission plugin
 
 ansible-playbook collections/kubespray/upgrade-cluster.yml \
-    -i inventory/mycluster/hosts.ini \
+    -i inventory/mycluster/hosts.yaml \
     --tags cluster-roles \
     -e podsecuritypolicy_enabled=true \
     --become
 
 ansible-playbook collections/kubespray/upgrade-cluster.yml \
-    -i inventory/mycluster/hosts.ini \
+    -i inventory/mycluster/hosts.yaml \
     --tags master \
     -e podsecuritypolicy_enabled=true \
     --become
@@ -123,13 +123,13 @@ ansible-playbook collections/kubespray/upgrade-cluster.yml \
 11. ### Prepare the cluster for **Reference System**
 ```shellsession
 ansible-playbook rs-setup.yaml \
-    -i inventory/mycluster/hosts.ini
+    -i inventory/mycluster/hosts.yaml
 ```
 
 12. ### Deploy the apps 
 ```shellsession
 ansible-playbook apps.yaml \
-    -i inventory/mycluster/hosts.ini
+    -i inventory/mycluster/hosts.yaml
 ```
 
 ## Post installation
@@ -167,7 +167,7 @@ The repository is made of the following main directories and files.
             - `kubespray.yaml`: The Kubespray configuration.
             - `safescale.yaml`: Configuration of the machines, networks and buckets created by SafeScale.cluster and the OS image.
             - **apps**: One file per app deployed containing specific variables.
-      - `hosts.ini`: The list of machines described in their respective groups.
+      - `hosts.yaml`: The list of machines described in their respective groups.
 - **roles**: The list of roles used to deploy the cluster.
 - `ansible.cfg`: Ansible configuration file. It includes the ssh configuration to allow Ansible to access the machines through the gateway.
 - `apps.yaml`: An Ansible playbook to deploy the applications on the platform.
@@ -183,8 +183,8 @@ The repository is made of the following main directories and files.
 | name | tags | utility | 
 |---|---|---|
 | apps.yaml | *none* |  *deploy applications*<br>Supported possible options:<br>**-e app=APP_NAME** Deploy only a specific application.<br>**-e debug=true** Keep the application resources generated for debugging.<br>**-e package=PACKAGE_NAME** Deploy only a specific package.|
-| cluster-setup.yaml | *none* <br> cluster_create <br> hosts_update <br> volumes_create | *all tags below are executed* <br> create safescale cluster <br> update hosts.ini with newly created machines, fill .ssh folder with machines ssh public keys, generate ansible ssh config, update config.cfg <br> attach disks to kubernetes nodes |
-| delete.yaml <br> :warning: this playbook has been developed with the only purpose of testing the project **not for production usage**| *none* <br> cleanup_generated <br> detach_volumes <br> delete_volumes <br> delete_cluster | *nothing* <br> **remove** ssh keys, added hosts in hosts.ini, ssh config file <br> detach added disks from k8s nodes <br> delete added disks from k8s nodes <br> delete safescale cluster|
+| cluster-setup.yaml | *none* <br> cluster_create <br> hosts_update <br> volumes_create | *all tags below are executed* <br> create safescale cluster <br> update hosts.yaml with newly created machines, fill .ssh folder with machines ssh public keys, generate ansible ssh config, update config.cfg <br> attach disks to kubernetes nodes |
+| delete.yaml <br> :warning: this playbook has been developed with the only purpose of testing the project **not for production usage**| *none* <br> cleanup_generated <br> detach_volumes <br> delete_volumes <br> delete_cluster | *nothing* <br> **remove** ssh keys, added hosts in hosts.yaml, ssh config file <br> detach added disks from k8s nodes <br> delete added disks from k8s nodes <br> delete safescale cluster|
 | generate_inventory.yaml | *none* | *Read host_vars/setup to generate inventory vars in group_vars/all* |
 | image.yaml | *none* | *make reference system golden image for k8s nodes* |
 |rs-setup.yaml | *none* <br> gateway <br> | *all tags below are executed* <br> install the tools on gateways <br> configure the cluster |

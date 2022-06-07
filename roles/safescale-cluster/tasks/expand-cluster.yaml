@@ -1,0 +1,16 @@
+- name: Create {{ expand_node_group.key }} nodes
+  shell: |
+    {{ safescale_path }} \
+    cluster expand \
+    --count {{ expand_node_group.value.count }} \
+    --os {{ cluster.os }} \
+    --node-sizing {{ expand_node_group.value.sizing }} \
+    {{ cluster.name }} | jq -c -r '[.result.nodes[].name]'
+  register: expand_cmd
+  when: expand_node_group.value.count > 0
+
+- name: Tag created nodes
+  debug:
+    msg : "{{ safescale_path }} host tag {{ item }} {{ expand_node_group.key }}"
+  loop: "{{ expand_cmd }}"
+  when: expand_node_group.value.count > 0

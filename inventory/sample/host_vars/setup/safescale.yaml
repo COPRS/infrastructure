@@ -5,31 +5,45 @@ cluster:
   cidr: 192.168.0.0/16
   os: "csc-rs-ubuntu"
 
-  master:
-    cpu: 4
-    ram: "[8-10]"
-    disk: 80
-  node:
-    # 3 workers min
-    count: 10
-    cpu: 4
-    ram: "[8-10]"
-    disk: 40
-  gateway:
-    cpu: 2
-    ram: "[4-5]"
-    disk: 20
-  egress:
-    count: 1
-    cpu: 4
-    ram: "[8-10]"
-    disk: 40
-  prometheus:
-    count: 2
-    cpu: 8
-    ram: "[14-18]"
-    disk: 80
-      
+  node_groups:
+    # kube_control_plane, infra and gateway are MANDATORY
+    kube_control_plane:
+      cpu: 4
+      ram: "[8-10]"
+      disk: 80
+    infra:
+      count: 3 # /!\ Only nodes not include in the cluster flavor
+      cpu: 4
+      ram: "[8-10]"
+      disk: 40
+      kubespray:
+        node_labels: "{'node-role.kubernetes.io/infra': ''}"
+    gateway:
+      cpu: 2
+      ram: "[4-5]"
+      disk: 20
+      kubespray:
+        node_labels: "{'node-role.kubernetes.io/gateway':''}"
+        node_taints: "{'node-role.kubernetes.io/gateway:NoSchedule'}"
+        kubelet_config_extra_args:
+          systemReserved:
+            cpu: "1"
+            memory: "2Gi"
+    egress:
+      count: 1
+      cpu: 4
+      ram: "[8-10]"
+      disk: 40
+      kubespray:
+        node_labels: "node_labels={'node-role.kubernetes.io/egress': ''}"
+    prometheus:
+      count: 2
+      cpu: 8
+      ram: "[14-18]"
+      disk: 80
+      kubespray:
+        node_labels: "{'node-role.kubernetes.io/infra': '', 'node-role.kubernetes.io/prometheus': ''}"
+       
 volume:
   type: HDD
   size: 300

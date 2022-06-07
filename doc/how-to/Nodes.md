@@ -3,7 +3,7 @@
 > LIMITATION: SafeScale does not distinguish multiple categories of new nodes yet. All added ones will be named  CLUSTER_NAME-node-NODE_NUMBER, whatever their future role in the cluster (master, gateway, etc.).
 
 > LIMITATION: the ansible *hosts* file automatically generated does not support adding new nodes on the cluster.  
-> Modifying ```hosts.ini``` with cluster-setup.yaml may override your changes.  
+> Modifying ```hosts.yaml``` with cluster-setup.yaml may override your changes.  
 > You will have to ensure nodes are in the right groups.
 
 First, expand the SafeScale cluster.
@@ -29,14 +29,14 @@ safescale volume attach  DISK_NAME NODE_NAME
 After modifying the _tenants_ file, you need to restart safescaled.  
 Read [safescale documenation](https://github.com/CS-SI/SafeScale/blob/d8b98cb28c29cbbd87162b33e3a84f159a6707d9/doc/SCANNER.md#safescale-scanner) for more information related to managing templates.*
 
-Secondly, manually update `hosts.ini` in your inventory and add the newly created nodes into their corresponding groups.
+Secondly, manually update `hosts.yaml` in your inventory and add the newly created nodes into their corresponding groups.
 
 If the kind (group) of your node does not exist in the file, refer to the [new node kinds (processing, etc.)](#new_kinds) section.
 
-If `hosts.ini`  is empty, you can update it using the following command:
+If `hosts.yaml`  is empty, you can update it using the following command:
 
 ```Bash
-ansible-playbook cluster-setup.yaml -t hosts_update -i inventory/mycluster/hosts.ini
+ansible-playbook cluster-setup.yaml -t hosts_update -i inventory/mycluster/hosts.yaml
 ```
 
 Once you set your *hosts* file, you need to launch Kubespray to integrate the newly added nodes into the Kubernetes cluster.
@@ -47,13 +47,13 @@ If your new node is not a control plane (k8s master), it is a worker node (prome
 
 ```Bash
 # Scale the cluster with all the new nodes.
-ansible-playbook collections/kubespray/scale.yml -b -i inventory/mycluster/hosts.ini 
+ansible-playbook collections/kubespray/scale.yml -b -i inventory/mycluster/hosts.yaml 
 
 # You can add only a specific node
 # First, you need to collect facts on all the nodes
-ansible-playbook collections/kubespray/facts.yml -i inventory/mycluster/hosts.ini
+ansible-playbook collections/kubespray/facts.yml -i inventory/mycluster/hosts.yaml
 # Then, run scale.yml only on the node you want to add
-ansible-playbook collections/kubespray/scale.yml -b -i inventory/mycluster/hosts.ini --limit NODE_NAME
+ansible-playbook collections/kubespray/scale.yml -b -i inventory/mycluster/hosts.yaml --limit NODE_NAME
 ```
 
 ## Integrate a control-plane node into k8s
@@ -61,7 +61,7 @@ ansible-playbook collections/kubespray/scale.yml -b -i inventory/mycluster/hosts
 To add a new control plane node, run the following command.
 
 ```Bash
-ansible-playbook collections/kubespray/cluster.yml -b -i inventory/sample/hosts.ini
+ansible-playbook collections/kubespray/cluster.yml -b -i inventory/sample/hosts.yaml
 ```
 
 ## <a name="new_kinds"></a>New node kinds (processing, etc.)
@@ -69,7 +69,7 @@ ansible-playbook collections/kubespray/cluster.yml -b -i inventory/sample/hosts.
 The group for your nodes does not exist by default in the *hosts* file. You may add it yourself following the example below.
 
 ```ini
-# hosts.ini
+# hosts.yaml
 
 # Replace processing by the name of your new group.
 [processing]
@@ -85,10 +85,10 @@ processing
 
 ```
 
-You can add specific labels and taints to your node by adding a section in `hosts.ini` like the example below.
+You can add specific labels and taints to your node by adding a section in `hosts.yaml` like the example below.
 
 ```ini
-# hosts.ini
+# hosts.yaml
 
 # Replace processing by the name of your new group defined above.
 [processing:vars]
@@ -112,9 +112,7 @@ You can focus the playbook for only a specific node adding the option `--limit N
 Security components:
 
 ```Bash
-ansible-playbook security.yaml \
-    -i inventory/mycluster/hosts.ini \
-    --become
+ansible-playbook rs-setup.yaml -i inventory/mycluster/hosts.yaml
 ```
 
 Set some specific configuration on the node (firewall, DNS, public IP address, etc.) by running the following command:
@@ -146,13 +144,13 @@ Default SUBNET_NAME and NETWORK_NAME are CLUSTER_NAME.
 While the node you want to delete is still present in the Ansible inventory, run the Kubespray playbook `remove-node.yml`.
 
 ```Bash
-ansible-playbook collections/kubespray/remove-node.yml -b -i inventory/mycluster/hosts.ini -e node=NODE_NAME
+ansible-playbook collections/kubespray/remove-node.yml -b -i inventory/mycluster/hosts.yaml -e node=NODE_NAME
 ```
 
 If the node is not online, run:
 
 ```Bash
-ansible-playbook collections/kubespray/remove-node.yml -b -i inventory/mycluster/hosts.ini -e reset_nodes=false -e allow_ungraceful_removal=true
+ansible-playbook collections/kubespray/remove-node.yml -b -i inventory/mycluster/hosts.yaml -e reset_nodes=false -e allow_ungraceful_removal=true
 ``` 
 
 Finally, remove the node from the cluster.

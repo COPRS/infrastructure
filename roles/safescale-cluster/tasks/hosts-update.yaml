@@ -6,7 +6,7 @@
     line: "remote_user       = {{ safescale_operator }}"
 
 - name: Getting the main gateway IP
-  shell: "{{ safescale_path }} host inspect {{ gateways[0] }} | jq .result.public_ip | tr -d '\"'"
+  shell: "{{ safescale_path }} host inspect gw-{{ cluster.name }} | jq .result.public_ip | tr -d '\"'"
   register: main_gateway_ip
 
 - name: Setting some facts
@@ -26,22 +26,13 @@
   register: ssh_files
 
 - name: Create the ssh key files
-  shell: "echo \"$({{ safescale_path }} host show {{ item }} | jq .result.private_key )\" | tr -d '\"' | head -c -1 - >> {{ ssh_key_path }}/{{ item }}.pem && chmod 400 {{ ssh_key_path }}/{{ item }}.pem "
-  when: not item in ( ssh_files.files |  map(attribute='path') | join(' ') )
+  shell: "echo \"$({{ safescale_path }} host show {{ item.name }} | jq .result.private_key )\" | tr -d '\"' | head -c -1 - >> {{ ssh_key_path }}/{{ item.name }}.pem && chmod 400 {{ ssh_key_path }}/{{ item.name }}.pem "
+  when: not item.name in ( ssh_files.files |  map(attribute='path') | join(' ') )
   loop: "{{ hosts }}"
 
-- name: Get the hosts ip addresses
-  shell: "{{ safescale_path }} host show {{ item }} | jq .result.private_ip | tr -d '\"' "
-  loop: "{{ hosts }}"
-  register: ip_addresses
-
-- name: Set the ip addresses
-  set_fact:
-    ip_addresses: "{{ ip_addresses.results | map(attribute='stdout') | list }}"
-
-- name: Update hosts.ini
+- name: Update hosts.yaml
   blockinfile:
-    path: "{{ inventory_dir }}/hosts.ini"
+    path: "{{ inventory_dir }}/hosts.yaml"
     block: "{{ lookup('template', 'hosts.j2') }}"
 
 - name: Create the bastion file

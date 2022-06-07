@@ -1,20 +1,25 @@
 ---
-- name: Creates the cluster with safescale
+- name: Create the cluster with safescale
   import_tasks: cluster-create.yaml
   tags: cluster_create
 
 - meta: end_play
   when: '"cluster_create" in ansible_run_tags'
 
+- name: Expand cluster with safescale
+  import_tasks: expand-cluster.yaml
+  when: expand_node_group is defined
+  tags: cluster_expand
+
 - name: Gather facts
   import_tasks: gather_facts.yaml
   tags: always
 
-- name: Add cluster machines in hosts.ini
+- name: Add cluster machines in hosts.yaml
   import_tasks : hosts-update.yaml
   tags: hosts_update
 
-- name: Creates the volumes for the cluster
+- name: Create the volumes for the cluster
   import_tasks: volumes-create.yaml
   tags: volumes_create
 
