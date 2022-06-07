@@ -50,7 +50,9 @@
   roles:
     - { role: "infra-defaults"}
     - { role: "safescale/delete-machines" }
-  tags: delete
+  tags:
+    - delete
+    - never
 
 - name: Update hosts.yaml inventory file
   hosts: localhost

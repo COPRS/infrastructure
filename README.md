@@ -61,7 +61,7 @@ cp -rfp inventory/sample inventory/mycluster
 
 4. ### Review and change the default configuration to match your needs
 
- - Virtual machines amount and sizing, buckets names in `inventory/mycluster/host_vars_setup/safescale.yaml`
+ - Node groups and S3 buckets in `inventory/mycluster/host_vars_setup/safescale.yaml`
  - Credentials, domain name, the stash license, S3 endpoints in `infrastructure/inventory/mycluster/host_vars/setup/main.yaml`
  - Packages paths containing the apps to be deployed in `inventory/mycluster/host_vars/setup/app_installer.yaml`
 
@@ -77,9 +77,9 @@ ansible-playbook image.yaml \
     -i inventory/mycluster/hosts.yaml
 ```
 
-7. ### Deploy machines with safescale
+7. ### Create and configure machines
 ```shellsession
-ansible-playbook cluster-setup.yaml \
+ansible-playbook cluster.yaml \
     -i inventory/mycluster/hosts.yaml
 ```
 
@@ -120,10 +120,9 @@ ansible-playbook collections/kubespray/upgrade-cluster.yml \
     --become
 ```
 
-11. ### Prepare the cluster for **Reference System**
+11. ### Add the providerID spec to the nodes for the autoscaling
 ```shellsession
-ansible-playbook rs-setup.yaml \
-    -i inventory/mycluster/hosts.yaml
+ansible-playbook cluster.yaml -i inventory/mycluster/hosts.yaml -t providerids
 ```
 
 12. ### Deploy the apps 
@@ -165,17 +164,16 @@ The repository is made of the following main directories and files.
             - `app_installer.yaml`: The configuration of the app installer roles. It includes the list and paths of packages to install.
             - `main.yaml`: Mandatory platform configuration.
             - `kubespray.yaml`: The Kubespray configuration.
-            - `safescale.yaml`: Configuration of the machines, networks and buckets created by SafeScale.cluster and the OS image.
+            - `safescale.yaml`: Configuration of the machines, networks and buckets created by SafeScale, and more.
             - **apps**: One file per app deployed containing specific variables.
-      - `hosts.yaml`: The list of machines described in their respective groups.
+      - `hosts.yaml`: The list of machines described in their respective groups, this file is managed by the `cluster.yaml` playbook.
 - **roles**: The list of roles used to deploy the cluster.
 - `ansible.cfg`: Ansible configuration file. It includes the ssh configuration to allow Ansible to access the machines through the gateway.
 - `apps.yaml`: An Ansible playbook to deploy the applications on the platform.
-- `cluster-setup.yaml`: An Ansible playbook to create the hosts, network and volumes with SafeScale.
+- `cluster.yaml`: An Ansible playbook to manage the cluster and its machines
 - `delete.yaml`: An Ansible playbook to delete a SafeScale cluster and remove all the generated resources.
 - `generate_inventory.yaml`: An Ansible playbook to generate inventory vars.
 - `image.yaml`: An Ansible playbook to build a golden OS image.
-- `rs-setup.yaml`: An Ansible playbook to configure the nodes.
 - `security.yaml`: An Ansible playbook to install the security services on the nodes.
 
 ### Playbooks manual
@@ -183,11 +181,10 @@ The repository is made of the following main directories and files.
 | name | tags | utility | 
 |---|---|---|
 | apps.yaml | *none* |  *deploy applications*<br>Supported possible options:<br>**-e app=APP_NAME** Deploy only a specific application.<br>**-e debug=true** Keep the application resources generated for debugging.<br>**-e package=PACKAGE_NAME** Deploy only a specific package.|
-| cluster-setup.yaml | *none* <br> cluster_create <br> hosts_update <br> volumes_create | *all tags below are executed* <br> create safescale cluster <br> update hosts.yaml with newly created machines, fill .ssh folder with machines ssh public keys, generate ansible ssh config, update config.cfg <br> attach disks to kubernetes nodes |
+| cluster.yaml | *none*  <br> create_cluster <br> config <br> gateway <br> update_hosts <br> providerids <br> | *all tags below are executed* <br> create safescale cluster <br> configure cluster machines <br> configure gateways <br> update hosts.yaml with newly created machines, fill .ssh folder with machines ssh private keys <br> write providerID spec to kube nodes |
 | delete.yaml <br> :warning: this playbook has been developed with the only purpose of testing the project **not for production usage**| *none* <br> cleanup_generated <br> detach_volumes <br> delete_volumes <br> delete_cluster | *nothing* <br> **remove** ssh keys, added hosts in hosts.yaml, ssh config file <br> detach added disks from k8s nodes <br> delete added disks from k8s nodes <br> delete safescale cluster|
-| generate_inventory.yaml | *none* | *Read host_vars/setup to generate inventory vars in group_vars/all* |
+| generate_inventory.yaml | *none* | *Generate/download/upload inventory vars in group_vars/all* |
 | image.yaml | *none* | *make reference system golden image for k8s nodes* |
-|rs-setup.yaml | *none* <br> gateway <br> | *all tags below are executed* <br> install the tools on gateways <br> configure the cluster |
 | security.yaml | *none* <br> auditd <br> wazuh <br> clamav <br> openvpn <br> suricata <br> uninstall_APP_NAME| *install all security tools* <br> install auditd <br> install wazuh <br> install clamav <br> install openvpn <br> install suricata <br> uninstall the app matching APP_NAME |
 
 ## Apps
@@ -228,16 +225,16 @@ Default configurations:
 - **Rook Ceph** 
   - Helm chart: 
     - Repository: charts.rook.io/release
-    - Version: v1.7.7
+    - Version: v1.9.4
     - Source: https://github.com/rook/rook/tree/master/deploy/charts/rook-ceph
   - Images:
-    - quay.io/cephcsi/cephcsi:v3.4.0
-    - k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
-    - k8s.gcr.io/sig-storage/csi-resizer:v1.3.0
-    - k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
-    - k8s.gcr.io/sig-storage/csi-snapshotter:v4.2.0
-    - k8s.gcr.io/sig-storage/csi-attacher:v3.3.0
-    - quay.io/csiaddons/volumereplication-operator:v0.1.0
+    - quay.io/cephcsi/cephcsi:v3.6.1
+    - k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0
+    - k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
+    - k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0
+    - k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+    - k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
+    - quay.io/csiaddons/volumereplication-operator:v0.3.0
 - **Rook Ceph Cluster**
   - Helm chart:
     - Repository: charts.rook.io/release
@@ -292,7 +289,7 @@ Default configurations:
     - Version: 0.19.6
     - Source: https://github.com/fluent/helm-charts/tree/main/charts/fluent-bit
   - Images:
-    - docker.io/fluent/fluent-bit:1.9.1
+    - docker.io/fluent/fluent-bit:1.9.3
 - **MongoDB**
   - Helm chart:
     - Repository: charts.bitnami.com/bitnami
@@ -404,3 +401,8 @@ Default configurations:
     - Source: https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-blackbox-exporter
   - Images:
     - docker.io/prom/blackbox-exporter:v0.20.0
+- **Autoscaling**
+  - Images:
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:0.8.0-rc1
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/cluster-autoscaler:v1.25.0
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.8.0-rc1
