@@ -7,7 +7,6 @@ auth:
   rootPassword: {{ mongodb.rootPassword }}
   usernames: 
     - {{ mongodb.username }}
-    - preparation-l0u
   passwords: 
     - {{ mongodb.password }}
   databases: 
