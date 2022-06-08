@@ -30,7 +30,7 @@ The amount of nodes in the `kube_control_plane` and `gateway` node groups are ti
  - normal: 2 gateways, 2 kube_control_plane, 3 infra
  - large: 2 gateways, 3 kube_control_plane, 7 infra
 
-The minimum size if the below defined `infra` node group must be superior to the size of the `infra` node group defined by the SafeScale complexity above.
+The minimum size of the `infra` node group defined below must be superior to the size of the `infra` node group defined by the SafeScale complexity above.
 
 Here is an example of a valid basic cluster configuration:
 ```yaml
