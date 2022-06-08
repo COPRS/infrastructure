@@ -57,6 +57,12 @@ graylog:
         port: 9833
         protocol: TCP
 
+  {% if graylog.geolite2db_uri %}
+  geoip:
+    enabled: true
+    mmdbUri: {{ graylog.geolite2db_uri }}
+  {% endif %}
+
   env:
     GRAYLOG_TRUSTED_PROXIES: 10.244.0.0/16
   
@@ -86,6 +92,8 @@ graylog:
           {"class_name":"org.graylog2.messageprocessors.MessageFilterChainProcessor","name":"Message Filter Chain"},
           {"class_name":"org.graylog.plugins.pipelineprocessor.processors.PipelineInterpreter","name":"Pipeline Processor"}]}'
           curl -v -u "admin:$GRAYLOG_PASSWORD_SECRET" -X PUT --header 'Content-Type: application/json' --header 'X-Requested-By: localhost' --data-binary "${json_pipeline}" http://graylog-master.security.svc.cluster.local:9000/api/system/messageprocessors/config
+        json_plugin='{"enabled":true,"db_type":"MAXMIND_CITY","db_path":"/usr/share/graylog/geoip/GeoLite2-City.mmdb"}'
+          curl -u "admin:$GRAYLOG_PASSWORD_SECRET" -X PUT --header 'Content-Type: application/json' --header 'X-Requested-By: localhost' --data-binary "${json_plugin}" http://graylog-master.security.svc.cluster.local:9000/api/system/cluster_config/org.graylog.plugins.map.config.GeoIpResolverConfig 
         json_header='{"username_header": "X-Username","enabled": "true"}'
           curl -v -u "admin:$GRAYLOG_PASSWORD_SECRET" -X PUT --header 'Content-Type: application/json' --header 'X-Requested-By: localhost' --data-binary "${json_header}" http://graylog-master.security.svc.cluster.local:9000/api/system/authentication/http-header-auth-config
         json_user='{"first_name":"Operator","last_name":"Graylog","username":"operator","email":"operator@operator.fr","password":"{{ graylog.operator_password }}","roles":["Admin"], "permissions":[]}'
