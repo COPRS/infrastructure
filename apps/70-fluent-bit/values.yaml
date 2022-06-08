@@ -53,7 +53,7 @@ config:
       Multiline.parser cri
       Tag              processing.log.*
       Path             /var/log/containers/*.log
-      Exclude_Path     /var/log/containers/keycloak-?_iam_keycloak-*.log,/var/log/containers/apisix-*_networking_apisix-*.log,/var/log/containers/falco-?????_security_falco*.log,/var/log/containers/nmap-job-*.log
+      Exclude_Path     /var/log/containers/*fluent-bit*.log,/var/log/containers/keycloak-?_iam_keycloak-*.log,/var/log/containers/apisix-*_networking_apisix-*.log,/var/log/containers/falco-?????_security_falco*.log,/var/log/containers/nmap-job-*.log
       DB               /var/log/fluentbit_processing_log.db
       DB.Sync          Normal
       Rotate_Wait      10
