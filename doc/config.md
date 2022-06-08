@@ -86,6 +86,7 @@
 | graylog | security | /* | |
 | keycloack | iam | /auth/admin/RS/console | for users of group _admin_ | 
 | keycloack | iam | /auth/realms/RS/account | for all users |
+| ceph dashboard | ceph | /* | admin password in the 'rook-ceph-dashboard-password' secret |
 
 ## ETL
 

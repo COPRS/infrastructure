@@ -194,9 +194,6 @@
           ],
           "scdf": [
             "access-authorized"
-          ],
-          "ceph": [
-            "access-authorized"
           ]
         },
         "subGroups": []
@@ -221,6 +218,9 @@
           ],
           "realm-management": [
             "realm-admin"
+          ],
+          "ceph": [
+            "access-authorized"
           ]
         },
         "subGroups": []
