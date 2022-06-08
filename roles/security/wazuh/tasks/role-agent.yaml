@@ -39,7 +39,7 @@
 - name: Join Wazuh Manager
   shell:
     cmd: /var/ossec/bin/agent-auth -m {{ wazuh_manager_ip }}
-  no_log: False
+  no_log: True
   when: "inventory_hostname not in wazuh_nodes_list "
 
 - name: Restart Wazuh Agent to apply configuration

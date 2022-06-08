@@ -170,7 +170,7 @@ The repository is made of the following main directories and files.
 - **roles**: The list of roles used to deploy the cluster.
 - `ansible.cfg`: Ansible configuration file. It includes the ssh configuration to allow Ansible to access the machines through the gateway.
 - `apps.yaml`: An Ansible playbook to deploy the applications on the platform.
-- `cluster.yaml`: An Ansible playbook to manage the cluster and its machines
+- `cluster.yaml`: An Ansible playbook to manage the safescale cluster and its machines
 - `delete.yaml`: An Ansible playbook to delete a SafeScale cluster and remove all the generated resources.
 - `generate_inventory.yaml`: An Ansible playbook to generate inventory vars.
 - `image.yaml`: An Ansible playbook to build a golden OS image.

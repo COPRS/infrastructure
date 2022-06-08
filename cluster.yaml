@@ -51,7 +51,7 @@
     - { role: "infra-defaults"}
     - { role: "safescale/delete-machines" }
   tags:
-    - delete
+    - shrink
     - never
 
 - name: Update hosts.yaml inventory file
@@ -64,7 +64,9 @@
 - name: Add providerID spec to nodes
   hosts: gateway[0]
   gather_facts: false
-  tags: providerids
+  tags:
+    - providerids
+    - never
   tasks:
     - name: Set providerID on node's spec
       kubernetes.core.k8s:

@@ -3,8 +3,6 @@
 
 > Keep in mind that the only ansible variables actually used are the ones in the `generated_inventory_vars.yaml` file and you can directly edit this file, retrieve it from a vault, upload it to a vault etc, see the [Credentials.md](./Credentials.md)
 
-> You must have run the `generate_inventory.yaml` playbook on your machine already.
-
 > Your node groups must be correctly configured, see [Cluster configuration](./Cluster%20configuration.md)
 
 1. Add nodes to a node group
@@ -43,7 +41,7 @@ ansible-playbook collections/kubespray/remove-node.yml -i inventory/mycluster/ho
 
 2. Delete nodes from the cloud provider
 ```shellsession
-ansible-playbook cluster.yaml -i inventory/mycluster/hosts.yaml -t delete,update_hosts -e nodes_to_delete=NODE_TO_DELETE1,NODE_TO_DELETE2,...
+ansible-playbook cluster.yaml -i inventory/mycluster/hosts.yaml -t shrink,update_hosts -e nodes_to_delete=NODE_TO_DELETE1,NODE_TO_DELETE2,...
 ```
 
 # Autoscaling

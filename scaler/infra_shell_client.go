@@ -237,7 +237,7 @@ func (i *InfraShellClient) RemoveNodesFromNodeGroup(nodeGroup string, nodes []st
 	klog.V(3).Infof("Running infra delete nodes playbook")
 	err = i.runPlaybook("cluster.yaml",
 		"-i", inventory_path+"/hosts.yaml",
-		"-t", "delete,update_hosts",
+		"-t", "shrink,update_hosts",
 		"-e", "use_private_gateway_ip=true",
 		"-e", "nodes_to_delete="+strings.Join(nodes, ","),
 		"-e", "safescale_path=safescale",
