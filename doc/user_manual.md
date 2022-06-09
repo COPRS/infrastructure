@@ -11,3 +11,4 @@
 - For Keycloak : https://www.keycloak.org/documentation.html
 - For Keda : https://keda.sh/docs/1.4/concepts/scaling-deployments/
 - For Loki : https://grafana.com/docs/loki/latest/
+- For Rook-Ceph: https://docs.ceph.com/en/latest/

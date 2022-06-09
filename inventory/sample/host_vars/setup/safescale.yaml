@@ -5,35 +5,55 @@ cluster:
   cidr: 192.168.0.0/16
   os: "csc-rs-ubuntu"
 
-  master:
-    cpu: 4
-    ram: "[8-10]"
-    disk: 80
-  node:
-    # 3 workers min
-    count: 10
-    cpu: 4
-    ram: "[8-10]"
-    disk: 40
-  gateway:
-    cpu: 2
-    ram: "[4-5]"
-    disk: 20
-  egress:
-    count: 1
-    cpu: 4
-    ram: "[8-10]"
-    disk: 40
-  prometheus:
-    count: 2
-    cpu: 8
-    ram: "[14-18]"
-    disk: 80
-      
-volume:
-  type: HDD
-  size: 300
-  count: 1  # /!\ safescale supports only 1 additional volume per node
+  nodegroups:
+    # kube_control_plane, infra and gateway are MANDATORY
+    - name: kube_control_plane
+      sizing: "cpu=4,ram=[8-10],disk=80"
+    - name: infra
+      min_size: 7 # /!\ Must be superior or equal to the defaults worker amount in the chosen safescale complexity
+      max_size: 10
+      volume:
+        type: HDD
+        size: 300
+      sizing: "cpu=8,ram=[14-18],disk=40"
+      kubespray:
+        node_labels: 
+          node-role.kubernetes.io/infra: ''
+    - name: gateway
+      sizing: "cpu=2,ram=[4-5],disk=20"
+      kubespray:
+        node_labels:
+          node-role.kubernetes.io/gateway: ''
+        node_taints:
+          - node-role.kubernetes.io/gateway:NoSchedule
+        kubelet_config_extra_args:
+          systemReserved:
+            cpu: "1"
+            memory: "2Gi"
+    - name: egress
+      min_size: 1
+      max_size: 3
+      sizing: "cpu=4,ram=[8-10],disk=40"
+      kubespray:
+        node_labels:
+          node-role.kubernetes.io/egress: ''
+    - name: prometheus
+      min_size: 0
+      max_size: 2
+      sizing: "cpu=8,ram=[14-18],disk=80"
+      kubespray:
+        node_labels:
+          node-role.kubernetes.io/infra: ''
+          node-role.kubernetes.io/prometheus: ''
+    - name: processing
+      min_size: 0
+      max_size: 6
+      sizing: "cpu=8,ram=[30-34],disk=40"
+      kubespray:
+        node_labels:
+          node-role.kubernetes.io/processing: ''
+
+safescale_tenant: rs-dev
 
 buckets:
   - "{{ cluster.name }}-elasticsearch-processing"

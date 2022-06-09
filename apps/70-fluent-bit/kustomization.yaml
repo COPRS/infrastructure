@@ -10,6 +10,13 @@ helmCharts:
   valuesFile: values.yaml
   releaseName: "{{ app_name }}"
 
+configMapGenerator:
+  - name: fluent-bit-labelmap
+    files:
+      - ./labelmap.json
+    options:
+      disableNameSuffixHash: true
+
 resources:
   - kafkatopic-fluentbit.auditd.yaml
   - kafkatopic-fluentbit.falco.yaml

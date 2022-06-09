@@ -68,12 +68,3 @@
     name: wazuh-manager
     state: restarted
     enabled: yes
-
-- name: Get nodes already under management
-  shell:
-    cmd: '/var/ossec/bin/agent_control -lcj'
-  register: wazuh_joined_machines_output
-
-- name: Get list of already present nodes
-  set_fact:
-    wazuh_nodes_list: "{{ wazuh_joined_machines_output.stdout | from_json | community.general.json_query('data[*].name')}}"

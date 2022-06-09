@@ -1,0 +1,50 @@
+---
+- name: Loading clusters list
+  shell: "{{ safescale_path }} cluster list | jq -r '.result[].name'"
+  register: cluster_list
+
+- name: Create safescale cluster
+  shell: |
+    {{ safescale_path }} \
+    cluster create \
+    --complexity {{ cluster.complexity }} \
+    --flavor BOH \
+    {% if cluster.cidr is defined %}--cidr {{ cluster.cidr }}{% endif %} \
+    --disable remotedesktop \
+    --disable reverseproxy \
+    --os {{ cluster.os }} \
+    --master-sizing cluster.nodegroups.kube_control_plane.sizing \
+    --node-sizing cluster.nodegroups.infra.sizing \
+    --gw-sizing cluster.nodegroups.gateway.sizing \
+    {{ cluster.name }}
+  when: cluster.name not in cluster_list.stdout_lines
+
+- name: Create node groups
+  include_tasks: 
+    file: create-nodegroup.yaml
+  loop: "{{ cluster.nodegroups }}"
+  loop_control:
+    loop_var: create_nodegroup
+
+- name: Add created nodes to created nodegroups
+  shell: |
+    for i in  $({{ safescale_path }} cluster inspect rs-dev | jq -c -r '.result.nodes.masters[].name'); do \
+      {{ safescale_path }} host tag $i kube_control_plane; done \
+    && for i in  $({{ safescale_path }} cluster inspect rs-dev | jq -c -r '.result.nodes.nodes[].name'); do \
+      {{ safescale_path }} host tag $i infra; done \
+    && {{ safescale_path }} host tag gw-{{ cluster.name }} gateway \ 
+    {% if cluster.complexity | lower != 'small' %} && {{ safescale_path }} host tag gw2-{{ cluster.name }} gateway {% endif %}
+
+- name: Expand cluster to minimum node groups sizes
+  include_tasks:
+    file: expand-post-creation.yaml
+  loop: "{{ cluster.nodegroups }}"
+  loop_control:
+    loop_var: expand_nodegroup
+  when:
+    - expand_nodegroup.name not in ['kube_control_plane', 'gateway'] 
+    - expand_nodegroup.min_size is defined and expand_nodegroup.min_size > 0
+
+- name: Create the buckets
+  import_tasks: create-buckets.yaml
+  tags: create_buckets

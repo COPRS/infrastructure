@@ -1,3 +1,0 @@
-base_dn: dc=cluster,dc=local
-
-ldap_server_url: ldap://localhost:30389

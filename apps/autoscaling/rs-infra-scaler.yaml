@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rs-infra-scaler
+  labels:
+    app.kubernetes.io/component: rs-infra-scaler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: rs-infra-scaler
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: rs-infra-scaler
+    spec:
+      containers:
+        - image: artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.8.0-rc1
+          name: rs-infra-scaler
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 200m
+              memory: 256Mi
+          command:
+            - /opt/rs-infra-scaler/rs-infra-scaler
+            - --listen-port
+            - "8086"
+            - --verbosity
+            - "3"
+            - --tenant
+            - "{{ safescale_tenant }}"
+          env:
+            - name: SAFESCALED_LISTEN
+              value: "safescaled.{{ kustomization.namespace }}.svc.cluster.local:50051"
+          volumeMounts:
+            - name: generated-inventory
+              mountPath: /opt/rs-infra-scaler/inventory/group_vars/all
+              readOnly: true
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: "node-role.kubernetes.io/prometheus"
+                  operator: Exists
+      volumes:
+        - name: generated-inventory
+          secret:
+            secretName: generated-inventory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rs-infra-scaler
+  labels:
+    app.kubernetes.io/component: rs-infra-scaler
+spec:
+  ports:
+  - name: grpc
+    port: 8086
+    protocol: TCP
+    targetPort: 8086
+  selector:
+    app.kubernetes.io/component: rs-infra-scaler

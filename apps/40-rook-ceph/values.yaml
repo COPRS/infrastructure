@@ -1,10 +1,6 @@
-# default values at https://github.com/rook/rook/blob/master/deploy/charts/rook-ceph/values.yaml
-
 image:
   repository: rook/ceph
-  tag: v1.7.7
-
-logLevel: WARNING
+  tag: v1.9.4
 
 resources:
   limits:
@@ -16,52 +12,50 @@ resources:
 
 csi:
   enableRbdDriver: true
-  enableRBDSnapshotter: true
   enableCephfsDriver: false
   enableCephfsSnapshotter: false
+  enableRBDSnapshotter: true
+
+  # (Optional) policy for modifying a volume's ownership or permissions when the RBD PVC is being mounted.
+  # supported values are documented at https://kubernetes-csi.github.io/docs/support-fsgroup.html
+  rbdFSGroupPolicy: "ReadWriteOnceWithFSType"
+
+  # (Optional) policy for modifying a volume's ownership or permissions when the CephFS PVC is being mounted.
+  # supported values are documented at https://kubernetes-csi.github.io/docs/support-fsgroup.html
+  cephFSFSGroupPolicy: "ReadWriteOnceWithFSType"
+
+  # (Optional) policy for modifying a volume's ownership or permissions when the NFS PVC is being mounted.
+  # supported values are documented at https://kubernetes-csi.github.io/docs/support-fsgroup.html
+  nfsFSGroupPolicy: "ReadWriteOnceWithFSType"
+
   provisionerReplicas: 2
 
   logLevel: 0
 
-  cephcsi.image: quay.io/cephcsi/cephcsi:v3.4.0
-  registrar.image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.3.0
-  resizer.image: k8s.gcr.io/sig-storage/csi-resizer:v1.3.0
-  provisioner.image: k8s.gcr.io/sig-storage/csi-provisioner:v3.0.0
-  snapshotter.image: k8s.gcr.io/sig-storage/csi-snapshotter:v4.2.0
-  attacher.image: k8s.gcr.io/sig-storage/csi-attacher:v3.3.0
+  provisionerNodeAffinity: node-role.kubernetes.io/infra
+  # pluginNodeAffinity: key1=value1,value2; key2=value3
+  cephcsi:
+    image: quay.io/cephcsi/cephcsi:v3.6.1
+  registrar:
+    image: k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0
+  provisioner:
+    image: k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0
+  snapshotter:
+    image: k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+  attacher:
+    image: k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
+  resizer:
+    image: k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
 
   volumeReplication:
     enabled: false
-    image: quay.io/csiaddons/volumereplication-operator:v0.1.0
+    image: "quay.io/csiaddons/volumereplication-operator:v0.3.0"
 
-  provisionerNodeAffinity: node-role.kubernetes.io/infra
+discover:
+  nodeAffinity: node-role.kubernetes.io/infra
 
-  csiRBDPluginResource: |
-    - name : driver-registrar
-      resource:
-        requests:
-          memory: 10Mi
-          cpu: 10m
-        limits:
-          memory: 20Mi
-          cpu: 20m
-    - name : csi-rbdplugin
-      resource:
-        requests:
-          memory: 100Mi
-          cpu: 5m
-        limits:
-          memory: 200Mi
-          cpu: 10m
-    - name : liveness-prometheus
-      resource:
-        requests:
-          memory: 20Mi
-          cpu: 5m
-        limits:
-          memory: 40Mi
-          cpu: 10m
+admissionController:
+  nodeAffinity: node-role.kubernetes.io/infra
 
-discover.nodeAffinity: node-role.kubernetes.io/infra
-admissionController.nodeAffinity: node-role.kubernetes.io/infra
-monitoring.enabled: true
+monitoring:
+  enabled: true

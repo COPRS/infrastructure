@@ -1,0 +1,23 @@
+# SafeScale client binary path
+safescale_path: $(command -v safescale)
+# SafeScale tenants file path
+tenants_path: ~/.safescale/tenants.yaml
+# Ssh keys directory path
+ssh_key_path: "{{ inventory_dir }}/artifacts/.ssh"
+# SafeScale operator name
+safescale_operator: safescale
+
+# LDAP config
+base_dn: dc=cluster,dc=local
+ldap_server_url: ldap://127.0.0.1:30389
+
+etcd_metrics_service_labels:
+  k8s-app: etcd
+  app.kubernetes.io/managed-by: Kubespray
+  app: kube-prometheus-stack-kube-etcd
+  release: prometheus-stack
+
+safescale_complexity_infra_nodes:
+  small: 1
+  normal: 3
+  large: 7

@@ -16,7 +16,7 @@ s3:
 
 # /!\ Define the issuer related to your certificate provider.
 # The issuer represents your certificate authority.
-# Refer to cert-manager documentation to create your issuer
+# Refer to cert-manager documentation to create your issuer
 # https://cert-manager.io/docs/configuration/
 # For more explanations about cert-manager issuers, reach to the following link.
 # https://cert-manager.io/docs/concepts/issuer/
@@ -24,6 +24,6 @@ ingress_tls_certificate_issuer_spec:
 
 # Additional resources may be required to establish issuer
 # such as secrets for ACME DNS01 challenge
-# The resource must be defined with Kubernetes format.
-# They will be deployed with the ingress controller.
+# The resource must be defined with Kubernetes format.
+# They will be deployed with the ingress controller.
 # ingress_tls_additional_resources:

@@ -3,6 +3,8 @@ image:
 architecture: replicaset
 auth:
   enabled: true
+  rootUser: root
+  rootPassword: {{ mongodb.rootPassword }}
   usernames: 
     - {{ mongodb.username }}
   passwords: 

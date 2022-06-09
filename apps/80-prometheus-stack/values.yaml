@@ -44,12 +44,10 @@ coreDns:
     interval: 2m
 kubeEtcd:
   enable: true
+  service:
+    enabled: false
   serviceMonitor:
     interval: 2m
-    scheme: "https"
-    caFile: "/etc/prometheus/secrets/etcd-client/ca.crt"
-    keyFile: "/etc/prometheus/secrets/etcd-client/server.key"
-    certFile: "/etc/prometheus/secrets/etcd-client/server.crt"
 kubeScheduler:
   serviceMonitor:
     interval: 2m
@@ -142,7 +140,7 @@ prometheus:
         memory: 20Gi
       requests:
         cpu: 2
-        memory: 12Gi
+        memory: 8Gi
     secrets:
       - etcd-client
     storageSpec:
