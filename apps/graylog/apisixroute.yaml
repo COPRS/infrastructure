@@ -33,7 +33,7 @@ spec:
             set_id_token_header: false
             set_userinfo_header: false
 ---
-apiVersion: apisix.apache.org/2beta3
+apiVersion: apisix.apache.org/v2beta3
 kind: ApisixTls
 metadata:
   name: sni-security
