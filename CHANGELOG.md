@@ -11,6 +11,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+## [0.8.0-rc1] - 2022-06-10
+### Added
+- [#342 - Update component to monitor End Point (Blackbox exporter)](https://github.com/COPRS/SCRUM-Tickets/issues/342)
+- [#357 - [SCALER][IMPLEMENTATION IN COPRS] Implementation in RS Infrastructure](https://github.com/COPRS/SCRUM-Tickets/issues/357)
+### Changed
+- [#393 - ICD update for RS Core Sentinel-2 chains](https://github.com/COPRS/SCRUM-Tickets/issues/393)
+### Fixed
+- [#277 - [BUG] [OPS] Unable to create TLS certificates due to missing credentials](https://github.com/COPRS/SCRUM-Tickets/issues/277)
+- [#363 - [BUG] [Infra] hosts.ini template is not correctly formatted](https://github.com/COPRS/SCRUM-Tickets/issues/363)
+- [#374 - [BUG][Infra] Keda: Missing CRD)](https://github.com/COPRS/SCRUM-Tickets/issues/374)
+- [#394 - [BUG] [Infra] RS-Addon : rs-addon deployment fails when looking for additional resources](https://github.com/COPRS/SCRUM-Tickets/issues/394)
+
 ## [0.7.0-rc1] - 2022-05-11
 ### Changed
 - [#347 - Update software component to deploy a RS addon / RS core on RS Platform with several DSL lines.](https://github.com/COPRS/SCRUM-Tickets/issues/347)
