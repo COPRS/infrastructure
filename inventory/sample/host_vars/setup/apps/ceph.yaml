@@ -1,0 +1,2 @@
+ceph:
+  oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
