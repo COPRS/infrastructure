@@ -531,7 +531,7 @@
         "enabled": true,
         "alwaysDisplayInConsole": false,
         "clientAuthenticatorType": "client-secret",
-        "secret": "{{ rook-ceph.oidc_client_secret }}",
+        "secret": "{{ ceph.oidc_client_secret }}",
         "redirectUris": [
             "https://ceph.{{ platform_domain_name }}/*"
         ],
