@@ -1,5 +1,5 @@
 {# Import applications list #}
-app import --uri file://{{ rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/stream-application-list.properties
+app import --uri file://{{ remote_rs_addon_dir.path }}/stream-application-list.properties
 
 {% for stream_definition in stream_definitions %}
 {# Remove comments #}
