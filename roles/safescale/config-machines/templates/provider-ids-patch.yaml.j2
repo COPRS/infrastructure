@@ -1,0 +1,9 @@
+{% for host in groups['k8s_cluster'] %}
+---
+apiVersion: v1
+kind: Node
+metadata:
+  name: "{{ host }}"
+spec:
+  providerID: "{{ hostvars[host].provider_id }}"
+{% endfor %}
