@@ -196,5 +196,5 @@ spec:
       app.kubernetes.io/component: cluster-autoscaler
   endpoints:
     - port: http
-      interval: 2m
+      interval: 1m
       path: /metrics

@@ -71,9 +71,4 @@
     - name: Set providerID on node's spec
       kubernetes.core.k8s:
         state: patched
-        kind: Node
-        name: "{{ item }}"
-        definition:
-          spec:
-            providerID: "{{ hostvars[item].provider_id }}"
-      loop: "{{ groups['k8s_cluster'] }}"
+        template: "roles/safescale/config-machines/templates/provider-ids-patch.yaml.j2"

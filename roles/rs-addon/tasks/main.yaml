@@ -33,28 +33,37 @@
       when:
         - "not shell_jar_file.stat.exists or shell_jar_file.stat.mode != 755 or shell_jar_file.stats.checksum != shell_jar_sha1"
 
-    - name: Create tmp directory
+    - name: Create remote tmp directory
       tempfile:
         state: directory
-        suffix: rs_addon
-      register: rs_addon_dir
+        suffix: _rs_addon
+      register: remote_rs_addon_dir
+
+    - name: Create local tmp directory
+      delegate_to: localhost
+      tempfile:
+        state: directory
+        suffix: _rs_addon
+      register: local_rs_addon_dir
 
     - name: Download and unzip rs_addon
+      delegate_to: localhost
       unarchive:
         src: "{{ rs_addon_location }}"
-        dest: "{{ rs_addon_dir.path }}"
-        remote_src: yes
-      when: rs_addon_url.scheme != ''
+        dest: "{{ local_rs_addon_dir.path }}"
+        remote_src: "{%- if rs_addon_url.scheme != '' -%}yes{%- else -%}no{%- endif -%}"
 
-    - name: Copy and unzip rs_addon
-      unarchive:
-        src: "{{ rs_addon_location }}"
-        dest: "{{ rs_addon_dir.path }}"
-      when: rs_addon_url.scheme == ''
+    - name: Send rs_addon executables to the gateway
+      copy:
+        src: "{{ item }}"
+        dest: "{{ remote_rs_addon_dir.path }}"
+        mode: 0644
+      with_fileglob:
+        - "{{ local_rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/*.properties"
 
     - name: Read stream-definition file
       slurp:
-        src: "{{ rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/stream-definition.properties"
+        src: "{{ remote_rs_addon_dir.path }}/stream-definition.properties"
       register: stream_definitions_content
 
     - name: Read streams from definition field if using ICD 3.0
@@ -85,7 +94,7 @@
 
     - name: Read stream-parameters file
       slurp:
-        src: "{{ rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/stream-parameters.properties"
+        src: "{{ remote_rs_addon_dir.path }}/stream-parameters.properties"
       register: stream_properties_content
 
     - name: Parse streams properties
@@ -95,14 +104,16 @@
     - name: Template script to gw
       template:
         src: scdf_shell_script.sh.j2
-        dest: "{{ rs_addon_dir.path }}/scdf_shell_script.sh"
+        dest: "{{ remote_rs_addon_dir.path }}/scdf_shell_script.sh"
 
     - name: Check if additional_resources folder exists
+      delegate_to: localhost
       stat:
-        path: "{{ rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/additional_resources"
+        path: "{{ local_rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/additional_resources"
       register: additional_resources_dir
 
     - name: Check if additional_resources folder contains yaml files
+      delegate_to: localhost
       find:
         paths: "{{ additional_resources_dir.stat.path }}"
         patterns: "*.yaml,*.yml"
@@ -111,8 +122,15 @@
 
     - name: Deploy the additional resources into the cluster
       block:
+        - name: Template and send additional resources to gateway
+          template:
+            src: "{{ item }}"
+            dest: "{{ remote_rs_addon_dir.path }}/additional_resources/"
+            mode: 0644
+          with_fileglob:
+            - "{{ additional_resources_dir.stat.path }}/*ml"
         - name: Apply the resources into the cluster
-          shell: "kubectl apply -f {{ rs_addon_dir.path }}/{{ rs_addon_name }}_Executables/additional_resources/"
+          shell: "kubectl apply -f {{ remote_rs_addon_dir.path }}/additional_resources/"
           register: deploy_log
         - name: Print the deployed resources
           debug:
@@ -123,7 +141,7 @@
       shell: |
         java -jar {{ shell_jar_path }} \
         --dataflow.uri=http://spring-cloud-dataflow-server.processing.svc.cluster.local:8080 \
-        --spring.shell.commandFile={{ rs_addon_dir.path }}/scdf_shell_script.sh
+        --spring.shell.commandFile={{ remote_rs_addon_dir.path }}/scdf_shell_script.sh
       register: deploy_log
 
     - name: Print deploy log
@@ -133,7 +151,7 @@
   always:
     - name: Remove resources tmp dir
       file:
-        path: "{{ rs_addon_dir.path }}"
+        path: "{{ remote_rs_addon_dir.path }}"
         state: absent
       when:
         - rs_addon_dir.path is defined
@@ -143,7 +161,7 @@
       debug:
         msg:
           - "DEBUG: the temporary folder containing the rs add-on has been kept for debugging purpose"
-          - "{{ rs_addon_dir.path }}"
+          - "{{ remote_rs_addon_dir.path }}"
           - "DO NOT FORGET TO DELETE IT WHEN YOU ARE DONE"
       when:
         - debug

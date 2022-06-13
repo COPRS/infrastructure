@@ -21,6 +21,12 @@ For each node groups, the following fields are availables:
 
 This specification will be used by the cluster-autoscaler to run its scale up simulations.
 
+> If you need a named template, related to a specific cloud provider for any given node group, you can use in the safescale sizing the name of the template in the `template` component value. **You must also precise the value of the `ram` and `cpu` component so the cluster-autoscaler can run its simulations.** For example:
+```yaml
+- sizing: "cpu=1,ram=[3-5],disk=40,template=s3.medium.4"
+```
+
+
 ## Mandatory node groups specifics
 
 The node groups `kube_control_plane`, `gateway` and `infra` are mandatory and cannot have volumes.
