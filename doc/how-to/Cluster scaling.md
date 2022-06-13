@@ -93,7 +93,13 @@ safescame host tag NODE NODE_GROUP
 ansible-playbook cluster.yaml -i inventory/mycluster/hosts.yaml -t update_hosts
 ```
 
-5. Deploy the autoscaling components
+5. Set up the providerID spec on the nodes for the autoscaler
+
+```shellsession
+ansible-playbook cluster.yaml -i inventory/mycluster/hosts.yaml -t providerids
+```
+
+6. Deploy the autoscaling components
 
 ```shellsession
 ansible-playbook apps.yaml \
