@@ -11,11 +11,11 @@
 
 - name: Configure manager
   import_tasks: role-manager.yaml
-  when: inventory_hostname == groups['kube_control_plane'][0]
+  when: inventory_hostname == wazuh_manager_node
 
 - name: Configure agent
   import_tasks: role-agent.yaml
-  when: inventory_hostname != groups['kube_control_plane'][0]
+  when: inventory_hostname != wazuh_manager_node
 
 - name: Ignore specific directory
   lineinfile:

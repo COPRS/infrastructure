@@ -15,7 +15,7 @@
     mode: '0640'
 
 - name: Get nodes already under management
-  delegate_to: "{{ groups['kube_control_plane'][0] }}"
+  delegate_to: "{{ wazuh_manager_node }}"
   shell:
     cmd: '/var/ossec/bin/agent_control -lcj'
   register: wazuh_joined_machines_output
@@ -26,7 +26,7 @@
 
 - name: get Wazuh manager IP address
   set_fact:
-    wazuh_manager_ip: "{{ hostvars[groups['kube_control_plane'][0]]['ansible_host'] }}"
+    wazuh_manager_ip: "{{ hostvars[wazuh_manager_node]['ansible_host'] }}"
 
 - name: Set Wazuh Manager remote IP address
   replace:

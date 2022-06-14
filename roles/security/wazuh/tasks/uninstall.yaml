@@ -14,7 +14,7 @@
         autoclean: yes
         autoremove: yes
 
-  when: inventory_hostname == groups['kube_control_plane'][0]
+  when: inventory_hostname == wazuh_manager_node
 
 # AGENT
 - name: Uninstall agent
@@ -34,7 +34,7 @@
         autoclean: yes
         autoremove: yes
       
-  when: inventory_hostname != groups['kube_control_plane'][0]
+  when: inventory_hostname != wazuh_manager_node
 
 - name: Delete content & directory
   file:
