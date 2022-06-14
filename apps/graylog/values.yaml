@@ -57,11 +57,11 @@ graylog:
         port: 9833
         protocol: TCP
 
-  {% if graylog.geolite2db_uri %}
+{% if graylog.geolite2db_uri %}
   geoip:
     enabled: true
     mmdbUri: {{ graylog.geolite2db_uri }}
-  {% endif %}
+{% endif %}
 
   env:
     GRAYLOG_TRUSTED_PROXIES: 10.244.0.0/16

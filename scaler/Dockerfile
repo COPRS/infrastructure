@@ -14,7 +14,7 @@ RUN chown -R safescale:safescale /opt/rs-infra-scaler
 USER safescale
 ENV PATH="/home/safescale/.local/bin:${PATH}"
 RUN ls -ll
-RUN git clone --single-branch --branch feat/node-autoscaler https://github.com/COPRS/infrastructure.git
+RUN git clone --single-branch --branch release/0.8.0 https://github.com/COPRS/infrastructure.git
 WORKDIR /opt/rs-infra-scaler/infrastructure
 RUN git submodule update --init --recursive
 RUN pip3 install --user pyOpenSSL ecdsa -r collections/kubespray/requirements.txt

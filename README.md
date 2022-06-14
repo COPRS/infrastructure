@@ -405,4 +405,4 @@ Default configurations:
   - Images:
     - artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:0.8.0-rc1
     - artifactory.coprs.esa-copernicus.eu/rs-docker/cluster-autoscaler:v1.25.0
-    - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.8.0-rc1
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.8.0-rc2
