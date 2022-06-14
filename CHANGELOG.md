@@ -11,6 +11,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+## [0.8.0-rc2] - 2022-06-14
+### Fixed
+- [#416 - [BUG] [infra] Auto-scaler: wrong node is initialized after expansion](https://github.com/COPRS/SCRUM-Tickets/issues/416)
+
 ## [0.8.0-rc1] - 2022-06-10
 ### Added
 - [#342 - Update component to monitor End Point (Blackbox exporter)](https://github.com/COPRS/SCRUM-Tickets/issues/342)
