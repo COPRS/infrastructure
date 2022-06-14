@@ -143,23 +143,39 @@ func (i *InfraShellClient) IncreaseNodeGroupSize(nodeGroup string, count int) (e
 		return err
 	}
 
-	// klog.V(3).Infof("Running kubespray facts playbook")
-	// err = i.runPlaybook("collections/kubespray/facts.yml",
-	// 	"-i", inventory_path+"/hosts.yaml",
-	// )
-	// if err != nil {
-	// 	klog.V(1).Infof("could not run kubespray facts playbook: %v", err)
-	// 	return err
-	// }
-
 	klog.V(3).Infof("Getting last created node from safescaled")
 	ngn, err := i.SafescaleShellClient.GetNodeGroupNodesNames(nodeGroup)
 	if err != nil {
 		klog.V(5).Infof("could not get nodes for nodegroup: %v", err)
 		return err
 	}
-	sort.Strings(ngn)
-	createdNodes := ngn[len(ngn)-count:]
+
+	// Create a slice by nodes IDs
+	clusterNodes := make(map[int]string, 0)
+	for _, node := range ngn {
+		splitted := strings.Split(node, "-")
+		id, err := strconv.Atoi(splitted[len(splitted)-1])
+		if err != nil {
+			klog.V(1).Infof("could not find created nodes by parsing node names: %v", err)
+			return err
+		}
+		clusterNodes[id] = node
+	}
+
+	// Sort nodes IDs
+	keys := make([]int, 0)
+	for k := range clusterNodes {
+		keys = append(keys, k)
+	}
+	sort.Ints(keys)
+
+	// Get last nodes by IDs
+	createdNodesIDs := keys[len(ngn)-count:]
+	createdNodes := make([]string, 0)
+	for _, id := range createdNodesIDs {
+		createdNodes = append(createdNodes, clusterNodes[id])
+	}
+
 	klog.V(5).Infof("Created %v", createdNodes)
 
 	klog.V(3).Infof("Running cluster config-machines playbook")
