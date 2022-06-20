@@ -7,7 +7,7 @@ helmCharts:
 - name: thanos
   releaseName: "{{ app_name }}"
   repo: https://charts.bitnami.com/bitnami
-  version: 8.1.2
+  version: 8.3.0
   valuesFile: values.yaml
   namespace: monitoring
 

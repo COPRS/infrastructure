@@ -18,7 +18,7 @@ configMapGenerator:
 helmCharts:
 - name: fluentd
   repo: https://charts.bitnami.com/bitnami
-  version: 4.4.1
+  version: 4.5.2
   valuesFile: values.yaml
   releaseName: "{{ app_name }}"
   namespace: fluentd

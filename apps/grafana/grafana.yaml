@@ -3,7 +3,7 @@ kind: Grafana
 metadata:
   name: grafana
 spec:
-  baseImage: 'grafana/grafana:8.3.3-ubuntu'
+  baseImage: 'grafana/grafana:8.5.6-ubuntu'
   client:
     preferService: true
   config:
@@ -42,6 +42,8 @@ spec:
       - key: "app.kubernetes.io/grafana-ignore"
         operator: DoesNotExist
   deployment:
+    securityContext:
+      fsGroup: 472
     skipCreateAdminAccount: false
     envFrom:
       - secretRef:

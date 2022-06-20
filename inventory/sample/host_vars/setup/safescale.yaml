@@ -6,18 +6,15 @@ cluster:
   os: "csc-rs-ubuntu"
 
   nodegroups:
-    # kube_control_plane, infra and gateway are MANDATORY
+  # kube_control_plane, infra and gateway are MANDATORY
     - name: kube_control_plane
       sizing: "cpu=4,ram=[8-10],disk=80"
     - name: infra
       min_size: 7 # /!\ Must be superior or equal to the defaults worker amount in the chosen safescale complexity
       max_size: 10
-      volume:
-        type: HDD
-        size: 300
       sizing: "cpu=8,ram=[14-18],disk=40"
       kubespray:
-        node_labels: 
+        node_labels:
           node-role.kubernetes.io/infra: ''
     - name: gateway
       sizing: "cpu=2,ram=[4-5],disk=20"
@@ -45,6 +42,16 @@ cluster:
         node_labels:
           node-role.kubernetes.io/infra: ''
           node-role.kubernetes.io/prometheus: ''
+    - name: rook_ceph
+      min_size: 3
+      max_size: 5
+      volume:
+        type: HDD
+        size: 5000
+      sizing: "cpu=4,ram=[8-10],disk=40"
+      kubespray:
+        node_labels:
+          node-role.kubernetes.io/rook_ceph: ''
     - name: processing
       min_size: 0
       max_size: 6
