@@ -27,7 +27,7 @@ spec:
     enabled: true
     port: 7000
     ssl: false
-  dataDirHostPath: /var/lib/rook
+  dataDirHostPath: /data/rook
   disruptionManagement:
     machineDisruptionBudgetNamespace: openshift-machine-api
     manageMachineDisruptionBudgets: false
@@ -63,7 +63,6 @@ spec:
     count: 3
   monitoring:
     enabled: true
-    rulesNamespace: {{ kustomization.namespace }}
   placement:
     all:
       nodeAffinity:
