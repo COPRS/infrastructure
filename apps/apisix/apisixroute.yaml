@@ -17,7 +17,7 @@ spec:
           config:
             client_id: apisix
             client_secret: {{ apisix.oidc_client_secret }}
-            discovery: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
+            discovery: https://apisix.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
             scope: openid
             bearer_only: false
             realm: {{ keycloak.realm.name }}

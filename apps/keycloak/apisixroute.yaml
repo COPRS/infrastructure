@@ -9,7 +9,13 @@ spec:
         - serviceName: keycloak-http
           servicePort: 80
       match:
-        hosts: [ iam.{{ platform_domain_name }} ]
+        hosts:
+          - apisix.{{ platform_domain_name }}
+          - iam.{{ platform_domain_name }}
+          - linkerd.{{ platform_domain_name }}
+          - monitoring.{{ platform_domain_name }}
+          - processing.{{ platform_domain_name }}
+          - security.{{ platform_domain_name }}
         paths:
           - /auth/admin/{{ keycloak.realm.name }}
           - /auth/admin/{{ keycloak.realm.name }}/*
@@ -17,16 +23,13 @@ spec:
           - /auth/admin/{{ keycloak.realm.name }}/console/*
           - /auth/admin/realms
           - /auth/admin/serverinfo
+          - /auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
           - /auth/realms/{{ keycloak.realm.name }}/account/*
           - /auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/*
           - /auth/realms/RS/login-actions/*
           - /auth/resources/*
           - /auth/js/*
       plugins:
-        - name: cors
-          enable: true
-          config:
-            allow_origins: "https://apisix.{{ platform_domain_name }},https://linkerd.{{ platform_domain_name }},https://monitoring.{{ platform_domain_name }},https://security.{{ platform_domain_name }},https://processing.{{ platform_domain_name }}"
         - name: serverless-pre-function
           enable: true
           config:
@@ -47,7 +50,12 @@ metadata:
   name: sni-iam
 spec:
   hosts:
+    - apisix.{{ platform_domain_name }}
     - iam.{{ platform_domain_name }}
+    - linkerd.{{ platform_domain_name }}
+    - monitoring.{{ platform_domain_name }}
+    - processing.{{ platform_domain_name }}
+    - security.{{ platform_domain_name }}
   secret:
     name: ingress-tls
     namespace:  networking

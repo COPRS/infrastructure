@@ -25,7 +25,7 @@ spec:
           config:
             client_id: thanos
             client_secret: {{ thanos.oidc_client_secret }}
-            discovery: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
+            discovery: https://monitoring.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
             scope: openid
             bearer_only: false
             realm: {{ keycloak.realm.name }}

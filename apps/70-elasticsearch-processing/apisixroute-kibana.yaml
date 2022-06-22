@@ -29,7 +29,7 @@ spec:
           config:
             client_id: kibana-processing
             client_secret: "{{ elasticsearch_processing.kibana_oidc_client_secret }}"
-            discovery: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
+            discovery: https://processing.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
             scope: openid
             bearer_only: false
             realm: {{ keycloak.realm.name }}
