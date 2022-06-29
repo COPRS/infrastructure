@@ -1,6 +1,6 @@
 - name: install wazuh agent
   apt:  
-    name: wazuh-agent={{ wazuh.wazuh_version }}
+    name: wazuh-agent
     state: present
     update_cache: yes
     cache_valid_time: 86400

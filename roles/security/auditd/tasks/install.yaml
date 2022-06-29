@@ -1,6 +1,6 @@
 - name: Install auditD
   apt: 
-    name: auditd={{ auditd.auditd_version }}
+    name: auditd
     state: present
     
 # Clean old rules files + conf (update case)
