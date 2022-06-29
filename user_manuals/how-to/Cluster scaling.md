@@ -30,7 +30,11 @@ ansible-playbook collections/kubespray/cluster.yml -b -i inventory/mycluster/hos
 ansible-playbook cluster.yaml -i inventory/mycluster/hosts.yaml -t providerids
 ```
 
+> If the created node has the affinities corresponding the the Ceph Cluster and a mounted volume, a new OSD will be created on this node, this is how you may scale the storage on the platform.
+
 # Delete nodes from the cluster
+
+> To downscale the `rook_ceph` cluster, first mark the OSDs corresponding to the node as **out** of the Ceph Cluster so the data is first removed from the OSDs.
 
 1. Drain and delete the nodes from the kubernetes cluster
 
@@ -110,7 +114,7 @@ ansible-playbook apps.yaml \
 ## Prevent the autoscaler from scaling a particular node
 
 To prevent the cluster-autoscaler from deleting a given node, annotate it:
-```shelsession
+```shellsession
 kubectl annotate node NODE_NAME cluster-autoscaler.kubernetes.io/scale-down-disabled=true
 ```
 

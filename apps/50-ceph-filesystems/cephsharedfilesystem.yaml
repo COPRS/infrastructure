@@ -1,7 +1,7 @@
 apiVersion: ceph.rook.io/v1
 kind: CephFilesystem
 metadata:
-  name: ceph-sharedfilesystem
+  name: ceph-fs
 spec:
   metadataPool:
     replicated:
@@ -47,20 +47,20 @@ spec:
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: ceph-sharedfilesystem
+  name: ceph-fs
 parameters:
   clusterID: rook-ceph
-  csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
+  csi.storage.k8s.io/controller-expand-secret-name: rook-csi-cephfs-provisioner
   csi.storage.k8s.io/controller-expand-secret-namespace: {{ kustomization.namespace }}
   csi.storage.k8s.io/fstype: ext4
-  csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
+  csi.storage.k8s.io/node-stage-secret-name: rook-csi-cephfs-node
   csi.storage.k8s.io/node-stage-secret-namespace: {{ kustomization.namespace }}
-  csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
+  csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
   csi.storage.k8s.io/provisioner-secret-namespace: {{ kustomization.namespace }}
   imageFeatures: layering
   imageFormat: "2"
-  fsName: ceph-sharedfilesystem
-  pool: replicated
-provisioner: {{ kustomization.namespace }}.rbd.csi.ceph.com
+  fsName: ceph-fs
+  pool: ceph-fs-replicated
+provisioner: {{ kustomization.namespace }}.cephfs.csi.ceph.com
 reclaimPolicy: Retain
 allowVolumeExpansion: true
