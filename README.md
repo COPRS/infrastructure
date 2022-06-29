@@ -17,6 +17,8 @@
 - python3
 - python3-pip
 - git
+- jq
+- cloud-image-utils
 
 ## Infrastructure requirements
 
