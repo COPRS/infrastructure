@@ -4,7 +4,7 @@
 
 ## Overview
 
-![](./doc/img/deployment.png)
+![](./user_manuals/img/deployment.png)
 
 > **Integrators' machine is called BASTION in the rest of the installation manual**
 
@@ -20,7 +20,7 @@
 
 ## Infrastructure requirements
 
-- Default configuration : [here](./doc/config.md)
+- Default configuration : [here](./user_manuals/config.md)
 - A **domain name** publicly available with a wildcard **A** record.  
 
 ## Dependencies
