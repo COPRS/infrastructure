@@ -2,7 +2,7 @@
 
 ## Default configuration
 
-Find the default configuration of the groups and roles here: [doc/config.md](../config.md#groups)
+Find the default configuration of the groups and roles here: [user_manuals/config.md](../config.md#groups)
 
 ## Add a user
 
