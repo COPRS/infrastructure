@@ -130,7 +130,7 @@ spec:
     spec:
       serviceAccountName: cluster-autoscaler
       containers:
-        - image: artifactory.coprs.esa-copernicus.eu/rs-docker/cluster-autoscaler:v1.25.0
+        - image: artifactory.coprs.esa-copernicus.eu/rs-docker/cluster-autoscaler:v1.22.3
           name: cluster-autoscaler
           resources:
             limits:

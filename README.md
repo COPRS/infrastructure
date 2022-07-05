@@ -398,6 +398,6 @@ Default configurations:
     - docker.io/prom/blackbox-exporter:v0.20.0
 - **Autoscaling**
   - Images:
-    - artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:0.8.0-rc1
-    - artifactory.coprs.esa-copernicus.eu/rs-docker/cluster-autoscaler:v1.25.0
-    - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.8.0-rc2
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:v22.06.0
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/cluster-autoscaler:1.22.3
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.9.0
