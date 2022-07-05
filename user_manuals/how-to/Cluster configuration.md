@@ -31,12 +31,16 @@ This specification will be used by the cluster-autoscaler to run its scale up si
 
 The node groups `kube_control_plane`, `gateway` and `infra` are mandatory and cannot have volumes.
 
+The `rook_ceph` node group must have at least three nodes due to data replication and high availability.
+
 The amount of nodes in the `kube_control_plane` and `gateway` node groups are tied the SafeScale cluster complexity, meaning:
  - small: 1 gateway, 1 kube_control_plane, 1 infra
  - normal: 2 gateways, 2 kube_control_plane, 3 infra
  - large: 2 gateways, 3 kube_control_plane, 7 infra
 
 The minimum size of the `infra` node group defined below must be superior to the size of the `infra` node group defined by the SafeScale complexity above.
+
+To prevent autoscaling of the `rook_ceph` node group that would cause issues with the Ceph Cluster, set the min_size and max_size to the same value (3 for example) and scale this node group manually.
 
 Here is an example of a valid basic cluster configuration:
 ```yaml
@@ -60,12 +64,22 @@ cluster:
             cpu: "1"
             memory: "2Gi"
     - name: infra
-      min_size: 2
+      min_size: 3
       max_size: 5
-      sizing: "cpu=8,ram=[14-18],disk=40"
+      sizing: "cpu=8,ram=[14-18],disk=40,count=2"
       kubespray:
         node_labels: 
           node-role.kubernetes.io/infra: ''
+    - name: rook_ceph
+      min_size: 3
+      max_size: 3
+      volume:
+        type: SSD
+        size: 500
+      sizing: "cpu=4,ram=[8-10],disk=40"
+      kubespray:
+        node_labels:
+          node-role.kubernetes.io/rook_ceph: ''
 ```
 
 ## S3 buckets
