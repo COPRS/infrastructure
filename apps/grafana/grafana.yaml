@@ -3,7 +3,7 @@ kind: Grafana
 metadata:
   name: grafana
 spec:
-  baseImage: 'grafana/grafana:8.5.6-ubuntu'
+  baseImage: 'grafana/grafana:9.0.2-ubuntu'
   client:
     preferService: true
   config:
@@ -31,6 +31,13 @@ spec:
       role_attribute_strict: true
     metrics:
       enabled: true
+    rendering:
+      server_url: http://grafana-image-renderer.{{ kustomization.namespace }}.svc.cluster.local:8081/render
+      callback_url: http://grafana-service.{{ kustomization.namespace }}.svc.cluster.local:3000/
+    smtp:
+      {{ grafana.smtp | to_nice_yaml(indent=2) | indent(width=6) }}
+    unified_alerting:
+      enabled: true
   
   service:
     name: "grafana-service"
@@ -55,6 +62,11 @@ spec:
             - matchExpressions:
               - key: "node-role.kubernetes.io/infra"
                 operator: Exists
+    env:
+      - name: GF_UNIFIED_ALERTING_SCREENSHOTS_CAPTURE
+        value: "true"
+      - name: GF_UNIFIED_ALERTING_SCREENSHOTS_UPLOAD_EXTERNAL_IMAGE_STORAGE
+        value: "false"
   dataStorage:
     size: 8Gi
     accessModes: 
