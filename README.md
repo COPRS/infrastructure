@@ -397,7 +397,7 @@ Default configurations:
 - **Prometheus blackbox exporter**
   - Helm chart:
     - Repository: https://prometheus-community.github.io/helm-charts
-    - Version: 5.8.1
+    - Version: 5.8.2
     - Source: https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-blackbox-exporter
   - Images:
     - docker.io/prom/blackbox-exporter:v0.20.0
