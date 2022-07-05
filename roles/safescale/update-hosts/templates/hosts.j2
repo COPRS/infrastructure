@@ -5,19 +5,17 @@
       provider_id: {{ host.id }}
 {% endfor %}
 
-{% for nodegroup in nodegroups %}
-{% if nodegroup.hosts is defined %}
-{{ nodegroup.name | replace('-', '_') }}:
+{% for nodegroup in nodegroupsnodes %}
+{{ nodegroup[0].value | replace('-', '_') }}:
   hosts:
-{% for node in nodegroup.hosts %}
+{% for node in nodegroup %}
     {{ node.name }}:
 {% endfor %}
   vars:
-    nodegroup: {{ nodegroup.name | replace('-', '_') }}
-{% set spec = cluster.nodegroups | selectattr('name', 'equalto', nodegroup.name) | first %}
+    nodegroup: {{ nodegroup[0].value | replace('-', '_') }}
+{% set spec = cluster.nodegroups | selectattr('name', 'equalto', nodegroup[0].value) | first %}
 {% if  spec.kubespray is defined %}
 {{ spec.kubespray | to_nice_yaml(indent=2) | indent(width=4, indentfirst=True) }}
-{% endif %}
 {% endif %}
 
 {% endfor %}
@@ -25,8 +23,8 @@
 kube_node:
   children:
 {% for nodegroup in nodegroups %}
-{% if nodegroup.name != 'kube_control_plane' %}
-    {{ nodegroup.name | replace('-', '_') }}:
+{% if nodegroup != 'kube_control_plane' %}
+    {{ nodegroup | replace('-', '_') }}:
 {% endif %}
 {% endfor %}
 

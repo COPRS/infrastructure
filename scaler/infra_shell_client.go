@@ -144,7 +144,7 @@ func (i *InfraShellClient) IncreaseNodeGroupSize(nodeGroup string, count int) (e
 	}
 
 	klog.V(3).Infof("Getting last created node from safescaled")
-	ngn, err := i.SafescaleShellClient.GetNodeGroupNodesNames(nodeGroup)
+	ngn, err := i.SafescaleShellClient.GetNodeGroupNodesNames(i.GeneratedInventory.Cluster.Name, nodeGroup)
 	if err != nil {
 		klog.V(5).Infof("could not get nodes for nodegroup: %v", err)
 		return err
@@ -289,12 +289,12 @@ func (i *InfraShellClient) readNodeGroupsFromInventory(inv *GeneratedInventory) 
 			})
 		}
 
-		ngni, err := i.SafescaleShellClient.GetNodeGroupNodesIDs(nodegroup.Name)
+		ngni, err := i.SafescaleShellClient.GetNodeGroupNodesIDs(i.GeneratedInventory.Cluster.Name, nodegroup.Name)
 		if err != nil {
 			klog.V(1).Infof("could not get nodes ids for nodegroup: %v", err)
 			return err
 		}
-		ngnn, err := i.SafescaleShellClient.GetNodeGroupNodesNames(nodegroup.Name)
+		ngnn, err := i.SafescaleShellClient.GetNodeGroupNodesNames(i.GeneratedInventory.Cluster.Name, nodegroup.Name)
 		if err != nil {
 			klog.V(1).Infof("could not get nodes names for nodegroup: %v", err)
 			return err
@@ -347,12 +347,12 @@ func (i *InfraShellClient) updateNodesNodeGroup() error {
 
 	for nodeGroupName := range i.InfraNodeGroups {
 		klog.V(5).Infof("infraNodeGroup %s", nodeGroupName)
-		ngnn, err := i.SafescaleShellClient.GetNodeGroupNodesNames(nodeGroupName)
+		ngnn, err := i.SafescaleShellClient.GetNodeGroupNodesNames(i.GeneratedInventory.Cluster.Name, nodeGroupName)
 		if err != nil {
 			klog.V(1).Infof("could not get nodes names for nodegroup: %v", err)
 			return err
 		}
-		ngni, err := i.SafescaleShellClient.GetNodeGroupNodesIDs(nodeGroupName)
+		ngni, err := i.SafescaleShellClient.GetNodeGroupNodesIDs(i.GeneratedInventory.Cluster.Name, nodeGroupName)
 		if err != nil {
 			klog.V(1).Infof("could not get nodes ids for nodegroup: %v", err)
 			return err

@@ -78,18 +78,16 @@ Write your SafeScale tenants configuration with only the tenant corresponding to
 Following [./Cluster%20configuration.md](./Cluster%20configuration.md), write the cluster configuration matching the running cluster. You can add some empty node groups to expand later.
 
 
-2. Create the node groups on the safescale side (as tags)
+2. Create the label corresponding to the node groups
 
-For each node group:
 ```shellsession
-safescale tag create NODE_GROUP
+safescale label create CLUSTER_NAME-nodegroup --value unset
 ```
 
-3. Tag the running hosts with the right node group tag
-
+3. Label the running hosts with the right node group label
 For each node:
 ```shellsession
-safescame host tag NODE NODE_GROUP
+safescale host label bind NODE CLUSTER_NAME-nodegroup --value NODEGROUP
 ```
 
 4. Update the `hosts.yaml` inventory file
@@ -110,6 +108,23 @@ ansible-playbook apps.yaml \
     -i inventory/mycluster/hosts.yaml \
     -e app=autoscaling
 ```
+
+## Migration from 0.8.0 to 0.9.0
+
+Since release 0.9.0, the node group (and therefore the scaling) functionnality relies on the SafeScale label and no more on the SafeScale tags. Also, there has been a change in the metadata, so you must remove all tags from the 0.8.0 cluster, using the same SafeScale build used to write them.
+
+You may use a script like the following to remove tags from the hosts for each node group:
+```shellsession
+for host in $(safescale tag inspect NODEGROUP | jq -r '.result.hosts[].name'); do safescale host untag $host NODEGROUP ; done
+```
+
+And then remove the actual node groups:
+```shellsession
+for tag in $(safescale tag list | jq -r '.result[].name'); do safescale tag delete $tag ; done
+```
+
+After that, follow the updated procedure above to deploy the node groups.
+
 
 ## Prevent the autoscaler from scaling a particular node
 

@@ -1,6 +1,6 @@
 - name: Calculate additional infra nodes to create and set expand count
   set_fact:
-    expand_count: "{%- if expand_nodegroup.name == 'infra' -%}{{ expand_nodegroup.min_size - safescale_complexity_infra_nodes[cluster.complexity] }}{%- else -%}{{ expand_nodegroup.min_size }}{%- endif -%}"
+    expand_count: "{{ expand_nodegroup.min_size }}"
 - name: "Expand {{ expand_nodegroup.name }} by {{ expand_count }} node(s)"
   include_role: 
     name: safescale/expand-nodegroup
