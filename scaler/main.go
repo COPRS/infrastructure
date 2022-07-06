@@ -277,14 +277,14 @@ func (c *RSInfraScaler) NodeGroupTemplateNodeInfo(ctx context.Context, req *eg.N
 // GetOptions returns NodeGroupAutoscalingOptions that should be used for this particular
 // NodeGroup. Returning a grpc error will result in using default options.
 // Implementation optional.
-// func (c *RSInfraScaler) NodeGroupGetOptions(context.Context, *eg.NodeGroupAutoscalingOptionsRequest) (*eg.NodeGroupAutoscalingOptionsResponse, error) {
-// 	klog.V(5).Infof("NodeGroupGetOptions gRPC function called")
-// 	return &eg.NodeGroupAutoscalingOptionsResponse{
-// 		NodeGroupAutoscalingOptions: &eg.NodeGroupAutoscalingOptions{
-// 			ScaleDownUtilizationThreshold:    0.5,
-// 			ScaleDownUnneededTime:            &metav1.Duration{Duration: time.Minute * 10},
-// 			ScaleDownUnreadyTime:             &metav1.Duration{Duration: time.Minute * 10},
-// 			ScaleDownGpuUtilizationThreshold: 0.5,
-// 		},
-// 	}, nil
-// }
+func (c *RSInfraScaler) NodeGroupGetOptions(_ context.Context, req *eg.NodeGroupAutoscalingOptionsRequest) (*eg.NodeGroupAutoscalingOptionsResponse, error) {
+	klog.V(5).Infof("NodeGroupGetOptions gRPC function called")
+	return &eg.NodeGroupAutoscalingOptionsResponse{
+		NodeGroupAutoscalingOptions: &eg.NodeGroupAutoscalingOptions{
+			ScaleDownUtilizationThreshold:    req.GetDefaults().GetScaleDownUtilizationThreshold(),
+			ScaleDownUnneededTime:            req.GetDefaults().GetScaleDownUnneededTime().DeepCopy(),
+			ScaleDownUnreadyTime:             req.GetDefaults().GetScaleDownUnreadyTime().DeepCopy(),
+			ScaleDownGpuUtilizationThreshold: req.GetDefaults().GetScaleDownGpuUtilizationThreshold(),
+		},
+	}, nil
+}

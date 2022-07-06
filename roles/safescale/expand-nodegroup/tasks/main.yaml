@@ -13,8 +13,8 @@
     {{ cluster.name }} | jq -r '.result.nodes[].name'
   register: expand_cmd
 
-- name: Tag created nodes
-  shell: "{{ safescale_path }} host tag {{ item }} {{ expand_nodegroup.name }}"
+- name: Label created nodes
+  shell: "{{ safescale_path }} host label bind {{ item }} {{ cluster.name }}-nodegroup --value {{ expand_nodegroup.name }}"
   loop: "{{ expand_cmd.stdout_lines }}"
 
 - name: Create and attach the volumes on {{ expand_nodegroup.name }} nodes
