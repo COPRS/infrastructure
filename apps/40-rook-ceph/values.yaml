@@ -12,7 +12,7 @@ resources:
 
 csi:
   enableRbdDriver: true
-  enableCephfsDriver: false
+  enableCephfsDriver: true
   enableCephfsSnapshotter: false
   enableRBDSnapshotter: true
 

@@ -291,7 +291,7 @@ ingress-controller:
       ingressVersion: "networking/v1"
       # the supported apisixroute api group version, can be "apisix.apache.org/v2beta3"
       # "apisix.apache.org/v2alpha1" or "apisix.apache.org/v2beta1"
-      apisixRouteVersion: "apisix.apache.org/v2beta1"
+      apisixRouteVersion: "apisix.apache.org/v2beta3"
     # APISIX related configurations.
     apisix:
       serviceName: apisix-admin

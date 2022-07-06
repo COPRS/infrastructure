@@ -21,3 +21,6 @@ wazuh:
 
   # unused_decoders:
   #   - Rule_to_exclude
+
+# by default the wazuh manager is on the first master
+wazuh_manager_node: "{{ cluster.name }}-master-1"

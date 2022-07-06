@@ -26,7 +26,6 @@ The COTS can be configured by updating the file : ```infrastructure/platform/rol
 
 | Name | Function | Required |
 |------|----------|----------|
-|  auditd_version    |    Version of auditd to use      |   Yes   |
 |  rules   |   List of rules to add to auditd each rule is composed of two attributes the name and the rule description      |     No     |
 
 In order to make easy the management of auditd logs, Laurel can be deployed.

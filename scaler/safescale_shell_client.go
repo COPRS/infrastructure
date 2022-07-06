@@ -33,84 +33,57 @@ func (s *SafescaleShellClient) setTenant(tenant string) error {
 	return nil
 }
 
-func (s *SafescaleShellClient) GetNodeGroups() ([]string, error) {
-	cmd := exec.Command("safescale", "tag", "list")
+func (s *SafescaleShellClient) GetNodeGroupNodesIDs(clusterName string, nodeGroup string) ([]string, error) {
+	cmd := exec.Command("safescale", "label", "inspect", clusterName+"-nodegroup")
 	cmd.Env = os.Environ()
 	out, err := cmd.CombinedOutput()
 	cmd.Wait()
-	klog.V(5).Infof("Tag list response: %v", string(out))
+	klog.V(5).Infof("Label inspect response: %v", string(out))
 	if err != nil {
-		klog.V(1).Infof("could not run safescale tag list: %v", err)
+		klog.V(1).Infof("could not run safescale label inspect: %v", err)
 		return nil, err
 	}
 
 	status := gjson.GetBytes(out, "status")
 	if status.String() != "success" {
-		klog.V(1).Infof("could not get tags: %v", err)
+		klog.V(1).Infof("could not inspect label: %v", err)
 		return nil, err
 	}
 
-	tags := gjson.GetBytes(out, "result.#.name").Array()
-	klog.V(5).Infof("Parsed tags: %v", tags)
-
-	var nodeGroups []string
-	for _, tag := range tags {
-		nodeGroups = append(nodeGroups, tag.Str)
-	}
-	return nodeGroups, nil
-}
-
-func (s *SafescaleShellClient) GetNodeGroupNodesIDs(nodeGroup string) ([]string, error) {
-	cmd := exec.Command("safescale", "tag", "inspect", nodeGroup)
-	cmd.Env = os.Environ()
-	out, err := cmd.CombinedOutput()
-	cmd.Wait()
-	klog.V(5).Infof("Tag inspect response: %v", string(out))
-	if err != nil {
-		klog.V(1).Infof("could not run safescale tag inspect: %v", err)
-		return nil, err
-	}
-
-	status := gjson.GetBytes(out, "status")
-	if status.String() != "success" {
-		klog.V(1).Infof("could not inspect tag: %v", err)
-		return nil, err
-	}
-
-	tagNodes := gjson.GetBytes(out, "result.hosts.#.id").Array()
-	klog.V(5).Infof("Parsed nodes ids: %v", tagNodes)
+	nodeGroupNodes := gjson.GetBytes(out, "result.hosts.#(value==\""+nodeGroup+"\")#.id").Array()
+	klog.V(5).Infof("Parsed nodes ids: %v", nodeGroupNodes)
 
 	ngn := make([]string, 0)
 
-	for _, node := range tagNodes {
+	for _, node := range nodeGroupNodes {
 		ngn = append(ngn, node.Str)
 	}
 	return ngn, nil
 }
 
-func (s *SafescaleShellClient) GetNodeGroupNodesNames(nodeGroup string) ([]string, error) {
-	cmd := exec.Command("safescale", "tag", "inspect", nodeGroup)
+func (s *SafescaleShellClient) GetNodeGroupNodesNames(clusterName string, nodeGroup string) ([]string, error) {
+	cmd := exec.Command("safescale", "label", "inspect", clusterName+"-nodegroup")
 	cmd.Env = os.Environ()
 	out, err := cmd.CombinedOutput()
 	cmd.Wait()
-	klog.V(5).Infof("Tag inspect response: %v", string(out))
+	klog.V(5).Infof("Label inspect response: %v", string(out))
 	if err != nil {
-		klog.V(1).Infof("could not run safescale tag inspect: %v", err)
+		klog.V(1).Infof("could not run safescale label inspect: %v", err)
 		return nil, err
 	}
 
 	status := gjson.GetBytes(out, "status")
 	if status.String() != "success" {
-		klog.V(1).Infof("could not inspect tag: %v", err)
+		klog.V(1).Infof("could not inspect label: %v", err)
 		return nil, err
 	}
 
-	tagNodes := gjson.GetBytes(out, "result.hosts.#.name").Array()
-	klog.V(5).Infof("Parsed nodes names: %v", tagNodes)
+	nodeGroupNodes := gjson.GetBytes(out, "result.hosts.#(value==\""+nodeGroup+"\")#.name").Array()
+	klog.V(5).Infof("Parsed nodes names: %v", nodeGroupNodes)
 
 	ngn := make([]string, 0)
 
-	for _, node := range tagNodes {
+	for _, node := range nodeGroupNodes {
 		ngn = append(ngn, node.Str)
 	}
 	return ngn, nil

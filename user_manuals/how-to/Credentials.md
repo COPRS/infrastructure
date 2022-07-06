@@ -4,6 +4,11 @@
 
 All the credentials necessary to the deployment of the different applications can be set in the different inventory files located under `{{ inventory_dir }}/host_vars/setup`.
 
+Setup your variables by:
+ - using separate files for variables corresponding to different applications, like in the sample inventory and its `{{ inventory_dir }}/host_vars/setup/apps` subfolder
+ - creating new files (for example `{{ inventory_dir }}/host_vars/setup/production_env1.yaml`) with your variables
+ - editing the variables given as sample in the sample inventory
+
 On the run of the `generate_inventory.yaml` playbook, the files under `{{ inventory_dir }}/host_vars/setup` will be templated and a new `generated_inventory_vars.yaml` file will be written to the `{{ inventory_dir }}/group_vars/all` folder. 
 
 **The values actually used by the app-installer come from the `generated_inventory_vars.yaml`. You will find all the credentials there.**
@@ -14,6 +19,7 @@ This workflow prevents the app-installer from changing the credentials of the ap
 
 Like in the example values, you can choose to generate some credentials using this ansible function:
 ```yaml
+# {{ inventory_dir }}/host_vars/setup/apps/openldap.yaml
 openldap:
   admin_user_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
 ```
@@ -22,6 +28,7 @@ openldap:
 
 Otherwise, you can freely set passwords by hand:
 ```yaml
+# {{ inventory_dir }}/host_vars/setup/apps/graylog.yaml
 graylog:
   oidc_client_secret: "m4nuAl_s3cret_example"
 ```
@@ -32,14 +39,16 @@ graylog:
 
 Like in the example values, you can reuse crendentials already set up in the inventory files. This functionnality is used in the sample inventory for the S3 keys and endpoints that are often the same accross applications:
 ```yaml
+# {{ inventory_dir }}/host_vars/setup/main.yaml
 s3:
   endpoint: S3_ENDPOINT
   region: S3_REGION
   secret_key: S3_SECRET_KEY
   access_key: S3_ACCESS_KEY
+```
 
-[...]
-
+```yaml
+# {{ inventory_dir }}/host_vars/setup/apps/thanos.yaml
 thanos:
   s3:
     bucket: THANOS_BUCKET
@@ -55,6 +64,7 @@ thanos:
 You can retrieve credentials from a *HashiCorp Vault* instance using the *hvac* ansible plugin:
 
 ```yaml
+# {{ inventory_dir }}/host_vars/setup/main.yaml
 vault:
   url: VAULT_ENDPOINT
   token: VAULT_TOKEN

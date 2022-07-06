@@ -1,7 +1,7 @@
 # Cluster configuration
 cluster:
   name: rs-cluster
-  complexity: Large
+  complexity: large
   cidr: 192.168.0.0/16
   os: "csc-rs-ubuntu"
 
@@ -10,9 +10,9 @@ cluster:
     - name: kube_control_plane
       sizing: "cpu=4,ram=[8-10],disk=80"
     - name: infra
-      min_size: 7 # /!\ Must be superior or equal to the defaults worker amount in the chosen safescale complexity
+      min_size: 5
       max_size: 10
-      sizing: "cpu=8,ram=[14-18],disk=40"
+      sizing: "cpu=8,ram=[14-18],disk=40,count=6"
       kubespray:
         node_labels:
           node-role.kubernetes.io/infra: ''
@@ -37,16 +37,16 @@ cluster:
     - name: prometheus
       min_size: 0
       max_size: 2
-      sizing: "cpu=8,ram=[14-18],disk=80"
+      sizing: "cpu=8,ram=[30-34],disk=40"
       kubespray:
         node_labels:
           node-role.kubernetes.io/infra: ''
           node-role.kubernetes.io/prometheus: ''
     - name: rook_ceph
       min_size: 3
-      max_size: 5
+      max_size: 3
       volume:
-        type: HDD
+        type: SSD
         size: 5000
       sizing: "cpu=4,ram=[8-10],disk=40"
       kubespray:

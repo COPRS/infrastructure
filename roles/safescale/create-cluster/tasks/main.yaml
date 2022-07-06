@@ -16,24 +16,23 @@
     --master-sizing cluster.nodegroups.kube_control_plane.sizing \
     --node-sizing cluster.nodegroups.infra.sizing \
     --gw-sizing cluster.nodegroups.gateway.sizing \
+    --force \
     {{ cluster.name }}
   when: cluster.name not in cluster_list.stdout_lines
 
-- name: Create node groups
-  include_tasks: 
-    file: create-nodegroup.yaml
+- name: Create the safescale label for node groups
   loop: "{{ cluster.nodegroups }}"
-  loop_control:
-    loop_var: create_nodegroup
+  shell: |
+    {{ safescale_path }} label create {{ cluster.name }}-nodegroup --value none
 
-- name: Add created nodes to created nodegroups
+- name: Add created nodes to nodegroups
   shell: |
     for i in  $({{ safescale_path }} cluster inspect rs-dev | jq -c -r '.result.nodes.masters[].name'); do \
-      {{ safescale_path }} host tag $i kube_control_plane; done \
+      {{ safescale_path }} host label bind $i {{ cluster.name }}-nodegroup --value kube_control_plane; done \
     && for i in  $({{ safescale_path }} cluster inspect rs-dev | jq -c -r '.result.nodes.nodes[].name'); do \
-      {{ safescale_path }} host tag $i infra; done \
-    && {{ safescale_path }} host tag gw-{{ cluster.name }} gateway \ 
-    {% if cluster.complexity | lower != 'small' %} && {{ safescale_path }} host tag gw2-{{ cluster.name }} gateway {% endif %}
+      {{ safescale_path }} host label bind $i {{ cluster.name }}-nodegroup --value infra; done \
+    && {{ safescale_path }} host label bind gw-{{ cluster.name }} {{ cluster.name }}-nodegroup --value gateway \ 
+    {% if cluster.complexity | lower != 'small' %} && {{ safescale_path }} host label bind gw2-{{ cluster.name }} {{ cluster.name }}-nodegroup --value gateway {% endif %}
 
 - name: Expand cluster to minimum node groups sizes
   include_tasks:
@@ -42,7 +41,7 @@
   loop_control:
     loop_var: expand_nodegroup
   when:
-    - expand_nodegroup.name not in ['kube_control_plane', 'gateway'] 
+    - expand_nodegroup.name not in ['kube_control_plane', 'gateway', 'infra'] 
     - expand_nodegroup.min_size is defined and expand_nodegroup.min_size > 0
 
 - name: Create the buckets

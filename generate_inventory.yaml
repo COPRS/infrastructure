@@ -33,7 +33,9 @@
         content: "{{ inventory_vars_content }}"
         dest: "{{ generated_inventory_vars_path }}"
         mode: 0600
-      when: not vault.upload_existing
+      when:
+        - vault is defined
+        - not vault.upload_existing
 
     - name: Send generated app_vars to vault
       uri:

@@ -16,7 +16,7 @@ spec:
         app.kubernetes.io/component: safescaled
     spec:
       containers:
-        - image: artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:0.8.0-rc1
+        - image: artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:v22.06.0
           name: safescaled
           resources:
             limits:

@@ -17,6 +17,8 @@
 - python3
 - python3-pip
 - git
+- jq
+- cloud-image-utils
 
 ## Infrastructure requirements
 
@@ -235,13 +237,6 @@ Default configurations:
     - k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
     - k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
     - quay.io/csiaddons/volumereplication-operator:v0.3.0
-- **Rook Ceph Cluster**
-  - Helm chart:
-    - Repository: charts.rook.io/release
-    - Version: v1.7.7
-    - Source: https://github.com/rook/rook/tree/master/deploy/charts/rook-ceph-cluster
-  - Images:
-    - quay.io/ceph/ceph:v16.2.6
 - **ECK Operator**
   - Helm chart:
     - Repository: helm.elastic.co
@@ -313,14 +308,14 @@ Default configurations:
 - **Thanos**
   - Helm chart:
     - Repository: charts.bitnami.com/bitnami
-    - Version: 8.1.2
+    - Version: 8.3.0
     - Source: https://github.com/bitnami/charts/tree/master/bitnami/thanos
   - Images:
     - docker.io/bitnami/thanos:0.23.1-scratch-r3
 - **Fluentd**
   - Helm chart:
     - Repository: charts.bitnami.com/bitnami
-    - Version: 4.4.1
+    - Version: 4.5.2
     - Source: https://github.com/bitnami/charts/tree/master/bitnami/fluentd
   - Images:
     - docker.io/bitnami/fluentd:1.14.2-debian-10-r23
@@ -403,6 +398,6 @@ Default configurations:
     - docker.io/prom/blackbox-exporter:v0.20.0
 - **Autoscaling**
   - Images:
-    - artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:0.8.0-rc1
-    - artifactory.coprs.esa-copernicus.eu/rs-docker/cluster-autoscaler:v1.25.0
-    - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.8.0-rc2
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:v22.06.0
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/cluster-autoscaler:1.22.3
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.9.0

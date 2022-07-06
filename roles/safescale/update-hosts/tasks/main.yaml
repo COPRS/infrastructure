@@ -25,13 +25,21 @@
   set_fact:
     hosts: "{{ sf_cluster.result.nodes.nodes }} + {{ sf_cluster.result.nodes.masters }} + {{ gateway }} {%- if gateway2 is defined %} + {{ gateway2 }}{%- endif %}"
 
-- name: Getting the node groups from safescale tags
-  shell: "{{ safescale_path }} tag list | jq -c .result"
-  register: tag_list
+- name: Getting the node groups nodes from safescale label
+  shell: "{{ safescale_path }} label inspect {{ cluster.name }}-nodegroup | jq -r -c '.result.hosts | group_by(.value)'"
+  register: label_inspect
 
 - name: Parse safescale tags to nodegroups
   set_fact:
-    nodegroups: "{{ tag_list.stdout | from_json }}"
+    nodegroupsnodes: "{{ label_inspect.stdout | from_json }}"
+
+- name: Getting the node groups names from safescale label
+  shell: "{{ safescale_path }} label inspect {{ cluster.name }}-nodegroup | jq -r -c '[.result.hosts[].value] | unique'"
+  register: label_inspect
+
+- name: Parse safescale tags to nodegroups
+  set_fact:
+    nodegroups: "{{ label_inspect.stdout | from_json }}"
 
 - name: Changing safescale operator in ansible.cfg
   lineinfile:
