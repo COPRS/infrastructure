@@ -8,8 +8,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   jq \
   openssh-client \
   && rm -rf /var/lib/apt/lists/*
-USER safescale
 WORKDIR /opt/rs-infra-scaler/infrastructure
+RUN chown -R safescale:safescale /opt/rs-infra-scaler
+USER safescale
 ENV PATH="/home/safescale/.local/bin:${PATH}"
 COPY --chown=safescale:safescale collections ./collections
 RUN pip3 install --no-cache-dir --user pyOpenSSL ecdsa -r collections/kubespray/requirements.txt

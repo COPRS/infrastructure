@@ -9,5 +9,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   jq \
   openssh-client \
   && rm -rf /var/lib/apt/lists/*
-COPY ./scaler/build/safescale /safescaled
+COPY ./scaler/build/safescaled /safescaled
 CMD ["/safescaled"]

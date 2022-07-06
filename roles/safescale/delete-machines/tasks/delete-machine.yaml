@@ -14,8 +14,5 @@
   shell: "{{ safescale_path }} volume delete {{ cluster.name }}-{{ nodegroup_spec.volume.type }}-{{ item }} "
   when: nodegroup_spec.volume is defined
 
-- name: Untag {{ item }}
-  shell: "{{ safescale_path }} host untag {{ item }} {{ node_nodegroup }}"
-
 - name: Delete {{ item }}
   shell: "{{ safescale_path }} cluster node delete -y -f {{ cluster.name }} {{ item }}"

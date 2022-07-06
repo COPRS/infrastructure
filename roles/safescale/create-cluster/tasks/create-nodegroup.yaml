@@ -1,7 +1,0 @@
-- name: Get existing node groups
-  shell: "{{ safescale_path }} label inspect {{ cluster.name }}-nodegroup | jq -r '[.result.hosts[].value] | unique | .[]"
-  register: tag_list
-
-- name: Create node group {{ create_nodegroup.name }}
-  shell: "{{ safescale_path }} tag create {{ create_nodegroup.name }}"
-  when: create_nodegroup.name not in tag_list.stdout_lines
