@@ -250,8 +250,8 @@ Default configurations:
 - **Grafana Operator**
   - Helm chart: *None*
   - Images:
-    - quay.io/grafana-operator/grafana-operator:v4.2.0
-    - docker.io/grafana/grafana:8.3.3-ubuntu
+    - quay.io/grafana-operator/grafana-operator:v4.4.1
+    - docker.io/grafana/grafana:9.0.2-ubuntu
 - **Kafka Operator**
   - Helm chart:
     - Repository: strimzi.io/charts/

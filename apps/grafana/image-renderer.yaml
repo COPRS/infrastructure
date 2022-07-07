@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana-image-renderer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana-image-renderer
+  template:
+    metadata:
+      labels:
+        app: grafana-image-renderer
+    spec:
+      containers:
+        - name: grafanaimagerenderer
+          image: grafana/grafana-image-renderer:3.4.2
+          ports:
+            - containerPort: 8081
+              name: http
+          env:
+            - name: RENDERING_MODE
+              value: “default”
+            - name: RENDERING_CLUSTERING_MODE
+              value: “default”
+            - name: RENDERING_CLUSTERING_MAX_CONCURRENCY
+              value: “5”
+            - name: ENABLE_METRICS
+              value: "true"
+          resources:
+            limits:
+              cpu: 2
+              memory: 1Gi
+            requests:
+              cpu: 50m
+              memory: 128Mi
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: node-role.kubernetes.io/infra
+                  operator: Exists
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana-image-renderer
+  labels:
+    app: grafana-image-renderer
+spec:
+  ports:
+    - name: http
+      port: 8081
+      targetPort: http
+  selector:
+    app: grafana-image-renderer
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: grafana-image-renderer
+spec:
+  selector:
+    matchLabels:
+      app: grafana-image-renderer
+  endpoints:
+    - port: http
+      interval: 2m
+      path: /metrics
