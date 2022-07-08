@@ -26,6 +26,9 @@ jobs:
         with:
           fetch-depth: 0 # fetch all history so multiple commits can be scanned
 
+      - name: Init VM
+        run: git submodule update --init --recursive
+        
       - name: Build binarie GO
         run: cd scaler && go build -o ./build/rs-infra-scaler .
 
@@ -37,9 +40,6 @@ jobs:
 
       - name: Remove zip package
         run: rm scaler/build/sf.tar.gz
-
-      - name: Init VM
-        run: git submodule update --init --recursive
 
       - name: Build image Docker
         run: sudo docker build -t artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${SCALER_TAG} -f scaler/Dockerfile .
