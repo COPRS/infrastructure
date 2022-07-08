@@ -7,7 +7,7 @@ on:
       - '.github/workflows/docker-ci-scaler.yml'
 
 env:
-  REGISTRY_BASE: artifactory.coprs.esa-copernicus.eu/rs-docker
+  REGISTRY_BASE: artifactory.coprs.esa-copernicus.eu
   ARTIFACTORY_USERNAME: ${{ secrets.CS_ARTIFACTORY_USER }}
   ARTIFACTORY_PASSWORD: ${{ secrets.CS_ARTIFACTORY_PASSWORD }}
   ARTIFACTORY_PROJECT: rs-docker
