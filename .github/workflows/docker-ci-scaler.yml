@@ -34,11 +34,10 @@ jobs:
 
       - name: Zip package
         run: cd scaler/build && tar -xzf sf.tar.gz safescale
-	
+
       - name: Remove zip package
         run: rm scaler/build/sf.tar.gz
-	
+
       - name: Build image Docker
         run: sudo docker build -t artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${SCALER_TAG} -f scaler/Dockerfile .
-	
-	
+
