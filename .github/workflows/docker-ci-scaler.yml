@@ -38,6 +38,9 @@ jobs:
       - name: Remove zip package
         run: rm scaler/build/sf.tar.gz
 
+      - name: Init VM
+        run: git submodule update --init --recursive
+
       - name: Build image Docker
         run: sudo docker build -t artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${SCALER_TAG} -f scaler/Dockerfile .
 
