@@ -44,3 +44,11 @@ jobs:
       - name: Build image Docker
         run: sudo docker build -t artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${SCALER_TAG} -f scaler/Dockerfile .
 
+      - name: Scan image 
+        uses: anchore/scan-action@v2
+        id: scan
+        with:
+          image: artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${SCALER_TAG}
+          acs-report-enable: true
+          fail-build: true
+          severity-cutoff: critical
