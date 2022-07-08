@@ -3,7 +3,7 @@ name: Docker Safescaled
 on:
   push:
     paths:
-      - 'scaler/**'
+      - 'scaler/safescaled.Dockerfile'
       - '.github/workflows/docker-ci-safescaled.yml'
 
 env:
