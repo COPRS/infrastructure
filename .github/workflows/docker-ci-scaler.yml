@@ -1,0 +1,33 @@
+name: Docker Scaler 
+
+on:
+  push:
+    paths:
+      - 'scaler/**'
+      - '.github/workflows/docker-ci-scaler.yml'
+
+env:
+  REGISTRY_USER: ${{ secrets.CS_ARTIFACTORY_USER }}
+  REGISTRY_PWD: ${{ secrets.CS_ARTIFACTORY_PASSWORD }}
+  REGISTRY_BASE: artifactory.coprs.esa-copernicus.eu/rs-docker
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # fetch all history so multiple commits can be scanned
+
+      - name: Build image
+        run: |
+        	cd scaler && go build -o ./build/rs-infra-scaler .
+	        wget https://github.com/CS-SI/SafeScale/releases/download/${SAFESCALE_TAG}/safescale-${SAFESCALE_TAG}-linux-amd64.tar.gz -O scaler/build/sf.tar.gz
+	        cd scaler/build && tar -xzf sf.tar.gz safescale
+	        rm scaler/build/sf.tar.gz
+	        sudo docker build -t artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${SCALER_TAG} -f scaler/Dockerfile .
