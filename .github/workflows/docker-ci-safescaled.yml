@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0 # fetch all history so multiple commits can be scanned
 
       - name: Download Safescale
-        run: mdir scaler/build && wget https://github.com/CS-SI/SafeScale/releases/download/${{ env.SAFESCALE_TAG }}/safescale-${{ env.SAFESCALE_TAG }}-linux-amd64.tar.gz -O scaler/build/sf.tar.gz
+        run: mkdir scaler/build && wget https://github.com/CS-SI/SafeScale/releases/download/${{ env.SAFESCALE_TAG }}/safescale-${{ env.SAFESCALE_TAG }}-linux-amd64.tar.gz -O scaler/build/sf.tar.gz
         
       - name: Zip package
         run: cd scaler/build && tar -xzf sf.tar.gz safescaled
