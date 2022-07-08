@@ -1,0 +1,40 @@
+name: Docker Cluster Autoscaler
+
+on:
+  push:
+    paths:
+      - 'scaler/safescaled.Dockerfile'
+      - '.github/workflows/docker-ci-cluster-autoscaler.yml'
+
+env:
+  REGISTRY_BASE: artifactory.coprs.esa-copernicus.eu
+  ARTIFACTORY_USERNAME: ${{ secrets.CS_ARTIFACTORY_USER }}
+  ARTIFACTORY_PASSWORD: ${{ secrets.CS_ARTIFACTORY_PASSWORD }}
+  ARTIFACTORY_PROJECT: rs-docker
+  NAME_IMAGE: cluster-autoscaler
+  CA_TAG: 1.22.3
+  
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # fetch all history so multiple commits can be scanned
+
+      - name: Download package
+        run: mkdir scaler/build && wget https://github.com/kubernetes/autoscaler/archive/refs/tags/cluster-autoscaler-${{ env.CA_TAG }}.tar.gz -O scaler/build/ca.tar.gz
+        
+      - name: Dezip package
+        run: cd scaler/build && tar -xzf ca.tar.gz autoscaler-cluster-autoscaler-${{ env.CA_TAG }}/cluster-autoscaler
+
+      - name: Make package
+        run: cd scaler/build/autoscaler-cluster-autoscaler-${{ env.CA_TAG }}/cluster-autoscaler && make build-arch-amd64
+
+      - name: Build image Docker
+        run: cd scaler/build/autoscaler-cluster-autoscaler-${{ env.CA_TAG }}/cluster-autoscaler && sudo docker build -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.CA_TAG }} -f Dockerfile.amd64 .
