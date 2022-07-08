@@ -15,6 +15,7 @@ ENV PATH="/home/safescale/.local/bin:${PATH}"
 COPY --chown=safescale:safescale collections ./collections
 RUN pip3 install --no-cache-dir --user pyOpenSSL ecdsa -r collections/kubespray/requirements.txt
 RUN ansible-galaxy collection install kubernetes.core openstack.cloud
+COPY --chown=safescale:safescale *.yaml ansible.cfg ./
 COPY --chown=safescale:safescale roles ./roles
 COPY --chown=safescale:safescale inventory/sample/hosts.yaml ../inventory/hosts.yaml
 COPY --chown=safescale:safescale ./scaler/build/safescale /home/safescale/.local/bin/safescale
