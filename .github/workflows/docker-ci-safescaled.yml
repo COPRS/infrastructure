@@ -1,0 +1,59 @@
+name: Docker Safescaled 
+
+on:
+  push:
+    paths:
+      - 'scaler/**'
+      - '.github/workflows/docker-ci-safescaled.yml'
+
+env:
+  REGISTRY_BASE: artifactory.coprs.esa-copernicus.eu
+  ARTIFACTORY_USERNAME: ${{ secrets.CS_ARTIFACTORY_USER }}
+  ARTIFACTORY_PASSWORD: ${{ secrets.CS_ARTIFACTORY_PASSWORD }}
+  ARTIFACTORY_PROJECT: rs-docker
+  SAFESCALE_TAG: v22.06.0
+  SCALER_TAG: 0.9.0
+  
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # fetch all history so multiple commits can be scanned
+
+      - name: Download Safescale
+        run: wget https://github.com/CS-SI/SafeScale/releases/download/${{ env.SAFESCALE_TAG }}/safescale-${{ env.SAFESCALE_TAG }}-linux-amd64.tar.gz -O scaler/build/sf.tar.gz
+        
+      - name: Zip package
+        run: cd scaler/build && tar -xzf sf.tar.gz safescaled
+
+      - name: Remove zip package
+        run: rm scaler/build/sf.tar.gz
+
+      - name: Build image Docker
+        run: docker build -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/safescaled:${{ env.SAFESCALE_TAG }} -f scaler/safescaled.Dockerfile .
+
+      # - name: Scan image
+      #   id: scan_image
+      #   uses: sandbox-coprs/test-security-scan@master
+      #   with:
+      #     image-ref: 'artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${{ env.SCALER_TAG }}'
+      #     upload-sarif: true
+
+      # - name: Log into registry ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}
+      #   if: github.event_name != 'pull_request'
+      #   uses: docker/login-action@v1
+      #   with:
+      #     registry: ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}
+      #     username: ${{ env.ARTIFACTORY_USERNAME }}
+      #     password: ${{ env.ARTIFACTORY_PASSWORD }}
+          
+      # - name: Push image
+      #   run: |
+      #     docker push ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/rs-infra-scaler:${{ env.SCALER_TAG }}
