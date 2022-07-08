@@ -56,4 +56,4 @@ jobs:
           
       - name: Push image
         run: |
-          docker push ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SCALER_TAG }}
+          docker push ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SAFESCALE_TAG }}
