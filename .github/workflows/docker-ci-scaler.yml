@@ -11,6 +11,7 @@ env:
   ARTIFACTORY_USERNAME: ${{ secrets.CS_ARTIFACTORY_USER }}
   ARTIFACTORY_PASSWORD: ${{ secrets.CS_ARTIFACTORY_PASSWORD }}
   ARTIFACTORY_PROJECT: rs-docker
+  NAME_IMAGE: rs-infra-scaler
   SAFESCALE_TAG: v22.06.0
   SCALER_TAG: 0.9.0
   
@@ -43,13 +44,13 @@ jobs:
         run: rm scaler/build/sf.tar.gz
 
       - name: Build image Docker
-        run: docker build -t artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${{ env.SCALER_TAG }} -f scaler/Dockerfile .
+        run: docker build -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SCALER_TAG }} -f scaler/Dockerfile .
 
       - name: Scan image
         id: scan_image
         uses: sandbox-coprs/test-security-scan@master
         with:
-          image-ref: 'artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${{ env.SCALER_TAG }}'
+          image-ref: '${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SCALER_TAG }}'
           upload-sarif: true
 
       - name: Log into registry ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}
@@ -62,4 +63,4 @@ jobs:
           
       - name: Push image
         run: |
-          docker push artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${{ env.SCALER_TAG }}
+          docker push ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SCALER_TAG }}
