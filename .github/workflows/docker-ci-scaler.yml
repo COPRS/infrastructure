@@ -59,3 +59,7 @@ jobs:
           registry: ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}
           username: ${{ env.ARTIFACTORY_USERNAME }}
           password: ${{ env.ARTIFACTORY_PASSWORD }}
+          
+      - name: Push image
+        run: |
+          docker push artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${{ env.SCALER_TAG }}
