@@ -3,7 +3,6 @@ name: Docker Cluster Autoscaler
 on:
   push:
     paths:
-      - 'scaler/safescaled.Dockerfile'
       - '.github/workflows/docker-ci-cluster-autoscaler.yml'
 
 env:
@@ -38,3 +37,18 @@ jobs:
 
       - name: Build image Docker
         run: cd scaler/build/autoscaler-cluster-autoscaler-${{ env.CA_TAG }}/cluster-autoscaler && sudo docker build -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.CA_TAG }} -f Dockerfile.amd64 .
+
+      - name: Scan image
+        id: scan_image
+        uses: sandbox-coprs/test-security-scan@master
+        with:
+          image-ref: '${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.CA_TAG }}'
+          upload-sarif: true
+
+      - name: Log into registry ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}
+          username: ${{ env.ARTIFACTORY_USERNAME }}
+          password: ${{ env.ARTIFACTORY_PASSWORD }}
