@@ -54,6 +54,6 @@ jobs:
           username: ${{ env.ARTIFACTORY_USERNAME }}
           password: ${{ env.ARTIFACTORY_PASSWORD }}
           
-      # - name: Push image
-      #   run: |
-      #     docker push ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/rs-infra-scaler:${{ env.SCALER_TAG }}
+      - name: Push image
+        run: |
+          docker push ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SCALER_TAG }}
