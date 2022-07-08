@@ -10,7 +10,9 @@ env:
   REGISTRY_USER: ${{ secrets.CS_ARTIFACTORY_USER }}
   REGISTRY_PWD: ${{ secrets.CS_ARTIFACTORY_PASSWORD }}
   REGISTRY_BASE: artifactory.coprs.esa-copernicus.eu/rs-docker
-
+  SAFESCALE_TAG: v22.06.0
+  SCALER_TAG: 0.9.0
+  
 jobs:
 
   build:
@@ -26,8 +28,8 @@ jobs:
 
       - name: Build image
         run: |
-        	cd scaler && go build -o ./build/rs-infra-scaler .
-	        wget https://github.com/CS-SI/SafeScale/releases/download/${SAFESCALE_TAG}/safescale-${SAFESCALE_TAG}-linux-amd64.tar.gz -O scaler/build/sf.tar.gz
-	        cd scaler/build && tar -xzf sf.tar.gz safescale
-	        rm scaler/build/sf.tar.gz
-	        sudo docker build -t artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${SCALER_TAG} -f scaler/Dockerfile .
+          cd scaler && go build -o ./build/rs-infra-scaler .
+	  wget https://github.com/CS-SI/SafeScale/releases/download/${SAFESCALE_TAG}/safescale-${SAFESCALE_TAG}-linux-amd64.tar.gz -O scaler/build/sf.tar.gz
+	  cd scaler/build && tar -xzf sf.tar.gz safescale
+	  rm scaler/build/sf.tar.gz
+	  sudo docker build -t artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${SCALER_TAG} -f scaler/Dockerfile .
