@@ -26,10 +26,19 @@ jobs:
         with:
           fetch-depth: 0 # fetch all history so multiple commits can be scanned
 
-      - name: Build image
-        run: |
-          cd scaler && go build -o ./build/rs-infra-scaler .
-	  wget https://github.com/CS-SI/SafeScale/releases/download/${SAFESCALE_TAG}/safescale-${SAFESCALE_TAG}-linux-amd64.tar.gz -O scaler/build/sf.tar.gz
-	  cd scaler/build && tar -xzf sf.tar.gz safescale
-	  rm scaler/build/sf.tar.gz
-	  sudo docker build -t artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${SCALER_TAG} -f scaler/Dockerfile .
+      - name: Build binarie GO
+        run: cd scaler && go build -o ./build/rs-infra-scaler .
+
+      - name: Download Safescale
+        run: wget https://github.com/CS-SI/SafeScale/releases/download/${SAFESCALE_TAG}/safescale-${SAFESCALE_TAG}-linux-amd64.tar.gz -O scaler/build/sf.tar.gz
+
+      - name: Zip package
+        run: cd scaler/build && tar -xzf sf.tar.gz safescale
+	
+      - name: Remove zip package
+        run: rm scaler/build/sf.tar.gz
+	
+      - name: Build image Docker
+        run: sudo docker build -t artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${SCALER_TAG} -f scaler/Dockerfile .
+	
+	
