@@ -11,8 +11,8 @@ env:
   ARTIFACTORY_USERNAME: ${{ secrets.CS_ARTIFACTORY_USER }}
   ARTIFACTORY_PASSWORD: ${{ secrets.CS_ARTIFACTORY_PASSWORD }}
   ARTIFACTORY_PROJECT: rs-docker
+  NAME_IMAGE: safescaled
   SAFESCALE_TAG: v22.06.0
-  SCALER_TAG: 0.9.0
   
 jobs:
 
@@ -37,22 +37,22 @@ jobs:
         run: rm scaler/build/sf.tar.gz
 
       - name: Build image Docker
-        run: docker build -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/safescaled:${{ env.SAFESCALE_TAG }} -f scaler/safescaled.Dockerfile .
+        run: docker build -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SAFESCALE_TAG }} -f scaler/safescaled.Dockerfile .
 
-      # - name: Scan image
-      #   id: scan_image
-      #   uses: sandbox-coprs/test-security-scan@master
-      #   with:
-      #     image-ref: 'artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${{ env.SCALER_TAG }}'
-      #     upload-sarif: true
+      - name: Scan image
+        id: scan_image
+        uses: sandbox-coprs/test-security-scan@master
+        with:
+          image-ref: '${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SAFESCALE_TAG }}'
+          upload-sarif: true
 
-      # - name: Log into registry ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}
-      #   if: github.event_name != 'pull_request'
-      #   uses: docker/login-action@v1
-      #   with:
-      #     registry: ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}
-      #     username: ${{ env.ARTIFACTORY_USERNAME }}
-      #     password: ${{ env.ARTIFACTORY_PASSWORD }}
+      - name: Log into registry ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}
+          username: ${{ env.ARTIFACTORY_USERNAME }}
+          password: ${{ env.ARTIFACTORY_PASSWORD }}
           
       # - name: Push image
       #   run: |
