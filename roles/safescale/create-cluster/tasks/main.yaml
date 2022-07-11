@@ -13,15 +13,14 @@
     --disable remotedesktop \
     --disable reverseproxy \
     --os {{ cluster.os }} \
-    --master-sizing cluster.nodegroups.kube_control_plane.sizing \
-    --node-sizing cluster.nodegroups.infra.sizing \
-    --gw-sizing cluster.nodegroups.gateway.sizing \
+    --master-sizing {{ (cluster.nodegroups | selectattr('name', 'equalto', 'kube_control_plane') | first).sizing }} \
+    --node-sizing {{ (cluster.nodegroups | selectattr('name', 'equalto', 'infra') | first).sizing }} \
+    --gw-sizing {{ (cluster.nodegroups | selectattr('name', 'equalto', 'gateway') | first).sizing }} \
     --force \
     {{ cluster.name }}
   when: cluster.name not in cluster_list.stdout_lines
 
 - name: Create the safescale label for node groups
-  loop: "{{ cluster.nodegroups }}"
   shell: |
     {{ safescale_path }} label create {{ cluster.name }}-nodegroup --value none
 
