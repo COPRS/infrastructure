@@ -1,0 +1,8 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: kube-system
+
+resources:
+  - deployment.yaml
+  - rbac.yaml
