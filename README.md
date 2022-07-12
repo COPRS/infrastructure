@@ -122,12 +122,18 @@ ansible-playbook collections/kubespray/upgrade-cluster.yml \
     --become
 ```
 
-11. ### Add the providerID spec to the nodes for the autoscaling
+11. ### Setup RS specifics 
+```shellsession
+ansible-playbook rs-setup.yaml \
+    -i inventory/mycluster/hosts.yaml
+```
+
+12. ### Add the providerID spec to the nodes for the autoscaling
 ```shellsession
 ansible-playbook cluster.yaml -i inventory/mycluster/hosts.yaml -t providerids
 ```
 
-12. ### Deploy the apps 
+13. ### Deploy the apps 
 ```shellsession
 ansible-playbook apps.yaml \
     -i inventory/mycluster/hosts.yaml

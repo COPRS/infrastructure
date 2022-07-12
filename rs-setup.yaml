@@ -1,0 +1,92 @@
+- name: Prepare gateways
+  hosts: gateway
+  gather_facts: true
+  vars_files: 
+    - "collections/kubespray/roles/download/defaults/main.yml"
+    - "collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
+  pre_tasks:
+    - name: install pip modules for ansible kubernetes.core
+      pip: 
+        name: "{{ item }}"
+      loop:
+        - pyyaml==5.3.1
+        - openshift==0.12.1
+        - kubernetes==12.0.1
+        - hvac==0.11.2
+  roles:
+    - { role: "infra-defaults"}
+    - { role: "collections/kubespray/roles/kubernetes-apps/helm", become: yes }
+    - { role: "kustomize", become: yes }
+    - { role: "kubectl", become: yes }
+
+- name: Create mandatory kubernetes resources
+  hosts: gateway[0]
+  gather_facts: false
+  roles:
+    - { role: "rs-defaults" }
+  tasks:
+    - name: Create necessary namespaces
+      kubernetes.core.k8s:
+        name: "{{ item }}"
+        api_version: v1
+        kind: Namespace
+        state: present
+      loop:
+        - monitoring
+        - security
+
+    - name: Include tenants file vars
+      include_vars:
+        file: "{{ tenants_path }}"
+
+    - name: Read safescale tenant credentials
+      set_fact:
+        tenant: "{{ tenants | selectattr('name', 'match', safescale_tenant) | first }}"
+
+    - name: Get gateway info from cloud provider
+      openstack.cloud.server_info:
+        auth:
+          auth_url: "https://iam.eu-west-0.prod-cloud-ocb.orange-business.com"
+          username: "{{ tenant.identity.Username }}"
+          password: "{{ tenant.identity.Password }}"
+          domain_name: "{{ tenant.identity.DomainName }}"
+          project_id: "{{ tenant.compute.ProjectID }}"
+        region_name: "{{ tenant.compute.Region }}"
+        server: "{{ item }}" 
+      loop: "{{ groups['gateway'] }}"
+      delegate_to: localhost
+      run_once: true
+      register: info
+
+    - name: Create configmap ips in security ns
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: ips
+            namespace: security
+          data: 
+            ips: |
+              {{ platform_domain_name }}
+              {% for ip in ips %}
+              {{ ip }}
+              {% endfor %}
+      vars: 
+        ips: "{{ info.results | map(attribute='openstack_servers') | flatten | map(attribute='public_v4') | select() }}"
+
+- name: Sign master nodes certificates
+  hosts: gateway[0]
+  gather_facts: false
+  tasks:
+    - name: Get {{ item }} csr name
+      shell: >-
+        kubectl get csr 
+        -ojsonpath='{.items[?(@.spec.username=="system:node:{{ item }}")].metadata.name}'
+        | grep -o '[^ ]\+$' 
+      register: csr_names
+
+    - name: kubelet-rubber-stamp | Approve {{ item.stdout }} csr
+      command: "kubectl certificate approve {{ item.stdout }}"
+      loop: csr_names.results

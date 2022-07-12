@@ -26,9 +26,9 @@
 
 - name: Add created nodes to nodegroups
   shell: |
-    for i in  $({{ safescale_path }} cluster inspect rs-dev | jq -c -r '.result.nodes.masters[].name'); do \
+    for i in  $({{ safescale_path }} cluster inspect {{ cluster.name }} | jq -c -r '.result.nodes.masters[].name'); do \
       {{ safescale_path }} host label bind $i {{ cluster.name }}-nodegroup --value kube_control_plane; done \
-    && for i in  $({{ safescale_path }} cluster inspect rs-dev | jq -c -r '.result.nodes.nodes[].name'); do \
+    && for i in  $({{ safescale_path }} cluster inspect {{ cluster.name }} | jq -c -r '.result.nodes.nodes[].name'); do \
       {{ safescale_path }} host label bind $i {{ cluster.name }}-nodegroup --value infra; done \
     && {{ safescale_path }} host label bind gw-{{ cluster.name }} {{ cluster.name }}-nodegroup --value gateway \ 
     {% if cluster.complexity | lower != 'small' %} && {{ safescale_path }} host label bind gw2-{{ cluster.name }} {{ cluster.name }}-nodegroup --value gateway {% endif %}
