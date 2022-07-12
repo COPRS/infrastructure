@@ -10,7 +10,7 @@
     dest: "{{ wazuh.wazuh_registration_file_path }}"
     content: |
         {{ wazuh.wazuh_registration_password }}
-    group: ossec
+    group: wazuh
     owner: root
     mode: '0640'
 
@@ -19,8 +19,8 @@
     dest: "{{ wazuh.wazuh_ossec_agent_conf }}"
     content: "{{ wazuh.agent_conf }}"
     mode: '0640'
-    owner: ossec
-    group: ossec
+    owner: wazuh
+    group: wazuh
 
 - name: Write specific wazuh manager if wazuh.ossec_conf is defined
   block:
