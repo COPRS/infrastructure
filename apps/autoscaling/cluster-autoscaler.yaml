@@ -134,7 +134,7 @@ spec:
           name: cluster-autoscaler
           resources:
             limits:
-              cpu: 200m
+              cpu: 1
               memory: 512Mi
             requests:
               cpu: 100m
@@ -161,7 +161,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                - key: "node-role.kubernetes.io/prometheus"
+                - key: "node-role.kubernetes.io/infra"
                   operator: Exists
       volumes:
         - name: cloud-config

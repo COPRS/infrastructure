@@ -1,0 +1,42 @@
+fullnameOverride: apisix-etcd
+
+image:
+  registry: docker.io
+  repository: bitnami/etcd
+  tag: 3.5.4-debian-11-r9
+  debug: false
+
+
+replicaCount: 3
+
+auth:
+  rbac:
+    create: false
+    allowNoneAuthentication: true
+
+resources:
+  requests:
+    cpu: 20m
+    memory: 100Mi
+  limits:
+    memory: 200Mi
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/infra"
+            operator: Exists
+
+persistence:
+  enabled: true
+  storageClass: "ceph-block"
+  size: 8Gi
+
+metrics:
+  enabled: true
+  podMonitor:
+    enabled: true
+    namespace: monitoring
+    interval: 2m

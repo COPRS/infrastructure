@@ -10,7 +10,7 @@
     dest: "{{ wazuh.wazuh_registration_file_path }}"
     content: |
         {{ wazuh.wazuh_registration_password }}
-    group: ossec
+    group: wazuh
     owner: root
     mode: '0640'
 

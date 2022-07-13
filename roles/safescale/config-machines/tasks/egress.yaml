@@ -1,5 +1,7 @@
-- name: Set egress networing
-  when: inventory_hostname in groups['egress']
+- name: Set egress networking
+  when:
+    - groups.egress is defined
+    - inventory_hostname in groups['egress']
   block:
     - name: Include tenants file variables
       include_vars:

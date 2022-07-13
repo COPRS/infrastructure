@@ -4,4 +4,4 @@
 - name: "Expand {{ expand_nodegroup.name }} by {{ expand_count }} node(s)"
   include_role: 
     name: safescale/expand-nodegroup
-  when: expand_count > 0
+  when: expand_count | int > 0

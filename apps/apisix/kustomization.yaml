@@ -7,8 +7,14 @@ helmCharts:
 - name: apisix
   releaseName: "{{ app_name }}"
   repo: https://charts.apiseven.com
-  version: 0.9.3
+  version: 0.10.0
   valuesFile: values.yaml
+  namespace: networking
+- name: etcd
+  releaseName: "{{ app_name }}"
+  repo: https://charts.bitnami.com/bitnami
+  version: 8.3.3
+  valuesFile: values-etcd.yaml
   namespace: networking
 
 resources:

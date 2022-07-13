@@ -23,28 +23,6 @@
     - { role: "safescale/config-machines", become: yes }
   tags: config
 
-- name: Prepare gateways
-  hosts: gateway
-  gather_facts: false
-  tags: gateway
-  vars_files: 
-    - "collections/kubespray/roles/download/defaults/main.yml"
-    - "collections/kubespray/roles/kubespray-defaults/defaults/main.yaml"
-  pre_tasks:
-    - name: install pip modules for ansible kubernetes.core
-      pip: 
-        name: "{{ item }}"
-      loop:
-        - pyyaml==5.3.1
-        - openshift==0.12.1
-        - kubernetes==12.0.1
-        - hvac==0.11.2
-  roles:
-    - { role: "infra-defaults"}
-    - { role: "collections/kubespray/roles/kubernetes-apps/helm", become: yes }
-    - { role: "kustomize", become: yes }
-    - { role: "kubectl", become: yes }
-
 - name: Deletes nodes
   hosts: localhost
   roles:
