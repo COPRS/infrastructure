@@ -335,13 +335,13 @@ Default configurations:
 - **Apisix**
   - Helm chart:
     - Repository: charts.apiseven.com
-    - Version: 0.9.3
+    - Version: 0.10.0
     - Source: https://github.com/apache/apisix-helm-chart/tree/master/charts/apisix
   - Images:
-    - docker.io/apache/apisix:2.10.0-alpine
-    - docker.io/apache/apisix-dashboard:2.10.1-alpine
+    - docker.io/apache/apisix:2.14.1-alpine
+    - docker.io/apache/apisix-dashboard:2.11-alpine
     - docker.io/apache/apisix-ingress-controller:1.4.1
-    - docker.io/bitnami/etcd:3.4.16-debian-10-r14
+    - docker.io/bitnami/etcd:3.5.4-debian-11-r9
 - **Falco**
   - Helm chart:
     - Repository: falcosecurity.github.io/charts
@@ -407,3 +407,6 @@ Default configurations:
     - artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:v22.06.0
     - artifactory.coprs.esa-copernicus.eu/rs-docker/cluster-autoscaler:1.22.3
     - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.9.0
+- **Kubelet rubber stamp**
+  - Images:
+    - docker.io/digitalocean/kubelet-rubber-stamp:v0.3.1-do.2
