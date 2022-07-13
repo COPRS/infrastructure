@@ -10,8 +10,7 @@
         name: "{{ item }}"
       loop:
         - pyyaml==5.3.1
-        - openshift==0.12.1
-        - kubernetes==12.0.1
+        - openshift==0.13.1
         - hvac==0.11.2
   roles:
     - { role: "infra-defaults"}
@@ -80,14 +79,16 @@
   hosts: gateway[0]
   gather_facts: false
   tasks:
-    - name: Get {{ item }} csr name
+    - name: Get master nodes csr names
       shell: >-
         kubectl get csr 
         -ojsonpath='{.items[?(@.spec.username=="system:node:{{ item }}")].metadata.name}'
-        | grep -o '[^ ]\+$' 
+        | grep -o '[^ ]\+$'
       register: csr_names
       loop: "{{ groups['kube_control_plane'] }}"
+      ignore_errors: yes
 
     - name: kubelet-rubber-stamp | Approve {{ item.stdout }} csr
       command: "kubectl certificate approve {{ item.stdout }}"
-      loop: csr_names.results
+      loop: "{{ csr_names.results }}"
+      when: item.stdout | length > 0
