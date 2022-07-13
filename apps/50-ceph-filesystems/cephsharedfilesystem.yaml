@@ -33,10 +33,10 @@ spec:
             topologyKey: kubernetes.io/hostname
     resources:
      limits:
-       cpu: 2000m
+       cpu: 3
        memory: 4Gi
      requests:
-       cpu: 1000m
+       cpu: 500m
        memory: 2Gi
     priorityClassName: system-cluster-critical
     livenessProbe:
