@@ -183,45 +183,10 @@ serviceMonitor:
 # use the FQDN address or the IP of the etcd
 etcd:
   # install etcd(v3) by default, set false if do not want to install etcd(v3) together
-  enabled: true
+  enabled: false
   host:
-    - http://etcd.host:2379  # host or ip e.g. http://172.20.128.89:2379
+    - http://apisix-etcd.networking.svc.cluster.local:2379
   prefix: "/apisix"
-  timeout: 30
-
-  # if etcd.enabled is true, set more values of bitnami/etcd helm chart
-  auth:
-    rbac:
-      # No authentication by default
-      enabled: false
-    tls:
-      enabled: false
-
-  service:
-    port: 2379
-
-  replicaCount: 3
-
-  persistence:
-    enabled: true
-    storageClass: ceph-block
-
-  podAnnotations:
-    config.linkerd.io/skip-inbound-ports: "2379"
-  
-  metrics:
-    enabled: true
-    podMonitor:
-      enabled: true
-      interval: 2m
-  
-  resources:
-    requests:
-      cpu: 20m
-      memory: 100Mi
-    limits:
-      cpu: 40m
-      memory: 200Mi
 
 dashboard:
   enabled: true
@@ -301,10 +266,9 @@ ingress-controller:
 
   resources:
     requests:
-      cpu: 10m
+      cpu: 20m
       memory: 64Mi
     limits:
-      cpu: 50m
       memory: 128Mi
 
   initContainer:
