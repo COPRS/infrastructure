@@ -86,6 +86,7 @@
         -ojsonpath='{.items[?(@.spec.username=="system:node:{{ item }}")].metadata.name}'
         | grep -o '[^ ]\+$' 
       register: csr_names
+      loop: "{{ groups['kube_control_plane'] }}"
 
     - name: kubelet-rubber-stamp | Approve {{ item.stdout }} csr
       command: "kubectl certificate approve {{ item.stdout }}"
