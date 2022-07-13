@@ -42,7 +42,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
               - matchExpressions:
-                - key: "node-role.kubernetes.io/prometheus"
+                - key: "node-role.kubernetes.io/infra"
                   operator: Exists
       volumes:
         - name: tenants

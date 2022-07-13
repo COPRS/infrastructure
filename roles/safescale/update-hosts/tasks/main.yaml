@@ -2,6 +2,10 @@
   shell: "{{ safescale_path }} cluster inspect {{ cluster.name }}"
   register: cluster_inspect
 
+- name: Set ssh keys path
+  set_fact:
+    ssh_key_path: "{{ inventory_dir }}/artifacts/.ssh"
+
 - name: Parse inspect result
   set_fact:
     sf_cluster: "{{ cluster_inspect.stdout | from_json }}"

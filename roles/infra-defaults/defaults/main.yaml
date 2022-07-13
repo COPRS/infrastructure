@@ -2,8 +2,6 @@
 safescale_path: $(command -v safescale)
 # SafeScale tenants file path
 tenants_path: ~/.safescale/tenants.yaml
-# Ssh keys directory path
-ssh_key_path: "{{ inventory_dir }}/artifacts/.ssh"
 # SafeScale operator name
 safescale_operator: safescale
 
