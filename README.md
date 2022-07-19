@@ -406,7 +406,7 @@ Default configurations:
   - Images:
     - artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:v22.06.0
     - artifactory.coprs.esa-copernicus.eu/rs-docker/cluster-autoscaler:1.22.3
-    - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.9.0
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.10.0
 - **Kubelet rubber stamp**
   - Images:
     - docker.io/digitalocean/kubelet-rubber-stamp:v0.3.1-do.2
