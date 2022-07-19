@@ -80,6 +80,8 @@ cluster:
       kubespray:
         node_labels:
           node-role.kubernetes.io/rook_ceph: ''
+        node_taints:
+          - node-role.kubernetes.io/rook_ceph:NoSchedule
 ```
 
 ## S3 buckets
