@@ -46,11 +46,6 @@ spec:
             - mountPath: /etc/rook
               name: mon-endpoint-volume
       dnsPolicy: ClusterFirstWithHostNet
-      tolerations:
-        - effect: NoExecute
-          key: node.kubernetes.io/unreachable
-          operator: Exists
-          tolerationSeconds: 5
       volumes:
         - configMap:
             items:
