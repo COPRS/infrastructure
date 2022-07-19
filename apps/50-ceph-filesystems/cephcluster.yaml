@@ -71,6 +71,10 @@ spec:
             - matchExpressions:
                 - key: node-role.kubernetes.io/rook_ceph
                   operator: Exists
+      tolerations:
+        - key: node-role.kubernetes.io/rook_ceph
+          operator: Exists
+          effect: NoSchedule
   priorityClassNames:
     mon: system-node-critical
     osd: system-node-critical

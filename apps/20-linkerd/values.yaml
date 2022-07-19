@@ -231,7 +231,7 @@ spValidatorResources:
 installNamespace: false
 
 nodeSelector:
-  kubernetes.io/os: linux
+  node-role.kubernetes.io/infra: ""
 
 podAnnotations:
   linkerd.io/inject: disabled

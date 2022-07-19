@@ -31,6 +31,10 @@ spec:
                   values:
                     - rook-ceph-mds
             topologyKey: kubernetes.io/hostname
+      tolerations:
+        - key: node-role.kubernetes.io/rook_ceph
+          operator: Exists
+          effect: NoSchedule
     resources:
      limits:
        cpu: 3

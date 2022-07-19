@@ -23,7 +23,13 @@ apisix:
 
   nodeSelector: {}
   tolerations: []
-  affinity: {}
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
   # If true, it will sets the anti-affinity of the Pod.
   podAntiAffinity:
     enabled: true

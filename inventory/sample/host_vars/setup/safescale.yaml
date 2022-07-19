@@ -52,6 +52,8 @@ cluster:
       kubespray:
         node_labels:
           node-role.kubernetes.io/rook_ceph: ''
+        node_taints:
+          - node-role.kubernetes.io/rook_ceph:NoSchedule
     - name: processing
       min_size: 0
       max_size: 6
