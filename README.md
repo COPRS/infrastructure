@@ -256,7 +256,7 @@ Default configurations:
 - **Grafana Operator**
   - Helm chart: *None*
   - Images:
-    - quay.io/grafana-operator/grafana-operator:v4.4.1
+    - quay.io/grafana-operator/grafana-operator:v4.5.0
     - docker.io/grafana/grafana:9.0.2-ubuntu
 - **Kafka Operator**
   - Helm chart:
