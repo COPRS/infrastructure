@@ -13,7 +13,7 @@ env:
   ARTIFACTORY_PROJECT: rs-docker
   NAME_IMAGE: rs-infra-scaler
   SAFESCALE_TAG: v22.06.0
-  SCALER_TAG: 0.9.0
+  SCALER_TAG: 0.10.0
   
 jobs:
 
