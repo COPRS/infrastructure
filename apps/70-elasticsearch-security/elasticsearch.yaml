@@ -62,8 +62,6 @@ spec:
               env:
                 - name: READINESS_PROBE_TIMEOUT
                   value: "20"
-                - name: ES_JAVA_OPTS
-                  value: "-Xms4096m -Xmx4096m"
     - name: node
       count: 3
       config:
@@ -116,5 +114,3 @@ spec:
               env:
                 - name: READINESS_PROBE_TIMEOUT
                   value: "20"
-                - name: ES_JAVA_OPTS
-                  value: "-Xms4096m -Xmx4096m"

@@ -5,7 +5,6 @@ metadata:
   labels:
     app.kubernetes.io/instance: elasticsearch-processing
     app.kubernetes.io/managed-by: additional_resources
-  namespace: monitoring
 spec:
   name: elasticsearch-processing-traces.yaml
   datasources:
