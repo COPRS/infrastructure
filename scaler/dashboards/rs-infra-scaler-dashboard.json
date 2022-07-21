@@ -220,7 +220,7 @@
             "uid": "${DS_LOKI}"
           },
           "editorMode": "builder",
-          "expr": "{container=\"cluster-autoscaler\"} |= `->` | pattern `<_>: <plan>` | line_format `{{ .plan }}`",
+          "expr": "{container=\"cluster-autoscaler\"} |~ `(Scale-down:)|(Final scale-up plan:)` | regexp `.*\\.go:[1-9]{1,3}](?P<plan>.*)` | line_format `{{ .plan }}`",
           "queryType": "range",
           "refId": "A"
         }
