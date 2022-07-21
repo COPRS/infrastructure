@@ -9,11 +9,7 @@ safescale_operator: safescale
 base_dn: dc=cluster,dc=local
 ldap_server_url: ldap://127.0.0.1:30389
 
-etcd_metrics_service_labels:
-  k8s-app: etcd
-  app.kubernetes.io/managed-by: Kubespray
-  app: kube-prometheus-stack-kube-etcd
-  release: prometheus-stack
+etcd_metrics_port: 2381
 
 safescale_complexity_infra_nodes:
   small: 1

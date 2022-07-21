@@ -45,7 +45,9 @@ coreDns:
 kubeEtcd:
   enable: true
   service:
-    enabled: false
+    enabled: true
+    port: {{ etcd_metrics_port }}
+    targetPort: {{ etcd_metrics_port }}
   serviceMonitor:
     interval: 2m
 kubeScheduler:
