@@ -370,7 +370,7 @@ Default configurations:
     - Version: 1.9.2
     - Source: https://github.com/KongZ/charts/tree/main/charts/graylog
   - Images:
-    - docker.io/graylog/graylog:4.3.0-rc.1-1
+    - docker.io/graylog/graylog:4.3.3-1
 - **Keycloack**
   - Helm chart:
     - Repository: codecentric.github.io/helm-charts
