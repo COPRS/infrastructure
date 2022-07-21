@@ -39,6 +39,7 @@ spec:
             - --metrics-bind-address=:8080
             - --zap-log-level=info
             - --scan-all=True
+            - --requeue-delay=1800
           command:
             - /manager
           env:
