@@ -45,7 +45,9 @@ coreDns:
 kubeEtcd:
   enable: true
   service:
-    enabled: false
+    enabled: true
+    port: {{ etcd_metrics_port }}
+    targetPort: {{ etcd_metrics_port }}
   serviceMonitor:
     interval: 2m
 kubeScheduler:
@@ -140,9 +142,7 @@ prometheus:
         memory: 20Gi
       requests:
         cpu: 2
-        memory: 8Gi
-    secrets:
-      - etcd-client
+        memory: 4Gi
     storageSpec:
       volumeClaimTemplate:
         spec:

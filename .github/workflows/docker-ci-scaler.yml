@@ -13,7 +13,7 @@ env:
   ARTIFACTORY_PROJECT: rs-docker
   NAME_IMAGE: rs-infra-scaler
   SAFESCALE_TAG: v22.06.0
-  SCALER_TAG: 0.9.0
+  SCALER_TAG: 0.10.0
   
 jobs:
 
@@ -31,6 +31,11 @@ jobs:
       - name: Init VM
         run: git submodule update --init --recursive
         
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.18
+
       - name: Build binarie GO
         run: cd scaler && go build -o ./build/rs-infra-scaler .
 

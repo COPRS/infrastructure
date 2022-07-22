@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"net"
+	"net/http"
 	"os"
 	"strconv"
 	"strings"
@@ -16,6 +17,8 @@ import (
 	"google.golang.org/grpc"
 
 	eg "github.com/COPRS/rs-infra-scaler/protos"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var (
@@ -75,12 +78,17 @@ func startRSInfraScaler(c *cli.Context) error {
 		safescaleShellClient: ssc,
 	}
 
+	// Register scaling service
 	eg.RegisterCloudProviderServer(grpcServer, ia)
 
 	lis, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%d", c.Int("listen-port")))
 	if err != nil {
 		klog.Fatalf("failed to listen: %v", err)
 	}
+
+	klog.V(1).Infof("RSInfraScaler metrics listening on port 8087")
+	http.Handle("/metrics", promhttp.HandlerFor(isc.MetricsRegistry, promhttp.HandlerOpts{}))
+	go http.ListenAndServe(":8087", nil)
 
 	klog.V(1).Infof("RSInfraScaler gRPC service listening on %s", lis.Addr())
 	grpcServer.Serve(lis)

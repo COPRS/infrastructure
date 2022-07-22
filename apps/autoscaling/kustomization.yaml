@@ -10,3 +10,4 @@ resources:
   - externalgrpc-cloudconfig.yaml
   - generated_inventory-secret.yaml
   - safescale-tenants-secret.yaml
+  - grafana-dashboards.yaml

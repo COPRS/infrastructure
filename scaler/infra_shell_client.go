@@ -10,6 +10,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/prometheus/client_golang/prometheus"
 	"gopkg.in/yaml.v2"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -41,6 +42,8 @@ type InfraShellClient struct {
 	NodesNodeGroupByName map[string]string
 	NodesNodeGroupByID   map[string]string
 	GeneratedInventory   *GeneratedInventory
+	MetricsRegistry      *prometheus.Registry
+	nodeGroupSizeMetrics *prometheus.GaugeVec
 }
 
 type InfraNodeGroup struct {
@@ -108,6 +111,18 @@ func NewInfraShellClient(inventoryDirPath string, infrastructurePath string, sf 
 		klog.Fatalf("error: cluster name not found in inventory")
 	}
 	isc.readNodeGroupsFromInventory(isc.GeneratedInventory)
+
+	isc.MetricsRegistry = prometheus.NewRegistry()
+	isc.nodeGroupSizeMetrics = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "rs_infra_scaler_nodes_in_nodegroup",
+			Help: "Amount of nodes by node group.",
+		},
+		[]string{
+			"nodegroup",
+		},
+	)
+	isc.MetricsRegistry.MustRegister(isc.nodeGroupSizeMetrics)
 
 	klog.V(3).Infof("Syncing local nodegroups info with remote safescaled data")
 	isc.updateNodesNodeGroup()
@@ -359,6 +374,9 @@ func (i *InfraShellClient) updateNodesNodeGroup() error {
 		}
 		i.InfraNodeGroups[nodeGroupName].NodesIDs = ngni
 		i.InfraNodeGroups[nodeGroupName].NodesNames = ngnn
+
+		i.nodeGroupSizeMetrics.WithLabelValues(nodeGroupName).Set(float64(len(ngnn)))
+
 		for _, nodeName := range ngnn {
 			nngbn[nodeName] = nodeGroupName
 		}

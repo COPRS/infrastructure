@@ -46,7 +46,7 @@ patchesJson6902:
       group: integreatly.org
       version: v1alpha1
       kind: GrafanaDataSource
-      name: elasticsearch
+      name: elasticsearch-processing-traces
     patch: |-
       - op: replace
         path: /metadata/namespace

@@ -1,0 +1,29 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata: 
+  name: rs-infra-scaler
+  labels:
+    app.kubernetes.io/component: rs-infra-scaler
+spec:
+  customFolderName: autoscaling
+  datasources:
+    - inputName: "DS_PROMETHEUS"
+      datasourceName: "Thanos"
+    - inputName: "DS_LOKI"
+      datasourceName: "Loki"
+  url: https://github.com/COPRS/infrastructure/raw/release/0.10.0/scaler/dashboards/rs-infra-scaler-dashboard.json
+---
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDashboard
+metadata:
+  name: cluster-autoscaler
+  labels:
+    app.kubernetes.io/component: cluster-autoscaler
+spec:
+  customFolderName: autoscaling
+  datasources:
+    - inputName: "DS_PROMETHEUS"
+      datasourceName: "Thanos"
+  grafanaCom:
+    id: 3831
+    revision: 1

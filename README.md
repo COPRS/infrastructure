@@ -256,7 +256,7 @@ Default configurations:
 - **Grafana Operator**
   - Helm chart: *None*
   - Images:
-    - quay.io/grafana-operator/grafana-operator:v4.4.1
+    - quay.io/grafana-operator/grafana-operator:v4.5.0
     - docker.io/grafana/grafana:9.0.2-ubuntu
 - **Kafka Operator**
   - Helm chart:
@@ -370,7 +370,7 @@ Default configurations:
     - Version: 1.9.2
     - Source: https://github.com/KongZ/charts/tree/main/charts/graylog
   - Images:
-    - docker.io/graylog/graylog:4.3.0-rc.1-1
+    - docker.io/graylog/graylog:4.3.3-1
 - **Keycloack**
   - Helm chart:
     - Repository: codecentric.github.io/helm-charts
@@ -406,7 +406,7 @@ Default configurations:
   - Images:
     - artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:v22.06.0
     - artifactory.coprs.esa-copernicus.eu/rs-docker/cluster-autoscaler:1.22.3
-    - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.9.0
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.10.0
 - **Kubelet rubber stamp**
   - Images:
     - docker.io/digitalocean/kubelet-rubber-stamp:v0.3.1-do.2
