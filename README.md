@@ -141,7 +141,7 @@ ansible-playbook apps.yaml \
 
 ## Post installation
 
-- User's Manual : [here](./doc/user_manual.md)
+- User's Manual : [here](./docs/user_manuals/user_manual.md)
 - *NOT MANDATORY* : A **load balancer** listening on the public IP address pointed to by the domain name.  
   Configure the load balancer to forward incoming flow toward the cluster masters.
 
