@@ -4,7 +4,7 @@
 
 ## Overview
 
-![](./docs/img/deployment.png)
+![](./docs/user_manuals/img/deployment.png)
 
 > **Integrators' machine is called BASTION in the rest of the installation manual**
 

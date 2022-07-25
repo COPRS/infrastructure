@@ -23,7 +23,7 @@ ansible-playbook deploy-rs-addon.yaml \
 
 ### Destroy stream
 
-![Destroy a stream](../img/destroy_stream.png)
+![Destroy a stream](./img/destroy_stream.png)
 
 If the stream was deployed, it is undeployed before the stream definition is deleted.
 
@@ -35,7 +35,7 @@ If the stream was deployed, it is undeployed before the stream definition is del
 
 When you destroy a stream, you can also unregister applications of this stream.
 
-![Unregister applications](../img/unregister_applications.png)
+![Unregister applications](./img/unregister_applications.png)
 
 > Not unregister applications when only undeploy a stream
 

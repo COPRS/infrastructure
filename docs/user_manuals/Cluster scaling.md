@@ -58,7 +58,7 @@ The autoscaling on Reference System relies on the following components:
  - [safescale](https://github.com/CS-SI/SafeScale) for cloud provider management
 
 These components interact in the following way:
-![](../img/rs-autoscaling.svg)
+![](./img/rs-autoscaling.svg)
 
 
 ## Configure the autoscaler
