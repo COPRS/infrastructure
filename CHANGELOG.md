@@ -11,6 +11,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+## [0.10.0-rc1] - 2022-08-03
+#### Fixed
+- [#377 - [BUG][GRAFANA] Every 10 minutes, Grafana dashboards are overwritten by github dashboards.](https://github.com/COPRS/rs-issues/issues/377)
+- [#378 - [BUG][GRAFANA] No backup for library panel](https://github.com/COPRS/rs-issues/issues/378)
+
 ## [0.9.0-rc1] - 2022-07-06
 ### Changed
 - [#322 - [Infra][Doc] Specify which files to input s3 and vault credentials](https://github.com/COPRS/rs-issues/issues/322)
