@@ -80,6 +80,9 @@
     path: "{{ inventory_dir }}/hosts.yaml"
     block: "{{ lookup('template', 'hosts.j2') }}"
 
+- name: Reload new inventory file
+  meta: refresh_inventory
+
 - name: Create the bastion file
   template:
     src: ssh-main-gateway.j2
