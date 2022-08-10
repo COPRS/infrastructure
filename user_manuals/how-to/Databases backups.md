@@ -1,10 +1,10 @@
 # Schedule databases backups
 
 RS is deployed with a `Stash operator` that allows scheduling periodic databases backups using specific **CRDs**.
-To deploy theses CRDs using ansible templating and variables provided by the `app_vars.yaml`, create a new `app` following the given documentation, configure the `Repository` and `BackupConfiguration` and deploy the app using the `apps.yaml` playbook.
 
 The stash documentation can be found [here](https://stash.run/docs/v2021.11.24/concepts/crds/backupconfiguration/) and [here](https://stash.run/docs/v2021.11.24/concepts/crds/repository/).
 
+You will need at least a `Repository` set up, see an example below.
 
 ## Example S3 bucket as Repository
 
