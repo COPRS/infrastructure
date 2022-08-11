@@ -7,7 +7,7 @@ graylog:
     repository: "graylog/graylog"
     tag: "4.3.3-1"
 
-  replicas: 1
+  replicas: 2
 
   config: |
     elasticsearch_mute_deprecation_warnings = true
