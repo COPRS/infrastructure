@@ -16,13 +16,6 @@
     - expand
     - never
 
-- name: Configure the machines
-  hosts: k8s_cluster
-  roles:
-    - { role: "infra-defaults"}
-    - { role: "safescale/config-machines", become: yes }
-  tags: config
-
 - name: Deletes nodes
   hosts: localhost
   roles:
@@ -38,6 +31,13 @@
     - { role: "infra-defaults"}
     - { role: "safescale/update-hosts" }
   tags: update_hosts
+
+- name: Configure the machines
+  hosts: k8s_cluster
+  roles:
+    - { role: "infra-defaults"}
+    - { role: "safescale/config-machines", become: yes }
+  tags: config
 
 - name: Add providerID spec to nodes
   hosts: gateway[0]

@@ -1,5 +1,5 @@
 - name: Create the volumes
-  shell: "{{ safescale_path }} volume create --size {{ expand_nodegroup.volume.size }} --speed {{ expand_nodegroup.volume.type }} {{ cluster.name }}-{{ expand_nodegroup.volume.type }}-{{ item }} "
+  shell: "{{ safescale_path }} volume create --size {{ expand_nodegroup.volume.size }} --speed {{ expand_nodegroup.volume.type }} {{ item }}-{{ expand_nodegroup.volume.type }} "
   loop: "{{ expand_cmd.stdout_lines }}"
   async: 30
   poll: 0
@@ -18,7 +18,7 @@
   ignore_errors: true
 
 - name: Attach the volumes
-  shell: "{{ safescale_path }} volume attach --do-not-format --do-not-mount {{ cluster.name }}-{{ expand_nodegroup.volume.type }}-{{ item }} {{ item }} "
+  shell: "{{ safescale_path }} volume attach --do-not-format --do-not-mount {{ item }}-{{ expand_nodegroup.volume.type }} {{ item }} "
   loop: "{{ expand_cmd.stdout_lines }}"
   async: 30
   poll: 0

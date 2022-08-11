@@ -18,7 +18,7 @@
     --gw-sizing {{ (cluster.nodegroups | selectattr('name', 'equalto', 'gateway') | first).sizing }} \
     --force \
     {{ cluster.name }}
-  when: cluster.name not in cluster_list.stdout_lines
+  when: cluster_list.stdout == '' or cluster.name not in cluster_list.stdout_lines
 
 - name: Create the safescale label for node groups
   shell: |

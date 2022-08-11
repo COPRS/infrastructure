@@ -42,7 +42,7 @@ graylog:
           topologyKey: kubernetes.io/hostname
   resources:
     limits:
-      cpu: 1
+      cpu: 2
       memory: 2Gi
     requests:
       cpu: 500m
@@ -57,7 +57,7 @@ graylog:
         port: 9833
         protocol: TCP
 
-{% if graylog.geolite2db_uri %}
+{% if graylog.geolite2db_uri is defined %}
   geoip:
     enabled: true
     mmdbUri: {{ graylog.geolite2db_uri }}
