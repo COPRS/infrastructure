@@ -83,7 +83,11 @@ prometheus-node-exporter:
     limits:
       cpu: 30m
       memory: 60Mi
-    
+  
+  tolerations:
+  - effect: NoSchedule
+    operator: Exists
+  
 prometheusOperator:
   enabled: false
 
