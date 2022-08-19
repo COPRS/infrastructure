@@ -12,7 +12,7 @@
 For example:
 ```shellsession
 ansible-playbook deploy-rs-addon.yaml \
-    -i inventory/mycluster/hosts.ini \
+    -i inventory/mycluster/hosts.yaml \
     -e rs_addon_location=https://artifactory.coprs.esa-copernicus.eu/artifactory/demo-zip/demo-rs-addon.zip \
     -e stream_name=example-stream-name
 ```
