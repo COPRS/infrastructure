@@ -1,11 +1,13 @@
 global:
   storageClass: ceph-block
+rbac:
+  create: false
 server:
   image:
     tag: 2.9.4-debian-10-r0
   configuration:
     defaultSpringApplicationJSON: false
-  extraEnvVarsSecret: spring-cloud-dataflow-registry-config
+  extraEnvVarsSecret: spring-cloud-dataflow-config
   composedTaskRunner:
     image:
       tag: 2.9.4-debian-10-r0
@@ -40,8 +42,7 @@ skipper:
     requests:
       cpu: 500m
       memory: 1Gi
-deployer:
-  imagePullSecrets: [spring-cloud-dataflow-registry-dockersecret]
+  existingConfigmap: "spring-cloud-dataflow-skipper"
 metrics:
   enabled: true
   image:

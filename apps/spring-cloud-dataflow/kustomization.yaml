@@ -1,8 +1,6 @@
 commonLabels:
   app.kubernetes.io/instance: "{{ app_name }}"
 
-namespace: processing
-
 helmCharts:
 - name: spring-cloud-dataflow
   releaseName: "{{ app_name }}"
@@ -12,7 +10,11 @@ helmCharts:
   namespace: processing
 
 resources:
+  - skipper-rolebinding.yaml
   - apisixroute.yaml
+
+transformers:
+  - namespaces.yaml
 
 secretGenerator:
   - name: spring-cloud-dataflow-registry-dockersecret
@@ -21,8 +23,13 @@ secretGenerator:
     options:
       disableNameSuffixHash: true
     type: kubernetes.io/dockerconfigjson
-  - name: spring-cloud-dataflow-registry-config
+  - name: spring-cloud-dataflow-config
     files:
-      - SPRING_APPLICATION_JSON=registry-config.json
+      - SPRING_APPLICATION_JSON=spring-cloud-dataflow-config.json
     options:
       disableNameSuffixHash: true
+
+configMapGenerator:
+  - name: spring-cloud-dataflow-skipper
+    files:
+      - application.yaml=skipper-configuration.yaml
