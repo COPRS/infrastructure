@@ -3,6 +3,9 @@
 %\fancyhead[CO,CE]{Test header}
 %\fancyfoot[CO,CE]{Tets footer}
 
+\usepackage{titlesec}
+\newcommand{\sectionbreak}{\clearpage}
+
 \usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage{float}
@@ -13,7 +16,7 @@
 \let\theversion\version
 
 \renewcommand{\maketitle}{}
-\let\cleardoublepage\clearpage
+%\let\cleardoublepage\clearpage
 
 
 \pagestyle{fancyplain}
