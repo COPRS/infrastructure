@@ -57,7 +57,7 @@ jobs:
           echo "|       **No WBS** | WP-3000-C |" >> patch.md
           echo "| **CMMI Process** | CM |" >> patch.md
           echo "" >> patch.md
-          cat patch.md README.md > README_patched.md
+          #cat patch.md README.md > README_patched.md
           
       - name: make output dir
         id: make_output_dir
@@ -66,7 +66,7 @@ jobs:
       - name: Create PDF
         uses: docker://ghcr.io/coprs/reference-system-software:dependencies_pandoc_latex
         with:
-          args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -H  header-cs2.tex -H title-cs.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/infrastructure_sim.pdf" --from=markdown README_patched.md
+          args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -H  header-cs2.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/infrastructure_sim.pdf" --from=markdown patch.md README.md
 
       - uses: actions/upload-artifact@master
         with:
