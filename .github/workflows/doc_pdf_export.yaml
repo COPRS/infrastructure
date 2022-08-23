@@ -15,11 +15,18 @@ jobs:
       - name: make output dir
         id: make_output_dir
         run: mkdir output # create output dir
+        
+      - name: Latex commands for defining parameters
+        run: |
+          echo "\newcommand{\release}{2.0}" >> latexcommands.tex
+          echo "\newcommand{\docdate}{23/08/2022}" >> latexcommands.tex
+          
+          cat latexcommands.tex header-cs.tex > header-cs2.tex
 
       - name: Create PDF
         uses: docker://ghcr.io/coprs/reference-system-software:dependencies_pandoc_latex
         with:
-          args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -H  header-cs.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/infrastructure_readme.pdf" --from=markdown README.md
+          args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -H  header-cs2.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/infrastructure_readme.pdf" --from=markdown README.md
 
       - uses: actions/upload-artifact@master
         with:
