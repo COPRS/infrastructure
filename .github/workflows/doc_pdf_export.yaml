@@ -44,7 +44,7 @@ jobs:
           echo "---" >> patch.md
           echo "Title: Readme" >> patch.md
           echo "include-before: |" >> patch.md
-          echo "  Lines before" >> patch.md
+          echo "  Lines before\\" >> patch.md
           echo "  continuation" >> patch.md
           echo "  \newpage" >> patch.md
           echo "---" >> patch.md
