@@ -19,7 +19,7 @@ jobs:
       - name: Create PDF
         uses: docker://ghcr.io/coprs/reference-system-software:dependencies_pandoc_latex
         with:
-          args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/infrastructure_readme.pdf" --from=markdown header-cs.tex README.md
+          args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -H  header-cs.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/infrastructure_readme.pdf" --from=markdown README.md
 
       - uses: actions/upload-artifact@master
         with:
