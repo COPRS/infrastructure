@@ -45,9 +45,10 @@ jobs:
           echo "---" >> patch.md
           echo "Title: Readme" >> patch.md
           echo "include-before: |" >> patch.md
+          echo "  test" >> patch.md
           #echo "  \begin{center}" >> patch.md
-          echo "  \Large{\doctitle}\\" >> patch.md
-          echo "  \Large{Status:\:\docstatus}\\" >> patch.md
+          #echo "  \Large{\doctitle}\\" >> patch.md
+          #echo "  \Large{Status:\:\docstatus}\\" >> patch.md
           #echo "  \end{center}" >> patch.md
           echo "  \newpage" >> patch.md
           echo "---" >> patch.md
@@ -126,9 +127,10 @@ jobs:
         
       - name: Latex commands for defining parameters
         run: |
-          echo "\newcommand{\release}{2.0}" >> latexcommands.tex
+          echo "\newcommand{\doctitre}{HowTo}" >> latexcommands.tex
+          echo "\newcommand{\docversion}{2.0}" >> latexcommands.tex
           echo "\newcommand{\docdate}{23/08/2022}" >> latexcommands.tex
-          
+          echo "\newcommand{\docstatus}{Draft}" >> latexcommands.tex
           cat latexcommands.tex header-cs.tex > header-cs2.tex
 
       - name: Create PDF
