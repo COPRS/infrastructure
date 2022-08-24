@@ -64,7 +64,7 @@ namespace: infra
 Below is the list of the supported variables.
 
 | name | mandatory \| optional | default value | comments |
-|:---|:---:|---:|---|
+|:---|:---:|---:|--------------------|
 | atomic | optional | false | If set, the installation process deletes the installation on failure. The --wait flag will be set automatically if --atomic is used |
 | chart_ref | mandatory | | chart_reference on chart repository<br>path to a packaged chart<br>path to an unpacked chart directory<br>absolute URL |
 | chart_repo_url | optional | | Chart repository URL where to locate the requested chart. |
