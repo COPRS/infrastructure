@@ -46,10 +46,10 @@ jobs:
           echo "Title: Readme" >> patch.md
           echo "include-before: |" >> patch.md
           #echo "  \begin{center}" >> patch.md
-          echo "  \Large\doctitle\\" >> patch.md
-          echo "  Status:\hspace{5mm}\docstatus\\" >> patch.md
+          echo "  \vspace{5cm}\hspace{2cm}\Large\doctitle\\" >> patch.md
+          echo "  \hspace{2cm}Status:\hspace{5mm}\docstatus\\" >> patch.md
           #echo "  \end{center}" >> patch.md
-          echo "  \newpage" >> patch.md
+          echo "  \normalfont\newpage" >> patch.md
           echo "---" >> patch.md
           echo "" >> patch.md
           echo "# Software Installation Manual" >> patch.md
