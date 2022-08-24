@@ -45,8 +45,16 @@ jobs:
           echo "---" >> patch.md
           echo "Title: Readme" >> patch.md
           echo "include-before: |" >> patch.md
-          echo "  \vspace*{5cm}\hspace*{2cm}{\Large\doctitle}\\" >> patch.md
+          echo "  \vspace*{4cm}\hspace*{2cm}{\Large\doctitle}\\" >> patch.md
           echo "  \hspace*{2cm}{\Large Status:\hspace{5mm}\docstatus}\\" >> patch.md
+          echo "  \hspace*{2cm}{\Large Version:\hspace{5mm}\docversion}\\" >> patch.md
+          echo "  \hspace*{2cm}{\Large Date:\hspace{5mm}\docdate}" >> patch.md
+          echo "  \hspace*{2cm}\rule{4cm}{1mm}" >> patch.md
+          echo "  \hspace*{2cm}{\Large ESA Contract Number:\hspace{5mm}1234}\\" >> patch.md
+          echo "  \hspace*{2cm}{\Large Deliverable Number:\hspace{5mm}5678}\\" >> patch.md
+          echo "  \hspace*{2cm}{\Large Project Reference:\hspace{5mm}XYZ}" >> patch.md
+          echo "  \hspace*{2cm}\rule{4cm}{1mm}" >> patch.md
+          echo "  \hspace*Copyright CS GROUP FRANCE" >> patch.md
           echo "  \newpage" >> patch.md
           echo "---" >> patch.md
           echo "" >> patch.md
