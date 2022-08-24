@@ -10,7 +10,7 @@
 
 - Safescale : **>= v21.11.0** https://github.com/CS-SI/SafeScale
 - openstacksdk : **>= v0.12.0** https://pypi.org/project/openstacksdk/
-- qemu-system : **>= v4.2.1** <https://packages.ubuntu.com/focal/qemu-kvm> / <https://packages.ubuntu.com/focal/qemu-system-x86>
+- qemu-system : **>= v4.2.1** https://packages.ubuntu.com/focal/qemu-kvm / https://packages.ubuntu.com/focal/qemu-system-x86
 - Packer : **>= v1.7.8** https://github.com/hashicorp/packer
 
 ## Infrastructure requirements
