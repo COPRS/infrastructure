@@ -1,3 +1,9 @@
+<style>
+code{
+    white-space : pre-wrap !important;
+    color: red;
+}
+</style>
 # Purpose
 The purpose of this document is to explain how to install and uninstall 
 security COTS on nodes.
