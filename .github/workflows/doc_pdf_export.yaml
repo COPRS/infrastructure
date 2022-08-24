@@ -34,7 +34,7 @@ jobs:
       
       - name: Latex commands for defining parameters
         run: |
-          echo "\newcommand{\doctitre}{Readme}" >> latexcommands.tex
+          echo "\newcommand{\doctitle}{Readme}" >> latexcommands.tex
           echo "\newcommand{\docversion}{2.0}" >> latexcommands.tex
           echo "\newcommand{\docdate}{23/08/2022}" >> latexcommands.tex
           echo "\newcommand{\docstatus}{Draft}" >> latexcommands.tex
@@ -126,7 +126,7 @@ jobs:
         
       - name: Latex commands for defining parameters
         run: |
-          echo "\newcommand{\doctitre}{HowTo}" >> latexcommands.tex
+          echo "\newcommand{\doctitle}{HowTo}" >> latexcommands.tex
           echo "\newcommand{\docversion}{2.0}" >> latexcommands.tex
           echo "\newcommand{\docdate}{23/08/2022}" >> latexcommands.tex
           echo "\newcommand{\docstatus}{Draft}" >> latexcommands.tex
