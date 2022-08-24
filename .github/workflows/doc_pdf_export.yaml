@@ -46,8 +46,8 @@ jobs:
           echo "Title: Readme" >> patch.md
           echo "include-before: |" >> patch.md
           #echo "  \begin{center}" >> patch.md
-          echo "  \Large{\doctitle}\\" >> patch.md
-          echo "  \Large{Status:\:\docstatus}\\" >> patch.md
+          echo "  \Large\doctitle\\" >> patch.md
+          echo "  Status:\hspace{5mm}\docstatus\\" >> patch.md
           #echo "  \end{center}" >> patch.md
           echo "  \newpage" >> patch.md
           echo "---" >> patch.md
