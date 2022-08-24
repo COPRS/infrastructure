@@ -45,8 +45,8 @@ jobs:
           echo "---" >> patch.md
           echo "Title: Readme" >> patch.md
           echo "include-before: |" >> patch.md
-          echo "  \vspace{5cm}\hspace{2cm}\Large{\doctitle\\" >> patch.md
-          echo "  \hspace{2cm}Status:\hspace{5mm}\docstatus\\" >> patch.md
+          echo "  \vspace*{5cm}\hspace*{2cm}{\Large\doctitle\\" >> patch.md
+          echo "  \hspace*{2cm}Status:\hspace{5mm}\docstatus\\" >> patch.md
           echo "  }\newpage" >> patch.md
           echo "---" >> patch.md
           echo "" >> patch.md
