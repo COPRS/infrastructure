@@ -1,7 +1,13 @@
+%\usepackage{fancyhdr}
+%\pagestyle{fancy}
+%\fancyhead[CO,CE]{Test header}
+%\fancyfoot[CO,CE]{Tets footer}
+
 \usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage{float}
 
+\newcommand{\sectionbreak}{\clearpage}
 
 \let\oldunderscore\_
 \renewcommand{\_}{\oldunderscore\hspace{0pt}}
@@ -41,28 +47,30 @@
 
 \floatplacement{figure}{H}
 
+%\newcommand{\release}{2.0}
+%\newcommand{\docdate}{23/08/2022}
 \let\theversion\version
 
 \renewcommand{\maketitle}{}
-
+%\let\cleardoublepage\clearpage
 
 
 \pagestyle{fancyplain}
 \fancyhf{}
 \fancyhead[L]{\includegraphics[height=1cm]{./logo_cs_group_bleu_petit_png1.png}}
-\fancyhead[C]{\textbf{\doctitre}}
+\fancyhead[C]{\textbf{Diffusion Limitée Projet}}
 \fancyhead[R]{}
-\fancyfoot[C]{Copyright CS GROUP FRANCE}
+\fancyfoot[C]{version \release du \docdate }
 \fancyfoot[R]{\thepage}
 \renewcommand{\footrulewidth}{0.5pt}
 \renewcommand{\headrulewidth}{0.5pt}
 
 \pagestyle{fancy}
-fancyhf{}
+\fancyhf{}
 \fancyhead[L]{\includegraphics[height=1cm]{./logo_cs_group_bleu_petit_png1.png}}
-\fancyhead[C]{\textbf{\doctitre}}
+\fancyhead[C]{\textbf{Diffusion Limitée Projet}}
 \fancyhead[R]{}
-\fancyfoot[C]{Copyright CS GROUP FRANCE}
+\fancyfoot[C]{version \release du \docdate }
 \fancyfoot[R]{\thepage}
 \renewcommand{\footrulewidth}{0.5pt}
 \renewcommand{\headrulewidth}{0.5pt}
