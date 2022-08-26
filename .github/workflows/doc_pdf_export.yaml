@@ -38,9 +38,6 @@ jobs:
           echo "  \hspace*{2cm}Copyright CS GROUP FRANCE" >> patch.md
           echo "  \newpage" >> patch.md
           echo "---" >> patch.md
-          echo "---" >> patch.md
-          echo "Title: Readme" >> patch.md
-          echo "---" >> patch.md
           echo "" >> patch.md
           echo "## Document properties" >> patch.md
           echo "" >> patch.md
@@ -123,6 +120,7 @@ jobs:
       - name: Add doc properties on top and title
         run: |
           echo "---" >> patch.md
+          echo "" >> patch.md
           echo "include-before: |" >> patch.md
           echo "  \vspace*{4cm}\hspace*{2cm}{\LARGE\textbf{\doctitle}}\\" >> patch.md
           echo "  \hspace*{2cm}{\large Status:\hspace{5mm}\docstatus}\\" >> patch.md
@@ -137,12 +135,11 @@ jobs:
           echo "  \newpage" >> patch.md
           echo "---" >> patch.md
           echo "" >> patch.md
-          cat patch.md README.md > README_patched.md
 
       - name: Create PDF
         uses: docker://ghcr.io/coprs/reference-system-software:dependencies_pandoc_latex
         with:
-          args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc/how-to:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -H  header-cs2.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/how-to.pdf" --from=markdown+autolink_bare_uris ${{ steps.files_list.outputs.files }}
+          args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc/how-to:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -H  header-cs2.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/how-to.pdf" --from=markdown+autolink_bare_uris patch.md ${{ steps.files_list.outputs.files }}
 
       - uses: actions/upload-artifact@master
         with:
