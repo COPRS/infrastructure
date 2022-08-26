@@ -1,3 +1,7 @@
+# Define parameters in the "Latex commands for defining parameters" job steps.
+# For md fils that will be concatenated in one single pdf, add a blank line before the first headings of each md file, to ensure that headings appear correctly in the concatenation (md headings should be surrounded by blank lines.)
+# Adjust the relative column widths of the tables in the md files using the '|----|---|...' separator line.
+
 name: Infrastructure Documentation Export 
 
 on:
