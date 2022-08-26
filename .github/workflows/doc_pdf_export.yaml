@@ -112,7 +112,7 @@ jobs:
         
       - name: concatenate files
         run: |
-          find "doc/how-to" -type f -name "*.md" -print0 | sort -V | tr -s '\n' '' | xargs -0 cat > all.md
+          find "doc/how-to" -type f -name "*.md" -print0 | sort -Vz | xargs -0 cat > all.md
 
         
       - name: Latex commands for defining parameters
