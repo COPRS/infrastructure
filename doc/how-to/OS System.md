@@ -1,3 +1,4 @@
+
 # Image maintenance
 
 The image created with this playbook is available in the directory `platform/roles/image/files/output/image`.
