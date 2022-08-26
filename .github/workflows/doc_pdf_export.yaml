@@ -105,9 +105,15 @@ jobs:
           # echo "::set-output name=files::$(printf '"%s" ' *.md)"
           echo "::set-output name=files::$(cat list.txt)"
           
+          
       - name: make output dir
         id: make_output_dir
         run: mkdir output # create output dir
+        
+      - name: concatenate files
+        run: |
+          find "doc/how-to" -type f -name "*.md" | sort -V | -exec cat {} \; > all.md
+
         
       - name: Latex commands for defining parameters
         run: |
@@ -135,11 +141,13 @@ jobs:
           echo "  \newpage" >> patch.md
           echo "---" >> patch.md
           echo "" >> patch.md
+          cat patch.md all.md > all2.md
 
       - name: Create PDF
         uses: docker://ghcr.io/coprs/reference-system-software:dependencies_pandoc_latex
         with:
-          args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc/how-to:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -H  header-cs2.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/how-to.pdf" --from=markdown+autolink_bare_uris patch.md ${{ steps.files_list.outputs.files }}
+          args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc/how-to:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -H  header-cs2.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/how-to.pdf" --from=markdown+autolink_bare_uris all2.md
+          #args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc/how-to:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -H  header-cs2.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/how-to.pdf" --from=markdown+autolink_bare_uris patch.md ${{ steps.files_list.outputs.files }}
 
       - uses: actions/upload-artifact@master
         with:
