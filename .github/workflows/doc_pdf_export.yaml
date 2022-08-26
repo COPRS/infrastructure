@@ -113,6 +113,11 @@ jobs:
       - name: concatenate files
         run: |
           find "doc/how-to" -type f -name "*.md" -print0 | sort -Vz | xargs -0 cat > all.md
+          
+      - name: test of concatenate files
+        run: |
+          find "doc/how-to" -type f -name "*.md" -print0 | sort -Vz | xargs -0 cat > output/testall.md
+
 
         
       - name: Latex commands for defining parameters
