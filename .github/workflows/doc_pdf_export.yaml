@@ -126,7 +126,7 @@ jobs:
       - name: Add doc properties on top and title
         run: |
           echo "---" >> patch.md
-          echo "" >> patch.md
+          echo "Title: Readme" >> patch.md
           echo "include-before: |" >> patch.md
           echo "  \vspace*{4cm}\hspace*{2cm}{\LARGE\textbf{\doctitle}}\\" >> patch.md
           echo "  \hspace*{2cm}{\large Status:\hspace{5mm}\docstatus}\\" >> patch.md
