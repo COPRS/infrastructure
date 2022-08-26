@@ -114,11 +114,6 @@ jobs:
         run: |
           find "doc/how-to" -type f -name "*.md" -print0 | sort -Vz | xargs -0 cat > all.md
           
-      - name: test of concatenate files
-        run: |
-          find "doc/how-to" -type f -name "*.md" -print0 | sort -Vz | xargs -0 cat > output/testall.md
-
-
         
       - name: Latex commands for defining parameters
         run: |
@@ -152,7 +147,6 @@ jobs:
         uses: docker://ghcr.io/coprs/reference-system-software:dependencies_pandoc_latex
         with:
           args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc/how-to:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -H  header-cs2.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/how-to.pdf" --from=markdown+autolink_bare_uris all2.md
-          #args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc/how-to:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -H  header-cs2.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/how-to.pdf" --from=markdown+autolink_bare_uris patch.md ${{ steps.files_list.outputs.files }}
 
       - uses: actions/upload-artifact@master
         with:
