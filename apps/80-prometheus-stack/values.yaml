@@ -75,7 +75,6 @@ prometheus-node-exporter:
   extraArgs: 
     - --collector.systemd
     - --collector.systemd.unit-whitelist=(docker|kubelet|openvpn-client.*).service
-
   resources:
     requests:
       cpu: 15m
@@ -83,7 +82,10 @@ prometheus-node-exporter:
     limits:
       cpu: 30m
       memory: 60Mi
-    
+  tolerations:
+    - effect: NoSchedule
+      operator: Exists
+  
 prometheusOperator:
   enabled: false
 
