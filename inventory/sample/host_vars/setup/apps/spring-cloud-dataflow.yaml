@@ -6,3 +6,6 @@ scdf:
     url: SCDF_REGISTRY_URL
     username: SCDF_REGISTRY_USERNAME
     password: SCDF_REGISTRY_PASSWORD # use artifactory "centrally secure password" 
+  namespaces:
+    - processing
+    - monitoring

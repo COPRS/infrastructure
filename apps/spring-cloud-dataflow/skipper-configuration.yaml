@@ -1,0 +1,59 @@
+management:
+  metrics:
+      export:
+        prometheus:
+            enabled: true
+            rsocket:
+              enabled: true
+              host: spring-cloud-dataflow-prometheus-proxy
+              port: 7001
+spring:
+  cloud:
+    skipper:
+      server:
+        platform:
+          kubernetes:
+            accounts:
+              default:
+                namespace: {{ kustomization.helmCharts[0].namespace }}
+                environmentVariables:
+                  - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+                  - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=kafka-cluster-zookeeper-client.infra.svc.cluster.local:2181
+                limits:
+                  cpu: 500m
+                  memory: 1024Mi
+                readinessProbeDelay: 120
+                livenessProbeDelay: 90
+                podSecurityContext:
+                  runAsUser: 1001
+                imagePullSecrets:
+                  - spring-cloud-dataflow-registry-dockersecret
+                entryPointStyle: exec
+                imagePullPolicy: IfNotPresent
+{% for namespace in scdf.namespaces %}
+              {{ namespace }}:
+                namespace: {{ namespace }}
+                environmentVariables:
+                  - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+                  - SPRING_CLOUD_STREAM_KAFKA_BINDER_ZK_NODES=kafka-cluster-zookeeper-client.infra.svc.cluster.local:2181
+                limits:
+                  cpu: 500m
+                  memory: 1024Mi
+                readinessProbeDelay: 120
+                livenessProbeDelay: 90
+                podSecurityContext:
+                  runAsUser: 1001
+                imagePullSecrets:
+                  - spring-cloud-dataflow-registry-dockersecret
+                entryPointStyle: exec
+                imagePullPolicy: IfNotPresent
+{% endfor %}
+  datasource:
+    url: 'jdbc:postgresql://postgresql-primary-hl.database.svc.cluster.local:5432/skipper'
+    driverClassName: org.postgresql.Driver
+    username: scdf
+    password: ${mariadb-password}
+    testOnBorrow: true
+    validationQuery: "SELECT 1"
+  flyway:
+    enabled: true

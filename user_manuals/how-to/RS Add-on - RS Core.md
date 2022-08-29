@@ -17,6 +17,26 @@ ansible-playbook deploy-rs-addon.yaml \
     -e stream_name=example-stream-name
 ```
 
+## Use different namespaces in stream deployments
+
+In order to allow the **Spring Cloud Dataflow Skipper** to deploy a stream in any chosen namespace, you must set up the namespaces you want available in the `host_vars/setup/apps/spring-cloud-dataflow.yaml` inventory file before deploying SCDF:
+
+```yaml
+scdf:
+  [...]
+  namespaces:
+    - processing
+    - monitoring
+    - ...
+```
+
+You will then be able to choose the namespace you want the stream to be deployed into by setting the following variable the the stream properties according to the ICD definition:
+```
+[...]
+spring.cloud.dataflow.skipper.platformName=NAMESPACE
+[...]
+```
+
 ## Uninstall
 
 > **Use IHM**

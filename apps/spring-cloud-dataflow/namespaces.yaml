@@ -1,0 +1,11 @@
+apiVersion: builtin
+kind: NamespaceTransformer
+metadata:
+  name: set-ns-if-empty
+  namespace: {{ kustomization.helmCharts[0].namespace }}
+setRoleBindingSubjects: allServiceAccounts
+unsetOnly: true
+fieldSpecs:
+- path: metadata/name
+  kind: Namespace
+  create: false

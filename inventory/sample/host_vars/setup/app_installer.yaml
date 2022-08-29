@@ -1,6 +1,6 @@
 # tools
 helm_version: "v3.6.3"
-kustomize_version: "v4.4.0"
+kustomize_version: "v4.5.7"
 
 # enable app_installer debugging to keep generated kubernetes resources on the gateway
 debug: false
