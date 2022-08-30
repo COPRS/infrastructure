@@ -27,3 +27,17 @@ ingress_tls_certificate_issuer_spec:
 # The resource must be defined with Kubernetes format.
 # They will be deployed with the ingress controller.
 # ingress_tls_additional_resources:
+
+
+# Openstack credentials used to set up networking and IPs on Openstack-like providers
+# if not on an openstack compatible provider, do manually
+#    - add the floating IPs manually on the egress nodes 
+#    - upload os image built with packer
+openstack_compatible_provider: true
+openstack_auth:
+  auth_url: OPENSTACK_AUTH_ENDPOINT
+  username: OPENSTACK_USERNAME
+  password: OPENSTACK_PASSWORD
+  domain_name: OPENSTACK_DOMAIN_NAME
+  project_id: OPENSTACK_PROJECT_ID
+  region: OPENSTACK_REGION

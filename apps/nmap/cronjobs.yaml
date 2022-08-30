@@ -3,7 +3,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: nmap-job
-  namespace: security
   annotations:
     linkerd.io/inject: disabled
 spec:

@@ -3,27 +3,21 @@
     - groups.egress is defined
     - inventory_hostname in groups['egress']
   block:
-    - name: Include tenants file variables
-      include_vars:
-        file: "{{ tenants_path }}"
-
-    - name: Read safescale tenant credentials
-      set_fact:
-        tenant: "{{ tenants | selectattr('name', 'match', safescale_tenant) | first }}"
-
     - name: Add floating IP to egress
       os_floating_ip:
         auth:
-          auth_url: "https://iam.eu-west-0.prod-cloud-ocb.orange-business.com"
-          username: "{{ tenant.identity.Username }}"
-          password: "{{ tenant.identity.Password }}"
-          domain_name: "{{ tenant.identity.DomainName }}"
-          project_id: "{{ tenant.compute.ProjectID }}"
-        region_name: "{{ tenant.compute.Region }}"
+          auth_url: "{{ openstack_auth.auth_url }}"
+          username: "{{ openstack_auth.username }}"
+          password: "{{ openstack_auth.password }}"
+          domain_name: "{{ openstack_auth.domain_name }}"
+          project_id: "{{ openstack_auth.project_id }}"
+        region_name: "{{ openstack_auth.region }}"
         server: "{{ item }}"
       loop: "{{ groups['egress'] }}"
       delegate_to: localhost
       run_once: true
+      when:
+        - openstack_compatible_provider is true
 
     ## netplan adds a new default route without removing the previous one
     - name: Remove previous default route

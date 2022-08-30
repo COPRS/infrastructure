@@ -74,11 +74,11 @@
 - name: Upload the packer image to the cloud provider
   openstack.cloud.image:
     auth:
-      auth_url: "https://iam.eu-west-0.prod-cloud-ocb.orange-business.com"
-      username: "{{ tenant.identity.Username }}"
-      password: "{{ tenant.identity.Password }}"
-      domain_name: "{{ tenant.identity.DomainName }}"
-      project_id: "{{ tenant.compute.ProjectID }}"
+      auth_url: "{{ openstack_auth.auth_url }}"
+      username: "{{ openstack_auth.username }}"
+      password: "{{ openstack_auth.password }}"
+      domain_name: "{{ openstack_auth.domain_name }}"
+      project_id: "{{ openstack_auth.project_id }}"
     timeout: 600
     name: "{{ image_name }}"
     container_format: bare
@@ -93,3 +93,5 @@
       os_version: "Other Linux (64 bit)"
       type: "ECS"
       visibility: private
+  when:
+    - openstack_compatible_provider is true

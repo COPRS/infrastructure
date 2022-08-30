@@ -10,6 +10,5 @@
 
 - hosts: gateway, egress
   roles:
-   - "security/suricata"
-   - "security/openvpn"
-   
+    - "security/suricata"
+    - "security/openvpn"
