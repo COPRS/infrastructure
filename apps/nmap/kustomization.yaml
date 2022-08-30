@@ -1,5 +1,8 @@
 commonLabels:
   app.kubernetes.io/instance: "{{ app_name }}"
 
+namespace: security
+
 resources:
-- cronjobs.yaml
+  - cronjobs.yaml
+  - ips-configmap.yaml
