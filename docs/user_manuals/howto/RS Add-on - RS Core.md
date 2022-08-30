@@ -12,7 +12,7 @@
 For example:
 ```shellsession
 ansible-playbook deploy-rs-addon.yaml \
-    -i inventory/mycluster/hosts.ini \
+    -i inventory/mycluster/hosts.yaml \
     -e rs_addon_location=https://artifactory.coprs.esa-copernicus.eu/artifactory/demo-zip/demo-rs-addon.zip \
     -e stream_name=example-stream-name
 ```
@@ -43,7 +43,7 @@ spring.cloud.dataflow.skipper.platformName=NAMESPACE
 
 ### Destroy stream
 
-![Destroy a stream](../img/destroy_stream.png)
+![Destroy a stream](../../media/destroy_stream.png)
 
 If the stream was deployed, it is undeployed before the stream definition is deleted.
 
@@ -55,7 +55,7 @@ If the stream was deployed, it is undeployed before the stream definition is del
 
 When you destroy a stream, you can also unregister applications of this stream.
 
-![Unregister applications](../img/unregister_applications.png)
+![Unregister applications](../../media/unregister_applications.png)
 
 > Not unregister applications when only undeploy a stream
 

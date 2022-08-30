@@ -30,7 +30,7 @@ You can then do the modifications you need, test new panels and more without int
 
 ## Export the new dashboard
 
- - Click on the *Share* logo ![](../img/share_grafana.png)
+ - Click on the *Share* logo ![](../../media/share_grafana.png)
  - Go to the export tab, toggle ON *Export for sharing externally*
  - Click on *View JSON* and overwrite the original dashboard source with the JSON output
  - Check that the "name" values in the "__inputs" field at the top of the JSON correspond to the information written in the corresponding *Grafana Dashboard* CRD at *spec.datasources* (DS_THANOS are usually DS_PROMETHEUS, edit one or the other to make it match)

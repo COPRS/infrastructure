@@ -72,7 +72,7 @@
 
 ## Predefined user, groups and client roles
 
-![](img/groups_and_roles.svg)
+![](./docs/media/groups_and_roles.svg)
 
 
 ## Exposed services

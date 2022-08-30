@@ -4,7 +4,7 @@
 
 ## Overview
 
-![](./user_manuals/img/deployment.png)
+![](./docs/media/deployment.png)
 
 > **Integrators' machine is called BASTION in the rest of the installation manual**
 
@@ -22,7 +22,7 @@
 
 ## Infrastructure requirements
 
-- Default configuration : [here](./user_manuals/config.md)
+- Default configuration : [here](./CONFIG.md)
 - A **domain name** publicly available with a wildcard **A** record.  
 
 ## Dependencies
@@ -32,7 +32,7 @@ This project exploits Kubespray to deploy Kubernetes.
 The fully detailed documentation and configuration options are available on its page: [https://kubespray.io/](https://kubespray.io/)
 
 ### HashiCorp Vault (optional)
-This project can integrate credentials from a custom `HashiCorp Vault` instance, see the specific documentation [here](doc/how-to/Credentials.md).
+This project can integrate credentials from a custom `HashiCorp Vault` instance, see the specific documentation [here](./docs/user_manuals/howto/Credentials.md).
 
 ## Quickstart
 
@@ -141,7 +141,7 @@ ansible-playbook apps.yaml \
 
 ## Post installation
 
-- User's Manual : [here](./doc/user_manual.md)
+- User's Manual : [here](./docs/user_manuals/README.md)
 - *NOT MANDATORY* : A **load balancer** listening on the public IP address pointed to by the domain name.  
   Configure the load balancer to forward incoming flow toward the cluster masters.
 
@@ -150,7 +150,7 @@ ansible-playbook apps.yaml \
   | 80 | 32080 | TCP |
   | 443 | 32443 | TCP |
 
-> For **health check** : https://node-ip:6443/readyz <br>
+> For **health check** : `https://node-ip:6443/readyz` <br>
 > `node-ip` : private ip of each master
 
 - You may disable access to Keycloak master realm. From Apisix interface: open Route tab, search for `iam_keycloak_keycloak-superadmin` and click on `Offline`.
