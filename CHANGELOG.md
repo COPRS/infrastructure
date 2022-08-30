@@ -11,8 +11,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+## [1.1.0-rc1] - 2022-08-31
+### Added
+- Docs skeleton
+### Changed
+- [#504 - Allow SCDF to deploy in multiple namespaces](https://github.com/COPRS/rs-issues/issues/504)
+### Fixed
+- [#295 - [BUG] [Infra] Graylog - Falco dashboard not showing events](https://github.com/COPRS/rs-issues/issues/295)
+- [#371 - [BUG] Grafana User Preferences removed](https://github.com/COPRS/rs-issues/issues/371)
+- [#390 - [BUG][Infra] Suricata log management on node - no log rotation implemented](https://github.com/COPRS/rs-issues/issues/390)
+- [#443 - [BUG] [Infra] rs-addon deployment: scdf script cannot deploy streams if nodelocaldns is not set as gateway dns](https://github.com/COPRS/rs-issues/issues/443)
+- [#452 - [BUG][Infra][Deploy] - Error when deploying on a tenant without any existing cluster](https://github.com/COPRS/rs-issues/issues/452)
+- [#455 - [BUG] [OPS] log from lifecycle-eviction-job were not well managed by fluentbit](https://github.com/COPRS/rs-issues/issues/455)
+- [#456 - [BUG] [infra] rs-setup: missing dns configuration for the pip modules](https://github.com/COPRS/rs-issues/issues/456)
+- [#464 - [BUG] [Infra] Kubernetes - Wrong DNS address is deployed in resolv.conf](https://github.com/COPRS/rs-issues/issues/464)
+- [#494 - [BUG][Infra] Prometheus pods stuck in init state](https://github.com/COPRS/rs-issues/issues/494)
+- [#516 - [BUG][Infra] prometheus: prometheus node-exporter are not deployed on rook-ceph nodes](https://github.com/COPRS/rs-issues/issues/516)
+
 ## [0.10.0-rc1] - 2022-08-03
-#### Fixed
+### Fixed
 - [#377 - [BUG][GRAFANA] Every 10 minutes, Grafana dashboards are overwritten by github dashboards.](https://github.com/COPRS/rs-issues/issues/377)
 - [#378 - [BUG][GRAFANA] No backup for library panel](https://github.com/COPRS/rs-issues/issues/378)
 
