@@ -5,7 +5,7 @@ metadata:
   labels:
     app: openldap
 spec:
-  replicas: 2 # do not forget to update openldap.env LDAP_REPLICATION_HOSTS
+  replicas: 1 # do not forget to update openldap.env LDAP_REPLICATION_HOSTS
   serviceName: openldap-headless
   selector:
     matchLabels:
