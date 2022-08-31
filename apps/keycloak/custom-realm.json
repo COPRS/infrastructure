@@ -1,1819 +1,1819 @@
 {
-    "id": "{{ keycloak.realm.name }}",
-    "realm": "{{ keycloak.realm.name }}",
-    "enabled": true,
-    "sslRequired": "external",
-    "registrationAllowed": false,
-    "roles": {
-      "client": {
-        "apisix": [
-          {
-            "name": "access-authorized",
-            "description": "Only users with this role may access the client",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          }
-        ],
-        "grafana": [
-          {
-            "name": "editor",
-            "description": "Editor role in grafana",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          },
-          {
-            "name": "viewer",
-            "description": "Viewer role in Grafana",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          },
-          {
-            "name": "admin",
-            "description": "grafana admin",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          },
-          {
-            "name": "access-authorized",
-            "description": "Only users with this role may access the client",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          }
-        ],
-        "graylog": [
-          {
-            "name": "access-authorized",
-            "description": "Only users with this role may access the client",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          }
-        ],
-        "kibana-security": [
-          {
-            "name": "access-authorized",
-            "description": "Only users with this role may access the client",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          }
-        ],
-        "kibana-processing": [
-          {
-            "name": "access-authorized",
-            "description": "Only users with this role may access the client",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          }
-        ],
-        "kubectl": [
-          {
-            "name": "admin",
-            "description": "Manage resources in the namespace kube-system",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          },
-          {
-            "name": "security",
-            "description": "Manage resources in the namespaces security and iam",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          },
-          {
-            "name": "operator",
-            "description": "Manage resources in namespaces database, infra, logging, monitoring, processing and rook-ceph",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          },
-          {
-            "name": "networking",
-            "description": "Manage resources in namespace networking",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          },
-          {
-            "name": "readonly",
-            "description": "List and watch all resources in all namespaces",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          }
-        ],
-        "linkerd": [
-          {
-            "name": "access-authorized",
-            "description": "Only users with this role may access the client",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          }
-        ],
-        "prometheus": [
-          {
-            "name": "access-authorized",
-            "description": "Only users with this role may access the client",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          }
-        ],
-        "scdf": [
-          {
-            "name": "admin",
-            "description": "Spring Cloud Data Flow admin role",
-            "composite": false,
-            "clientRole": true
-          },
-          {
-            "name": "viewer",
-            "description": "Spring Cloud Data Flow viewer role",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          }
-        ],
-        "ceph": [
-          {
-            "name": "access-authorized",
-            "description": "Only users with this role may access the client",
-            "composite": false,
-            "clientRole": true,
-            "attributes": {}
-          }
-        ]
-      }
-    },
-    "groups": [
-      {
-        "name": "networking",
-        "path": "/networking",
-        "attributes": {
-          "gidNumber": [
-            "2004"
-          ]
+  "id": "{{ keycloak.realm.name }}",
+  "realm": "{{ keycloak.realm.name }}",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "roles": {
+    "client": {
+      "apisix": [
+        {
+          "name": "access-authorized",
+          "description": "Only users with this role may access the client",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
+        }
+      ],
+      "grafana": [
+        {
+          "name": "editor",
+          "description": "Editor role in grafana",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
         },
-        "realmRoles": [],
-        "clientRoles": {
-          "linkerd": [
-            "access-authorized"
-          ],
-          "apisix": [
-            "access-authorized"
-          ],
-          "kubectl": [
-            "networking"
-          ]
+        {
+          "name": "viewer",
+          "description": "Viewer role in Grafana",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
         },
-        "subGroups": []
-      },
-      {
-        "name": "operator",
-        "path": "/operator",
-        "attributes": {
-          "gidNumber": [
-            "2002"
-          ]
+        {
+          "name": "admin",
+          "description": "grafana admin",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
         },
-        "realmRoles": [],
-        "clientRoles": {
-          "grafana": [
-            "editor"
-          ],
-          "prometheus": [
-            "access-authorized"
-          ],
-          "kibana-processing": [
-            "access-authorized"
-          ],
-          "kubectl": [
-            "operator"
-          ],
-          "scdf": [
-            "admin"
-          ]
+        {
+          "name": "access-authorized",
+          "description": "Only users with this role may access the client",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
+        }
+      ],
+      "graylog": [
+        {
+          "name": "access-authorized",
+          "description": "Only users with this role may access the client",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
+        }
+      ],
+      "kibana-security": [
+        {
+          "name": "access-authorized",
+          "description": "Only users with this role may access the client",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
+        }
+      ],
+      "kibana-processing": [
+        {
+          "name": "access-authorized",
+          "description": "Only users with this role may access the client",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
+        }
+      ],
+      "kubectl": [
+        {
+          "name": "admin",
+          "description": "Manage resources in the namespace kube-system",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
         },
-        "subGroups": []
-      },
-      {
-        "name": "admin",
-        "path": "/admin",
-        "attributes": {
-          "gidNumber": [
-            "2001"
-          ]
+        {
+          "name": "security",
+          "description": "Manage resources in the namespaces security and iam",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
         },
-        "realmRoles": [
-          "user_manager"
-        ],
-        "clientRoles": {
-          "kubectl": [
-            "admin"
-          ],
-          "grafana": [
-            "admin"
-          ],
-          "realm-management": [
-            "realm-admin"
-          ],
-          "ceph": [
-            "access-authorized"
-          ]
+        {
+          "name": "operator",
+          "description": "Manage resources in namespaces database, infra, logging, monitoring, processing and rook-ceph",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
         },
-        "subGroups": []
-      },
-      {
-        "name": "default",
-        "path": "/default",
-        "attributes": {
-          "gidNumber": [
-            "2000"
-          ]
+        {
+          "name": "networking",
+          "description": "Manage resources in namespace networking",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
         },
-        "realmRoles": [],
-        "clientRoles": {
-          "kubectl": [
-            "readonly"
-          ],
-          "grafana": [
-            "access-authorized",
-            "viewer"
-          ],
-          "account": [
-            "manage-account"
-          ],
-          "scdf": [
-            "viewer"
-          ]
-        },
-        "subGroups": []
-      },
-      {
-        "name": "security",
-        "path": "/security",
-        "attributes": {},
-        "realmRoles": [],
-        "clientRoles": {
-          "graylog": [
-            "access-authorized"
-          ],
-          "kibana-security": [
-            "access-authorized"
-          ],
-          "kubectl": [
-            "security"
-          ]
-        },
-        "subGroups": []
-      },
-      {
-        "name": "sudo",
-        "path": "/sudo",
-        "attributes": {
-          "gidNumber": [
-            "27"
-          ]
-        },
-        "realmRoles": [],
-        "clientRoles": {},
-        "subGroups": []
-      },
-      {
-        "name": "ssh",
-        "path": "/ssh",
-        "attributes": {
-          "gidNumber": [
-            "2005"
-          ]
-        },
-        "realmRoles": [],
-        "clientRoles": {},
-        "subGroups": []
-      }
-    ],
-    "defaultRole": {},
-    "defaultGroups": [
-      "/default"
-    ],
-    "requiredCredentials": [
-      "password"
-    ],
-    "passwordPolicy": "notUsername(undefined) and length(12) and lowerCase(1) and upperCase(1) and digits(1) and specialChars(1) and notEmail(undefined) and forceExpiredPasswordChange(90) and passwordHistory(3)",
-    "clients": [
-      {
-        "clientId": "apisix",
-        "name": "Apisix",
-        "baseUrl": "https://apisix.{{ platform_domain_name }}/",
-        "surrogateAuthRequired": false,
-        "enabled": true,
-        "alwaysDisplayInConsole": false,
-        "clientAuthenticatorType": "client-secret",
-        "secret": "{{ apisix.oidc_client_secret }}",
-        "redirectUris": [
-            "https://apisix.{{ platform_domain_name }}/*"
-        ],
-        "webOrigins": [],
-        "directAccessGrantsEnabled": true,
-        "serviceAccountsEnabled": true,
-        "authorizationServicesEnabled": true
-      },
-      {
-        "clientId": "grafana",
-        "name": "Grafana",
-        "rootUrl": "https://monitoring.{{ platform_domain_name }}",
-        "adminUrl": "",
-        "baseUrl": "/",
-        "surrogateAuthRequired": false,
-        "enabled": true,
-        "alwaysDisplayInConsole": false,
-        "clientAuthenticatorType": "client-secret",
-        "secret": "{{ grafana.oidc_client_secret }}",
-        "redirectUris": [
-            "/",
-            "/login/generic_oauth"
-        ],
-        "webOrigins": [],
-        "bearerOnly": false,
-        "consentRequired": false,
-        "standardFlowEnabled": true,
-        "implicitFlowEnabled": false,
-        "directAccessGrantsEnabled": true,
-        "serviceAccountsEnabled": true,
-        "authorizationServicesEnabled": true,
-        "publicClient": false,
-        "frontchannelLogout": false,
-        "fullScopeAllowed": false,
-        "protocolMappers": [
-          {
-            "name": "Roles",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-client-role-mapper",
-            "consentRequired": false,
-            "config": {
-              "multivalued": "true",
-              "userinfo.token.claim": "true",
-              "id.token.claim": "true",
-              "access.token.claim": "true",
-              "claim.name": "roles",
-              "jsonType.label": "String",
-              "usermodel.clientRoleMapping.clientId": "grafana"
-            }
-          }
-        ],
-        "defaultClientScopes": [
-          "web-origins",
-          "roles",
-          "profile",
-          "email"
-        ],
-        "optionalClientScopes": []
-      },
-      {
-        "clientId": "graylog",
-        "name": "Graylog",
-        "baseUrl": "https://security.{{ platform_domain_name }}/",
-        "surrogateAuthRequired": false,
-        "enabled": true,
-        "alwaysDisplayInConsole": false,
-        "clientAuthenticatorType": "client-secret",
-        "secret": "{{ graylog.oidc_client_secret }}",
-        "redirectUris": [
-            "https://security.{{ platform_domain_name }}/*"
-        ],
-        "webOrigins": [],
-        "notBefore": 0,
-        "bearerOnly": false,
-        "consentRequired": false,
-        "standardFlowEnabled": true,
-        "implicitFlowEnabled": false,
-        "directAccessGrantsEnabled": true,
-        "serviceAccountsEnabled": true,
-        "authorizationServicesEnabled": true,
-        "publicClient": false,
-        "frontchannelLogout": false,
-        "defaultClientScopes": [],
-        "optionalClientScopes": []
-      },
-      {
-        "clientId": "kibana-security",
-        "name": "Kibana security",
-        "baseUrl": "https://security.{{ platform_domain_name }}/kibana/",
-        "surrogateAuthRequired": false,
-        "enabled": true,
-        "alwaysDisplayInConsole": false,
-        "clientAuthenticatorType": "client-secret",
-        "secret": "{{ elasticsearch_security.kibana_oidc_client_secret }}",
-        "redirectUris": [
-            "https://security.{{ platform_domain_name }}/kibana/*"
-        ],
-        "webOrigins": [],
-        "notBefore": 0,
-        "bearerOnly": false,
-        "consentRequired": false,
-        "standardFlowEnabled": true,
-        "implicitFlowEnabled": false,
-        "directAccessGrantsEnabled": true,
-        "serviceAccountsEnabled": true,
-        "authorizationServicesEnabled": true,
-        "publicClient": false,
-        "frontchannelLogout": false,
-        "defaultClientScopes": [],
-        "optionalClientScopes": []
-      },
-      {
-        "clientId": "kibana-processing",
-        "name": "Kibana processing",
-        "baseUrl": "https://processing.{{ platform_domain_name }}/kibana/",
-        "surrogateAuthRequired": false,
-        "enabled": true,
-        "alwaysDisplayInConsole": false,
-        "clientAuthenticatorType": "client-secret",
-        "secret": "{{ elasticsearch_processing.kibana_oidc_client_secret }}",
-        "redirectUris": [
-            "https://processing.{{ platform_domain_name }}/kibana/*"
-        ],
-        "webOrigins": [],
-        "notBefore": 0,
-        "bearerOnly": false,
-        "consentRequired": false,
-        "standardFlowEnabled": true,
-        "implicitFlowEnabled": false,
-        "directAccessGrantsEnabled": true,
-        "serviceAccountsEnabled": true,
-        "authorizationServicesEnabled": true,
-        "publicClient": false,
-        "frontchannelLogout": false,
-        "defaultClientScopes": [],
-        "optionalClientScopes": []
-      },
-      {
-        "clientId": "linkerd",
-        "name": "Linkerd",
-        "baseUrl": "https://linkerd.{{ platform_domain_name }}/",
-        "surrogateAuthRequired": false,
-        "enabled": true,
-        "alwaysDisplayInConsole": false,
-        "clientAuthenticatorType": "client-secret",
-        "secret": "{{ linkerd.oidc_client_secret }}",
-        "redirectUris": [
-            "https://linkerd.{{ platform_domain_name }}/*"
-        ],
-        "webOrigins": [],
-        "notBefore": 0,
-        "bearerOnly": false,
-        "consentRequired": false,
-        "standardFlowEnabled": true,
-        "implicitFlowEnabled": false,
-        "directAccessGrantsEnabled": true,
-        "serviceAccountsEnabled": true,
-        "authorizationServicesEnabled": true,
-        "publicClient": false,
-        "frontchannelLogout": false,
-        "defaultClientScopes": [],
-        "optionalClientScopes": []
-      },
-      {
-        "clientId": "prometheus",
-        "name": "Prometheus",
-        "baseUrl": "https://monitoring.{{ platform_domain_name }}/prometheus/",
-        "surrogateAuthRequired": false,
-        "enabled": true,
-        "alwaysDisplayInConsole": false,
-        "clientAuthenticatorType": "client-secret",
-        "secret": "{{ prometheus.oidc_client_secret }}",
-        "redirectUris": [
-            "https://monitoring.{{ platform_domain_name }}/prometheus/*"
-        ],
-        "webOrigins": [],
-        "notBefore": 0,
-        "bearerOnly": false,
-        "consentRequired": false,
-        "standardFlowEnabled": true,
-        "implicitFlowEnabled": false,
-        "directAccessGrantsEnabled": true,
-        "serviceAccountsEnabled": true,
-        "authorizationServicesEnabled": true,
-        "publicClient": false,
-        "frontchannelLogout": false,
-        "defaultClientScopes": [],
-        "optionalClientScopes": []
-      },
-      {
-        "clientId": "ceph",
-        "name": "Ceph dashboard",
-        "baseUrl": "https://ceph.{{ platform_domain_name }}/",
-        "surrogateAuthRequired": false,
-        "enabled": true,
-        "alwaysDisplayInConsole": false,
-        "clientAuthenticatorType": "client-secret",
-        "secret": "{{ ceph.oidc_client_secret }}",
-        "redirectUris": [
-            "https://ceph.{{ platform_domain_name }}/*"
-        ],
-        "webOrigins": [],
-        "notBefore": 0,
-        "bearerOnly": false,
-        "consentRequired": false,
-        "standardFlowEnabled": true,
-        "implicitFlowEnabled": false,
-        "directAccessGrantsEnabled": true,
-        "serviceAccountsEnabled": true,
-        "authorizationServicesEnabled": true,
-        "publicClient": false,
-        "frontchannelLogout": false,
-        "defaultClientScopes": [],
-        "optionalClientScopes": []
-      },
-      {
-        "clientId": "thanos",
-        "name": "Thanos",
-        "baseUrl": "https://monitoring.{{ platform_domain_name }}/thanos/",
-        "surrogateAuthRequired": false,
-        "enabled": true,
-        "alwaysDisplayInConsole": false,
-        "clientAuthenticatorType": "client-secret",
-        "secret": "{{ thanos.oidc_client_secret }}",
-        "redirectUris": [
-            "https://monitoring.{{ platform_domain_name }}/thanos/*"
-        ],
-        "webOrigins": [],
-        "notBefore": 0,
-        "bearerOnly": false,
-        "consentRequired": false,
-        "standardFlowEnabled": true,
-        "implicitFlowEnabled": false,
-        "directAccessGrantsEnabled": true,
-        "serviceAccountsEnabled": true,
-        "authorizationServicesEnabled": true,
-        "publicClient": false,
-        "frontchannelLogout": false,
-        "defaultClientScopes": [],
-        "optionalClientScopes": []
-      },
-      {
-        "clientId": "kubectl",
-        "name": "kubectl",
-        "surrogateAuthRequired": false,
-        "enabled": true,
-        "alwaysDisplayInConsole": false,
-        "clientAuthenticatorType": "client-secret",
-        "secret": "{{ kubectl_oidc.oidc_client_secret }}",
-        "redirectUris": [
-            "http://localhost:8000/*",
-            "http://localhost:18000/*",
-            "urn:ietf:wg:oauth:2.0:oob"
-        ],
-        "webOrigins": [],
-        "notBefore": 0,
-        "bearerOnly": false,
-        "consentRequired": false,
-        "standardFlowEnabled": true,
-        "implicitFlowEnabled": false,
-        "directAccessGrantsEnabled": true,
-        "serviceAccountsEnabled": true,
-        "authorizationServicesEnabled": true,
-        "publicClient": false,
-        "frontchannelLogout": false,
-        "defaultClientScopes": [],
-        "optionalClientScopes": [],
-        "protocolMappers": [
-          {
-            "name": "username",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-attribute-mapper",
-            "consentRequired": false,
-            "config": {
-              "userinfo.token.claim": "true",
-              "user.attribute": "LDAP_ID",
-              "id.token.claim": "true",
-              "access.token.claim": "true",
-              "claim.name": "LDAP_ID",
-              "jsonType.label": "String"
-            }
-          },
-          {
-            "name": "cluster-roles",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-client-role-mapper",
-            "consentRequired": false,
-            "config": {
-              "multivalued": "true",
-              "userinfo.token.claim": "true",
-              "id.token.claim": "true",
-              "access.token.claim": "true",
-              "claim.name": "cluster-roles",
-              "jsonType.label": "String",
-              "usermodel.clientRoleMapping.clientId": "kubectl"
-            }
-          }
-        ]
-      },
-      {
-        "clientId": "scdf",
-        "name": "scdf",
-        "enabled": true,
-        "clientAuthenticatorType": "client-secret",
-        "secret": "{{ scdf.oidc_client_secret }}",
-        "rootUrl": "https://processing.{{ platform_domain_name }}",
-        "baseUrl": "/dashboard",
-        "directAccessGrantsEnabled": true,
-        "serviceAccountsEnabled": true,
-        "authorizationServicesEnabled": true,
-        "redirectUris": [
-          "https://processing.{{ platform_domain_name }}/login/oauth2/code/keycloak"
-        ],
-        "protocolMappers": [
-          {
-            "name": "Username",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-property-mapper",
-            "consentRequired": false,
-            "config": {
-              "user.attribute": "username",
-              "claim.name": "user_name",
-              "jsonType.label": "String",
-              "id.token.claim": "true"
-            }
-          }
-        ],
-        "optionalClientScopes": [
-          "dataflow.view",
-          "dataflow.manage",
-          "dataflow.destroy",
-          "dataflow.schedule",
-          "dataflow.create",
-          "dataflow.modify",
-          "dataflow.deploy"
-        ]
-      }
-    ],
-    "clientScopeMappings": {
+        {
+          "name": "readonly",
+          "description": "List and watch all resources in all namespaces",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
+        }
+      ],
+      "linkerd": [
+        {
+          "name": "access-authorized",
+          "description": "Only users with this role may access the client",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
+        }
+      ],
+      "prometheus": [
+        {
+          "name": "access-authorized",
+          "description": "Only users with this role may access the client",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
+        }
+      ],
       "scdf": [
         {
-          "clientScope": "dataflow.manage",
-          "roles": [
-            "admin"
-          ]
+          "name": "admin",
+          "description": "Spring Cloud Data Flow admin role",
+          "composite": false,
+          "clientRole": true
         },
         {
-          "clientScope": "dataflow.destroy",
-          "roles": [
-            "admin"
-          ]
-        },
+          "name": "viewer",
+          "description": "Spring Cloud Data Flow viewer role",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
+        }
+      ],
+      "ceph": [
         {
-          "clientScope": "dataflow.schedule",
-          "roles": [
-            "admin"
-          ]
-        },
-        {
-          "clientScope": "dataflow.deploy",
-          "roles": [
-            "admin"
-          ]
-        },
-        {
-          "clientScope": "dataflow.modify",
-          "roles": [
-            "admin"
-          ]
-        },
-        {
-          "clientScope": "dataflow.view",
-          "roles": [
-            "admin",
-            "viewer"
-          ]
+          "name": "access-authorized",
+          "description": "Only users with this role may access the client",
+          "composite": false,
+          "clientRole": true,
+          "attributes": {}
         }
       ]
+    }
+  },
+  "groups": [
+    {
+      "name": "networking",
+      "path": "/networking",
+      "attributes": {
+        "gidNumber": [
+          "2004"
+        ]
+      },
+      "realmRoles": [],
+      "clientRoles": {
+        "linkerd": [
+          "access-authorized"
+        ],
+        "apisix": [
+          "access-authorized"
+        ],
+        "kubectl": [
+          "networking"
+        ]
+      },
+      "subGroups": []
     },
-    "authenticationFlows": [
-      {
-        "alias": "Browser - restricted",
-        "description": "browser based authentication implementating client restriction based on user's role",
-        "providerId": "basic-flow",
-        "topLevel": true,
-        "builtIn": false,
-        "authenticationExecutions": [
-          {
-            "authenticatorFlow": true,
-            "requirement": "REQUIRED",
-            "priority": 30,
-            "flowAlias": "Login",
-            "userSetupAllowed": false,
-            "autheticatorFlow": true
-          },
-          {
-            "authenticatorConfig": "access-authorized",
-            "authenticator": "restrict-client-auth-authenticator",
-            "authenticatorFlow": false,
-            "requirement": "REQUIRED",
-            "priority": 31,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          }
+    {
+      "name": "operator",
+      "path": "/operator",
+      "attributes": {
+        "gidNumber": [
+          "2002"
         ]
       },
-      {
-        "alias": "Direct Grant - Conditional OTP",
-        "description": "Flow to determine if the OTP is required for the authentication",
-        "providerId": "basic-flow",
-        "topLevel": false,
-        "builtIn": true,
-        "authenticationExecutions": [
-          {
-            "authenticator": "conditional-user-configured",
-            "authenticatorFlow": false,
-            "requirement": "REQUIRED",
-            "priority": 10,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          },
-          {
-            "authenticator": "direct-grant-validate-otp",
-            "authenticatorFlow": false,
-            "requirement": "REQUIRED",
-            "priority": 20,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          }
+      "realmRoles": [],
+      "clientRoles": {
+        "grafana": [
+          "editor"
+        ],
+        "prometheus": [
+          "access-authorized"
+        ],
+        "kibana-processing": [
+          "access-authorized"
+        ],
+        "kubectl": [
+          "operator"
+        ],
+        "scdf": [
+          "admin"
         ]
       },
-      {
-        "alias": "Login",
-        "description": "",
-        "providerId": "basic-flow",
-        "topLevel": false,
-        "builtIn": false,
-        "authenticationExecutions": [
-          {
-            "authenticator": "auth-cookie",
-            "authenticatorFlow": false,
-            "requirement": "ALTERNATIVE",
-            "priority": 10,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          },
-          {
-            "authenticatorFlow": true,
-            "requirement": "ALTERNATIVE",
-            "priority": 20,
-            "flowAlias": "Username / Password",
-            "userSetupAllowed": false,
-            "autheticatorFlow": true
-          }
+      "subGroups": []
+    },
+    {
+      "name": "admin",
+      "path": "/admin",
+      "attributes": {
+        "gidNumber": [
+          "2001"
         ]
       },
-      {
-        "alias": "Reset - Conditional OTP",
-        "description": "Flow to determine if the OTP should be reset or not. Set to REQUIRED to force.",
-        "providerId": "basic-flow",
-        "topLevel": false,
-        "builtIn": true,
-        "authenticationExecutions": [
-          {
-            "authenticator": "conditional-user-configured",
-            "authenticatorFlow": false,
-            "requirement": "REQUIRED",
-            "priority": 10,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          },
-          {
-            "authenticator": "reset-otp",
-            "authenticatorFlow": false,
-            "requirement": "REQUIRED",
-            "priority": 20,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          }
+      "realmRoles": [
+        "user_manager"
+      ],
+      "clientRoles": {
+        "kubectl": [
+          "admin"
+        ],
+        "grafana": [
+          "admin"
+        ],
+        "realm-management": [
+          "realm-admin"
+        ],
+        "ceph": [
+          "access-authorized"
         ]
       },
-      {
-        "alias": "Username / Password",
-        "description": "Username, password, otp and other auth forms.",
-        "providerId": "basic-flow",
-        "topLevel": false,
-        "builtIn": false,
-        "authenticationExecutions": [
-          {
-            "authenticator": "auth-username-password-form",
-            "authenticatorFlow": false,
-            "requirement": "REQUIRED",
-            "priority": 0,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          }
+      "subGroups": []
+    },
+    {
+      "name": "default",
+      "path": "/default",
+      "attributes": {
+        "gidNumber": [
+          "2000"
         ]
       },
-      {
-        "alias": "clients",
-        "description": "Base authentication for clients",
-        "providerId": "client-flow",
-        "topLevel": true,
-        "builtIn": true,
-        "authenticationExecutions": [
-          {
-            "authenticator": "client-secret",
-            "authenticatorFlow": false,
-            "requirement": "ALTERNATIVE",
-            "priority": 10,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          },
-          {
-            "authenticator": "client-jwt",
-            "authenticatorFlow": false,
-            "requirement": "ALTERNATIVE",
-            "priority": 20,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          },
-          {
-            "authenticator": "client-secret-jwt",
-            "authenticatorFlow": false,
-            "requirement": "ALTERNATIVE",
-            "priority": 30,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          },
-          {
-            "authenticator": "client-x509",
-            "authenticatorFlow": false,
-            "requirement": "ALTERNATIVE",
-            "priority": 40,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          }
+      "realmRoles": [],
+      "clientRoles": {
+        "kubectl": [
+          "readonly"
+        ],
+        "grafana": [
+          "access-authorized",
+          "viewer"
+        ],
+        "account": [
+          "manage-account"
+        ],
+        "scdf": [
+          "viewer"
         ]
       },
-      {
-        "alias": "direct grant",
-        "description": "OpenID Connect Resource Owner Grant",
-        "providerId": "basic-flow",
-        "topLevel": true,
-        "builtIn": true,
-        "authenticationExecutions": [
-          {
-            "authenticator": "direct-grant-validate-username",
-            "authenticatorFlow": false,
-            "requirement": "REQUIRED",
-            "priority": 10,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          },
-          {
-            "authenticator": "direct-grant-validate-password",
-            "authenticatorFlow": false,
-            "requirement": "REQUIRED",
-            "priority": 20,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          },
-          {
-            "authenticatorFlow": true,
-            "requirement": "CONDITIONAL",
-            "priority": 30,
-            "flowAlias": "Direct Grant - Conditional OTP",
-            "userSetupAllowed": false,
-            "autheticatorFlow": true
-          }
+      "subGroups": []
+    },
+    {
+      "name": "security",
+      "path": "/security",
+      "attributes": {},
+      "realmRoles": [],
+      "clientRoles": {
+        "graylog": [
+          "access-authorized"
+        ],
+        "kibana-security": [
+          "access-authorized"
+        ],
+        "kubectl": [
+          "security"
         ]
       },
-      {
-        "alias": "registration",
-        "description": "registration flow",
-        "providerId": "basic-flow",
-        "topLevel": true,
-        "builtIn": true,
-        "authenticationExecutions": [
-          {
-            "authenticator": "registration-page-form",
-            "authenticatorFlow": true,
-            "requirement": "REQUIRED",
-            "priority": 10,
-            "flowAlias": "registration form",
-            "userSetupAllowed": false,
-            "autheticatorFlow": true
-          }
+      "subGroups": []
+    },
+    {
+      "name": "sudo",
+      "path": "/sudo",
+      "attributes": {
+        "gidNumber": [
+          "27"
         ]
       },
-      {
-        "alias": "registration form",
-        "description": "registration form",
-        "providerId": "form-flow",
-        "topLevel": false,
-        "builtIn": true,
-        "authenticationExecutions": [
-          {
-            "authenticator": "registration-user-creation",
-            "authenticatorFlow": false,
-            "requirement": "REQUIRED",
-            "priority": 20,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          },
-          {
-            "authenticator": "registration-profile-action",
-            "authenticatorFlow": false,
-            "requirement": "REQUIRED",
-            "priority": 40,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          },
-          {
-            "authenticator": "registration-password-action",
-            "authenticatorFlow": false,
-            "requirement": "REQUIRED",
-            "priority": 50,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          },
-          {
-            "authenticator": "registration-recaptcha-action",
-            "authenticatorFlow": false,
-            "requirement": "DISABLED",
-            "priority": 60,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          }
+      "realmRoles": [],
+      "clientRoles": {},
+      "subGroups": []
+    },
+    {
+      "name": "ssh",
+      "path": "/ssh",
+      "attributes": {
+        "gidNumber": [
+          "2005"
         ]
       },
-      {
-        "alias": "reset credentials",
-        "description": "Reset credentials for a user if they forgot their password or something",
-        "providerId": "basic-flow",
-        "topLevel": true,
-        "builtIn": true,
-        "authenticationExecutions": [
-          {
-            "authenticator": "reset-credentials-choose-user",
-            "authenticatorFlow": false,
-            "requirement": "REQUIRED",
-            "priority": 10,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          },
-          {
-            "authenticator": "reset-credential-email",
-            "authenticatorFlow": false,
-            "requirement": "REQUIRED",
-            "priority": 20,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          },
-          {
-            "authenticator": "reset-password",
-            "authenticatorFlow": false,
-            "requirement": "REQUIRED",
-            "priority": 30,
-            "userSetupAllowed": false,
-            "autheticatorFlow": false
-          },
-          {
-            "authenticatorFlow": true,
-            "requirement": "CONDITIONAL",
-            "priority": 40,
-            "flowAlias": "Reset - Conditional OTP",
-            "userSetupAllowed": false,
-            "autheticatorFlow": true
-          }
-        ]
-      }
-    ],
-    "authenticatorConfig": [
-      {
-        "alias": "create unique user config",
-        "config": {
-          "require.password.update.after.registration": "false"
-        }
-      },
-      {
-        "alias": "access-authorized",
-        "config": {
-          "restrictClientAuthErrorMessage": "access-denied",
-          "accessProviderId": "client-role"
-        }
-      },
-      {
-        "alias": "review profile config",
-        "config": {
-          "update.profile.on.first.login": "missing"
-        }
-      }
-    ],
-    "browserFlow": "Browser - restricted",
-    "components": {
-      "org.keycloak.storage.UserStorageProvider": [
+      "realmRoles": [],
+      "clientRoles": {},
+      "subGroups": []
+    }
+  ],
+  "defaultRole": {},
+  "defaultGroups": [
+    "/default"
+  ],
+  "requiredCredentials": [
+    "password"
+  ],
+  "passwordPolicy": "notUsername(undefined) and length(12) and lowerCase(1) and upperCase(1) and digits(1) and specialChars(1) and notEmail(undefined) and forceExpiredPasswordChange(90) and passwordHistory(3)",
+  "clients": [
+    {
+      "clientId": "apisix",
+      "name": "Apisix",
+      "baseUrl": "https://apisix.{{ platform_domain_name }}/",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{ apisix.oidc_client_secret }}",
+      "redirectUris": [
+          "https://apisix.{{ platform_domain_name }}/*"
+      ],
+      "webOrigins": [],
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true
+    },
+    {
+      "clientId": "grafana",
+      "name": "Grafana",
+      "rootUrl": "https://monitoring.{{ platform_domain_name }}",
+      "adminUrl": "",
+      "baseUrl": "/",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{ grafana.oidc_client_secret }}",
+      "redirectUris": [
+          "/",
+          "/login/generic_oauth"
+      ],
+      "webOrigins": [],
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "fullScopeAllowed": false,
+      "protocolMappers": [
         {
-          "name": "openldap.iam.svc.cluster.local",
-          "providerId": "ldap",
-          "subComponents": {
-            "org.keycloak.storage.ldap.mappers.LDAPStorageMapper": [
-              {
-                "name": "cn",
-                "providerId": "user-attribute-ldap-mapper",
-                "subComponents": {},
-                "config": {
-                  "ldap.attribute": [
-                    "cn"
-                  ],
-                  "is.mandatory.in.ldap": [
-                    "true"
-                  ],
-                  "is.binary.attribute": [
-                    "false"
-                  ],
-                  "always.read.value.from.ldap": [
-                    "false"
-                  ],
-                  "read.only": [
-                    "false"
-                  ],
-                  "user.model.attribute": [
-                    "username"
-                  ]
-                }
-              },
-              {
-                "name": "last name",
-                "providerId": "user-attribute-ldap-mapper",
-                "subComponents": {},
-                "config": {
-                  "ldap.attribute": [
-                    "sn"
-                  ],
-                  "is.mandatory.in.ldap": [
-                    "true"
-                  ],
-                  "always.read.value.from.ldap": [
-                    "true"
-                  ],
-                  "read.only": [
-                    "false"
-                  ],
-                  "user.model.attribute": [
-                    "lastName"
-                  ]
-                }
-              },
-              {
-                "name": "shadowExpire",
-                "providerId": "user-attribute-ldap-mapper",
-                "subComponents": {},
-                "config": {
-                  "ldap.attribute": [
-                    "shadowExpire"
-                  ],
-                  "attribute.default.value": [
-                    "-1"
-                  ],
-                  "is.mandatory.in.ldap": [
-                    "true"
-                  ],
-                  "is.binary.attribute": [
-                    "false"
-                  ],
-                  "always.read.value.from.ldap": [
-                    "true"
-                  ],
-                  "read.only": [
-                    "false"
-                  ],
-                  "user.model.attribute": [
-                    "shadowExpire"
-                  ]
-                }
-              },
-              {
-                "name": "userPassword",
-                "providerId": "hardcoded-ldap-attribute-mapper",
-                "subComponents": {},
-                "config": {
-                  "ldap.attribute.value": [
-                    "'${RANDOM}'"
-                  ],
-                  "ldap.attribute.name": [
-                    "userPassword"
-                  ]
-                }
-              },
-              {
-                "name": "loginShell",
-                "providerId": "user-attribute-ldap-mapper",
-                "subComponents": {},
-                "config": {
-                  "ldap.attribute": [
-                    "loginShell"
-                  ],
-                  "attribute.default.value": [
-                    "/bin/bash"
-                  ],
-                  "is.mandatory.in.ldap": [
-                    "true"
-                  ],
-                  "is.binary.attribute": [
-                    "false"
-                  ],
-                  "read.only": [
-                    "false"
-                  ],
-                  "always.read.value.from.ldap": [
-                    "true"
-                  ],
-                  "user.model.attribute": [
-                    "loginShell"
-                  ]
-                }
-              },
-              {
-                "name": "gidNumber",
-                "providerId": "user-attribute-ldap-mapper",
-                "subComponents": {},
-                "config": {
-                  "ldap.attribute": [
-                    "gidNumber"
-                  ],
-                  "attribute.default.value": [
-                    "2000"
-                  ],
-                  "is.mandatory.in.ldap": [
-                    "true"
-                  ],
-                  "is.binary.attribute": [
-                    "false"
-                  ],
-                  "read.only": [
-                    "false"
-                  ],
-                  "always.read.value.from.ldap": [
-                    "true"
-                  ],
-                  "user.model.attribute": [
-                    "gidNumber"
-                  ]
-                }
-              },
-              {
-                "name": "groupsLDAP",
-                "providerId": "group-ldap-mapper",
-                "subComponents": {},
-                "config": {
-                  "membership.attribute.type": [
-                    "DN"
-                  ],
-                  "group.name.ldap.attribute": [
-                    "cn"
-                  ],
-                  "membership.user.ldap.attribute": [
-                    "uid"
-                  ],
-                  "preserve.group.inheritance": [
-                    "true"
-                  ],
-                  "groups.dn": [
-                    "ou=groups,dc=cluster,dc=local"
-                  ],
-                  "mapped.group.attributes": [
-                    "gidNumber"
-                  ],
-                  "mode": [
-                    "LDAP_ONLY"
-                  ],
-                  "user.roles.retrieve.strategy": [
-                    "LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"
-                  ],
-                  "ignore.missing.groups": [
-                    "true"
-                  ],
-                  "membership.ldap.attribute": [
-                    "member"
-                  ],
-                  "group.object.classes": [
-                    "groupOfNames,posixGroup,top"
-                  ],
-                  "memberof.ldap.attribute": [
-                    "memberOf"
-                  ],
-                  "groups.path": [
-                    "/"
-                  ],
-                  "drop.non.existing.groups.during.sync": [
-                    "true"
-                  ]
-                }
-              },
-              {
-                "name": "first name",
-                "providerId": "user-attribute-ldap-mapper",
-                "subComponents": {},
-                "config": {
-                  "ldap.attribute": [
-                    "givenName"
-                  ],
-                  "is.mandatory.in.ldap": [
-                    "true"
-                  ],
-                  "is.binary.attribute": [
-                    "false"
-                  ],
-                  "read.only": [
-                    "false"
-                  ],
-                  "always.read.value.from.ldap": [
-                    "true"
-                  ],
-                  "user.model.attribute": [
-                    "firstName"
-                  ]
-                }
-              },
-              {
-                "name": "shadowWarning",
-                "providerId": "user-attribute-ldap-mapper",
-                "subComponents": {},
-                "config": {
-                  "ldap.attribute": [
-                    "shadowWarning"
-                  ],
-                  "attribute.default.value": [
-                    "7"
-                  ],
-                  "is.mandatory.in.ldap": [
-                    "true"
-                  ],
-                  "is.binary.attribute": [
-                    "false"
-                  ],
-                  "read.only": [
-                    "false"
-                  ],
-                  "always.read.value.from.ldap": [
-                    "true"
-                  ],
-                  "user.model.attribute": [
-                    "shadowWarning"
-                  ]
-                }
-              },
-              {
-                "name": "uidNumber",
-                "providerId": "user-attribute-ldap-mapper",
-                "subComponents": {},
-                "config": {
-                  "ldap.attribute": [
-                    "uidNumber"
-                  ],
-                  "attribute.default.value": [
-                    "9999"
-                  ],
-                  "is.mandatory.in.ldap": [
-                    "true"
-                  ],
-                  "is.binary.attribute": [
-                    "false"
-                  ],
-                  "always.read.value.from.ldap": [
-                    "true"
-                  ],
-                  "read.only": [
-                    "false"
-                  ],
-                  "user.model.attribute": [
-                    "uidNumber"
-                  ]
-                }
-              },
-              {
-                "name": "email",
-                "providerId": "user-attribute-ldap-mapper",
-                "subComponents": {},
-                "config": {
-                  "ldap.attribute": [
-                    "mail"
-                  ],
-                  "is.mandatory.in.ldap": [
-                    "false"
-                  ],
-                  "is.binary.attribute": [
-                    "false"
-                  ],
-                  "always.read.value.from.ldap": [
-                    "true"
-                  ],
-                  "read.only": [
-                    "false"
-                  ],
-                  "user.model.attribute": [
-                    "email"
-                  ]
-                }
-              },
-              {
-                "name": "homeDirectory",
-                "providerId": "user-attribute-ldap-mapper",
-                "subComponents": {},
-                "config": {
-                  "ldap.attribute": [
-                    "homeDirectory"
-                  ],
-                  "is.mandatory.in.ldap": [
-                    "true"
-                  ],
-                  "is.binary.attribute": [
-                    "false"
-                  ],
-                  "always.read.value.from.ldap": [
-                    "true"
-                  ],
-                  "read.only": [
-                    "false"
-                  ],
-                  "user.model.attribute": [
-                    "homeDirectory"
-                  ]
-                }
-              },
-              {
-                "name": "shadowInactive",
-                "providerId": "user-attribute-ldap-mapper",
-                "subComponents": {},
-                "config": {
-                  "ldap.attribute": [
-                    "shadowInactive"
-                  ],
-                  "attribute.default.value": [
-                    "-1"
-                  ],
-                  "is.mandatory.in.ldap": [
-                    "true"
-                  ],
-                  "is.binary.attribute": [
-                    "false"
-                  ],
-                  "read.only": [
-                    "false"
-                  ],
-                  "always.read.value.from.ldap": [
-                    "true"
-                  ],
-                  "user.model.attribute": [
-                    "shadowInactive"
-                  ]
-                }
-              },
-              {
-                "name": "shadowMax",
-                "providerId": "user-attribute-ldap-mapper",
-                "subComponents": {},
-                "config": {
-                  "ldap.attribute": [
-                    "shadowMax"
-                  ],
-                  "attribute.default.value": [
-                    "9999"
-                  ],
-                  "is.mandatory.in.ldap": [
-                    "true"
-                  ],
-                  "is.binary.attribute": [
-                    "false"
-                  ],
-                  "always.read.value.from.ldap": [
-                    "true"
-                  ],
-                  "read.only": [
-                    "false"
-                  ],
-                  "user.model.attribute": [
-                    "shadowMax"
-                  ]
-                }
-              },
-              {
-                "name": "username",
-                "providerId": "user-attribute-ldap-mapper",
-                "subComponents": {},
-                "config": {
-                  "ldap.attribute": [
-                    "uid"
-                  ],
-                  "is.mandatory.in.ldap": [
-                    "true"
-                  ],
-                  "is.binary.attribute": [
-                    "false"
-                  ],
-                  "read.only": [
-                    "false"
-                  ],
-                  "always.read.value.from.ldap": [
-                    "false"
-                  ],
-                  "user.model.attribute": [
-                    "username"
-                  ]
-                }
-              }
-            ]
-          },
+          "name": "Roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-client-role-mapper",
+          "consentRequired": false,
           "config": {
-            "pagination": [
-              "true"
-            ],
-            "fullSyncPeriod": [
-              "-1"
-            ],
-            "startTls": [
-              "false"
-            ],
-            "connectionPooling": [
-              "true"
-            ],
-            "usersDn": [
-              "ou=users,dc=cluster,dc=local"
-            ],
-            "cachePolicy": [
-              "DEFAULT"
-            ],
-            "useKerberosForPasswordAuthentication": [
-              "false"
-            ],
-            "importEnabled": [
-              "true"
-            ],
-            "enabled": [
-              "true"
-            ],
-            "usernameLDAPAttribute": [
-              "uid"
-            ],
-            "bindCredential": [
-              "{{ openldap.admin_user_password }}"
-            ],
-            "bindDn": [
-              "cn=admin,dc=cluster,dc=local"
-            ],
-            "changedSyncPeriod": [
-              "-1"
-            ],
-            "lastSync": [
-              "1639045217"
-            ],
-            "vendor": [
-              "other"
-            ],
-            "uuidLDAPAttribute": [
-              "uid"
-            ],
-            "connectionUrl": [
-              "ldap://openldap.iam.svc.cluster.local"
-            ],
-            "allowKerberosAuthentication": [
-              "false"
-            ],
-            "syncRegistrations": [
-              "true"
-            ],
-            "authType": [
-              "simple"
-            ],
-            "debug": [
-              "false"
-            ],
-            "searchScope": [
-              "1"
-            ],
-            "useTruststoreSpi": [
-              "ldapsOnly"
-            ],
-            "usePasswordModifyExtendedOp": [
-              "true"
-            ],
-            "priority": [
-              "0"
-            ],
-            "trustEmail": [
-              "false"
-            ],
-            "userObjectClasses": [
-              "inetOrgPerson, posixAccount, shadowAccount"
-            ],
-            "rdnLDAPAttribute": [
-              "uid"
-            ],
-            "editMode": [
-              "WRITABLE"
-            ],
-            "validatePasswordPolicy": [
-              "true"
-            ],
-            "batchSizeForSync": [
-              "1000"
-            ]
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "roles",
+            "jsonType.label": "String",
+            "usermodel.clientRoleMapping.clientId": "grafana"
+          }
+        }
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "roles",
+        "profile",
+        "email"
+      ],
+      "optionalClientScopes": []
+    },
+    {
+      "clientId": "graylog",
+      "name": "Graylog",
+      "baseUrl": "https://security.{{ platform_domain_name }}/",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{ graylog.oidc_client_secret }}",
+      "redirectUris": [
+          "https://security.{{ platform_domain_name }}/*"
+      ],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "defaultClientScopes": [],
+      "optionalClientScopes": []
+    },
+    {
+      "clientId": "kibana-security",
+      "name": "Kibana security",
+      "baseUrl": "https://security.{{ platform_domain_name }}/kibana/",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{ elasticsearch_security.kibana_oidc_client_secret }}",
+      "redirectUris": [
+          "https://security.{{ platform_domain_name }}/kibana/*"
+      ],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "defaultClientScopes": [],
+      "optionalClientScopes": []
+    },
+    {
+      "clientId": "kibana-processing",
+      "name": "Kibana processing",
+      "baseUrl": "https://processing.{{ platform_domain_name }}/kibana/",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{ elasticsearch_processing.kibana_oidc_client_secret }}",
+      "redirectUris": [
+          "https://processing.{{ platform_domain_name }}/kibana/*"
+      ],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "defaultClientScopes": [],
+      "optionalClientScopes": []
+    },
+    {
+      "clientId": "linkerd",
+      "name": "Linkerd",
+      "baseUrl": "https://linkerd.{{ platform_domain_name }}/",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{ linkerd.oidc_client_secret }}",
+      "redirectUris": [
+          "https://linkerd.{{ platform_domain_name }}/*"
+      ],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "defaultClientScopes": [],
+      "optionalClientScopes": []
+    },
+    {
+      "clientId": "prometheus",
+      "name": "Prometheus",
+      "baseUrl": "https://monitoring.{{ platform_domain_name }}/prometheus/",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{ prometheus.oidc_client_secret }}",
+      "redirectUris": [
+          "https://monitoring.{{ platform_domain_name }}/prometheus/*"
+      ],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "defaultClientScopes": [],
+      "optionalClientScopes": []
+    },
+    {
+      "clientId": "ceph",
+      "name": "Ceph dashboard",
+      "baseUrl": "https://ceph.{{ platform_domain_name }}/",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{ ceph.oidc_client_secret }}",
+      "redirectUris": [
+          "https://ceph.{{ platform_domain_name }}/*"
+      ],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "defaultClientScopes": [],
+      "optionalClientScopes": []
+    },
+    {
+      "clientId": "thanos",
+      "name": "Thanos",
+      "baseUrl": "https://monitoring.{{ platform_domain_name }}/thanos/",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{ thanos.oidc_client_secret }}",
+      "redirectUris": [
+          "https://monitoring.{{ platform_domain_name }}/thanos/*"
+      ],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "defaultClientScopes": [],
+      "optionalClientScopes": []
+    },
+    {
+      "clientId": "kubectl",
+      "name": "kubectl",
+      "surrogateAuthRequired": false,
+      "enabled": true,
+      "alwaysDisplayInConsole": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{ kubectl_oidc.oidc_client_secret }}",
+      "redirectUris": [
+          "http://localhost:8000/*",
+          "http://localhost:18000/*",
+          "urn:ietf:wg:oauth:2.0:oob"
+      ],
+      "webOrigins": [],
+      "notBefore": 0,
+      "bearerOnly": false,
+      "consentRequired": false,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "publicClient": false,
+      "frontchannelLogout": false,
+      "defaultClientScopes": [],
+      "optionalClientScopes": [],
+      "protocolMappers": [
+        {
+          "name": "username",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "LDAP_ID",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "LDAP_ID",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "name": "cluster-roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-client-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "cluster-roles",
+            "jsonType.label": "String",
+            "usermodel.clientRoleMapping.clientId": "kubectl"
           }
         }
       ]
     },
-    "clientScopes": [
-      {
-        "name": "roles",
-        "description": "OpenID Connect scope for add user roles to the access token",
-        "attributes": {
-          "consent.screen.text": "${rolesScopeConsentText}"
-        },
-        "protocol": "openid-connect",
-        "protocolMappers": [
-          {
-            "name": "client roles",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-client-role-mapper",
-            "config": {
-              "user.attribute": "foo",
-              "access.token.claim": "true",
-              "claim.name": "resource_access.${client_id}.roles",
-              "jsonType.label": "String",
-              "multivalued": "true"
-            }
-          },
-          {
-            "name": "audience resolve",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-audience-resolve-mapper",
-            "config": {}
-          },
-          {
-            "name": "realm roles",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-realm-role-mapper",
-            "config": {
-              "user.attribute": "foo",
-              "access.token.claim": "true",
-              "claim.name": "realm_access.roles",
-              "jsonType.label": "String",
-              "multivalued": "true"
-            }
+    {
+      "clientId": "scdf",
+      "name": "scdf",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "{{ scdf.oidc_client_secret }}",
+      "rootUrl": "https://processing.{{ platform_domain_name }}",
+      "baseUrl": "/dashboard",
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "authorizationServicesEnabled": true,
+      "redirectUris": [
+        "https://processing.{{ platform_domain_name }}/login/oauth2/code/keycloak"
+      ],
+      "protocolMappers": [
+        {
+          "name": "Username",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-property-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "username",
+            "claim.name": "user_name",
+            "jsonType.label": "String",
+            "id.token.claim": "true"
           }
+        }
+      ],
+      "optionalClientScopes": [
+        "dataflow.view",
+        "dataflow.manage",
+        "dataflow.destroy",
+        "dataflow.schedule",
+        "dataflow.create",
+        "dataflow.modify",
+        "dataflow.deploy"
+      ]
+    }
+  ],
+  "clientScopeMappings": {
+    "scdf": [
+      {
+        "clientScope": "dataflow.manage",
+        "roles": [
+          "admin"
         ]
       },
       {
-        "name": "email",
-        "description": "OpenID Connect built-in scope: email",
-        "attributes": {
-          "consent.screen.text": "${emailScopeConsentText}"
-        },
-        "protocol": "openid-connect",
-        "protocolMappers": [
-          {
-            "name": "email",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-property-mapper",
-            "config": {
-              "userinfo.token.claim": "true",
-              "user.attribute": "email",
-              "id.token.claim": "true",
-              "access.token.claim": "true",
-              "claim.name": "email",
-              "jsonType.label": "String"
-            }
-          },
-          {
-            "name": "email verified",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-property-mapper",
-            "config": {
-              "userinfo.token.claim": "true",
-              "user.attribute": "emailVerified",
-              "id.token.claim": "true",
-              "access.token.claim": "true",
-              "claim.name": "email_verified",
-              "jsonType.label": "boolean"
-            }
-          }
+        "clientScope": "dataflow.destroy",
+        "roles": [
+          "admin"
         ]
       },
       {
-        "name": "profile",
-        "description": "OpenID Connect built-in scope: profile",
-        "protocol": "openid-connect",
-        "attributes": {
-          "consent.screen.text": "${profileScopeConsentText}"
-        },
-        "protocolMappers": [
-          {
-            "name": "family name",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-property-mapper",
-            "config": {
-              "user.attribute": "lastName",
-              "claim.name": "family_name",
-              "jsonType.label": "String",
-              "userinfo.token.claim": "true",
-              "id.token.claim": "true",
-              "access.token.claim": "true"
-            }
-          },
-          {
-            "name": "given name",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-property-mapper",
-            "config": {
-              "user.attribute": "firstName",
-              "claim.name": "given_name",
-              "jsonType.label": "String",
-              "userinfo.token.claim": "true",
-              "id.token.claim": "true",
-              "access.token.claim": "true"
-            }
-          },
-          {
-            "name": "picture",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-attribute-mapper",
-            "config": {
-              "user.attribute": "picture",
-              "claim.name": "picture",
-              "jsonType.label": "String",
-              "userinfo.token.claim": "true",
-              "id.token.claim": "true",
-              "access.token.claim": "true"
-            }
-          },
-          {
-            "name": "gender",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-attribute-mapper",
-            "config": {
-              "user.attribute": "gender",
-              "claim.name": "gender",
-              "jsonType.label": "String",
-              "userinfo.token.claim": "true",
-              "id.token.claim": "true",
-              "access.token.claim": "true"
-            }
-          },
-          {
-            "name": "updated at",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-attribute-mapper",
-            "config": {
-              "user.attribute": "updatedAt",
-              "claim.name": "updated_at",
-              "jsonType.label": "long",
-              "userinfo.token.claim": "true",
-              "id.token.claim": "true",
-              "access.token.claim": "true"
-            }
-          },
-          {
-            "name": "nickname",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-attribute-mapper",
-            "config": {
-              "user.attribute": "nickname",
-              "claim.name": "nickname",
-              "jsonType.label": "String",
-              "userinfo.token.claim": "true",
-              "id.token.claim": "true",
-              "access.token.claim": "true"
-            }
-          },
-          {
-            "name": "website",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-attribute-mapper",
-            "config": {
-              "user.attribute": "website",
-              "claim.name": "website",
-              "jsonType.label": "String",
-              "userinfo.token.claim": "true",
-              "id.token.claim": "true",
-              "access.token.claim": "true"
-            }
-          },
-          {
-            "name": "birthdate",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-attribute-mapper",
-            "config": {
-              "user.attribute": "birthdate",
-              "claim.name": "birthdate",
-              "jsonType.label": "String",
-              "userinfo.token.claim": "true",
-              "id.token.claim": "true",
-              "access.token.claim": "true"
-            }
-          },
-          {
-            "name": "middle name",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-attribute-mapper",
-            "config": {
-              "user.attribute": "middleName",
-              "claim.name": "middle_name",
-              "jsonType.label": "String",
-              "userinfo.token.claim": "true",
-              "id.token.claim": "true",
-              "access.token.claim": "true"
-            }
-          },
-          {
-            "name": "locale",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-attribute-mapper",
-            "config": {
-              "user.attribute": "locale",
-              "claim.name": "locale",
-              "jsonType.label": "String",
-              "userinfo.token.claim": "true",
-              "id.token.claim": "true",
-              "access.token.claim": "true"
-            }
-          },
-          {
-            "name": "username",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-property-mapper",
-            "config": {
-              "user.attribute": "username",
-              "claim.name": "preferred_username",
-              "jsonType.label": "String",
-              "userinfo.token.claim": "true",
-              "id.token.claim": "true",
-              "access.token.claim": "true"
-            }
-          },
-          {
-            "name": "full name",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-full-name-mapper",
-            "config": {}
-          },
-          {
-            "name": "profile",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-attribute-mapper",
-            "config": {
-              "user.attribute": "profile",
-              "claim.name": "profile",
-              "jsonType.label": "String",
-              "userinfo.token.claim": "true",
-              "id.token.claim": "true",
-              "access.token.claim": "true"
-            }
-          },
-          {
-            "name": "zoneinfo",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-attribute-mapper",
-            "config": {
-              "user.attribute": "zoneinfo",
-              "claim.name": "zoneinfo",
-              "jsonType.label": "String",
-              "userinfo.token.claim": "true",
-              "id.token.claim": "true",
-              "access.token.claim": "true"
-            }
-          }
+        "clientScope": "dataflow.schedule",
+        "roles": [
+          "admin"
         ]
       },
       {
-        "name": "dataflow.modify",
-        "protocol": "openid-connect"
+        "clientScope": "dataflow.deploy",
+        "roles": [
+          "admin"
+        ]
       },
       {
-        "name": "dataflow.deploy",
-        "protocol": "openid-connect"
+        "clientScope": "dataflow.modify",
+        "roles": [
+          "admin"
+        ]
       },
       {
-        "name": "dataflow.destroy",
-        "protocol": "openid-connect"
-      },
-      {
-        "name": "dataflow.manage",
-        "protocol": "openid-connect"
-      },
-      {
-        "name": "dataflow.schedule",
-        "protocol": "openid-connect"
-      },
-      {
-        "name": "dataflow.view",
-        "protocol": "openid-connect"
-      },
-      {
-        "name": "dataflow.create",
-        "protocol": "openid-connect"
+        "clientScope": "dataflow.view",
+        "roles": [
+          "admin",
+          "viewer"
+        ]
       }
     ]
-  }
+  },
+  "authenticationFlows": [
+    {
+      "alias": "Browser - restricted",
+      "description": "browser based authentication implementating client restriction based on user's role",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticatorFlow": true,
+          "requirement": "REQUIRED",
+          "priority": 30,
+          "flowAlias": "Login",
+          "userSetupAllowed": false,
+          "autheticatorFlow": true
+        },
+        {
+          "authenticatorConfig": "access-authorized",
+          "authenticator": "restrict-client-auth-authenticator",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 31,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        }
+      ]
+    },
+    {
+      "alias": "Direct Grant - Conditional OTP",
+      "description": "Flow to determine if the OTP is required for the authentication",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": true,
+      "authenticationExecutions": [
+        {
+          "authenticator": "conditional-user-configured",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticator": "direct-grant-validate-otp",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 20,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        }
+      ]
+    },
+    {
+      "alias": "Login",
+      "description": "",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticator": "auth-cookie",
+          "authenticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticatorFlow": true,
+          "requirement": "ALTERNATIVE",
+          "priority": 20,
+          "flowAlias": "Username / Password",
+          "userSetupAllowed": false,
+          "autheticatorFlow": true
+        }
+      ]
+    },
+    {
+      "alias": "Reset - Conditional OTP",
+      "description": "Flow to determine if the OTP should be reset or not. Set to REQUIRED to force.",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": true,
+      "authenticationExecutions": [
+        {
+          "authenticator": "conditional-user-configured",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticator": "reset-otp",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 20,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        }
+      ]
+    },
+    {
+      "alias": "Username / Password",
+      "description": "Username, password, otp and other auth forms.",
+      "providerId": "basic-flow",
+      "topLevel": false,
+      "builtIn": false,
+      "authenticationExecutions": [
+        {
+          "authenticator": "auth-username-password-form",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 0,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        }
+      ]
+    },
+    {
+      "alias": "clients",
+      "description": "Base authentication for clients",
+      "providerId": "client-flow",
+      "topLevel": true,
+      "builtIn": true,
+      "authenticationExecutions": [
+        {
+          "authenticator": "client-secret",
+          "authenticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticator": "client-jwt",
+          "authenticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 20,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticator": "client-secret-jwt",
+          "authenticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 30,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticator": "client-x509",
+          "authenticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 40,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        }
+      ]
+    },
+    {
+      "alias": "direct grant",
+      "description": "OpenID Connect Resource Owner Grant",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": true,
+      "authenticationExecutions": [
+        {
+          "authenticator": "direct-grant-validate-username",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticator": "direct-grant-validate-password",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 20,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticatorFlow": true,
+          "requirement": "CONDITIONAL",
+          "priority": 30,
+          "flowAlias": "Direct Grant - Conditional OTP",
+          "userSetupAllowed": false,
+          "autheticatorFlow": true
+        }
+      ]
+    },
+    {
+      "alias": "registration",
+      "description": "registration flow",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": true,
+      "authenticationExecutions": [
+        {
+          "authenticator": "registration-page-form",
+          "authenticatorFlow": true,
+          "requirement": "REQUIRED",
+          "priority": 10,
+          "flowAlias": "registration form",
+          "userSetupAllowed": false,
+          "autheticatorFlow": true
+        }
+      ]
+    },
+    {
+      "alias": "registration form",
+      "description": "registration form",
+      "providerId": "form-flow",
+      "topLevel": false,
+      "builtIn": true,
+      "authenticationExecutions": [
+        {
+          "authenticator": "registration-user-creation",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 20,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticator": "registration-profile-action",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 40,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticator": "registration-password-action",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 50,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticator": "registration-recaptcha-action",
+          "authenticatorFlow": false,
+          "requirement": "DISABLED",
+          "priority": 60,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        }
+      ]
+    },
+    {
+      "alias": "reset credentials",
+      "description": "Reset credentials for a user if they forgot their password or something",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": true,
+      "authenticationExecutions": [
+        {
+          "authenticator": "reset-credentials-choose-user",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 10,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticator": "reset-credential-email",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 20,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticator": "reset-password",
+          "authenticatorFlow": false,
+          "requirement": "REQUIRED",
+          "priority": 30,
+          "userSetupAllowed": false,
+          "autheticatorFlow": false
+        },
+        {
+          "authenticatorFlow": true,
+          "requirement": "CONDITIONAL",
+          "priority": 40,
+          "flowAlias": "Reset - Conditional OTP",
+          "userSetupAllowed": false,
+          "autheticatorFlow": true
+        }
+      ]
+    }
+  ],
+  "authenticatorConfig": [
+    {
+      "alias": "create unique user config",
+      "config": {
+        "require.password.update.after.registration": "false"
+      }
+    },
+    {
+      "alias": "access-authorized",
+      "config": {
+        "restrictClientAuthErrorMessage": "access-denied",
+        "accessProviderId": "client-role"
+      }
+    },
+    {
+      "alias": "review profile config",
+      "config": {
+        "update.profile.on.first.login": "missing"
+      }
+    }
+  ],
+  "browserFlow": "Browser - restricted",
+  "components": {
+    "org.keycloak.storage.UserStorageProvider": [
+      {
+        "name": "openldap.iam.svc.cluster.local",
+        "providerId": "ldap",
+        "subComponents": {
+          "org.keycloak.storage.ldap.mappers.LDAPStorageMapper": [
+            {
+              "name": "cn",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": [
+                  "cn"
+                ],
+                "is.mandatory.in.ldap": [
+                  "true"
+                ],
+                "is.binary.attribute": [
+                  "false"
+                ],
+                "always.read.value.from.ldap": [
+                  "false"
+                ],
+                "read.only": [
+                  "false"
+                ],
+                "user.model.attribute": [
+                  "username"
+                ]
+              }
+            },
+            {
+              "name": "last name",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": [
+                  "sn"
+                ],
+                "is.mandatory.in.ldap": [
+                  "true"
+                ],
+                "always.read.value.from.ldap": [
+                  "true"
+                ],
+                "read.only": [
+                  "false"
+                ],
+                "user.model.attribute": [
+                  "lastName"
+                ]
+              }
+            },
+            {
+              "name": "shadowExpire",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": [
+                  "shadowExpire"
+                ],
+                "attribute.default.value": [
+                  "-1"
+                ],
+                "is.mandatory.in.ldap": [
+                  "true"
+                ],
+                "is.binary.attribute": [
+                  "false"
+                ],
+                "always.read.value.from.ldap": [
+                  "true"
+                ],
+                "read.only": [
+                  "false"
+                ],
+                "user.model.attribute": [
+                  "shadowExpire"
+                ]
+              }
+            },
+            {
+              "name": "userPassword",
+              "providerId": "hardcoded-ldap-attribute-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute.value": [
+                  "'${RANDOM}'"
+                ],
+                "ldap.attribute.name": [
+                  "userPassword"
+                ]
+              }
+            },
+            {
+              "name": "loginShell",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": [
+                  "loginShell"
+                ],
+                "attribute.default.value": [
+                  "/bin/bash"
+                ],
+                "is.mandatory.in.ldap": [
+                  "true"
+                ],
+                "is.binary.attribute": [
+                  "false"
+                ],
+                "read.only": [
+                  "false"
+                ],
+                "always.read.value.from.ldap": [
+                  "true"
+                ],
+                "user.model.attribute": [
+                  "loginShell"
+                ]
+              }
+            },
+            {
+              "name": "gidNumber",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": [
+                  "gidNumber"
+                ],
+                "attribute.default.value": [
+                  "2000"
+                ],
+                "is.mandatory.in.ldap": [
+                  "true"
+                ],
+                "is.binary.attribute": [
+                  "false"
+                ],
+                "read.only": [
+                  "false"
+                ],
+                "always.read.value.from.ldap": [
+                  "true"
+                ],
+                "user.model.attribute": [
+                  "gidNumber"
+                ]
+              }
+            },
+            {
+              "name": "groupsLDAP",
+              "providerId": "group-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "membership.attribute.type": [
+                  "DN"
+                ],
+                "group.name.ldap.attribute": [
+                  "cn"
+                ],
+                "membership.user.ldap.attribute": [
+                  "uid"
+                ],
+                "preserve.group.inheritance": [
+                  "true"
+                ],
+                "groups.dn": [
+                  "ou=groups,dc=cluster,dc=local"
+                ],
+                "mapped.group.attributes": [
+                  "gidNumber"
+                ],
+                "mode": [
+                  "LDAP_ONLY"
+                ],
+                "user.roles.retrieve.strategy": [
+                  "LOAD_GROUPS_BY_MEMBER_ATTRIBUTE"
+                ],
+                "ignore.missing.groups": [
+                  "true"
+                ],
+                "membership.ldap.attribute": [
+                  "member"
+                ],
+                "group.object.classes": [
+                  "groupOfNames,posixGroup,top"
+                ],
+                "memberof.ldap.attribute": [
+                  "memberOf"
+                ],
+                "groups.path": [
+                  "/"
+                ],
+                "drop.non.existing.groups.during.sync": [
+                  "true"
+                ]
+              }
+            },
+            {
+              "name": "first name",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": [
+                  "givenName"
+                ],
+                "is.mandatory.in.ldap": [
+                  "true"
+                ],
+                "is.binary.attribute": [
+                  "false"
+                ],
+                "read.only": [
+                  "false"
+                ],
+                "always.read.value.from.ldap": [
+                  "true"
+                ],
+                "user.model.attribute": [
+                  "firstName"
+                ]
+              }
+            },
+            {
+              "name": "shadowWarning",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": [
+                  "shadowWarning"
+                ],
+                "attribute.default.value": [
+                  "7"
+                ],
+                "is.mandatory.in.ldap": [
+                  "true"
+                ],
+                "is.binary.attribute": [
+                  "false"
+                ],
+                "read.only": [
+                  "false"
+                ],
+                "always.read.value.from.ldap": [
+                  "true"
+                ],
+                "user.model.attribute": [
+                  "shadowWarning"
+                ]
+              }
+            },
+            {
+              "name": "uidNumber",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": [
+                  "uidNumber"
+                ],
+                "attribute.default.value": [
+                  "9999"
+                ],
+                "is.mandatory.in.ldap": [
+                  "true"
+                ],
+                "is.binary.attribute": [
+                  "false"
+                ],
+                "always.read.value.from.ldap": [
+                  "true"
+                ],
+                "read.only": [
+                  "false"
+                ],
+                "user.model.attribute": [
+                  "uidNumber"
+                ]
+              }
+            },
+            {
+              "name": "email",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": [
+                  "mail"
+                ],
+                "is.mandatory.in.ldap": [
+                  "false"
+                ],
+                "is.binary.attribute": [
+                  "false"
+                ],
+                "always.read.value.from.ldap": [
+                  "true"
+                ],
+                "read.only": [
+                  "false"
+                ],
+                "user.model.attribute": [
+                  "email"
+                ]
+              }
+            },
+            {
+              "name": "homeDirectory",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": [
+                  "homeDirectory"
+                ],
+                "is.mandatory.in.ldap": [
+                  "true"
+                ],
+                "is.binary.attribute": [
+                  "false"
+                ],
+                "always.read.value.from.ldap": [
+                  "true"
+                ],
+                "read.only": [
+                  "false"
+                ],
+                "user.model.attribute": [
+                  "homeDirectory"
+                ]
+              }
+            },
+            {
+              "name": "shadowInactive",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": [
+                  "shadowInactive"
+                ],
+                "attribute.default.value": [
+                  "-1"
+                ],
+                "is.mandatory.in.ldap": [
+                  "true"
+                ],
+                "is.binary.attribute": [
+                  "false"
+                ],
+                "read.only": [
+                  "false"
+                ],
+                "always.read.value.from.ldap": [
+                  "true"
+                ],
+                "user.model.attribute": [
+                  "shadowInactive"
+                ]
+              }
+            },
+            {
+              "name": "shadowMax",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": [
+                  "shadowMax"
+                ],
+                "attribute.default.value": [
+                  "9999"
+                ],
+                "is.mandatory.in.ldap": [
+                  "true"
+                ],
+                "is.binary.attribute": [
+                  "false"
+                ],
+                "always.read.value.from.ldap": [
+                  "true"
+                ],
+                "read.only": [
+                  "false"
+                ],
+                "user.model.attribute": [
+                  "shadowMax"
+                ]
+              }
+            },
+            {
+              "name": "username",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": [
+                  "uid"
+                ],
+                "is.mandatory.in.ldap": [
+                  "true"
+                ],
+                "is.binary.attribute": [
+                  "false"
+                ],
+                "read.only": [
+                  "false"
+                ],
+                "always.read.value.from.ldap": [
+                  "false"
+                ],
+                "user.model.attribute": [
+                  "username"
+                ]
+              }
+            }
+          ]
+        },
+        "config": {
+          "pagination": [
+            "true"
+          ],
+          "fullSyncPeriod": [
+            "-1"
+          ],
+          "startTls": [
+            "false"
+          ],
+          "connectionPooling": [
+            "true"
+          ],
+          "usersDn": [
+            "ou=users,dc=cluster,dc=local"
+          ],
+          "cachePolicy": [
+            "DEFAULT"
+          ],
+          "useKerberosForPasswordAuthentication": [
+            "false"
+          ],
+          "importEnabled": [
+            "true"
+          ],
+          "enabled": [
+            "true"
+          ],
+          "usernameLDAPAttribute": [
+            "uid"
+          ],
+          "bindCredential": [
+            "{{ openldap.admin_user_password }}"
+          ],
+          "bindDn": [
+            "cn=admin,dc=cluster,dc=local"
+          ],
+          "changedSyncPeriod": [
+            "-1"
+          ],
+          "lastSync": [
+            "1639045217"
+          ],
+          "vendor": [
+            "other"
+          ],
+          "uuidLDAPAttribute": [
+            "uid"
+          ],
+          "connectionUrl": [
+            "ldap://openldap.iam.svc.cluster.local"
+          ],
+          "allowKerberosAuthentication": [
+            "false"
+          ],
+          "syncRegistrations": [
+            "true"
+          ],
+          "authType": [
+            "simple"
+          ],
+          "debug": [
+            "false"
+          ],
+          "searchScope": [
+            "1"
+          ],
+          "useTruststoreSpi": [
+            "ldapsOnly"
+          ],
+          "usePasswordModifyExtendedOp": [
+            "true"
+          ],
+          "priority": [
+            "0"
+          ],
+          "trustEmail": [
+            "false"
+          ],
+          "userObjectClasses": [
+            "inetOrgPerson, posixAccount, shadowAccount"
+          ],
+          "rdnLDAPAttribute": [
+            "uid"
+          ],
+          "editMode": [
+            "WRITABLE"
+          ],
+          "validatePasswordPolicy": [
+            "true"
+          ],
+          "batchSizeForSync": [
+            "1000"
+          ]
+        }
+      }
+    ]
+  },
+  "clientScopes": [
+    {
+      "name": "roles",
+      "description": "OpenID Connect scope for add user roles to the access token",
+      "attributes": {
+        "consent.screen.text": "${rolesScopeConsentText}"
+      },
+      "protocol": "openid-connect",
+      "protocolMappers": [
+        {
+          "name": "client roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-client-role-mapper",
+          "config": {
+            "user.attribute": "foo",
+            "access.token.claim": "true",
+            "claim.name": "resource_access.${client_id}.roles",
+            "jsonType.label": "String",
+            "multivalued": "true"
+          }
+        },
+        {
+          "name": "audience resolve",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-audience-resolve-mapper",
+          "config": {}
+        },
+        {
+          "name": "realm roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "config": {
+            "user.attribute": "foo",
+            "access.token.claim": "true",
+            "claim.name": "realm_access.roles",
+            "jsonType.label": "String",
+            "multivalued": "true"
+          }
+        }
+      ]
+    },
+    {
+      "name": "email",
+      "description": "OpenID Connect built-in scope: email",
+      "attributes": {
+        "consent.screen.text": "${emailScopeConsentText}"
+      },
+      "protocol": "openid-connect",
+      "protocolMappers": [
+        {
+          "name": "email",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-property-mapper",
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "email",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "email",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "name": "email verified",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-property-mapper",
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "emailVerified",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "email_verified",
+            "jsonType.label": "boolean"
+          }
+        }
+      ]
+    },
+    {
+      "name": "profile",
+      "description": "OpenID Connect built-in scope: profile",
+      "protocol": "openid-connect",
+      "attributes": {
+        "consent.screen.text": "${profileScopeConsentText}"
+      },
+      "protocolMappers": [
+        {
+          "name": "family name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-property-mapper",
+          "config": {
+            "user.attribute": "lastName",
+            "claim.name": "family_name",
+            "jsonType.label": "String",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "given name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-property-mapper",
+          "config": {
+            "user.attribute": "firstName",
+            "claim.name": "given_name",
+            "jsonType.label": "String",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "picture",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "picture",
+            "claim.name": "picture",
+            "jsonType.label": "String",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "gender",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "gender",
+            "claim.name": "gender",
+            "jsonType.label": "String",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "updated at",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "updatedAt",
+            "claim.name": "updated_at",
+            "jsonType.label": "long",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "nickname",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "nickname",
+            "claim.name": "nickname",
+            "jsonType.label": "String",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "website",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "website",
+            "claim.name": "website",
+            "jsonType.label": "String",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "birthdate",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "birthdate",
+            "claim.name": "birthdate",
+            "jsonType.label": "String",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "middle name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "middleName",
+            "claim.name": "middle_name",
+            "jsonType.label": "String",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "locale",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "locale",
+            "claim.name": "locale",
+            "jsonType.label": "String",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "username",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-property-mapper",
+          "config": {
+            "user.attribute": "username",
+            "claim.name": "preferred_username",
+            "jsonType.label": "String",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "full name",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-full-name-mapper",
+          "config": {}
+        },
+        {
+          "name": "profile",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "profile",
+            "claim.name": "profile",
+            "jsonType.label": "String",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        },
+        {
+          "name": "zoneinfo",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "config": {
+            "user.attribute": "zoneinfo",
+            "claim.name": "zoneinfo",
+            "jsonType.label": "String",
+            "userinfo.token.claim": "true",
+            "id.token.claim": "true",
+            "access.token.claim": "true"
+          }
+        }
+      ]
+    },
+    {
+      "name": "dataflow.modify",
+      "protocol": "openid-connect"
+    },
+    {
+      "name": "dataflow.deploy",
+      "protocol": "openid-connect"
+    },
+    {
+      "name": "dataflow.destroy",
+      "protocol": "openid-connect"
+    },
+    {
+      "name": "dataflow.manage",
+      "protocol": "openid-connect"
+    },
+    {
+      "name": "dataflow.schedule",
+      "protocol": "openid-connect"
+    },
+    {
+      "name": "dataflow.view",
+      "protocol": "openid-connect"
+    },
+    {
+      "name": "dataflow.create",
+      "protocol": "openid-connect"
+    }
+  ]
+}
