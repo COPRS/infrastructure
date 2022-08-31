@@ -1,0 +1,81 @@
+management:
+  metrics:
+      export:
+        prometheus:
+            enabled: true
+            rsocket:
+              enabled: true
+              host: spring-cloud-dataflow-prometheus-proxy
+              port: 7001
+spring:
+  cloud:
+    dataflow:
+      task:
+        platform:
+          kubernetes:
+            accounts:
+              default:
+                limits:
+                  cpu: 500m
+                  memory: 1024Mi
+                readinessProbeDelay: 120
+                livenessProbeDelay: 90
+                podSecurityContext:
+                  runAsUser: 1001
+                entryPointStyle: exec
+      security:
+        authorization:
+          provider-role-mappings:
+            keycloak:
+              map-oauth-scopes: true
+              role-mappings:
+                ROLE_VIEW: dataflow.view
+                ROLE_CREATE: dataflow.create
+                ROLE_MANAGE: dataflow.manage
+                ROLE_DEPLOY: dataflow.deploy
+                ROLE_DESTROY: dataflow.destroy
+                ROLE_MODIFY: dataflow.modify
+                ROLE_SCHEDULE: dataflow.schedule
+    task:
+      closecontextEnabled: true
+  datasource:
+    url: 'jdbc:postgresql://postgresql-primary-hl.database.svc.cluster.local:5432/dataflow'
+    driverClassName: org.postgresql.Driver
+    username: scdf
+    password: ${mariadb-password}
+    testOnBorrow: true
+    validationQuery: "SELECT 1"
+  flyway:
+    enabled: true
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: scdf
+            client-secret: {{ scdf.oidc_client_secret }}
+            redirect-uri: '{baseUrl}/login/oauth2/code/{registrationId}'
+            authorization-grant-type: authorization_code
+            scope:
+            - openid
+            - dataflow.view
+            - dataflow.deploy
+            - dataflow.destroy
+            - dataflow.manage
+            - dataflow.modify
+            - dataflow.schedule
+            - dataflow.create
+        provider:
+          keycloak:
+            jwk-set-uri: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/certs
+            token-uri: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/token
+            user-info-uri: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/userinfo
+            user-name-attribute: user_name
+            authorization-uri: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/auth
+      resourceserver:
+        opaquetoken:
+          introspection-uri: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/token/introspect
+          client-id: scdf
+          client-secret: {{ scdf.oidc_client_secret }}
+      authorization:
+        check-token-access: isAuthenticated()

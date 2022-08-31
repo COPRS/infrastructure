@@ -33,3 +33,6 @@ configMapGenerator:
   - name: spring-cloud-dataflow-skipper
     files:
       - application.yaml=skipper-configuration.yaml
+  - name: spring-cloud-dataflow-server
+    files:
+      - application.yaml=server-configuration.yaml

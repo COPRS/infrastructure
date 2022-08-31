@@ -25,6 +25,7 @@ server:
     requests:
       cpu: 500m
       memory: 1Gi
+  existingConfigmap: spring-cloud-dataflow-server
 skipper:
   image:
     tag: 2.8.4-debian-10-r0
@@ -42,7 +43,7 @@ skipper:
     requests:
       cpu: 500m
       memory: 1Gi
-  existingConfigmap: "spring-cloud-dataflow-skipper"
+  existingConfigmap: spring-cloud-dataflow-skipper
 metrics:
   enabled: true
   image:
