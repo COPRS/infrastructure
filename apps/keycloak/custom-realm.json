@@ -129,8 +129,14 @@
         ],
         "scdf": [
           {
-            "name": "access-authorized",
-            "description": "Only users with this role may access the client",
+            "name": "admin",
+            "description": "Spring Cloud Data Flow admin role",
+            "composite": false,
+            "clientRole": true
+          },
+          {
+            "name": "viewer",
+            "description": "Spring Cloud Data Flow viewer role",
             "composite": false,
             "clientRole": true,
             "attributes": {}
@@ -193,7 +199,7 @@
             "operator"
           ],
           "scdf": [
-            "access-authorized"
+            "admin"
           ]
         },
         "subGroups": []
@@ -244,6 +250,9 @@
           ],
           "account": [
             "manage-account"
+          ],
+          "scdf": [
+            "viewer"
           ]
         },
         "subGroups": []
@@ -499,32 +508,6 @@
         "optionalClientScopes": []
       },
       {
-        "clientId": "scdf",
-        "name": "Spring Cloud Dataflow",
-        "baseUrl": "https://processing.{{ platform_domain_name }}/",
-        "surrogateAuthRequired": false,
-        "enabled": true,
-        "alwaysDisplayInConsole": false,
-        "clientAuthenticatorType": "client-secret",
-        "secret": "{{ scdf.oidc_client_secret }}",
-        "redirectUris": [
-            "https://processing.{{ platform_domain_name }}/*"
-        ],
-        "webOrigins": [],
-        "notBefore": 0,
-        "bearerOnly": false,
-        "consentRequired": false,
-        "standardFlowEnabled": true,
-        "implicitFlowEnabled": false,
-        "directAccessGrantsEnabled": true,
-        "serviceAccountsEnabled": true,
-        "authorizationServicesEnabled": true,
-        "publicClient": false,
-        "frontchannelLogout": false,
-        "defaultClientScopes": [],
-        "optionalClientScopes": []
-      },
-      {
         "clientId": "ceph",
         "name": "Ceph dashboard",
         "baseUrl": "https://ceph.{{ platform_domain_name }}/",
@@ -633,8 +616,87 @@
             }
           }
         ]
+      },
+      {
+        "clientId": "scdf",
+        "name": "scdf",
+        "enabled": true,
+        "clientAuthenticatorType": "client-secret",
+        "secret": "{{ scdf.oidc_client_secret }}",
+        "rootUrl": "https://processing.{{ platform_domain_name }}",
+        "baseUrl": "/dashboard",
+        "directAccessGrantsEnabled": true,
+        "serviceAccountsEnabled": true,
+        "authorizationServicesEnabled": true,
+        "redirectUris": [
+          "https://processing.{{ platform_domain_name }}/login/oauth2/code/keycloak"
+        ],
+        "protocolMappers": [
+          {
+            "name": "Username",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-property-mapper",
+            "consentRequired": false,
+            "config": {
+              "user.attribute": "username",
+              "claim.name": "user_name",
+              "jsonType.label": "String",
+              "id.token.claim": "true"
+            }
+          }
+        ],
+        "optionalClientScopes": [
+          "dataflow.view",
+          "dataflow.manage",
+          "dataflow.destroy",
+          "dataflow.schedule",
+          "dataflow.create",
+          "dataflow.modify",
+          "dataflow.deploy"
+        ]
       }
     ],
+    "clientScopeMappings": {
+      "scdf": [
+        {
+          "clientScope": "dataflow.manage",
+          "roles": [
+            "admin"
+          ]
+        },
+        {
+          "clientScope": "dataflow.destroy",
+          "roles": [
+            "admin"
+          ]
+        },
+        {
+          "clientScope": "dataflow.schedule",
+          "roles": [
+            "admin"
+          ]
+        },
+        {
+          "clientScope": "dataflow.deploy",
+          "roles": [
+            "admin"
+          ]
+        },
+        {
+          "clientScope": "dataflow.modify",
+          "roles": [
+            "admin"
+          ]
+        },
+        {
+          "clientScope": "dataflow.view",
+          "roles": [
+            "admin",
+            "viewer"
+          ]
+        }
+      ]
+    },
     "authenticationFlows": [
       {
         "alias": "Browser - restricted",
@@ -1462,5 +1524,296 @@
           }
         }
       ]
-    }
+    },
+    "clientScopes": [
+      {
+        "name": "roles",
+        "description": "OpenID Connect scope for add user roles to the access token",
+        "attributes": {
+          "consent.screen.text": "${rolesScopeConsentText}"
+        },
+        "protocol": "openid-connect",
+        "protocolMappers": [
+          {
+            "name": "client roles",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-client-role-mapper",
+            "config": {
+              "user.attribute": "foo",
+              "access.token.claim": "true",
+              "claim.name": "resource_access.${client_id}.roles",
+              "jsonType.label": "String",
+              "multivalued": "true"
+            }
+          },
+          {
+            "name": "audience resolve",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-audience-resolve-mapper",
+            "config": {}
+          },
+          {
+            "name": "realm roles",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-realm-role-mapper",
+            "config": {
+              "user.attribute": "foo",
+              "access.token.claim": "true",
+              "claim.name": "realm_access.roles",
+              "jsonType.label": "String",
+              "multivalued": "true"
+            }
+          }
+        ]
+      },
+      {
+        "name": "email",
+        "description": "OpenID Connect built-in scope: email",
+        "attributes": {
+          "consent.screen.text": "${emailScopeConsentText}"
+        },
+        "protocol": "openid-connect",
+        "protocolMappers": [
+          {
+            "name": "email",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-property-mapper",
+            "config": {
+              "userinfo.token.claim": "true",
+              "user.attribute": "email",
+              "id.token.claim": "true",
+              "access.token.claim": "true",
+              "claim.name": "email",
+              "jsonType.label": "String"
+            }
+          },
+          {
+            "name": "email verified",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-property-mapper",
+            "config": {
+              "userinfo.token.claim": "true",
+              "user.attribute": "emailVerified",
+              "id.token.claim": "true",
+              "access.token.claim": "true",
+              "claim.name": "email_verified",
+              "jsonType.label": "boolean"
+            }
+          }
+        ]
+      },
+      {
+        "name": "profile",
+        "description": "OpenID Connect built-in scope: profile",
+        "protocol": "openid-connect",
+        "attributes": {
+          "consent.screen.text": "${profileScopeConsentText}"
+        },
+        "protocolMappers": [
+          {
+            "name": "family name",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-property-mapper",
+            "config": {
+              "user.attribute": "lastName",
+              "claim.name": "family_name",
+              "jsonType.label": "String",
+              "userinfo.token.claim": "true",
+              "id.token.claim": "true",
+              "access.token.claim": "true"
+            }
+          },
+          {
+            "name": "given name",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-property-mapper",
+            "config": {
+              "user.attribute": "firstName",
+              "claim.name": "given_name",
+              "jsonType.label": "String",
+              "userinfo.token.claim": "true",
+              "id.token.claim": "true",
+              "access.token.claim": "true"
+            }
+          },
+          {
+            "name": "picture",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "config": {
+              "user.attribute": "picture",
+              "claim.name": "picture",
+              "jsonType.label": "String",
+              "userinfo.token.claim": "true",
+              "id.token.claim": "true",
+              "access.token.claim": "true"
+            }
+          },
+          {
+            "name": "gender",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "config": {
+              "user.attribute": "gender",
+              "claim.name": "gender",
+              "jsonType.label": "String",
+              "userinfo.token.claim": "true",
+              "id.token.claim": "true",
+              "access.token.claim": "true"
+            }
+          },
+          {
+            "name": "updated at",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "config": {
+              "user.attribute": "updatedAt",
+              "claim.name": "updated_at",
+              "jsonType.label": "long",
+              "userinfo.token.claim": "true",
+              "id.token.claim": "true",
+              "access.token.claim": "true"
+            }
+          },
+          {
+            "name": "nickname",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "config": {
+              "user.attribute": "nickname",
+              "claim.name": "nickname",
+              "jsonType.label": "String",
+              "userinfo.token.claim": "true",
+              "id.token.claim": "true",
+              "access.token.claim": "true"
+            }
+          },
+          {
+            "name": "website",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "config": {
+              "user.attribute": "website",
+              "claim.name": "website",
+              "jsonType.label": "String",
+              "userinfo.token.claim": "true",
+              "id.token.claim": "true",
+              "access.token.claim": "true"
+            }
+          },
+          {
+            "name": "birthdate",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "config": {
+              "user.attribute": "birthdate",
+              "claim.name": "birthdate",
+              "jsonType.label": "String",
+              "userinfo.token.claim": "true",
+              "id.token.claim": "true",
+              "access.token.claim": "true"
+            }
+          },
+          {
+            "name": "middle name",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "config": {
+              "user.attribute": "middleName",
+              "claim.name": "middle_name",
+              "jsonType.label": "String",
+              "userinfo.token.claim": "true",
+              "id.token.claim": "true",
+              "access.token.claim": "true"
+            }
+          },
+          {
+            "name": "locale",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "config": {
+              "user.attribute": "locale",
+              "claim.name": "locale",
+              "jsonType.label": "String",
+              "userinfo.token.claim": "true",
+              "id.token.claim": "true",
+              "access.token.claim": "true"
+            }
+          },
+          {
+            "name": "username",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-property-mapper",
+            "config": {
+              "user.attribute": "username",
+              "claim.name": "preferred_username",
+              "jsonType.label": "String",
+              "userinfo.token.claim": "true",
+              "id.token.claim": "true",
+              "access.token.claim": "true"
+            }
+          },
+          {
+            "name": "full name",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-full-name-mapper",
+            "config": {}
+          },
+          {
+            "name": "profile",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "config": {
+              "user.attribute": "profile",
+              "claim.name": "profile",
+              "jsonType.label": "String",
+              "userinfo.token.claim": "true",
+              "id.token.claim": "true",
+              "access.token.claim": "true"
+            }
+          },
+          {
+            "name": "zoneinfo",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-usermodel-attribute-mapper",
+            "config": {
+              "user.attribute": "zoneinfo",
+              "claim.name": "zoneinfo",
+              "jsonType.label": "String",
+              "userinfo.token.claim": "true",
+              "id.token.claim": "true",
+              "access.token.claim": "true"
+            }
+          }
+        ]
+      },
+      {
+        "name": "dataflow.modify",
+        "protocol": "openid-connect"
+      },
+      {
+        "name": "dataflow.deploy",
+        "protocol": "openid-connect"
+      },
+      {
+        "name": "dataflow.destroy",
+        "protocol": "openid-connect"
+      },
+      {
+        "name": "dataflow.manage",
+        "protocol": "openid-connect"
+      },
+      {
+        "name": "dataflow.schedule",
+        "protocol": "openid-connect"
+      },
+      {
+        "name": "dataflow.view",
+        "protocol": "openid-connect"
+      },
+      {
+        "name": "dataflow.create",
+        "protocol": "openid-connect"
+      }
+    ]
   }

@@ -11,23 +11,7 @@ spec:
       match:
         hosts: [ processing.{{ platform_domain_name }} ]
         paths: [ /* ]
-        methods: [ GET, POST, PUT, OPTIONS, DELETE ]
-      plugins:
-        - name: proxy-rewrite
-          enable: true
-          config:
-            regex_uri: [ "^/$", "/dashboard/" ]
-        - name: openid-connect
-          enable: true
-          config:
-            client_id: scdf
-            client_secret: {{ scdf.oidc_client_secret }}
-            discovery: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
-            scope: openid
-            bearer_only: false
-            realm: {{ keycloak.realm.name }}
-            introspection_endpoint_auth_method: client_secret_post
-            redirect_uri: https://processing.{{ platform_domain_name }}/redirect_uri
+      websocket: true
 ---
 apiVersion: apisix.apache.org/v2beta3
 kind: ApisixTls
