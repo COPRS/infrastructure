@@ -320,16 +320,17 @@
       {
         "clientId": "grafana",
         "name": "Grafana",
-        "rootUrl": "${authBaseUrl}",
+        "rootUrl": "https://monitoring.{{ platform_domain_name }}",
         "adminUrl": "",
-        "baseUrl": "https://monitoring.{{ platform_domain_name }}/",
+        "baseUrl": "/",
         "surrogateAuthRequired": false,
         "enabled": true,
         "alwaysDisplayInConsole": false,
         "clientAuthenticatorType": "client-secret",
         "secret": "{{ grafana.oidc_client_secret }}",
         "redirectUris": [
-          "https://monitoring.{{ platform_domain_name }}/login/generic_oauth"
+            "/",
+            "/login/generic_oauth"
         ],
         "webOrigins": [],
         "bearerOnly": false,
