@@ -1135,10 +1135,10 @@
                     "true"
                   ],
                   "membership.ldap.attribute": [
-                    "member"
+                    "uniqueMember"
                   ],
                   "group.object.classes": [
-                    "groupOfNames,posixGroup,top"
+                    "groupOfUniqueNames,posixGroup,top"
                   ],
                   "memberof.ldap.attribute": [
                     "memberOf"
