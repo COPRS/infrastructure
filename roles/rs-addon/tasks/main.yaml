@@ -141,6 +141,8 @@
       shell: |
         java -jar {{ shell_jar_path }} \
         --dataflow.uri=http://spring-cloud-dataflow-server.processing.svc.cluster.local:8080 \
+        --dataflow.username={{ keycloak.realm.admin.username }} \
+        --dataflow.password={{ keycloak.realm.admin.password }} \
         --spring.shell.commandFile={{ remote_rs_addon_dir.path }}/scdf_shell_script.sh
       register: deploy_log
 
