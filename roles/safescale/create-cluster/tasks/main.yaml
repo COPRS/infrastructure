@@ -1,8 +1,4 @@
 ---
-- name: Loading clusters list
-  shell: "{{ safescale_path }} cluster list | jq -r '.result[].name'"
-  register: cluster_list
-
 - name: Create safescale cluster
   shell: |
     {{ safescale_path }} \
@@ -18,7 +14,9 @@
     --gw-sizing {{ (cluster.nodegroups | selectattr('name', 'equalto', 'gateway') | first).sizing }} \
     --force \
     {{ cluster.name }}
-  when: cluster_list.stdout == '' or cluster.name not in cluster_list.stdout_lines
+  when: cluster.name not in cluster_list
+  vars:
+    cluster_list: "{{ lookup('pipe', safescale_path + ' cluster list') | from_json | json_query('result[*].name') }}"
 
 - name: Create the safescale label for node groups
   shell: |
