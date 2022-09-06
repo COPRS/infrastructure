@@ -689,6 +689,12 @@
         ]
       },
       {
+        "clientScope": "dataflow.create",
+        "roles": [
+          "admin"
+        ]
+      },
+      {
         "clientScope": "dataflow.view",
         "roles": [
           "admin",
