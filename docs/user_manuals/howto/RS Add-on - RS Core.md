@@ -14,7 +14,8 @@ For example:
 ansible-playbook deploy-rs-addon.yaml \
     -i inventory/mycluster/hosts.yaml \
     -e rs_addon_location=https://artifactory.coprs.esa-copernicus.eu/artifactory/demo-zip/demo-rs-addon.zip \
-    -e stream_name=example-stream-name
+    -e stream_name=STREAM_NAME \
+    -e stream_namespace=NAMESPACE
 ```
 
 ## Use different namespaces in stream deployments
@@ -30,12 +31,8 @@ scdf:
     - ...
 ```
 
-You will then be able to choose the namespace you want the stream to be deployed into by setting the following variable the the stream properties according to the ICD definition:
-```
-[...]
-spring.cloud.dataflow.skipper.platformName=NAMESPACE
-[...]
-```
+You will then be able to choose the namespace you want the stream to be deployed into by using the `-e stream_namespace=NAMESPACE` option on stream deployment.
+
 
 ## Uninstall
 

@@ -10,6 +10,6 @@ app import --uri file://{{ remote_rs_addon_dir.path }}/stream-application-list.p
 {# create stream #}
 stream create --name {{ stream_name | replace ('.', '-') | replace ('_', '-') }}-part{{ loop.index }} --definition "{{ stream_definition | trim }}"
 {# deploy stream #}
-stream deploy --name {{ stream_name | replace ('.', '-') | replace ('_', '-') }}-part{{ loop.index }} --properties "{{ stream_properties | join(',') }}"
+stream deploy --platformName {{ stream_namespace | default('default') }} --name {{ stream_name | replace ('.', '-') | replace ('_', '-') }}-part{{ loop.index }} --properties "{{ stream_properties | join(',') }}"
 {% endif %}
 {% endfor %}
