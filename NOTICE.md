@@ -1,0 +1,308 @@
+- Cert manager :
+  - Helm chart
+    - Version: v1.6.1
+    - License: [Apache License 2.0](https://github.com/cert-manager/cert-manager/blob/v1.6.1/LICENSE)
+    - Source: https://github.com/cert-manager/cert-manager/tree/v1.6.1/deploy/charts/cert-manager
+  - Container image(s)
+    - quay.io/jetstack/cert-manager-cainjector:v1.6.1
+      - License: [Apache License 2.0](https://github.com/cert-manager/cert-manager/blob/v1.6.1/LICENSE)
+
+- Linkerd CNI
+  - Helm chart
+    - Version: 2.11.1
+    - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
+    - Source: https://github.com/linkerd/linkerd2/tree/stable-2.11.1/charts/linkerd2-cni
+  - Container image(s)
+    - cr.l5d.io/linkerd/cni-plugin:stable-2.11.1
+      - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
+
+- linkerd-control-plane
+  - Helm chart
+    - Version: 2.11.1
+    - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
+    - Source: https://github.com/linkerd/linkerd2/tree/main/charts/linkerd-control-plane
+  - Container image(s)
+    - cr.l5d.io/linkerd/policy-controller:stable-2.11.1
+      - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
+    - cr.l5d.io/linkerd/proxy:stable-2.11.1
+      - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
+    - cr.l5d.io/linkerd/controller:stable-2.11.1
+      - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
+    - cr.l5d.io/linkerd/debug:stable-2.11.1
+      - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
+
+- Linkerd Viz
+  - Helm chart
+    - Version: 2.11.1
+    - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
+    - Source: https://github.com/linkerd/linkerd2/tree/stable-2.11.1/viz/charts/linkerd-viz
+  - Container image(s)
+    - cr.l5d.io/linkerd:stable-2.11.1
+      - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
+
+- Rook Ceph
+  - Helm chart
+    - Version: v1.9.4
+    - License: [Apache License 2.0](https://github.com/rook/rook/blob/v1.9.4/LICENSE)
+    - Source: https://github.com/rook/rook/tree/v1.9.4/deploy/charts/rook-ceph
+  - Container image(s)
+    - quay.io/cephcsi/cephcsi:v3.6.1
+      - License: [Apache License 2.0](https://github.com/ceph/ceph-csi/blob/v3.6.1/LICENSE)
+    - k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0
+      - License: [Apache License 2.0](https://github.com/kubernetes-csi/node-driver-registrar/blob/v2.5.0/LICENSE)
+    - k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
+      - License: [Apache License 2.0](https://github.com/kubernetes-csi/external-resizer/blob/v1.4.0/LICENSE)
+    - k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0
+      - License: [Apache License 2.0](https://github.com/kubernetes-csi/external-provisioner/blob/v3.1.0/LICENSE)
+    - k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
+      - License: [Apache License 2.0](https://github.com/kubernetes-csi/external-snapshotter/blob/v5.0.1/LICENSE)
+    - k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
+      - License: [Apache License 2.0](https://github.com/kubernetes-csi/external-attacher/blob/v3.4.0/LICENSE)
+    - quay.io/csiaddons/volumereplication-operator:v0.3.0
+      - License: [Apache License 2.0](https://github.com/csi-addons/volume-replication-operator/blob/v0.3.0/LICENSE)
+
+- ECK Operator
+  - Helm chart
+    - Version: 1.9.0
+    - License: [Elastic License 2.0](https://github.com/elastic/cloud-on-k8s/blob/1.9.0/LICENSE.txt)
+    - Source: https://github.com/elastic/cloud-on-k8s/tree/1.9.0/deploy/eck-operator
+  - Container image(s)
+    - docker.elastic.co/eck/eck-operator:1.9.0
+      - License: [Elastic License 2.0](https://github.com/elastic/cloud-on-k8s/blob/1.9.0/LICENSE.txt)
+    - docker.elastic.co/elasticsearch/elasticsearch:7.15.2
+      - License: [Elastic License 2.0](https://github.com/elastic/elasticsearch/blob/v7.15.2/LICENSE.txt)
+    - docker.elastic.co/kibana/kibana:7.15.2
+      - License: [Elastic License 2.0](https://github.com/elastic/kibana/blob/v7.15.2/LICENSE.txt)
+    - quay.io/prometheuscommunity/elasticsearch-exporter:v1.3.0
+      - License: [Apache License 2.0](https://github.com/prometheus-community/elasticsearch_exporter/blob/v1.3.0/LICENSE)
+
+- Grafana Operator
+  - Helm chart: *None*
+    - Version: 1.1.0
+    - License: [Apache License 2.0](https://github.com/COPRS/infrastructure/blob/1.1.0-rc3/LICENSE)
+  - Container image(s)
+    - quay.io/grafana-operator/grafana-operator:v4.5.0
+      - License: [Apache License 2.0](https://github.com/grafana-operator/grafana-operator/blob/v4.5.0/LICENSE)
+    - docker.io/grafana/grafana:9.0.2-ubuntu
+      - License: [GNU Affero General Public License v3.0](https://github.com/grafana/grafana/blob/v9.0.2/LICENSE)
+
+- Kafka Operator
+  - Helm chart:
+    - Version: 0.27.1
+    - Licence: [Apache License 2.0](https://github.com/strimzi/strimzi-kafka-operator/blob/0.27.1/LICENSE)
+    - Source: https://github.com/strimzi/strimzi-kafka-operator/tree/0.27.1/helm-charts/helm3/strimzi-kafka-operator
+  - Container image(s)
+    - quay.io/strimzi/operator:0.27.1
+      - License: [Apache License 2.0](https://github.com/strimzi/strimzi-kafka-operator/blob/0.27.1/LICENSE)
+    - quay.io/strimzi/kafka:0.27.1-kafka-2.8.1
+      - License: [Apache License 2.0](https://github.com/strimzi/strimzi-kafka-operator/blob/0.27.1/LICENSE)
+
+- Prometheus Operator
+  - Helm chart:
+    - Version: 21.0.0
+    - Licence: [Apache License 2.0](https://github.com/prometheus-community/helm-charts/blob/kube-prometheus-stack-21.0.0/LICENSE)
+    - Source: https://github.com/prometheus-community/helm-charts/tree/kube-prometheus-stack-21.0.0/charts/kube-prometheus-stack
+  - Container image(s)
+    - quay.io/prometheus-operator/prometheus-operator:v0.52.1-amd64
+      - License: [Apache License 2.0](https://github.com/prometheus-operator/prometheus-operator/blob/v0.52.1/LICENSE)
+    - quay.io/prometheus-operator/prometheus-config-reloader:v0.52.1-amd64
+      - License: [Apache License 2.0](https://github.com/prometheus-operator/prometheus-operator/blob/v0.52.1/LICENSE)
+    - quay.io/prometheus/node-exporter:v1.3.0
+      - License: [Apache License 2.0](https://github.com/prometheus/node_exporter/blob/v1.3.0/LICENSE)
+    - quay.io/prometheus/alertmanager:v0.23.0
+      - License: [Apache License 2.0](https://github.com/prometheus/alertmanager/blob/v0.23.0/LICENSE)
+    - quay.io/prometheus/prometheus:v2.31.1
+      - License: [Apache License 2.0](https://github.com/prometheus/prometheus/blob/v2.31.1/LICENSE)
+
+- Stash Operator
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - docker.io/appscode/stash:v0.17.0
+      - License: 
+
+- Fluent-bit 
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - docker.io/fluent/fluent-bit:1.9.3
+      - License: 
+
+- MongoDB
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - docker.io/bitnami/mongodb:5.0.6-debian-10-r14
+      - License: 
+    - docker.io/bitnami/mongodb-exporter:0.30.0-debian-10-r58
+      - License: 
+
+- OpenLDAP
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - docker.io/osixia/openldap:1.5.0
+      - License: 
+
+- PostreSQL
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - docker.io/bitnami/postgresql:14.1.0-debian-10-r80
+      - License:
+    - quay.io/prometheuscommunity/postgres-exporter:v0.10.0
+      - License: 
+
+- Thanos
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - docker.io/bitnami/thanos:0.23.1-scratch-r3
+      - License: 
+
+- Fluentd
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - docker.io/bitnami/fluentd:1.14.2-debian-10-r23
+      - License: 
+
+- Loki
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - docker.io/grafana/loki:2.5.0
+      - License: 
+
+- Apisix
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - docker.io/apache/apisix:2.14.1-alpine
+      - License: 
+    - docker.io/apache/apisix-dashboard:2.11-alpine
+      - License: 
+    - docker.io/apache/apisix-ingress-controller:1.4.1
+      - License: 
+    - docker.io/bitnami/etcd:3.5.4-debian-11-r9
+      - License: 
+
+- Falco
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - docker.io/falcosecurity/falco:0.30.0
+      - License:
+    - docker.io/falcosecurity/falco-exporter:0.6.0
+      - License: 
+
+- FinOps object storage exporter
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - artifactory.coprs.esa-copernicus.eu/cs-docker/finops-object-storage-exporter:release-0.3.0
+      - License: 
+
+- FinOps resources exporter
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - artifactory.coprs.esa-copernicus.eu/cs-docker/finops-resources-exporter:release-0.3.0
+      - License: 
+
+- Graylog
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - docker.io/graylog/graylog:4.3.3-1
+      - License: 
+
+- Keycloack
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - docker.io/jboss/keycloak:15.0.2
+      - License: 
+
+- Spring Cloud Data Flow
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - docker.io/bitnami/spring-cloud-dataflow:2.9.4-debian-10-r7
+      - License: 
+    - docker.io/bitnami/spring-cloud-skipper:2.8.4-debian-10-r6
+      - License: 
+    - docker.io/bitnami/prometheus-rsocket-proxy:1.3.0-debian-10-r334
+      - License: 
+
+- Keda
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - ghcr.io/kedacore/keda:2.6.1
+      - License: 
+    - ghcr.io/kedacore/keda-metrics-apiserver:2.6.1
+      - License: 
+
+- Prometheus blackbox exporter
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - docker.io/prom/blackbox-exporter:v0.20.0
+      - License: 
+
+- Autoscaling
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:v22.06.0
+      - License:
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/cluster-autoscaler:1.22.3
+      - License:
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.10.0
+      - License: 
+
+- Kubelet rubber stamp
+  - Helm chart:
+    - Version: 
+    - Licence: 
+    - Source: 
+  - Container image(s)
+    - docker.io/digitalocean/kubelet-rubber-stamp:v0.3.1-do.2
+      - License: 
