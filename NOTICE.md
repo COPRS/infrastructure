@@ -303,3 +303,71 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
   - Container image(s)
     - docker.io/digitalocean/kubelet-rubber-stamp:v0.3.1-do.2
       - License: [Apache License 2.0](https://github.com/digitalocean/kubelet-rubber-stamp/blob/v0.3.1-do.2/LICENSE)
+
+- Calico
+  - Helm chart: *None*
+  - Container image(s)
+    - quay.io/calico/cni:v3.19.2
+      - License: [Apache License 2.0](https://github.com/projectcalico/calico/blob/master/cni-plugin/LICENSE)
+
+- ClamAV
+  - Helm chart: *None*
+  - Container image(s): *None*
+  - Version: 0.103.5
+  - License: [GNU General Public License v2.0](https://github.com/Cisco-Talos/clamav/blob/clamav-0.103.5/COPYING)
+
+- CoreDNS
+  - Helm chart: *None*
+  - Container image(s)
+    - k8s.gcr.io/coredns/coredns:1.8.0
+      - License: [Apache License 2.0](https://github.com/coredns/coredns/blob/v1.8.0/LICENSE)
+
+- Kubernetes
+  - Helm chart: *None*
+  - Container image(s): *None*
+  - Version: v1.22.2
+  - License: [Apache License 2.0](https://github.com/kubernetes/kubernetes/blob/v1.22.2/LICENSE)
+
+- Suricata
+  - Helm chart: *None*
+  - Container image(s): *None*
+  - Version: 6.0.4
+  - License: [GNU General Public License v2.0](https://github.com/OISF/suricata/blob/suricata-6.0.4/LICENSE)
+
+- Wazuh
+  - Helm chart: *None*
+  - Container image(s): *None*
+  - Version: 4.2.5-1
+  - License: [GNU General Public License v2.0](https://github.com/wazuh/wazuh/blob/v4.2.5/LICENSE)
+
+- Zookeeper
+  - Helm chart: *None*
+  - Container image(s)
+    - k8s.gcr.io/kubernetes-zookeeper
+      - Version: 3.5.9
+      - License: [Apache License 2.0](https://github.com/apache/zookeeper/blob/release-3.5.9/LICENSE.txt)
+
+- Safescale
+  - Helm chart: *None*
+  - Container image(s): *None*
+  - Version: v21.11.0
+  - License: [Apache License 2.0](https://github.com/CS-SI/SafeScale/blob/v21.11.0/LICENSE)
+
+- Rclone
+  - Helm chart: *None*
+  - Container image(s): *None*
+  - Version: 1.57.0
+  - License: [MIT License](https://github.com/rclone/rclone/blob/v1.57.0/COPYING)
+
+- OpenVPN
+  - Helm chart: *None*
+  - Container image(s): *None*
+  - Version: 2.4.7
+  - License: [GNU General Public License v2.0](https://github.com/OpenVPN/openvpn/blob/v2.4.7/COPYRIGHT.GPL)
+
+- Nmap
+  - Helm chart: *None*
+  - Container image(s): *None*
+  - Version: 7.92-r2
+  - License: [Nmap Public Source License Version 0.94](https://github.com/nmap/nmap/blob/master/LICENSE)
+  
