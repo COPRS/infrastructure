@@ -371,3 +371,8 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
   - Version: 7.92-r2
   - License: [Nmap Public Source License Version 0.94](https://github.com/nmap/nmap/blob/master/LICENSE)
   
+- Containerd
+  - Helm chart: *None*
+  - Container image(s): *None*
+  - Version: 1.4.9-1
+  - License: [Apache License 2.0](https://github.com/containerd/containerd/blob/v1.4.9/LICENSE)
