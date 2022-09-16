@@ -1,3 +1,7 @@
+Reference System Software Copyright 2021-2022 European Space Agency (ESA) https://www.esa.int
+
+This software is distributed under the Apache Software License (ASL) v2.0, see LICENSE file or http://www.apache.org/licenses/LICENSE-2.0 for details.
+
 - Cert manager :
   - Helm chart
     - Version: v1.6.1
@@ -116,193 +120,184 @@
 
 - Stash Operator
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: v0.17.0
+    - Licence: [AppsCode Community License 1.0.0](https://github.com/stashed/installer/blob/master/LICENSE.md)
+    - Source: https://github.com/stashed/installer/tree/master/charts/stash-community
   - Container image(s)
     - docker.io/appscode/stash:v0.17.0
-      - License: 
+      - License: [AppsCode Community License 1.0.0](https://github.com/stashed/installer/blob/master/LICENSE.md)
 
 - Fluent-bit 
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: 0.19.6
+    - Licence: [Apache License 2.0](https://github.com/fluent/helm-charts/blob/fluent-bit-0.19.6/LICENSE)
+    - Source: https://github.com/fluent/helm-charts/tree/fluent-bit-0.19.6/charts/fluent-bit
   - Container image(s)
     - docker.io/fluent/fluent-bit:1.9.3
-      - License: 
+      - License: [Apache License 2.0](https://github.com/fluent/fluent-bit/blob/v1.9.3/LICENSE)
 
 - MongoDB
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: 11.0.3
+    - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
+    - Source: https://github.com/bitnami/charts/tree/master/bitnami/mongodb
   - Container image(s)
     - docker.io/bitnami/mongodb:5.0.6-debian-10-r14
-      - License: 
+      - License: [Apache License 2.0](https://github.com/bitnami/containers/blob/main/LICENSE.md)
     - docker.io/bitnami/mongodb-exporter:0.30.0-debian-10-r58
-      - License: 
+      - License: [Apache License 2.0](https://github.com/bitnami/containers/blob/main/LICENSE.md)
 
 - OpenLDAP
-  - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+  - Helm chart: *None*
   - Container image(s)
     - docker.io/osixia/openldap:1.5.0
-      - License: 
+      - License: [MIT License](https://github.com/osixia/docker-openldap/blob/v1.5.0/LICENSE)
 
 - PostreSQL
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: 11.0.2
+    - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
+    - Source: https://github.com/bitnami/charts/tree/master/bitnami/postgresql
   - Container image(s)
     - docker.io/bitnami/postgresql:14.1.0-debian-10-r80
-      - License:
+      - License: [Apache License 2.0](https://github.com/bitnami/containers/blob/main/LICENSE.md)
     - quay.io/prometheuscommunity/postgres-exporter:v0.10.0
-      - License: 
+      - License: [Apache License 2.0](https://github.com/prometheus-community/postgres_exporter/blob/v0.10.0/LICENSE)
 
 - Thanos
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: 8.3.0
+    - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
+    - Source: https://github.com/bitnami/charts/tree/master/bitnami/thanos
   - Container image(s)
     - docker.io/bitnami/thanos:0.23.1-scratch-r3
-      - License: 
+      - License: [Apache License 2.0](https://github.com/bitnami/containers/blob/main/LICENSE.md)
 
 - Fluentd
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: 4.5.2
+    - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
+    - Source: https://github.com/bitnami/charts/tree/master/bitnami/fluentd
   - Container image(s)
     - docker.io/bitnami/fluentd:1.14.2-debian-10-r23
-      - License: 
+      - License: [Apache License 2.0](https://github.com/bitnami/containers/blob/main/LICENSE.md)
 
 - Loki
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: 0.48.1
+    - Licence: [Apache License 2.0](https://github.com/grafana/helm-charts/blob/loki-distributed-0.48.1/LICENSE)
+    - Source: https://github.com/grafana/helm-charts/tree/loki-distributed-0.48.1/charts/loki-distributed
   - Container image(s)
     - docker.io/grafana/loki:2.5.0
-      - License: 
+      - License: [Apache License 2.0](https://github.com/grafana/helm-charts/blob/loki-2.5.0/LICENSE)
 
 - Apisix
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: 0.10.0
+    - Licence: [Apache License 2.0](https://github.com/apache/apisix/blob/master/LICENSE)
+    - Source: https://github.com/apache/apisix-helm-chart/tree/apisix-0.10.0/charts/apisix
   - Container image(s)
     - docker.io/apache/apisix:2.14.1-alpine
-      - License: 
+      - License: [Apache License 2.0](https://github.com/apache/apisix-docker/blob/master/LICENSE)
     - docker.io/apache/apisix-dashboard:2.11-alpine
-      - License: 
+      - License: [Apache License 2.0](https://github.com/apache/apisix-docker/blob/master/LICENSE)
     - docker.io/apache/apisix-ingress-controller:1.4.1
-      - License: 
+      - License: [Apache License 2.0](https://github.com/apache/apisix-docker/blob/master/LICENSE)
     - docker.io/bitnami/etcd:3.5.4-debian-11-r9
-      - License: 
+      - License: [Apache License 2.0](https://github.com/bitnami/containers/blob/main/LICENSE.md)
 
 - Falco
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: 1.16.2
+    - Licence: [Apache License 2.0](https://github.com/falcosecurity/charts/blob/falco-1.16.2/LICENSE)
+    - Source: https://github.com/falcosecurity/charts/tree/falco-1.16.2/falco
   - Container image(s)
     - docker.io/falcosecurity/falco:0.30.0
-      - License:
+      - License: [Apache License 2.0](https://github.com/falcosecurity/falco/blob/0.30.0/COPYING)
     - docker.io/falcosecurity/falco-exporter:0.6.0
-      - License: 
+      - License: [Apache License 2.0](https://github.com/falcosecurity/falco-exporter/blob/v0.6.0/LICENSE)
 
 - FinOps object storage exporter
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: 1.0.0
+    - Licence: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/resources-exporter/LICENSE)
+    - Source: https://github.com/COPRS/monitoring/tree/1.0.0/finops/resources-exporter/helm
   - Container image(s)
     - artifactory.coprs.esa-copernicus.eu/cs-docker/finops-object-storage-exporter:release-0.3.0
-      - License: 
+      - License: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/resources-exporter/LICENSE)]
 
 - FinOps resources exporter
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: 1.0.0
+    - Licence: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/object-storage-exporter/LICENSE)
+    - Source: https://github.com/COPRS/monitoring/tree/1.0.0/finops/object-storage-exporter/helm
   - Container image(s)
     - artifactory.coprs.esa-copernicus.eu/cs-docker/finops-resources-exporter:release-0.3.0
-      - License: 
+      - License: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/object-storage-exporter/LICENSE)
 
 - Graylog
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: 1.9.2
+    - Licence: [Apache License 2.0](https://github.com/KongZ/charts/blob/graylog-1.9.2/LICENSE)
+    - Source: https://github.com/KongZ/charts/tree/graylog-1.9.2
   - Container image(s)
     - docker.io/graylog/graylog:4.3.3-1
-      - License: 
+      - License: [Apache License 2.0](https://github.com/Graylog2/graylog-docker/blob/4.3.3-1/LICENSE)
 
 - Keycloack
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: 16.0.5
+    - Licence: [Apache License 2.0](https://github.com/codecentric/helm-charts/blob/keycloak-16.0.5/LICENSE)
+    - Source: https://github.com/codecentric/helm-charts/tree/keycloak-16.0.5/charts/keycloak
   - Container image(s)
     - docker.io/jboss/keycloak:15.0.2
-      - License: 
+      - License: [Apache License 2.0](https://github.com/keycloak/keycloak-containers/blob/15.0.2/License.html)
 
 - Spring Cloud Data Flow
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: 7.0.1
+    - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
+    - Source: https://github.com/bitnami/charts/tree/master/bitnami/spring-cloud-dataflow
   - Container image(s)
     - docker.io/bitnami/spring-cloud-dataflow:2.9.4-debian-10-r7
-      - License: 
+      - License: [Apache License 2.0](https://github.com/bitnami/containers/blob/main/LICENSE.md)
     - docker.io/bitnami/spring-cloud-skipper:2.8.4-debian-10-r6
-      - License: 
+      - License: [Apache License 2.0](https://github.com/bitnami/containers/blob/main/LICENSE.md)
     - docker.io/bitnami/prometheus-rsocket-proxy:1.3.0-debian-10-r334
-      - License: 
+      - License: [Apache License 2.0](https://github.com/bitnami/containers/blob/main/LICENSE.md)
 
 - Keda
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: 2.6.2
+    - Licence: [Apache License 2.0](https://github.com/kedacore/charts/blob/v2.6.2/LICENSE)
+    - Source: https://github.com/kedacore/charts/tree/v2.6.2/keda
   - Container image(s)
     - ghcr.io/kedacore/keda:2.6.1
-      - License: 
+      - License: [Apache License 2.0](https://github.com/kedacore/keda/blob/v2.6.1/LICENSE)
     - ghcr.io/kedacore/keda-metrics-apiserver:2.6.1
-      - License: 
+      - License: [Apache License 2.0](https://github.com/kedacore/keda/blob/v2.6.1/LICENSE)
 
 - Prometheus blackbox exporter
   - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+    - Version: 5.8.2
+    - Licence: [Apache License 2.0](https://github.com/prometheus-community/helm-charts/blob/prometheus-blackbox-exporter-5.8.2/LICENSE)
+    - Source: https://github.com/prometheus-community/helm-charts/tree/prometheus-blackbox-exporter-5.8.2/charts/prometheus-blackbox-exporter
   - Container image(s)
     - docker.io/prom/blackbox-exporter:v0.20.0
-      - License: 
+      - License: [Apache License 2.0](https://github.com/prometheus/blackbox_exporter/blob/v0.20.0/LICENSE)
 
 - Autoscaling
-  - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+  - Helm chart: *None*
   - Container image(s)
     - artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:v22.06.0
-      - License:
+      - License: [Apache License 2.0](LICENSE)
     - artifactory.coprs.esa-copernicus.eu/rs-docker/cluster-autoscaler:1.22.3
-      - License:
+      - License: [Apache License 2.0](LICENSE)
     - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.10.0
-      - License: 
+      - License: [Apache License 2.0](LICENSE)
 
 - Kubelet rubber stamp
-  - Helm chart:
-    - Version: 
-    - Licence: 
-    - Source: 
+  - Helm chart: *None*
   - Container image(s)
     - docker.io/digitalocean/kubelet-rubber-stamp:v0.3.1-do.2
-      - License: 
+      - License: [Apache License 2.0](https://github.com/digitalocean/kubelet-rubber-stamp/blob/v0.3.1-do.2/LICENSE)
