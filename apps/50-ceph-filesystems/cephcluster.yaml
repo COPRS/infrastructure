@@ -104,7 +104,6 @@ spec:
         memory: 2Gi
   skipUpgradeChecks: false
   storage:
-    deviceFilter: vd[b-z]
     useAllDevices: true
     useAllNodes: true
   waitTimeoutForHealthyOSDInMinutes: 10

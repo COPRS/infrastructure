@@ -50,8 +50,12 @@ csi:
     enabled: false
     image: "quay.io/csiaddons/volumereplication-operator:v0.3.0"
 
+enableDiscoveryDaemon: true
+
 discover:
-  nodeAffinity: node-role.kubernetes.io/infra
+  nodeAffinity: node-role.kubernetes.io/rook_ceph
+  tolerationKey: node-role.kubernetes.io/rook_ceph
+  toleration: NoSchedule
 
 admissionController:
   nodeAffinity: node-role.kubernetes.io/infra
