@@ -23,4 +23,4 @@ wazuh:
   #   - Rule_to_exclude
 
 # by default the wazuh manager is on the first master
-wazuh_manager_node: "{{ cluster.name }}-master-1"
+wazuh_manager_node: "{{ hostvars[groups['kube_control_plane'][0]]['inventory_hostname'] }}"
