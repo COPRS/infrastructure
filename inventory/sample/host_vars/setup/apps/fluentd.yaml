@@ -1,2 +1,2 @@
 fluentd:
-  topic_to_loki_regex: ""
+  topic_to_loki_regex: "error-warning"
