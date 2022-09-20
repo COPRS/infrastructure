@@ -810,29 +810,41 @@ They can be independent services or part of the monitored object.
 
 ### Logs 
 
+> For REPORTS, we use also Elasticsearch. See chapter [Backend services > Elasticsearch](#elasticsearch)
+
 [Loki](https://github.com/grafana/loki) is a horizontally-scalable, highly-available, multi-tenant log aggregation system inspired by Prometheus.
 
 It gives you a panel for indexing of your systems logs and visualizing them on a Grafana dashboard.
 
-Loki supports different official clients for sending logs, in our case we will use Fluentd.
+Loki supports different official clients for sending logs, in our case we will use Fluentbit.
 
-Fluentd is a log collector for Loki that sends the log labels to Loki for indexing.
+Fluentbit is a log collector for Loki that sends the log labels to Loki for indexing.
 
-fluent-plugin-grafana-loki plugin is required to use Loki in ouput rule.
+fluent-bit-plugin-loki plugin is required to use Loki in ouput rule.
 
-![Loki workflow](./../media/archi_loki.png)
+![Loki workflow](./../media/loki_architecture_components.svg)
 
-Kubernetes Pods containers logs and Kubernetes nodes system logs are managed by Fluent Bit and sent to Fluentd.
+- Distributor
 
-Then Fluentd ouput rules's send this logs to Loki.
+The distributor service is responsible for handling incoming streams by clients. It’s the first stop in the write path for log data. Once the distributor receives a set of streams, each stream is validated for correctness and to ensure that it is within the configured tenant (or global) limits. Valid chunks are then split into batches and sent to multiple ingesters in parallel.
 
-Finally this logs can be displayed through Grafana using Loki's datasource.
+- Ingester
 
-> For REPORTS, we use also Elasticsearch. See chapter **Backend services > Elasticsearch**
+The ingester service is responsible for writing log data to long-term storage backends (DynamoDB, S3, Cassandra, etc.) on the write path and returning log data for in-memory queries on the read path.
+
+- Query frontend
+  
+The query frontend is an optional service providing the querier’s API endpoints and can be used to accelerate the read path. When the query frontend is in place, incoming query requests should be directed to the query frontend instead of the queriers. The querier service will be still required within the cluster, in order to execute the actual queries.
+
+- Querier
+
+The querier service handles queries using the LogQL query language, fetching logs both from the ingesters and from long-term storage.
+
+Source : https://grafana.com/docs/loki/latest/fundamentals/architecture/components/
 
 ### Logs gathering
 
-#### Overview 
+#### Overview
 
 The two most popular Logs Gathering Open Source are **Fluentd** and **Logstash**. We will therefore study these two COTS to determine who best meets our expectations.
 
