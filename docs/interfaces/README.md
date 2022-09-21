@@ -201,7 +201,7 @@ The following elements shall be configured in order to restore a backup file.
 
 ## Validation requirements
 
-The validation approach is described in document [ SVVD COPRS ]
+The validation approach is described in document [ SVVD COPRS ] and Interfaces are tested and vamidated in the framework Integration Verification and Validation process [SVD and VCD documents]
 
 ## Traceability
 
