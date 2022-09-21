@@ -198,7 +198,7 @@ Moreover, contributors are actively improving the quality of the software by rep
 
 ### High-level of security
 
-Building upon the experience of the two last decades, security has become a pillar of ground segments. Airbus gathers a significant experience in integrated security in the different program phases and activities. Airbus organization encourages designer to introduce security at the design stage.
+Building upon the experience of the two last decades, security has become a pillar of ground segments. The consortium gathers a significant experience in integrated security in the different program phases and activities. The consortium organization encourages designer to introduce security at the design stage.
 
 Hence, the security management for the Reference System Service is based on a strategy of response to the major security risks, by integrating defence and preventive mechanism during the design phase (DevSecOps).
 
