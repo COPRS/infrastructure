@@ -213,7 +213,7 @@ The Kubernetes cluster is divided into namespaces. We can distinguish 5 types of
 - those dedicated to processing services,
 - and those dedicated to security services.
 
-The big picture of what is contained in the cluster is depicted in the figure above.
+The big picture of what is contained in the cluster is depicted in the figure below.
 
 ![Components design](./../media/components_design.png)
 
@@ -226,7 +226,7 @@ The main challenges of this system are :
 
 For that, we deploy [Kubernetes](https://github.com/kubernetes/kubernetes). Kubernetes became the standard de facto of large scale micro service orchestration system, as a result a large ecosystem has been built around it. This ecosystem provides numerous additional components to help connecting, securing, managing and monitoring services orchestrated by Kubernetes.
 
-This Architecture is compliant with Scaling services (with security) that's enable scale up platform resources without any modification 
+This Architecture is compliant with Scaling services (with security) that enable scale up platform resources without any modification.
 
 ![Platform System](./../media/platform.png)
 
@@ -259,7 +259,7 @@ Master components can be run on any machine in the cluster. However, for simplic
 
 The API server is a component of the Kubernetes control plane that exposes the Kubernetes API. The API server is the front end for the Kubernetes control plane.
 
-The main implementation of a Kubernetes API server is kube-apiserver. kube-apiserver is designed to scale horizontally—that is, it scales by deploying more instances. You can run several instances of **kube-apiserver** and balance traffic between those instances.
+The main implementation of a Kubernetes API server is kube-apiserver. **kube-apiserver** is designed to scale horizontally—that is, it scales by deploying more instances. You can run several instances of **kube-apiserver** and balance traffic between those instances.
 
 ###### etcd
 
@@ -541,22 +541,22 @@ Here are some Container Runtime that can be used with Kubernetes :
 - Gvisor
 - ...
 
-We chosed **containerd** like Container Runtime Interface because :
+We chose **containerd** like Container Runtime Interface because :
 - very mature since it comes from Docker itself and it is CNCF graduated
 - officially supported by Kubernetes
 - default and officially supported by AKS, EKS, GKE, k3s
 - present in most Kubernetes cluster installations
-- fully support OCI runtime-spec and OCI image-spec
+- fully supports OCI runtime-spec and OCI image-spec
 - support Windows Kubernetes nodes
-- follow plugin model
+- follows plugin model
 
-It is also possible to use an alternative better secured _runc_ alternative such as [KataContainer](https://katacontainers.io/) and [Gvisor](https://github.com/google/gvisor). KataContainer aims at providing best of Container and Virtualization technologies combining speed and resource isolation Gvisor is a user-space container runtime that provides an isolation boundary between the application hosted by the container and the host kernel.
+It is also possible to use an alternative better secured _runc_ alternative such as [KataContainer](https://katacontainers.io/) and [Gvisor](https://github.com/google/gvisor). KataContainer aims at providing best of Container and Virtualization technologies combining speed and resource isolation. Gvisor is a user-space container runtime that provides an isolation boundary between the application hosted by the container and the host kernel.
 
 > You can see a trade-off on this subject here : https://github.com/COPRS/infrastructure/wiki/Container-Runtimes-solution-trade-off
 
 #### Domain Name Service
 
-The DNS services offered by some European Cloud Providers do not offer the level of availability necessary for an operational production environment. Even if some providers are capable to offer a good level of availability this heterogeneity of the service quality create an implicit adherence to the Cloud Provider. To remove this adherence it is therefore necessary that the platform is autonomous for the Domain Name Service. For this and to ensure a high level of availability, it will be necessary to instantiate 2 DNS services, one primary and one secondary to compensate for a possible failure of the primary. Numerous open source DNS available for Linux distributions exists, bind9, PowerDNS, unbound, Knot and CoreDNS are the more widely adopted.
+The DNS services offered by some European Cloud Providers do not offer the level of availability necessary for an operational production environment. Even if some providers are capable to offer a good level of availability this heterogeneity of the service quality creates an implicit adherence to the Cloud Provider. To remove this adherence it is therefore necessary that the platform is autonomous for the Domain Name Service. For this and to ensure a high level of availability, it will be necessary to instantiate 2 DNS services, one primary and one secondary to compensate for a possible failure of the primary. Numerous open source DNS available for Linux distributions exists, bind9, PowerDNS, unbound, Knot and CoreDNS are the more widely adopted.
 
 For our purpose DNS servers that support DNSSEC and that can be used as both an authoritative and recursive name server are necessary. Because unbound is only recursive it is excluded.
 
@@ -598,7 +598,7 @@ You have to specify:
 - The retention policy (how much snapshots we have to keep)
 - The backup schedule
 
-It inject a sidecar container into the backuped pod, create a custom ressource Repository describing the global snapshots informations and custom ressources Snapshots each one representing a backup succesfully uploaded on the object storage.
+It injects a sidecar container into the backuped pod, creates a custom ressource Repository describing the global snapshots informations and custom ressources Snapshots each one representing a backup succesfully uploaded on the object storage.
 
 Notes:
 - We recommend that you deploy the backup service at the same time as the deployment of the pod concerned by this backup because otherwise a service interruption of a few minutes will take place because it is an installation in sidecar mode
@@ -704,7 +704,7 @@ All data must always be present and always accessible in system. However, their 
 
 ### Metrics Data
 
-In order to monitor the plateform (vms, k8s and services) we chose to use metrics. A metric is made of a name, a numeric value, a timestamp and some labels to enrich the context of the metric, an so is a powerful tool to follow the status and evolution of all the components of the platform.
+In order to monitor the platform (vms, k8s and services) we chose to use metrics. A metric is made of a name, a numeric value, a timestamp and some labels to enrich the context of the metric, an so is a powerful tool to follow the status and evolution of all the components of the platform.
 
 We have to produce, fetch, store and make available these metrics, for this we use a bunch of exporters, Prometheus and Thanos.
 
@@ -722,11 +722,11 @@ So to fetch metrics with Prometheus you have to :
 
 Then all the exporters are listed on Prometheus graphical interface
 
-Once the metrics are pulled, Prometheus will use rules to create new metrics witch are agregations of previous one
+Once the metrics are pulled, Prometheus will use rules to create new metrics which are aggregations of previous ones
 
 All theses metrics can then be viewed on  Prometheus graphical interface
 
-All the metrics are updated more or less each 30 seconds.
+All the metrics are updated approximately every 30 seconds.
 
 Prometheus is keeping metrics for 2 days
 
@@ -745,9 +745,9 @@ It's like a Prometheus overlay built with several blocks:
 
 Metrics are stored on the object storage after a 30 minutes consolidation. They are kept raw for 1month, then down-sampled to one point for each 5min period for 4months, and finaly down-sampled to one point for each 60min period after 4months.
 
-In order to benefit from Thanos all metrics access have to be done trough the thanos query endpoint, a graphical interface is exposed
+In order to benefit from Thanos all metrics access have to be done through the thanos query endpoint, a graphical interface is exposed.
 
-The ruler graphical interface is exposed
+The ruler graphical interface is exposed.
 
 #### Prometheus Exporters
 
@@ -846,7 +846,7 @@ Source : https://grafana.com/docs/loki/latest/fundamentals/architecture/componen
 
 #### Overview
 
-The two most popular Logs Gathering Open Source are **Fluentd** and **Logstash**. We will therefore study these two COTS to determine who best meets our expectations.
+The two most popular Logs Gathering Open Source are **Fluentd** and **Logstash**. We will therefore study these two COTS to determine which one best meets our expectations.
 
 Fluentd and Logstash collect and transform events and logs from various data sources and writes them on several supports (files, databases NoSQL, ...).
 
@@ -860,7 +860,7 @@ As we will use Kubernetes, ElasticSearch and Apache Kafka in our system architec
 
 #### Configuration
 
-It's describe here : [Default Configuration](https://github.com/COPRS/infrastructure)
+The configuration is described here : [Default Configuration](https://github.com/COPRS/infrastructure)
 
 ### Monitoring
 
@@ -868,10 +868,10 @@ Once all system data has been collected, filtered, and stored, it must now be an
 
 **Grafana** is a web application dedicated to analytics and interactive visualization, licenced with the Apache 2.0 licence. It is written in Go for its backend and a mix of ReactJS and AngularJS both in Typescript for its frontend (a transition to a full ReactJS application is ongoing).
 
-Initially developed to visualize Time Series data, it evolved to visualize more kind of data. This is possible by being extensible with plugins. Two kinds of plugins are available: datasource plugins and panel plugins.
+Initially developed to visualize Time Series data, it evolved to visualize more kinds of data. This is possible by being extensible with plugins. Two kinds of plugins are available: datasource plugins and panel plugins.
 
-datasource plugins are responsible for querying data to databases or web services. Grafana includes several datasources. Among them, datasources for Prometheus, ElasticSearch and Postgresql are useful for the architecture in place for this project.
-panel plugins are responsible for visualizing data retrieved by datasources. Several panels are included, going from simple values to tables, gauges to line plots.
+Datasource plugins are responsible for querying data to databases or web services. Grafana includes several datasources. Among them, datasources for Prometheus, ElasticSearch and Postgresql are useful for the architecture in place for this project.
+Panel plugins are responsible for visualizing data retrieved by datasources. Several panels are included, going from simple values to tables, gauges to line plots.
 Both plugin types are only useful if they are used together. Making them communicate is done by configuring Dashboards. Dashboards are pages where the user configure panels with a query done with a datasource. Panels inside a dashboard can be laid out at user’s will. Multiple panels inside a same dashboard can share the result of a query to display multiple representation of the same data. It is also possible to create dashboard’s variables accessible by all panels and datasources inside the dashboard. Some variables are builtin like variables __from and __to which define a timerange and are configurable through a Timepicker. Those variables can then be used to narrow down queries in datasources.
 
 Each dashboard is associated to an uuid, a unique identifier which permits to reference and link a dashboard independently of its name. Some panels offer the possibility to create a datalink: an hyperlink with information extracted from the underlining data and panel. This hyperlink can either reference an external resource or another dashboard referenced by its uuid. It is thus possible to open a new dashboard with variables initialized by data provided by the datalink.
@@ -903,7 +903,7 @@ Grafana offers to developers a toolkit with useful components to create their ow
 
 #### Spring Cloud Skipper
 
-- Helm inspired server that manages applicationlifecycle
+- Helm inspired server that manages application lifecycle
 - YAML manifest describes application and deployment conﬁguration of a deployed apps
 - Diﬃng between “v1’ and “v2” manifests determines what apps to upgrade.
 - State machine manages upgrade/rollback transition
