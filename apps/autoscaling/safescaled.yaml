@@ -15,6 +15,7 @@ spec:
       labels:
         app.kubernetes.io/component: safescaled
     spec:
+      priorityClassName: system-cluster-critical
       containers:
         - image: artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:v22.06.0
           name: safescaled

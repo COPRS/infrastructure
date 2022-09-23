@@ -15,6 +15,7 @@ spec:
       labels:
         app.kubernetes.io/component: rs-infra-scaler
     spec:
+      priorityClassName: system-cluster-critical
       containers:
         - image: artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.10.0
           name: rs-infra-scaler
@@ -44,8 +45,8 @@ spec:
             tcpSocket:
               port: 8087
             initialDelaySeconds: 180
-            periodSeconds: 15
-            failureThreshold: 10
+            periodSeconds: 20
+            failureThreshold: 20
           livenessProbe:
             tcpSocket:
               port: 8086
