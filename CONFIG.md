@@ -12,17 +12,21 @@
 > - Storage size for Elasticsearch security
 > - Storage size for Kafka
 > - Storage size for Loki
-> 
-> Concerning Rook Ceph cluster : a dedicated cluster should be created for an RS-ADDON if it needs one
 
-## Prerequisite
 
-- Reservation of 2 IPs for egress
-- Platform with 21 nodes :
+## Default network and infrastructure
+
+- 2 public IPs for egress
+- 2 publics IPs for the gateways
+- 1 private network with all the machines
+- 3 additional volumes of 2 TB for the Ceph filesystem
+- 4 S3 buckets for ES processing, ES security, Thanos and Loki
+- Platform with 20 nodes :
   - 2 Gateway (VM : 4 CPUs / 8 Go RAM)
   - 3 Master (VM : 4 CPUs / 8 Go RAM)
-  - 12 Worker (VM : 4 CPUs / 16 Go RAM)
-  - 2 Specific Worker for Prometheus  (VM : 8 CPUs / 32 Go RAM)
+  - 8 Infra Worker (VM : 4 CPUs / 16 Go RAM)
+  - 3 Ceph filesystem nodes (VM : 8 CPUs / 16 Go RAM)
+  - 2 Specific Workers for Prometheus  (VM : 8 CPUs / 32 Go RAM)
   - 2 Egress (VM : 4 CPUs / 16 Go RAM)
 
 ## Configuration of COTS
