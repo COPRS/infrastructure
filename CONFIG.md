@@ -12,6 +12,7 @@
 > - Storage size for Elasticsearch security
 > - Storage size for Kafka
 > - Storage size for Loki
+> - Storage size for Rook Ceph
 
 
 ## Default network and infrastructure
