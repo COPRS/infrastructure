@@ -15,7 +15,7 @@
 
 ## Document Summary
 
-This document is the User's Manual for Infrastructure subsystem of Reference System.
+This document is the User's Manual for the Infrastructure subsystem of Reference System.
 
 ## Document Change log
 
