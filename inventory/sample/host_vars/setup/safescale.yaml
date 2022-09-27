@@ -10,14 +10,14 @@ cluster:
     - name: kube_control_plane
       sizing: "cpu=4,ram=[8-10],disk=80"
     - name: infra
-      min_size: 5
-      max_size: 10
-      sizing: "cpu=8,ram=[14-18],disk=40,count=6"
+      min_size: 8
+      max_size: 14
+      sizing: "cpu=4,ram=[14-18],disk=40,count=8"
       kubespray:
         node_labels:
           node-role.kubernetes.io/infra: ''
     - name: gateway
-      sizing: "cpu=2,ram=[4-5],disk=20"
+      sizing: "cpu=4,ram=[7-9],disk=20"
       kubespray:
         node_labels:
           node-role.kubernetes.io/gateway: ''
@@ -28,14 +28,14 @@ cluster:
             cpu: "1"
             memory: "2Gi"
     - name: egress
-      min_size: 1
+      min_size: 2
       max_size: 3
-      sizing: "cpu=4,ram=[8-10],disk=40"
+      sizing: "cpu=4,ram=[14-18],disk=40"
       kubespray:
         node_labels:
           node-role.kubernetes.io/egress: ''
     - name: prometheus
-      min_size: 0
+      min_size: 2
       max_size: 2
       sizing: "cpu=8,ram=[30-34],disk=40"
       kubespray:
@@ -47,8 +47,8 @@ cluster:
       max_size: 3
       volume:
         type: SSD
-        size: 5000
-      sizing: "cpu=4,ram=[8-10],disk=40"
+        size: 2000
+      sizing: "cpu=8,ram=[14-18],disk=40"
       kubespray:
         node_labels:
           node-role.kubernetes.io/rook_ceph: ''

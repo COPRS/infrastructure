@@ -8,7 +8,7 @@
     {{ safescale_path }} \
     cluster expand \
     --count {{ expand_count }} \
-    --os {{ cluster.os }} \
+    --os "{{ cluster.os }}" \
     --node-sizing '{{ expand_nodegroup.sizing }}' \
     {{ cluster.name }} | jq -r '.result.nodes[].name'
   register: expand_cmd
