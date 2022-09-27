@@ -490,7 +490,7 @@ Out-of-the-box Kubernetes supports autoscaling via the Horizontal Pod Autoscaler
 
 ##### Horizontal Node Scalling
 
-> TBD
+Cf `how-to` [Cluster scaling](../user_manuals/how-to/Cluster%20scaling.md)
 
 #### File System Distributed : Ceph
 
