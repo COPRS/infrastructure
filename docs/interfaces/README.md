@@ -121,7 +121,7 @@ To be able to integrate the system, a new component must comply with the followi
 
 The Copernicus Reference System executes Sentinel 1, Sentinel 2 and Sentinel 3 image processing workflows.
 During the execution of this system, essential data - like users database or monitoring traces - is generated and stored on local filesystems or persistent volumes. In order to prevent issues with these storage means and contingency, a proper mechanism of data backup needs to be implemented, along with the proper mechanism to restore data to retrieve data.
-As we are executing the Copernicus Reference System in a public cloud, this document give a definition of the backup and restore interfaces to implement in order to perform data storage and retrieval actions.
+As we are executing the Copernicus Reference System in a public cloud, this document gives a definition of the backup and restore interfaces to implement in order to perform data storage and retrieval actions.
 The definition of the interface focuses on important/critical data that each application or service hosted on the system (Kubernetes cluster) needs to backup and restore in order to guarantee a good or even nominal level of performance.
 Consequently, this document targets only stateful services and applications, so the mechanism of backup and restore will not be present everywhere in the system.
 In the context of Copernicus Reference System, there is no need to backup static data such as images of containers or virtual machines as they will be managed through specific repositories. The same way, the images produced by the system and published for external users are not in the scope of this backup and restore interface definition.
@@ -170,7 +170,7 @@ The following elements shall be configured before execution of the first backup 
 | **PRE BACKUP COMMANDE** | TEXT | $BACKUPFILELOCATION/prepare_backup.sh | The command/script/executable to run to get a backup file. | N (but recommanded) |
 | **POST BACKUP COMMAND** | TEXT | $BACKUPFILELOCATION/complete_backup.sh | The command/script/executable to run to clean after a backup. Can include integrity check and compression.| N |
 | **CHECKSUM** | SHA512 | N/A | Checksum of the file for integrity checks | N |
-| **COMPRESS** | BOOLEAN | 0 | 0 for uncompress; 1 for compressed | N |
+| **COMPRESS** | BOOLEAN | 0 | 0 for uncompressed; 1 for compressed | N |
 
 ###### Backup operations
 
@@ -181,7 +181,7 @@ For every application or service in the scope of this backup mechanism, the foll
 ##### Restore needs
 
 In the event of a major issue, the restore of a backup file is supposed to be managed through an operations procedure.
-The starting event is so the decision for an operator to process the restoration of a data from a backup file.
+The starting event is the decision for an operator to process the restoration of a data from a backup file.
 
 ###### Restore configuration
 
@@ -201,7 +201,7 @@ The following elements shall be configured in order to restore a backup file.
 
 ## Validation requirements
 
-The validation approach is described in document [ SVVD COPRS ] and Interfaces are tested and vamidated in the framework Integration Verification and Validation process [SVD and VCD documents]
+The validation approach is described in document [ SVVD COPRS ] and Interfaces are tested and validated in the framework Integration Verification and Validation process [SVD and VCD documents]
 
 ## Traceability
 
