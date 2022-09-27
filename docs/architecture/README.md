@@ -106,6 +106,8 @@ This document is the Architecture Document Design for Infrastructure of Referenc
       - [Prometheus](#prometheus)
       - [Thanos](#thanos)
       - [Prometheus Exporters](#prometheus-exporters)
+        - [Generic prometheus exporters](#generic-prometheus-exporters)
+        - [Specific Prometheus Exporters](#specific-prometheus-exporters)
     - [Logs](#logs)
     - [Logs gathering](#logs-gathering)
       - [Overview](#overview-2)
@@ -754,6 +756,8 @@ The ruler graphical interface is exposed
 Exporters are http servers aiming to monitor something and produce metrics describing the monitored object. They are usualy exposed on **http://x.x.x.x:2112/metrics** and are updated on a regular basis. 
 They can be independent services or part of the monitored object.
 
+##### Generic prometheus exporters
+
 | **Exporter** | **Number** | **Infos** |
 | ------------ | ---------- | --------- |
 | Node | One/node | |
@@ -806,7 +810,14 @@ They can be independent services or part of the monitored object.
 | Stash PushGateway | One | |
 | Graylog | One/Replica | |
 | Falco | One/Node | |
-| Blackbox Exporter | One | |
+
+##### Specific Prometheus Exporters
+
+| **Exporter** | **Number** | **Infos** |
+| ------------ | ---------- | --------- |
+| Machine-usage | One | Description [here](https://github.com/COPRS/monitoring/tree/feature/main/finops/object-storage-exporter) |
+| Object-storage | One | Description [here](https://github.com/COPRS/monitoring/tree/feature/main/finops/resources-exporter) |
+| Endpoint | One | Provide informations about the availability of several HTTP endpoints (based on Blackbox Exporter) <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - probe_**{targetName="...",targetUrl="..."} |
 
 ### Logs 
 
