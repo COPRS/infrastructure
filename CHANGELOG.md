@@ -11,6 +11,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+## [1.2.0-rc1] - 2022-09-28
+### Added
+- [#540 - [STORAGE] Procedure to copy file and directories on the RS shared disk](https://github.com/COPRS/rs-issues/issues/540)
+- Documentation and Notice.md
+- Deploy Reference System on OVH cloud and local cluster
+  
 ## [1.1.0-rc3] - 2022-09-13
 ### Fixed
 - Set scdf stream deployment namespace at playbook launch
