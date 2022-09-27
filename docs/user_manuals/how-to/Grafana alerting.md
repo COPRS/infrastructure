@@ -1,7 +1,7 @@
 # Set up grafana SMTP alerting
 
 All this documentation is based on the official [Grafana Documentation](https://grafana.com/docs/grafana), please refer to it for more specific use cases.
-By default, an image renderer is deployment alongside Grafana, and will add images 
+By default, an image renderer is deployed alongside Grafana, and will add images. 
 
 ## Set up SMTP credentials in the ansible variables
 
@@ -18,7 +18,7 @@ grafana:
     from_name: FROM_NAME
 ```
 
-These settings will we written in the grafana configuration on deployment.
+These settings will be written in the grafana configuration on deployment.
 
 
 ## Set up actual alerting
