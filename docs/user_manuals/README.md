@@ -25,7 +25,7 @@ This document is the User's Manual for the Infrastructure subsystem of Reference
 
 ## Content
 
-The system uses FOSS, so please refer to FOSS User's Manual :
+The Reference System infrastructure is composed of several FOSS (please find the architecture and rationale for each in the infrastructure [Architecture Design Document](./../architecture/README.md). Below are links to each FOSS user manual”
 - For Grafana : https://grafana.com/docs/grafana/latest/
 - For Prometheus : https://prometheus.io/docs/prometheus/latest/getting_started/
 - For Thanos : https://thanos.io/tip/thanos/getting-started.md/
