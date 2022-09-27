@@ -14,7 +14,7 @@ For now, the *GrafanaDatasources* must be in the *monitoring* namespace, but the
 
 # Deploy a library panel
 
-Library panels are not managed by Grafana a independant resources but are part of a dashboard. In order to save and deploy library panels, you must first create a dashboard with a library panel, then export it and the library panel will be included in the exported JSON dashboard.
+Library panels are not managed by Grafana as independent resources but are part of a dashboard. In order to save and deploy library panels, you must first create a dashboard with a library panel, then export it and the library panel will be included in the exported JSON dashboard.
 
 # Edit a deployed dashboard
 
