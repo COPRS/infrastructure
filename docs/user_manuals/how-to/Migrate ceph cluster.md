@@ -7,7 +7,7 @@ The ceph commands can be run from the `ceph-tools` container.
 
 ## 1. Backup sensitive data
 
-This procedure is complex, and it case of failure, you may lose all your data, so please backup any sensitive data beforehand. see [Databases backups.md]('./Databases backups.md')
+This procedure is complex, and it case of failure, you may lose all your data, so please backup any sensitive data beforehand. See [./Databases backups.md]('./Databases backups.md')
 
 ## 2. Create the rook_ceph node group
 
