@@ -33,7 +33,7 @@ graylog:
   oidc_client_secret: "m4nuAl_s3cret_example"
 ```
 
-> Note: Of course, credentials that give access to external services such as S3 storage or private registries cannot be generated and have to be set by hand, they are written in UPPER_CASE in the sample inventory
+> Note: Of course, credentials that give access to external services such as S3 storage or private registries cannot be generated and have to be set by hand, they are written in UPPER_CASE in the sample inventory.
 
 ## Reuse credentials
 
