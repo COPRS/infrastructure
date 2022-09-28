@@ -14,10 +14,10 @@ You must use the DNS01 challenge to generate a Let's encrypt certificate. The co
 
 ## Linkerd identity
 
-Linkerd features requires to define pods identity in the cluster. To ensure this feature, it establish
+Linkerd features requires to define pods identity in the cluster. To ensure this feature, it establishes
 mTLS in the cluster relying on certificates.
 
-Linkerd needs two certificate authority: 
+Linkerd needs two certificate authorities: 
 
 - the mTLS root certificate to secure pod-to-pod communications 
 - the webhook root certificate to secure Linkerd webhooks traffic.
@@ -33,7 +33,7 @@ A **Stash community** licence is mandatory for the *stash operator* application,
 
 ## Kubernetes certificates
 
-Kubeadm generate all certificates needed for a kubernetes cluster. These certificates expire after 1 year.
+Kubeadm generates all certificates needed for a kubernetes cluster. These certificates expire after 1 year.
 Kubeadm will take care of renewing the certificates upon cluster upgrade.
 
 > Note: It is a best practice to upgrade your cluster frequently in order to stay secure.

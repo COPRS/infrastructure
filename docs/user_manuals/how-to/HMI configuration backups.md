@@ -2,11 +2,11 @@
 
 ### Dashboards
 
-The grafana operator allows for grafana dashboards to be saved in configuration files as `GrafanaDahsboard` resources.
+The grafana operator allows for grafana dashboards to be saved in configuration files as `GrafanaDashboard` resources.
 
 To create such a configuration file, follow the [grafana operator documentation](https://github.com/grafana-operator/grafana-operator/tree/master/deploy/examples/dashboards), which provides many examples of `GrafanaDashboard` configuration files.
 
-Once the created the configuration file has been created:
+Once the configuration file has been created:
 - put it in the same directory as the app it concerns. For instance, the `myapp` dashboard should be at `apps/myapp/mygrafanadashboard.yaml`.
 - add the name of the configuration file in the `kustomization.yaml` file under the "resources" as so:
 
@@ -62,7 +62,7 @@ spec:
         logMessageField: "myMessageField"
 ```
 
-Once, the datasource file has been created:
+Once the datasource file has been created:
 - put it in the same directory as the app it concerns. For instance, the `myapp` datasource should be at `apps/myapp/mygrafanadatasource.yaml`.
 - add the name of the configuration file in the `kustomization.yaml` file under the "resources", and a json patch, as so:
 

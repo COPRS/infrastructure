@@ -7,11 +7,11 @@ The ceph commands can be run from the `ceph-tools` container.
 
 ## 1. Backup sensitive data
 
-This procedure is complex, and it case of failure, you may lose all your data, so please backup any sensitive data beforehand. see [Databases backups.md]('./Databases backups.md')
+This procedure is complex, and it case of failure, you may lose all your data, so please backup any sensitive data beforehand. See [Databases backups](./Databases%20backups.md)
 
 ## 2. Create the rook_ceph node group
 
-Following the documentation [./Cluster configuration.md]('./Cluster configuration.md') and [./Cluster scaling.md]('./Cluster scaling.md'), create the `rook_ceph` node group with at least three nodes ans the amount of storage you need.
+Following the documentation [Cluster configuration](./Cluster%20configuration.md) and [Cluster scaling](./Cluster%20scaling.md), create the `rook_ceph` node group with at least three nodes ans the amount of storage you need.
 
 ## 3. Allow rook-ceph pods to run on the new nodes
 

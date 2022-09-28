@@ -135,4 +135,4 @@ kubectl annotate node NODE_NAME cluster-autoscaler.kubernetes.io/scale-down-disa
 
 ## Monitor the autoscaler
 
-The cluster-autoscaler exposes metrics that are periodically retrivied by prometheus, you can use for example the grafana dashboard [3831](https://grafana.com/grafana/dashboards/3831) to visualize them.
+The cluster-autoscaler exposes metrics that are periodically retrieved by prometheus, you can use for example the grafana dashboard [3831](https://grafana.com/grafana/dashboards/3831) to visualize them.

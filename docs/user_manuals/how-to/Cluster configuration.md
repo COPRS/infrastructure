@@ -16,7 +16,7 @@ For each node groups, the following fields are availables:
  - max_size : maximum amount of nodes in the node group
  - volume : definition of the volume to be added to each node in the node group
    - type : type of volume (SSD, HDD or COLD)
-   - size : size in Go
+   - size : size in GB
  - kubespray : kubespray specific variables for this node group, find the documentation [here](https://github.com/kubernetes-sigs/kubespray/blob/master/docs/vars.md) and some examples below
 
 This specification will be used by the cluster-autoscaler to run its scale up simulations.

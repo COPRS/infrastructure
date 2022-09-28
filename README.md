@@ -32,7 +32,7 @@ This project exploits Kubespray to deploy Kubernetes.
 The fully detailed documentation and configuration options are available on its page: [https://kubespray.io/](https://kubespray.io/)
 
 ### HashiCorp Vault (optional)
-This project can integrate credentials from a custom `HashiCorp Vault` instance, see the specific documentation [here](./docs/user_manuals/howto/Credentials.md).
+This project can integrate credentials from a custom `HashiCorp Vault` instance, see the specific documentation [here](./docs/user_manuals/how-to/Credentials.md).
 
 ## Quickstart
 

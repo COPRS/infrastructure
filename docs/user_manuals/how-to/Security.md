@@ -3,7 +3,7 @@
 The purpose of this document is to explain how to install and uninstall 
 security COTS on nodes.
 
-There is 5 COTS that are currently deployed in order to provide sucurity to the 
+There are 5 COTS that are currently deployed in order to provide security to the 
 infrastructure. 
 
 - AuditD
@@ -12,13 +12,14 @@ infrastructure.
 - Suricata
 - OpenVPN
 
-According to the purpose of each COTS, the node where the installation is perfomed change.
+According to the purpose of each COTS, the node where the installation is perfomed changes.
 
 ## Future improvements
-Suricata: choose dynamically the interface to work on 
-Wazuh: handle wazuh password with a vault 
 
-## AuditD
+- Suricata: choose dynamically the interface to work on.
+- Wazuh: handle wazuh password with a vault. 
+
+## auditd
 **Scope: All**
 
 Auditd is the userspace component to the Linux Auditing System. It's responsible for writing audit records to the disk.
@@ -26,24 +27,25 @@ The COTS can be configured by updating the file : ```infrastructure/platform/rol
 
 | Name | Function | Required |
 |------|----------|----------|
-|  rules   |   List of rules to add to auditd each rule is composed of two attributes the name and the rule description      |     No     |
+|  rules   |   List of rules to add to auditd; each rule is composed of two attributes: the name, and the rule description.      |     No     |
 
 In order to make easy the management of auditd logs, Laurel can be deployed.
-This tool is plugged to audisp and allow to merge auditd message types in one unique JSON.
-The documentation and exemple of configuration are available here : https://github.com/threathunters-io/laurel
+This tool is plugged to audisp and allows to merge auditd message types in one unique JSON.
+The documentation and example of configuration are available here : https://github.com/threathunters-io/laurel
 
-This plugin allow you to set laurel.conf through `laurel_conf`
+This plugin allows you to set laurel.conf through `laurel_conf`
 The audisp plugin can be configured by setting `laurel_audisp` property.
 Finally the release to be installed can be set by `using laurel_url`.
 NB if one property is set, all properties must be set too otherwise the installation will fail. 
 
 ## ClamAv
 **Scope: gateways**
-The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/clamav/defaults/main.yml`
+
+The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/clamav/defaults/main.yml`.
 
 ClamAv is an antivirus controlled by systemd.  
 Rules bases are reloaded automatically by freshclam many times a day.  
-The version of this cots can be edited in ```/platform/roles/security/clamav/default/main.yaml```
+The version of this COTS can be edited in ```/platform/roles/security/clamav/default/main.yaml```
 
 | Name | Function | Required |
 |------|----------|----------|
@@ -52,10 +54,11 @@ The version of this cots can be edited in ```/platform/roles/security/clamav/def
 Clamav is decomposed in 3 modules.
 - Freshclam for signature update.
 - clamd the daemon.
-- clamonacc which performs on access scanning. 
+- clamonacc which performs on-access scanning. 
 
 ## Wazuh
 **Scope: The Manager is installed only on the first master node and agent that are installed on all remaining nodes.** 
+
 The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/wazuh/defaults/main.yml```
 We strongly advise to use the lastest version of Wazuh as the version 3 and 4 are not the same. Using version 3, the playbook may not work.
 
@@ -90,15 +93,15 @@ As the Wazuh playbook, we strongly advise you to use the provided version in par
 | categories | Object that describe the categories for ip reputation | No |
 
 The purpose of the object `rotateIpReputation` is to create a bash file that is going to be executed once a day to update the ip reputation of suricata.
-rotateIpReputation object is optional, it is composed of 3 attributes:
+The rotateIpReputation object is optional, it is composed of 3 attributes:
 - The name that should end by .sh.
 - The content, it is the actions that want to perform to update the ip reputation of suricata in bash.
-- The cron paramater, as the name and the hour of execution each day.
+- The cron parameter, as the name and the hour of execution each day.
 
 The same object structure is available by updating `rotate_rules` object, here the purpose is to describe the bash file that is going to update the rules each day.
 
 `categories` Object is composed of two attributes: 
-- a name fir the file.
+- a name for the file.
 - the content of the file following `id,short name,description` format. 
 It is used to manage categories for ip reputation. 
 

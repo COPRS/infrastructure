@@ -2,15 +2,15 @@
 
 ## Purpose
 
-Graylog has a mecanism that allows administrators to export a part of their graylog configuration's.
-That's include Inputs, Extractors, Pipelines, Gork Patterns etc..
+Graylog has a mecanism that allows administrators to export a part of their graylog configurations.
+That include Inputs, Extractors, Pipelines, Gork Patterns etc..
 https://www.graylog.org/features/content-packs
 
-In a cloud context, that is helpfull as platforms can be redeployed many times.
+In a cloud context, that is helpful as platforms can be redeployed many times.
 This document explains how you can easily import your graylog content pack.
 
 ## Update kustomization.yaml
-The first step, consist in create a folder `content-packs` in the `apps/graylog` folder.
+The first step consists in creating a folder `content-packs` in the `apps/graylog` folder.
 Inside this folder you can copy past your content packs in json format.
 
 Once done, you have to update the `kustomization.yaml` file of Graylog.
@@ -42,4 +42,4 @@ Under the graylog object in values.yaml adapts the munder to
     content_packs_dir = /usr/share/graylog/data/content-packs/
     content_packs_auto_install = contentpacks.json,grok-patterns.json
 ```
-The values add to `config` tag are added at the of the `graylog.conf` file inside the graylog container.
+The values added to `config` tag are added at the of the `graylog.conf` file inside the graylog container.
