@@ -1,4 +1,0 @@
-chart_ref: falco
-chart_version: 1.16.2
-chart_repo_url: https://falcosecurity.github.io/charts
-namespace: security

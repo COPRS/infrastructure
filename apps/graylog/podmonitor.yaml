@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: graylog
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: graylog
+      app.kubernetes.io/name: graylog
+  podMetricsEndpoints:
+    - path: /api/metrics/prometheus
+      port: metrics

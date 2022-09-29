@@ -1,0 +1,52 @@
+- name: Set egress networking
+  when:
+    - groups.egress is defined
+    - inventory_hostname in groups['egress']
+  block:
+    - name: Include tenants file variables
+      include_vars:
+        file: "{{ tenants_path }}"
+
+    - name: Read safescale tenant credentials
+      set_fact:
+        tenant: "{{ tenants | selectattr('name', 'match', safescale_tenant) | first }}"
+
+    - name: Add floating IP to egress
+      os_floating_ip:
+        auth:
+          auth_url: "https://iam.eu-west-0.prod-cloud-ocb.orange-business.com"
+          username: "{{ tenant.identity.Username }}"
+          password: "{{ tenant.identity.Password }}"
+          domain_name: "{{ tenant.identity.DomainName }}"
+          project_id: "{{ tenant.compute.ProjectID }}"
+        region_name: "{{ tenant.compute.Region }}"
+        server: "{{ item }}"
+      loop: "{{ groups['egress'] }}"
+      delegate_to: localhost
+      run_once: true
+
+    ## netplan adds a new default route without removing the previous one
+    - name: Remove previous default route
+      command: "ip route del default"
+      become: true
+      ignore_errors: true
+
+    - name: Set netplan config
+      copy:
+        dest: /etc/netplan/11-ens3-private.yaml
+        content: |
+          network:
+            version: 2
+            renderer: networkd
+            ethernets:
+              ens3:
+                addresses: [{{ address_mask | ipaddr('host/prefix') }}]
+                gateway4: {{ gateway_ip }}
+      vars:
+        address_mask: "{{ ansible_default_ipv4['address'] }}/{{ ansible_default_ipv4['netmask'] }}"
+        gateway_ip: "{{ hostvars[groups['gateway'][0]]['ansible_default_ipv4']['gateway'] }}"
+      become: true
+
+    - name: Apply netplan config
+      command: netplan apply
+      become: true

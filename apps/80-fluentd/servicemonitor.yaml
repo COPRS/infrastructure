@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fluentd
+spec:
+  endpoints:
+  - interval: 2m
+    path: /metrics
+    port: tcp-metrics
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: fluentd

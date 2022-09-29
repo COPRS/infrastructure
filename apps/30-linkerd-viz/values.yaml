@@ -4,8 +4,16 @@ linkerdVersion: stable-2.11.1
 dashboard:
   # -- Number of replicas of dashboard
   replicas: 1
-
+  
   logLevel: info
+
+  resources:
+    cpu:
+      limit: 10m
+      request: 5m
+    memory:
+      limit: 64Mi
+      request: 32Mi
 
 grafana:
   enabled: false
@@ -16,8 +24,48 @@ prometheus:
 prometheusUrl: http://prometheus-stack-kube-prom-prometheus.monitoring.svc.cluster.local:9090/prometheus
 
 # -- Namespace of the Linkerd core control-plane install. Default to linkerd
-# linkerdNamespace: linkerd
+linkerdNamespace: networking
 # -- Set to false when installing in a custom namespace.
-installNamespace: true
+installNamespace: false
 # -- Namespace in which the Linkerd Viz extension has to be installed. Default to linkerd-viz
-# namespace: linkerd-viz
+namespace: networking
+
+metricsAPI:
+  resources:
+    cpu:
+      limit: 50m
+      request: 5m
+    memory:
+      limit: 128Mi
+      request: 64Mi
+
+tap:
+  externalSecret: true
+
+  resources:
+    cpu:
+      limit: 20m
+      request: 10m 
+    memory:
+      limit: 200Mi
+      request: 100Mi
+
+  caBundle: |
+    {{ linkerd.webhook.crt | indent( width=4 ) }}
+
+tapInjector:
+  externalSecret: true
+
+  resources:
+    cpu:
+      limit: 10m
+      request: 5m 
+    memory:
+      limit: 40Mi
+      request: 20Mi
+
+  caBundle: |
+    {{ linkerd.webhook.crt | indent( width=4 ) }}
+
+podAnnotations:
+  linkerd.io/inject: enabled

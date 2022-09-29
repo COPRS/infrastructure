@@ -63,20 +63,21 @@
 - name: Create the qcow2 image with packer
   shell: "packer build -force -on-error=cleanup {{ base_img.path }}"
 
-- name: Include default vars from safescale-cluster
+- name: Include tenants file vars
   include_vars:
-    file: roles/safescale-cluster/defaults/main.yaml
+    file: "{{ tenants_path }}"
 
-- name: Get credentials from tenant file
-  import_tasks: roles/safescale-cluster/tasks/tenant.yaml
+- name: Read safescale tenant credentials
+  set_fact:
+    tenant: "{{ tenants | selectattr('name', 'match', safescale_tenant) | first }}"
 
 - name: Upload the packer image to the cloud provider
   openstack.cloud.image:
     auth:
       auth_url: "https://iam.eu-west-0.prod-cloud-ocb.orange-business.com"
-      username: "{{ tenant.identity.Username }}"
+      username: "{{ tenant.identity.Username }}"
       password: "{{ tenant.identity.Password }}"
-      domain_name: "{{ tenant.identity.DomainName }}"
+      domain_name: "{{ tenant.identity.DomainName }}"
       project_id: "{{ tenant.compute.ProjectID }}"
     timeout: 600
     name: "{{ image_name }}"

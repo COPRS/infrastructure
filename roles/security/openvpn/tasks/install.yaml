@@ -1,6 +1,6 @@
 - name: Install openVpn
   apt: 
-    name: openvpn={{ openvpn.openvpn_version }}
+    name: openvpn
     state: present
 
 - name: Insert client conf files

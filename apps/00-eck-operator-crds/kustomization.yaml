@@ -1,0 +1,9 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+helmCharts:
+- name: eck-operator-crds
+  repo:  https://helm.elastic.co
+  version: 1.9.0
+  releaseName: "{{ app_name }}"
+  namespace: infra

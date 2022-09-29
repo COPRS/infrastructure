@@ -1,0 +1,62 @@
+image:
+  tag: 5.0.6-debian-10-r14
+architecture: replicaset
+auth:
+  enabled: true
+  rootUser: root
+  rootPassword: {{ mongodb.rootPassword }}
+  usernames: 
+    - {{ mongodb.username }}
+  passwords: 
+    - {{ mongodb.password }}
+  databases: 
+    - {{ mongodb.database }}
+  replicaSetKey: {{ mongodb.replica_set_key }}
+persistence:
+  enabled: true
+  storageClass: ceph-block
+  size: 30Gi
+extraFlags:
+  - --slowms=1000
+  - --quiet
+replicaCount: 3
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/infra"
+            operator: Exists
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app
+              operator: In
+              values:
+                - mongodb
+        topologyKey: kubernetes.io/hostname
+arbiter:
+  enabled: true
+metrics:
+  enabled: true
+  image:
+    repository: bitnami/mongodb-exporter
+    tag: 0.30.0-debian-10-r58
+  serviceMonitor:
+    enabled: true
+    interval: 2m
+  resources:
+    limits:
+      cpu: 50m
+      memory: 128Mi
+    requests:
+      cpu: 20m
+      memory: 64Mi
+resources:
+  limits:
+    cpu: 300m
+    memory: 2Gi
+  requests:
+    cpu: 100m
+    memory: 512Mi

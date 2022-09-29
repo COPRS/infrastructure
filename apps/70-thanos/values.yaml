@@ -1,0 +1,83 @@
+image:
+  registry: docker.io
+  repository: bitnami/thanos
+  tag: 0.23.1-scratch-r3
+existingObjstoreSecret: thanos-bucket-credentials
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    interval: 2m
+
+query:
+  replicaLabel: [prometheus_replica]
+  dnsDiscovery:
+    sidecarsService: prometheus-operated
+    sidecarsNamespace: monitoring
+  affinity: &affinity_infra
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  resources:
+    limits:
+      cpu: 500m
+      memory: 2Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
+  extraFlags:
+    - --web.prefix-header=X-Forwarded-Prefix
+
+compactor:
+  enabled: true
+  retentionResolutionRaw: {{ thanos.retention.retentionResolutionRaw }}
+  retentionResolution5m: {{ thanos.retention.retentionResolution5m }}
+  retentionResolution1h: {{ thanos.retention.retentionResolution1h }}
+  persistence:
+    enabled: true
+    storageClass: "ceph-block"
+    accessModes:
+      - ReadWriteOnce
+    size: 100Gi
+  affinity:
+    <<: *affinity_infra
+  resources:
+    limits:
+      cpu: 500m
+      memory: 2Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
+queryFrontend:
+  enabled: false
+storegateway:
+  persistence:
+    enabled: false
+  enabled: true
+  affinity:
+    <<: *affinity_infra
+  resources:
+    limits:
+      cpu: 500m
+      memory: 2Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
+
+ruler:
+  enabled: false
+  affinity:
+    <<: *affinity_infra
+  resources:
+    limits:
+      cpu: 50m
+      memory: 128Mi
+    requests:
+      cpu: 20m
+      memory: 64Mi
+  alertmanagers:
+    - http://prometheus-stack-kube-prom-alertmanager.monitoring.svc.cluster.local:9094

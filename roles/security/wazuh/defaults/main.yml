@@ -16,8 +16,11 @@ wazuh:
   # ossec_conf: | WAZUH MASTER CONF HERE
 
   # Optional
-  # unused_rules:
-  #   - Rule_to_exclude
+  unused_rules:
+    - 0391-fortigate_rules.xml
 
   # unused_decoders:
   #   - Rule_to_exclude
+
+# by default the wazuh manager is on the first master
+wazuh_manager_node: "{{ cluster.name }}-master-1"

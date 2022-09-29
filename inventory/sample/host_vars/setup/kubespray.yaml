@@ -1,0 +1,91 @@
+kube_version: v1.22.2
+
+etcd_kubeadm_enabled: true
+
+## Networking
+kube_network_plugin: calico
+calico_version: "v3.19.2"
+ipip: false
+calico_vxlan_mode: Always
+# if a node may have several interfaces
+# set the ip autodetection method to the internal nodes network CIDR
+calico_ip_auto_method: "cidr={{ cluster.cidr }}"
+
+kube_proxy_mode: iptables
+
+kube_service_addresses: 10.96.0.0/12
+kube_pods_subnet: 10.244.0.0/16
+
+cluster_name: cluster.local
+kube_log_level: 1
+containerd_debug_level: warn
+
+## Container runtime
+## Kubernetes need to configure containerd cgroup driver.
+## Enabling kubespray container engine deployment ensure  containerd config file is set.
+## deploy_container_engine: false
+container_manager: containerd
+
+## last version on ubuntu 20.04 is 1.4.11-1 and kubespray doesn't support it yet
+## but it is already installed in fe ubuntu 20.04 base image
+## to fix this: downgrade containerd to last version supported by crictl: 1.4.9-1
+# containerd_package_info:
+#   pkgs:
+#     "containerd.io=1.4.11-1"
+
+## Kubeadm config
+## only for single master clusters for multiple master cluster,
+## enabling this feature prevent secondary masters to join the cluster
+## With multiple masters, you need to enable it through the 
+## upgrade-cluster.yml playbook. The related commands are describe
+## in the README.md
+# podsecuritypolicy_enabled: true
+
+kube_apiserver_enable_admission_plugins: [NodeRestriction]
+
+kube_kubeadm_controller_extra_args:
+  use-service-account-credentials: true
+
+kube_kubeadm_apiserver_extra_args:
+  oidc-issuer-url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}
+  oidc-client-id: kubectl
+  oidc-username-claim: LDAP_ID
+  oidc-username-prefix: "-"
+  oidc-groups-claim: cluster-roles
+  oidc-groups-prefix: ""
+
+kubelet_config_extra_args:
+  # cf: https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies
+  cpuManagerPolicy: static
+
+kubernetes_audit: true
+audit_log_path: /var/log/k8s_audit.log
+audit_log_maxage: 30
+audit_log_maxbackups: 10
+audit_log_maxsize: 100
+
+# Kubectl config file generated in YOUR_INVENTORY/artifcats/admin.conf
+# Used by kubectl role to generate kubeconfig in the cluster gateways
+kubeconfig_localhost: true
+
+# Enable prometheus metrics queries
+kube_proxy_metrics_bind_address: 0.0.0.0:10249
+
+# Auto rotate the kubelet server certificates by requesting new certificates
+# from the kube-apiserver when the certificate expiration approaches.
+# /!\ Note that server certificates are not approved automatically. Approve them manually
+# (`kubectl get csr`, `kubectl certificate approve`) or implement custom approving controller like
+# [kubelet-rubber-stamp](https://github.com/kontena/kubelet-rubber-stamp).
+# Required for metrics-server.
+# By default the certificate expire after 1 year.
+kubelet_rotate_server_certificates: true
+
+# Set up cluster DNS
+dns_mode: coredns
+resolvconf_mode: host_resolvconf
+nameservers:
+  - 1.1.1.1
+  - 1.0.0.1
+upstream_dns_servers:
+  - 1.1.1.1
+  - 1.0.0.1

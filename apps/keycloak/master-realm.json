@@ -1,9 +1,0 @@
-{
-    "id": "master",
-    "realm": "master",
-    "enabled": true,
-    "displayName": "Keycloak",
-    "attributes": {
-      "frontendUrl": "https://security.DOMAIN_NAME/auth"
-    }
-}

@@ -1,0 +1,18 @@
+{
+  "spring": {
+    "cloud": {
+      "dataflow": {
+        "container": {
+          "registry-configurations": {
+            "artifactory": {
+              "registry-host": "{{ scdf.registry.url.split('//')[1] }}",
+              "authorization-type": "basicauth",
+              "user": "{{ scdf.registry.username }}",
+              "secret": "{{ scdf.registry.password }}"
+            }
+          }
+        }
+      }
+    }
+  }
+}

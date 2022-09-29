@@ -1,0 +1,44 @@
+apiVersion: apisix.apache.org/v2beta3
+kind: ApisixRoute
+metadata:
+  name: thanos
+spec:
+  http:
+    - name: thanos
+      backends:
+        - serviceName: thanos-query
+          servicePort: 9090
+      match:
+        hosts: [ monitoring.{{ platform_domain_name }} ]
+        paths:
+          - /thanos
+          - /thanos/*
+      plugins:
+        - name: proxy-rewrite
+          enable: true
+          config:
+            regex_uri: [ "^/thanos/(.*)$", "/$1" ]
+            headers:
+              X-Forwarded-Prefix: /thanos
+        - name: openid-connect
+          enable: true
+          config:
+            client_id: thanos
+            client_secret: {{ thanos.oidc_client_secret }}
+            discovery: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
+            scope: openid
+            bearer_only: false
+            realm: {{ keycloak.realm.name }}
+            introspection_endpoint_auth_method: client_secret_post
+            redirect_uri: https://monitoring.{{ platform_domain_name }}/thanos/redirect_uri
+---
+apiVersion: apisix.apache.org/v2beta3
+kind: ApisixTls
+metadata:
+  name: sni-monitoring
+spec:
+  hosts:
+    - monitoring.{{ platform_domain_name }}
+  secret:
+    name: ingress-tls
+    namespace:  networking

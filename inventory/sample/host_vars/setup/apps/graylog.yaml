@@ -1,0 +1,4 @@
+graylog:
+  oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  operator_password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  #geolite2db_uri: https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-City&license_key=YOURLICENSEKEY&suffix=tar.gz

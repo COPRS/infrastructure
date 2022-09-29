@@ -1,0 +1,11 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: rook-ceph
+
+helmCharts:
+  - name: rook-ceph
+    repo: https://charts.rook.io/release
+    version: v1.9.4
+    valuesFile: values.yaml
+    namespace: rook-ceph

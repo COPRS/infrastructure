@@ -1,0 +1,8 @@
+scdf:
+  database:
+    password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  registry:
+    url: SCDF_REGISTRY_URL
+    username: SCDF_REGISTRY_USERNAME
+    password: SCDF_REGISTRY_PASSWORD # use artifactory "centrally secure password" 

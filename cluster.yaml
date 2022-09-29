@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ansible-community/schemas/main/f/ansible.json
+---
+- name: Create the cluster with safescale
+  hosts: localhost
+  roles:
+    - { role: "infra-defaults"}
+    - { role: "safescale/create-cluster" }
+  tags: create_cluster
+
+- name: Expand cluster nodegroup
+  hosts: localhost
+  roles:
+    - { role: "infra-defaults"}
+    - { role: "safescale/expand-nodegroup" }
+  tags:
+    - expand
+    - never
+
+- name: Configure the machines
+  hosts: k8s_cluster
+  roles:
+    - { role: "infra-defaults"}
+    - { role: "safescale/config-machines", become: yes }
+  tags: config
+
+- name: Deletes nodes
+  hosts: localhost
+  roles:
+    - { role: "infra-defaults"}
+    - { role: "safescale/delete-machines" }
+  tags:
+    - shrink
+    - never
+
+- name: Update hosts.yaml inventory file
+  hosts: localhost
+  roles:
+    - { role: "infra-defaults"}
+    - { role: "safescale/update-hosts" }
+  tags: update_hosts
+
+- name: Add providerID spec to nodes
+  hosts: gateway[0]
+  gather_facts: false
+  tags:
+    - providerids
+    - never
+  tasks:
+    - name: Set providerID on node's spec
+      kubernetes.core.k8s:
+        state: patched
+        template: "roles/safescale/config-machines/templates/provider-ids-patch.yaml.j2"

@@ -1,0 +1,29 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: logging
+
+helmCharts:
+- name: fluent-bit
+  repo: https://fluent.github.io/helm-charts
+  version: 0.19.6
+  valuesFile: values.yaml
+  releaseName: "{{ app_name }}"
+
+configMapGenerator:
+  - name: fluent-bit-labelmap
+    files:
+      - ./labelmap.json
+    options:
+      disableNameSuffixHash: true
+
+resources:
+  - kafkatopic-fluentbit.auditd.yaml
+  - kafkatopic-fluentbit.falco.yaml
+  - kafkatopic-fluentbit.ingress.yaml
+  - kafkatopic-fluentbit.keycloak.yaml
+  - kafkatopic-fluentbit.scans.yaml
+  - kafkatopic-fluentbit.trace.yaml
+  - kafkatopic-fluentbit.wazuh.yaml
+  - servicemonitor.yaml
+  - fluentbit-priority.yaml

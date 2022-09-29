@@ -1,0 +1,112 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: openldap
+  labels:
+    app: openldap
+spec:
+  replicas: 2 # do not forget to update openldap.env LDAP_REPLICATION_HOSTS
+  serviceName: openldap-headless
+  selector:
+    matchLabels:
+      app: openldap
+  template:
+    metadata:
+      labels:
+        app: openldap
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                - key: node-role.kubernetes.io/infra
+                  operator: Exists
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/instance
+                    operator: In
+                    values:
+                      - openldap
+              topologyKey: kubernetes.io/hostname
+      containers:
+        - name: openldap
+          image: osixia/openldap:1.5.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - -l
+            - error  # log level value: trace, debug, info, warning, error, none
+            - --copy-service # necessary with custom ldif files
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.name
+          envFrom:
+            - configMapRef:
+                name: openldap-env
+            - secretRef:
+                name: openldap
+          ports:
+            - containerPort: 389
+              name: ldap-port
+              protocol: TCP
+            - containerPort: 636
+              name: ssl-ldap-port
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 10
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: ldap-port
+            timeoutSeconds: 1
+          readinessProbe:
+            failureThreshold: 10
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: ldap-port
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 50m
+              memory: 128Mi
+            requests:
+              cpu: 10m
+              memory: 72Mi
+          volumeMounts:
+            - mountPath: /var/lib/ldap
+              name: data
+              subPath: data
+            - mountPath: /etc/ldap/slapd.d
+              name: data
+              subPath: config-data
+            - mountPath: /container/service/slapd/assets/certs
+              name: data
+            - mountPath: /container/service/slapd/assets/config/bootstrap/ldif/custom
+              name: custom-ldif-files
+      volumes:
+        - name: custom-ldif-files
+          configMap:
+            name: openldap-bootstrap-custom
+        - name: data
+          emptyDir: {}
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: data
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 8Gi
+        storageClassName: ceph-block
+        volumeMode: Filesystem

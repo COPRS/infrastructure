@@ -1,0 +1,89 @@
+# /!\ member attribute is mandatory for groupOfNames 
+# /!\ and each group must at least possess one user in member attribute
+# /!\ format used: "member: uid=myUser, ou=groups, dc=cluster, dc=local"
+
+# users, cluster.local
+dn: ou=users,dc=cluster,dc=local
+objectClass: organizationalUnit
+ou: users
+
+# {{ keycloak.realm.admin.username }}, users, cluster.local
+dn: uid={{ keycloak.realm.admin.username }},ou=users,dc=cluster,dc=local
+objectClass: posixAccount
+objectClass: inetOrgPerson
+objectClass: shadowAccount
+uid: {{ keycloak.realm.admin.username }}
+userPassword:: {{ keycloak.realm.admin.password | encode_ldap_password | b64encode }}
+loginShell: /bin/bash
+sn:: IA==
+gidNumber: 2000
+mail: {{ keycloak.realm.admin.mail }}
+givenName:: IA==
+shadowInactive: -1
+shadowMax: 9999
+uidNumber: 2001
+shadowExpire: -1
+shadowWarning: 7
+cn: {{ keycloak.realm.admin.username }}
+homeDirectory: /home/{{ keycloak.realm.admin.username }}
+
+# groups, cluster.local
+dn: ou=groups,dc=cluster,dc=local
+objectClass: organizationalUnit
+ou: groups
+
+# sudo, groups, cluster.local
+dn: cn=sudo,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: sudo
+gidNumber: 27
+member: uid={{ keycloak.realm.admin.username }},ou=users,dc=cluster,dc=local
+
+# default, groups, cluster.local
+dn: cn=default,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: default
+gidNumber: 2000
+member: uid={{ keycloak.realm.admin.username }},ou=users,dc=cluster,dc=local
+
+# admin, groups, cluster.local
+dn: cn=admin,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: admin
+gidNumber: 2001
+member: uid={{ keycloak.realm.admin.username }},ou=users,dc=cluster,dc=local
+
+# operator, groups, cluster.local
+dn: cn=operator,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: operator
+gidNumber: 2002
+member: uid={{ keycloak.realm.admin.username }},ou=users,dc=cluster,dc=local
+
+# security, groups, cluster.local
+dn: cn=security,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: security
+gidNumber: 2003
+member: uid={{ keycloak.realm.admin.username }},ou=users,dc=cluster,dc=local
+
+# networking, groups, cluster.local
+dn: cn=networking,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: networking
+gidNumber: 2004
+member: uid={{ keycloak.realm.admin.username }},ou=users,dc=cluster,dc=local
+
+# ssh, groups, cluster.local
+dn: cn=ssh,ou=groups,dc=cluster,dc=local
+objectClass: groupOfNames
+objectClass: posixGroup
+cn: ssh
+gidNumber: 2005
+member: uid={{ keycloak.realm.admin.username }},ou=users,dc=cluster,dc=local

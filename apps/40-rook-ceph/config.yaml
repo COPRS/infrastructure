@@ -1,3 +1,0 @@
-chart_ref: rook-release/rook-ceph
-chart_version: v1.7.7
-namespace: infra

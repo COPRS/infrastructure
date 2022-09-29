@@ -1,8 +1,0 @@
-chart_ref: linkerd/linkerd2
-chart_version: 2.11.1
-namespace: infra
-wait: true
-# create_namespace: true
-
-# TODO: linkerd namespace ?
-# TODO: linkerd mtls/identity -> tap/default/supported <-

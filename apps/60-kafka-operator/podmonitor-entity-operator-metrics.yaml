@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: kafka-operator-entity-metrics
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: entity-operator
+  namespaceSelector:
+    matchNames:
+      - infra
+  podMetricsEndpoints:
+    - path: /metrics
+      port: healthcheck

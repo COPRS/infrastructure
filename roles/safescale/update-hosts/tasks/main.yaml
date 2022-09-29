@@ -1,0 +1,86 @@
+- name: Get host list with safescale
+  shell: "{{ safescale_path }} cluster inspect {{ cluster.name }}"
+  register: cluster_inspect
+
+- name: Set ssh keys path
+  set_fact:
+    ssh_key_path: "{{ inventory_dir }}/artifacts/.ssh"
+
+- name: Parse inspect result
+  set_fact:
+    sf_cluster: "{{ cluster_inspect.stdout | from_json }}"
+
+- name: Read primary gateway IP
+  set_fact:
+    gateway:
+      - name: gw-{{ cluster.name }}
+        private_ip: "{{ sf_cluster.result.primary_gateway_ip }}"
+        id: "{{ lookup('pipe', safescale_path + ' host inspect ' + 'gw-' + cluster.name + '| jq -r .result.id') }}"
+
+- name: Read secondary gateway IP
+  set_fact:
+    gateway2: 
+      - name: gw2-{{ cluster.name }}
+        private_ip: "{{ sf_cluster.result.secondary_gateway_ip }}"
+        id: "{{ lookup('pipe', safescale_path + ' host inspect ' + 'gw2-' + cluster.name + '| jq -r .result.id') }}"
+  when: sf_cluster.result.secondary_gateway_ip is defined
+
+- name: Create complete hosts list
+  set_fact:
+    hosts: "{{ sf_cluster.result.nodes.nodes }} + {{ sf_cluster.result.nodes.masters }} + {{ gateway }} {%- if gateway2 is defined %} + {{ gateway2 }}{%- endif %}"
+
+- name: Getting the node groups nodes from safescale label
+  shell: "{{ safescale_path }} label inspect {{ cluster.name }}-nodegroup | jq -r -c '.result.hosts | group_by(.value)'"
+  register: label_inspect
+
+- name: Parse safescale tags to nodegroups
+  set_fact:
+    nodegroupsnodes: "{{ label_inspect.stdout | from_json }}"
+
+- name: Getting the node groups names from safescale label
+  shell: "{{ safescale_path }} label inspect {{ cluster.name }}-nodegroup | jq -r -c '[.result.hosts[].value] | unique'"
+  register: label_inspect
+
+- name: Parse safescale tags to nodegroups
+  set_fact:
+    nodegroups: "{{ label_inspect.stdout | from_json }}"
+
+- name: Changing safescale operator in ansible.cfg
+  lineinfile:
+    path: "{{ playbook_dir }}/ansible.cfg"
+    regexp: '^remote_user *=*'
+    line: "remote_user       = {{ safescale_operator }}"
+
+- name: Getting the main gateway details
+  shell: "{{ safescale_path }} host inspect gw-{{ cluster.name }} | jq -r -c .result"
+  register: main_gateway_details
+
+- name: Choosing the gateway's access IP
+  set_fact:
+    main_gateway_ip: "{% if use_private_gateway_ip is defined %}{{ (main_gateway_details.stdout | from_json).private_ip }}{% else %}{{ (main_gateway_details.stdout | from_json).public_ip }}{% endif %}"
+
+- name: Creating the .ssh folder for the cluster ssh keys
+  file:
+    path: "{{ ssh_key_path }}"
+    state: directory
+    mode: 0700
+
+- name: Check if ssh key files exist
+  find:
+    paths: [ "{{ ssh_key_path }}" ]
+  register: ssh_files
+
+- name: Create the ssh key files
+  shell: "echo \"$({{ safescale_path }} host show {{ item.name }} | jq -r .result.private_key )\" | head -c -1 - >> {{ ssh_key_path }}/{{ item.name }}.pem && chmod 400 {{ ssh_key_path }}/{{ item.name }}.pem "
+  when: not item.name in ( ssh_files.files |  map(attribute='path') | join(' ') )
+  loop: "{{ hosts }}"
+
+- name: Update hosts.yaml
+  blockinfile:
+    path: "{{ inventory_dir }}/hosts.yaml"
+    block: "{{ lookup('template', 'hosts.j2') }}"
+
+- name: Create the bastion file
+  template:
+    src: ssh-main-gateway.j2
+    dest: "{{ playbook_dir }}/ssh-main-gateway.conf"

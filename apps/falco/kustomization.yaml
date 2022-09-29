@@ -1,0 +1,15 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: security
+
+helmCharts:
+- name: falco
+  releaseName: "{{ app_name }}"
+  repo: https://falcosecurity.github.io/charts
+  version: 1.16.2
+  valuesFile: values.yaml
+  namespace: security
+
+resources:
+  - falco-priority.yaml

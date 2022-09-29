@@ -1,0 +1,22 @@
+- name: Read additional information on nodegroup from inventory if scaling
+  set_fact:
+    expand_nodegroup: "{{ cluster.nodegroups | selectattr('name', 'equalto', expand_nodegroup_name) | first }}"
+  when: expand_nodegroup_name is defined
+
+- name: Create {{ expand_count }} {{ expand_nodegroup.name }} node(s)
+  shell: |
+    {{ safescale_path }} \
+    cluster expand \
+    --count {{ expand_count }} \
+    --os {{ cluster.os }} \
+    --node-sizing '{{ expand_nodegroup.sizing }}' \
+    {{ cluster.name }} | jq -r '.result.nodes[].name'
+  register: expand_cmd
+
+- name: Label created nodes
+  shell: "{{ safescale_path }} host label bind {{ item }} {{ cluster.name }}-nodegroup --value {{ expand_nodegroup.name }}"
+  loop: "{{ expand_cmd.stdout_lines }}"
+
+- name: Create and attach the volumes on {{ expand_nodegroup.name }} nodes
+  include_tasks: volume-create.yaml
+  when: expand_nodegroup.volume is defined

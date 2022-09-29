@@ -1,3 +1,0 @@
-chart_ref: falco-exporter
-chart_repo_url: https://falcosecurity.github.io/charts
-namespace: security

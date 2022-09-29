@@ -1,0 +1,13 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: kube-system
+
+resources:
+  - rs-infra-scaler.yaml
+  - safescaled.yaml
+  - cluster-autoscaler.yaml
+  - externalgrpc-cloudconfig.yaml
+  - generated_inventory-secret.yaml
+  - safescale-tenants-secret.yaml
+  - grafana-dashboards.yaml

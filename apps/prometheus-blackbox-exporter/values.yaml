@@ -1,0 +1,170 @@
+# if the configuration is managed as secret outside the chart, using SealedSecret for example,
+# provide the name of the secret here. If secretConfig is set to true, configExistingSecretName will be ignored
+# in favor of the config value.
+configExistingSecretName: ""
+# Store the configuration as a `Secret` instead of a `ConfigMap`, useful in case it contains sensitive data
+secretConfig: false
+
+config:
+  modules:
+    http_2xx:
+      prober: http
+      timeout: 5s
+      http:
+        valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+        follow_redirects: true
+        preferred_ip_protocol: "ip4"
+    http_2xx_grafana:
+      prober: http
+      timeout: 5s
+      http:
+        valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+        follow_redirects: true
+        preferred_ip_protocol: "ip4"
+        oauth2:
+          client_id: grafana
+          client_secret_file: /var/credentials/grafana_client_secret
+          scopes:
+            - profile
+          token_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/token
+    http_2xx_thanos:
+      prober: http
+      timeout: 5s
+      http:
+        valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+        follow_redirects: true
+        preferred_ip_protocol: "ip4"
+        oauth2:
+          client_id: thanos
+          client_secret_file: /var/credentials/thanos_client_secret
+          scopes:
+            - openid
+          token_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/token
+    http_2xx_scdf:
+      prober: http
+      timeout: 5s
+      http:
+        valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+        follow_redirects: true
+        preferred_ip_protocol: "ip4"
+        oauth2:
+          client_id: scdf
+          client_secret_file: /var/credentials/scdf_client_secret
+          scopes:
+            - openid
+          token_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/token
+    http_2xx_kibana_processing:
+      prober: http
+      timeout: 5s
+      http:
+        valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+        follow_redirects: true
+        preferred_ip_protocol: "ip4"
+        oauth2:
+          client_id: kibana-processing
+          client_secret_file: /var/credentials/kibana-processing_client_secret
+          scopes:
+            - openid
+          token_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/token
+    http_2xx_graylog:
+      prober: http
+      timeout: 5s
+      http:
+        valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+        follow_redirects: true
+        preferred_ip_protocol: "ip4"
+        oauth2:
+          client_id: graylog
+          client_secret_file: /var/credentials/graylog_client_secret
+          scopes:
+            - openid
+          token_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/token
+    http_2xx_kibana_security:
+      prober: http
+      timeout: 5s
+      http:
+        valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+        follow_redirects: true
+        preferred_ip_protocol: "ip4"
+        oauth2:
+          client_id: kibana-security
+          client_secret_file: /var/credentials/kibana-security_client_secret
+          scopes:
+            - openid
+          token_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/token
+    http_2xx_apisix:
+      prober: http
+      timeout: 5s
+      http:
+        valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+        follow_redirects: true
+        preferred_ip_protocol: "ip4"
+        oauth2:
+          client_id: apisix
+          client_secret_file: /var/credentials/apisix_client_secret
+          scopes:
+            - openid
+          token_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/token
+    http_2xx_linkerd:
+      prober: http
+      timeout: 5s
+      http:
+        valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+        follow_redirects: true
+        preferred_ip_protocol: "ip4"
+        oauth2:
+          client_id: linkerd
+          client_secret_file: /var/credentials/linkerd_client_secret
+          scopes:
+            - openid
+          token_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/token
+
+serviceMonitor:
+  ## If true, a ServiceMonitor CRD is created for a prometheus operator
+  enabled: true
+
+  # Default values that will be used for all ServiceMonitors created by `targets`
+  defaults:
+    additionalMetricsRelabels: {}
+    additionalRelabeling: []
+    labels: {}
+    interval: 60s
+    scrapeTimeout: 60s
+    module: http_2xx
+
+  targets:
+    - name: grafana
+      url: https://monitoring.{{ platform_domain_name }}/healthz
+      module: http_2xx_grafana
+    - name: thanos
+      url: https://monitoring.{{ platform_domain_name }}/thanos/-/ready
+      module: http_2xx_thanos
+    - name: scdf
+      url: https://processing.{{ platform_domain_name }}/management/health/readiness
+      module: http_2xx_scdf
+    - name: kibana-processing
+      url: https://processing.{{ platform_domain_name }}/kibana/status
+      module: http_2xx_kibana_processing
+    - name: graylog
+      url: https://security.{{ platform_domain_name }}/api/system/lbstatus
+      module: http_2xx_graylog
+    - name: kibana-security
+      url: https://security.{{ platform_domain_name }}/kibana/status
+      module: http_2xx_kibana_security
+    - name: keycloak
+      url: https://iam.{{ platform_domain_name }}
+    - name: linkerd
+      url: https://linkerd.{{ platform_domain_name }}/api/check 
+      module: http_2xx_linkerd
+    - name: apisix
+      url: https://apisix.{{ platform_domain_name }}
+      module: http_2xx_apisix
+
+extraSecretMounts:
+  - name: oidc-credentials
+    mountPath: /var/credentials/
+    secretName: blackbox-exporter-credentials
+    readOnly: true
+    defaultMode: 420
+
+pspEnabled: false

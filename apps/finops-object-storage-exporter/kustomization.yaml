@@ -1,0 +1,26 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: monitoring
+
+helmCharts:
+- name: finops-object-storage-exporter
+  releaseName: "{{ app_name }}"
+  repo: https://artifactory.coprs.esa-copernicus.eu/artifactory/rs-helm
+  version: 1.0.0
+  valuesFile: values.yaml
+  namespace: monitoring
+
+patches:
+  # httpGet.resources: field not declared in schema
+  - patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/readinessProbe/httpGet
+        value:
+          path: /metrics
+          port: 2112
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: finops-object-storage-exporter

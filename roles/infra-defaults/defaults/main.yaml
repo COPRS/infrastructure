@@ -1,0 +1,17 @@
+# SafeScale client binary path
+safescale_path: $(command -v safescale)
+# SafeScale tenants file path
+tenants_path: ~/.safescale/tenants.yaml
+# SafeScale operator name
+safescale_operator: safescale
+
+# LDAP config
+base_dn: dc=cluster,dc=local
+ldap_server_url: ldap://127.0.0.1:30389
+
+etcd_metrics_port: 2381
+
+safescale_complexity_infra_nodes:
+  small: 1
+  normal: 3
+  large: 7

@@ -1,7 +1,0 @@
-{
-    "type": "s3",
-    "settings": {
-      "client": "default",
-      "bucket": "ES_PRO_BUCKET"
-    }
-  }

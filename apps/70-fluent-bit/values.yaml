@@ -1,0 +1,323 @@
+kind: DaemonSet
+
+image:
+  repository: artifactory.coprs.esa-copernicus.eu/rs-docker/fluent-bit-plugin-loki
+  tag: 1.9.3
+
+logLevel: warn
+
+serviceMonitor:
+  enabled: true
+  interval: 2m
+
+priorityClassName: fluentbit-priority
+
+resources:
+  limits:
+    cpu: 150m
+    memory: 512Mi
+  requests:
+    cpu: 25m
+    memory: 64Mi
+
+luaScripts:
+ scripts.lua: |
+    function auditdLogfileNameParse(tag, timestamp, record)
+        intermediate=string.gsub(tag, '.log', '')
+        hostname=string.gsub(intermediate, 'security.auditd.var.audit.audit_', '')
+        record["host_name"]=hostname
+        return 1, timestamp, record
+    end
+
+## https://docs.fluentbit.io/manual/administration/configuring-fluent-bit/configuration-file
+config:
+  service: |
+    [SERVICE]
+      Daemon Off
+      Flush 1
+      Log_Level warn
+      Parsers_File parsers.conf
+      Parsers_File custom_parsers.conf
+      HTTP_Server On
+      HTTP_Listen 0.0.0.0
+      HTTP_Port 2020
+      Health_Check On
+      storage.path              /var/log/flb-storage/
+      storage.sync              normal
+      storage.checksum          off
+      storage.backlog.mem_limit 50M
+  ## https://docs.fluentbit.io/manual/pipeline/inputs
+  inputs: |
+    [INPUT]
+      Name             tail
+      Multiline.parser cri
+      Tag              processing.log.*
+      Path             /var/log/containers/*.log
+      Exclude_Path     /var/log/containers/*fluent*.log,/var/log/containers/keycloak-?_iam_keycloak-*.log,/var/log/containers/apisix-*_networking_apisix-*.log,/var/log/containers/falco-?????_security_falco*.log,/var/log/containers/nmap-job-*.log
+      DB               /var/log/fluentbit_processing_log.db
+      DB.Sync          Normal
+      Rotate_Wait      10
+      Buffer_Max_Size  1MB
+      Mem_Buf_Limit    50MB
+      storage.type     filesystem
+    [INPUT]
+      Name              systemd
+      Tag               system.*
+      Max_Entries       500
+      Read_From_Tail    Off
+      DB                /var/log/fluentbit_systemd.db
+      DB_Sync           Normal
+      Strip_Underscores On
+      Lowercase         On
+    [INPUT]
+      Name             tail
+      Tag              security.container.keycloak.*
+      Path             /var/log/containers/keycloak-?_iam_keycloak-*.log
+      DB               /var/log/fluentbit_keycloak.db
+      DB.Sync          Normal
+      Rotate_Wait      10
+      Buffer_Max_Size  1MB
+      Mem_Buf_Limit    10MB
+      storage.type     filesystem
+    [INPUT]
+      Name             tail
+      Tag              security.container.ingress.*
+      Path             /var/log/containers/apisix-*_networking_apisix-*.log
+      DB               /var/log/fluentbit_apisix.db
+      DB.Sync          Normal
+      Rotate_Wait      10
+      Buffer_Max_Size  1MB
+      Mem_Buf_Limit    10MB
+      storage.type     filesystem
+    [INPUT]
+      Name             tail
+      Tag              security.wazuh.*
+      Path             /var/ossec/logs/alerts/alerts.json
+      DB               /var/log/fluentbit_security_wazuh.db
+      DB.Sync          Normal
+      Rotate_Wait      10
+      Buffer_Max_Size  1MB
+      Mem_Buf_Limit    10MB
+      storage.type     filesystem
+    [INPUT]
+      Name             tail
+      Tag              security.auditd.*
+      Path             /var/log/audit_*.json
+      DB               /var/log/fluentbit_security_auditd.db
+      DB.Sync          Normal
+      Rotate_Wait      10
+      Buffer_Max_Size  1MB
+      Mem_Buf_Limit    10MB
+      storage.type     filesystem
+    [INPUT]
+      Name             tail
+      Tag              security.container.falco.*
+      Path             /var/log/containers/falco-?????_security_falco*.log
+      DB               /var/log/fluentbit_security_falco.db
+      DB.Sync          Normal
+      Rotate_Wait      10
+      Buffer_Max_Size  1MB
+      Mem_Buf_Limit    10MB
+      storage.type     filesystem
+    [INPUT]
+      Name             tail
+      Tag              security.container.scans.*
+      Path             /var/log/containers/nmap-job-*.log
+      DB               /var/log/fluentbit_security_nmap.db
+      DB.Sync          Normal
+      Rotate_Wait      10
+      Buffer_Max_Size  1MB
+      Mem_Buf_Limit    10MB
+      storage.type     filesystem
+  ## https://docs.fluentbit.io/manual/pipeline/filters
+  filters: |
+    # Rename CRI parser 'message' to 'log'
+    [FILTER]
+      Name    modify
+      Match   processing.*
+      Rename  message log
+    # Keep only logins related logs from keycloak
+    [FILTER]
+      Name    grep
+      Match   security.container.keycloak.*
+      Regex   log /.*type=LOGIN|LOGIN_ERROR.*/
+    # Do not send clamd logs with the rest of systemd logs (rely on wazuh)
+    [FILTER]
+      Name    grep
+      Match   system.*
+      Exclude syslog_identifier clamd
+    # Retain only used fields
+    [FILTER]
+      Name record_modifier
+      Match system.*
+      Allowlist_key hostname
+      Allowlist_key syslog_identifier
+      Allowlist_key message
+    [FILTER]
+      Name    grep
+      Match   security.container.ingress.*
+      Regex   log /.*stdout.*/
+    [FILTER]
+      Name    lua
+      Match   security.auditd.*
+      Script  /fluent-bit/scripts/scripts.lua
+      Call    auditdLogfileNameParse
+    # Retrieve additional kubernetes information
+    [FILTER]
+      Name                kubernetes
+      Match               processing.log.*
+      Kube_Tag_Prefix     processing.log.var.log.containers.
+      Kube_URL            https://kubernetes.default.svc:443
+      Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
+      Labels              On
+      Annotations         Off
+      Merge_Log           Off
+      K8S-Logging.Parser  On
+      K8S-Logging.Exclude On
+      Keep_Log            Off
+      Buffer_Size         1MB
+    [FILTER]
+      Name                kubernetes
+      Match               security.container.*
+      Kube_Tag_Prefix     security.Using degraded feature setcontainer.
+      Kube_URL            https://kubernetes.default.svc:443
+      Kube_CA_File        /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      Kube_Token_File     /var/run/secrets/kubernetes.io/serviceaccount/token
+      Labels              On
+      Annotations         Off
+      Merge_Log           Off
+      K8S-Logging.Parser  On
+      K8S-Logging.Exclude On
+      Keep_Log            Off
+      Buffer_Size         1MB
+    # Find and duplicate TRACE logs
+    [FILTER]
+      Name    rewrite_tag
+      Match   processing.log.*
+      Rule log .*"type":"REPORT".* processing.trace.* true
+    # Retain only used fields
+    [FILTER]
+      Name record_modifier
+      Match processing.log.*
+      Allowlist_key log
+      Allowlist_key kubernetes
+    # Lift kubernetes fields
+    [FILTER]
+      Name nest
+      Match processing.log.*
+      Operation lift
+      Nested_under kubernetes
+  ## https://docs.fluentbit.io/manual/pipeline/outputs
+  outputs: |
+    # Use fields as loki labels, and remove them to have only the actual log sent to loki as the payload
+    [OUTPUT]
+      Name grafana-loki
+      Match processing.log.*
+      Labels {log_type="container"}
+      LabelMapPath /fluent-bit/etc/labelmap/labelmap.json
+      Url http://loki-distributor.logging.svc.cluster.local:3100/loki/api/v1/push
+      RemoveKeys container_hash,container_image,container_name,docker_id,host,namespace_name,pod_id,pod_name,pod_name,labels
+      DropSingleKey true
+      LogLevel warn
+      LineFormat key_value
+      MaxBackoff 30m
+      Buffer true
+      DqueDir /var/log/flb-storage/loki
+      DqueName dque-processing
+    [OUTPUT]
+      Name grafana-loki
+      Match system.*
+      Labels {log_type="system"}
+      LabelMapPath /fluent-bit/etc/labelmap/labelmap.json
+      Url http://loki-distributor.logging.svc.cluster.local:3100/loki/api/v1/push
+      RemoveKeys syslog_identifier,hostname
+      DropSingleKey true
+      LogLevel warn
+      LineFormat key_value
+      MaxBackoff 30m
+      Buffer true
+      DqueDir /var/log/flb-storage/loki
+      DqueName dquer-system
+    [OUTPUT]
+      Name        kafka
+      Format      json
+      Match       processing.trace.*
+      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+      Topics      fluentbit.trace
+      rdkafka.enable.idempotence true
+    [OUTPUT]
+      Name        kafka
+      Format      json
+      Match       security.wazuh.*
+      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+      Topics      fluentbit.wazuh
+    [OUTPUT]
+      Name        kafka
+      Format      json
+      Match       security.auditd.*
+      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+      Topics      fluentbit.auditd
+    [OUTPUT]
+      Name        kafka
+      Format      json
+      Match       security.container.falco.*
+      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+      Topics      fluentbit.falco
+    [OUTPUT]
+      Name        kafka
+      Format      json
+      Match       security.container.scans.*
+      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+      Topics      fluentbit.scans
+    [OUTPUT]
+      Name        kafka
+      Format      json
+      Match       security.container.ingress.*
+      Brokers     kafka-cluster-kafka-brokers.infra.svc.cluster.local:9092
+      Topics      fluentbit.ingress
+    [OUTPUT]
+      Name        kafka
+      Format      json
+      Match       security.container.keycloak.*
+      Brokers     kafka-cluster-kafka-brokers.infra.svc.cluster.local:9092
+      Topics      fluentbit.keycloak
+  ## https://docs.fluentbit.io/manual/pipeline/parsers
+  customParsers: ""
+ 
+daemonSetVolumes:
+  - name: varlog
+    hostPath:
+      path: /var/log
+  - name: varlibdockercontainers
+    hostPath:
+      path: /var/lib/docker/containers
+  - name: etcmachineid
+    hostPath:
+      path: /etc/machine-id
+      type: File
+  - name: wazuh-alert
+    hostPath:
+      path: /var/ossec/logs/alerts
+  - name: labelmap
+    configMap:
+      name: "fluent-bit-labelmap"
+
+daemonSetVolumeMounts:
+  - name: varlog
+    mountPath: /var/log
+  - name: varlibdockercontainers
+    mountPath: /var/lib/docker/containers
+    readOnly: true
+  - name: etcmachineid
+    mountPath: /etc/machine-id
+    readOnly: true
+  - name: wazuh-alert
+    mountPath: /var/ossec/logs/alerts
+    readOnly: true
+  - name: labelmap
+    mountPath: /fluent-bit/etc/labelmap
+
+tolerations:
+  - effect: NoSchedule
+    operator: Exists

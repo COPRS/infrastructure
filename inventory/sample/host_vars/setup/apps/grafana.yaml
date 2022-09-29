@@ -1,0 +1,9 @@
+grafana:
+  oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  smtp:
+    enabled: true
+    host: SMTP_HOST
+    user: SMTP_USER
+    password: SMTP_PASSWORD
+    from_address: FROM_ADDRESS
+    from_name: FROM_NAME

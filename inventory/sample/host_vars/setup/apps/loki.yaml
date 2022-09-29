@@ -1,0 +1,9 @@
+loki:
+  s3:
+    bucket: "{{ cluster.name }}-loki"
+    endpoint: "{{ s3.endpoint }}"
+    region: "{{ s3.region }}"
+    access_key: "{{ s3.access_key }}"
+    secret_key: "{{ s3.secret_key }}"
+  retention:
+    retention_period: 1460h

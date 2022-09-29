@@ -1,0 +1,7 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: infra
+
+resources:
+  - kafka-cluster.yaml

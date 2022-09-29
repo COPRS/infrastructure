@@ -10,11 +10,11 @@
     - name: Detach volumes
       block:
         - name: Getting attached volume list
-          shell: "{{ safescale_path }} volume list | jq '.result[] | select((.name? | match(\"{{ cluster.name }}-node-[0-9]+-.*\")) and .attachments != null).name' | tr -d '\"'"
+          shell: "{{ safescale_path }} volume list | jq -r '.result[] | select((.name? | match({{ cluster.name }}-node-[0-9]+-.*)) and .attachments != null).name'"
           register: attached_volume_names
 
         - name: Detach volumes from nodes
-          shell: "{{ safescale_path }} volume detach {{ item }} {{ item | regex_search(cluster.name+\"-node-[0-9]+\",'\\0') | first }} "
+          shell: "{{ safescale_path }} volume detach {{ item }} {{ item | regex_search(cluster.name+\"-node-[0-9]+\",'\\0') | first }} "
           when: attached_volume_names.stdout_lines | length > 0
           loop: "{{ attached_volume_names.stdout_lines }}"
           async: 30
@@ -23,7 +23,7 @@
 
     - block:
         - name: Getting volume list
-          shell: "{{ safescale_path }} volume list | jq '.result[] | select(.name? | match(\"{{ cluster.name }}-node-[0-9]+-.*\")).name' | tr -d '\"'"
+          shell: "{{ safescale_path }} volume list | jq -r '.result[] | select(.name? | match({{ cluster.name }}-node-[0-9]+-.*)).name'"
           register: volume_names
           
         - name: Deleting the volumes
@@ -43,7 +43,7 @@
       block:
         - name: clean hosts file
           blockinfile:
-            path: "{{ inventory_dir }}/hosts.ini"
+            path: "{{ inventory_dir }}/hosts.yaml"
             marker: "# {mark} ANSIBLE MANAGED BLOCK"
 
         - name: Deleting ssh keys, artifacts and ssh-main-gateway files
@@ -52,6 +52,15 @@
             path: "{{ item }}"
           loop:
             - "{{ playbook_dir }}/ssh-main-gateway.conf"
-            - "{{ playbook_dir }}/.ssh"
             - "{{ inventory_dir }}/artifacts"
       tags: [ 'never', 'cleanup_generated' ]
+
+    - block:
+        - name: Get bucket list
+          shell: "{{ safescale_path }} bucket list"
+          register: safescale_buckets
+
+        - name: Delete s3 buckets
+          shell: "{{ safescale_path }} bucket delete {{ item }}"
+          loop: "{{ (safescale_buckets.stdout | from_json).result.buckets | map(attribute='name') | select('match', cluster.name ~ '-.*') }}"
+      tags: [ 'never', 'delete_buckets' ]

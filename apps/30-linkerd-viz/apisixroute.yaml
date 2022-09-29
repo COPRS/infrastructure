@@ -1,0 +1,49 @@
+apiVersion: apisix.apache.org/v2beta3
+kind: ApisixRoute
+metadata:
+  name: linkerd
+  namespace: networking
+spec:
+  http:
+    - name: linkerd
+      backends:
+        - serviceName: web
+          servicePort: 8084
+      match:
+        hosts: [ linkerd.{{ platform_domain_name }} ]
+        paths: [ /* ]
+      websocket: true
+      plugins:
+        - name: cors
+          enable: true
+          config:
+            allow_origins: "https://iam.{{ platform_domain_name }}"
+        - name: proxy-rewrite
+          enable: true
+          config:
+            host: web.networking.svc.cluster.local
+            headers:
+              Origin: ""
+        - name: openid-connect
+          enable: true
+          config:
+            client_id: linkerd
+            client_secret: {{ linkerd.oidc_client_secret }}
+            discovery: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
+            scope: openid
+            bearer_only: false
+            realm: {{ keycloak.realm.name }}
+            introspection_endpoint_auth_method: client_secret_post
+            redirect_uri: https://linkerd.{{ platform_domain_name }}/redirect_uri
+---
+apiVersion: apisix.apache.org/v2beta3
+kind: ApisixTls
+metadata:
+  name: sni-linkerd
+  namespace: networking
+spec:
+  hosts:
+    - linkerd.{{ platform_domain_name }}
+  secret:
+    name: ingress-tls
+    namespace:  networking

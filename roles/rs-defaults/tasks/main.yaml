@@ -3,30 +3,3 @@
     state: present
     template:
       path: psp.yaml.j2
-
-- name: Create namespaces
-  kubernetes.core.k8s:
-    state: present
-    template: ns.yaml.j2
-  when: k8s_namespaces is defined
-
-- name: Create clusterRoleBinding 
-  kubernetes.core.k8s:
-    state: present
-    template: crb.yaml.j2
-  when: k8s_namespaces is defined
-    
-- name: Remove ClusterRoleBinding psp:any:restricted
-  kubernetes.core.k8s:
-    state: absent
-    kind: ClusterRoleBinding
-    name: psp:any:restricted
-
-- name: Add Helm chart repositories
-  kubernetes.core.helm_repository:
-    name: "{{ item.name }}"
-    repo_url: "{{ item.repo_url }}"
-    repo_username: "{{ item.repo_username if item.repo_username is defined else omit }}"
-    repo_password: "{{ item.repo_password if item.repo_password is defined else omit }}"
-  loop: "{{ helm_repositories }}"
-  become: false

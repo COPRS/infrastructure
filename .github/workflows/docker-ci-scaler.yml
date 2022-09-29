@@ -7,10 +7,14 @@ on:
       - '.github/workflows/docker-ci-scaler.yml'
 
 env:
-  REGISTRY_USER: ${{ secrets.CS_ARTIFACTORY_USER }}
-  REGISTRY_PWD: ${{ secrets.CS_ARTIFACTORY_PASSWORD }}
-  REGISTRY_BASE: artifactory.coprs.esa-copernicus.eu/rs-docker
-
+  REGISTRY_BASE: artifactory.coprs.esa-copernicus.eu
+  ARTIFACTORY_USERNAME: ${{ secrets.CS_ARTIFACTORY_USER }}
+  ARTIFACTORY_PASSWORD: ${{ secrets.CS_ARTIFACTORY_PASSWORD }}
+  ARTIFACTORY_PROJECT: rs-docker
+  NAME_IMAGE: rs-infra-scaler
+  SAFESCALE_TAG: v22.06.0
+  SCALER_TAG: 0.10.0
+  
 jobs:
 
   build:
@@ -24,10 +28,44 @@ jobs:
         with:
           fetch-depth: 0 # fetch all history so multiple commits can be scanned
 
-      - name: Build image
+      - name: Init VM
+        run: git submodule update --init --recursive
+        
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.18
+
+      - name: Build binarie GO
+        run: cd scaler && go build -o ./build/rs-infra-scaler .
+
+      - name: Download Safescale
+        run: wget https://github.com/CS-SI/SafeScale/releases/download/${{ env.SAFESCALE_TAG }}/safescale-${{ env.SAFESCALE_TAG }}-linux-amd64.tar.gz -O scaler/build/sf.tar.gz
+
+      - name: dezip package
+        run: cd scaler/build && tar -xzf sf.tar.gz safescale
+
+      - name: Remove zip package
+        run: rm scaler/build/sf.tar.gz
+
+      - name: Build image Docker
+        run: docker build -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SCALER_TAG }} -f scaler/Dockerfile .
+
+      - name: Scan image
+        id: scan_image
+        uses: sandbox-coprs/test-security-scan@master
+        with:
+          image-ref: '${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SCALER_TAG }}'
+          upload-sarif: true
+
+      - name: Log into registry ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}
+          username: ${{ env.ARTIFACTORY_USERNAME }}
+          password: ${{ env.ARTIFACTORY_PASSWORD }}
+          
+      - name: Push image
         run: |
-        	cd scaler && go build -o ./build/rs-infra-scaler .
-	        wget https://github.com/CS-SI/SafeScale/releases/download/${SAFESCALE_TAG}/safescale-${SAFESCALE_TAG}-linux-amd64.tar.gz -O scaler/build/sf.tar.gz
-	        cd scaler/build && tar -xzf sf.tar.gz safescale
-	        rm scaler/build/sf.tar.gz
-	        sudo docker build -t artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:${SCALER_TAG} -f scaler/Dockerfile .
+          docker push ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SCALER_TAG }}

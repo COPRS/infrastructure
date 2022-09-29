@@ -1,0 +1,7 @@
+helmCharts:
+- name: keda
+  releaseName: "{{ app_name }}"
+  repo: https://kedacore.github.io/charts
+  version: 2.6.2
+  valuesFile: values.yaml
+  namespace: infra

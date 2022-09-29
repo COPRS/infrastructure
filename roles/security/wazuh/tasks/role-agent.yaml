@@ -1,6 +1,6 @@
 - name: install wazuh agent
   apt:  
-    name: wazuh-agent={{ wazuh.wazuh_version }}
+    name: wazuh-agent
     state: present
     update_cache: yes
     cache_valid_time: 86400
@@ -10,13 +10,23 @@
     dest: "{{ wazuh.wazuh_registration_file_path }}"
     content: |
         {{ wazuh.wazuh_registration_password }}
-    group: ossec
+    group: wazuh
     owner: root
     mode: '0640'
 
+- name: Get nodes already under management
+  delegate_to: "{{ wazuh_manager_node }}"
+  shell:
+    cmd: '/var/ossec/bin/agent_control -lcj'
+  register: wazuh_joined_machines_output
+
+- name: Get list of already present nodes
+  set_fact:
+    wazuh_nodes_list: "{{ wazuh_joined_machines_output.stdout | from_json | community.general.json_query('data[*].name')}}"
+
 - name: get Wazuh manager IP address
   set_fact:
-    wazuh_manager_ip: "{{ hostvars[groups['kube_control_plane'][0]]['ansible_default_ipv4']['address'] }}"
+    wazuh_manager_ip: "{{ hostvars[wazuh_manager_node]['ansible_host'] }}"
 
 - name: Set Wazuh Manager remote IP address
   replace:
@@ -30,9 +40,10 @@
   shell:
     cmd: /var/ossec/bin/agent-auth -m {{ wazuh_manager_ip }}
   no_log: True
-  when: "inventory_hostname not in hostvars[groups['kube_control_plane'][0]]['wazuh_nodes_list'] "
+  when: "inventory_hostname not in wazuh_nodes_list "
 
 - name: Restart Wazuh Agent to apply configuration
   systemd:
     name: wazuh-agent
     state: restarted
+    enabled: yes

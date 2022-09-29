@@ -1,0 +1,25 @@
+apiVersion: apisix.apache.org/v2beta3
+kind: ApisixRoute
+metadata:
+  name: grafana
+spec:
+  http:
+    - name: grafana
+      backends:
+        - serviceName: grafana-service
+          servicePort: 3000
+      match:
+        hosts: [ monitoring.{{ platform_domain_name }} ]
+        paths: [ /* ]
+      websocket: true
+---
+apiVersion: apisix.apache.org/v2beta3
+kind: ApisixTls
+metadata:
+  name: sni-monitoring
+spec:
+  hosts:
+    - monitoring.{{ platform_domain_name }}
+  secret:
+    name: ingress-tls
+    namespace:  networking

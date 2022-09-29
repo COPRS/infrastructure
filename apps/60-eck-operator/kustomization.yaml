@@ -1,0 +1,14 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: infra
+
+helmCharts:
+- name: eck-operator
+  repo:  https://helm.elastic.co
+  version: 1.9.0
+  releaseName: "{{ app_name }}"
+  valuesFile: values.yaml
+
+resources:
+  - podmonitor.yaml

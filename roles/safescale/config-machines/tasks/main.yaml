@@ -1,0 +1,41 @@
+- name: Write ldap conf in /etc/ldap.conf
+  template:
+    src: ldap.conf.j2
+    dest: /etc/ldap.conf
+
+- name: include ldap auth in /etc/nsswitch.conf
+  lineinfile:
+    path: /etc/nsswitch.conf
+    backrefs: yes
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^(passwd:(?!.*\bldap\b).*)$', line: '\1 ldap' }
+    - { regexp: '^(group:(?!.*\bldap\b).*)$', line: '\1 ldap' }
+  
+- name: Configure PAM to create homedir on login if it does not exist
+  lineinfile:
+    path: /etc/pam.d/common-session
+    regexp: '^session optional pam_mkhomedir\.so skel=/etc/skel umask=077$'
+    line: session optional pam_mkhomedir.so skel=/etc/skel umask=077
+    insertbefore: '# end of pam-auth-update config'
+
+- name: Allow SSH connection with password
+  replace:
+    path: /etc/ssh/sshd_config
+    regexp: '^(.*)PasswordAuthentication(.*)$'
+    replace: PasswordAuthentication yes
+  notify:
+    - Restart sshd
+  
+- name: Config firewalld with coredns
+  firewalld:
+    permanent: yes
+    immediate: yes
+    source: "{{ kube_pods_subnet }}"
+    zone: trusted
+    state: enabled
+
+- name: Configure egress nodes
+  import_tasks: egress.yaml
+  tags: egress

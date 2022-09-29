@@ -1,0 +1,40 @@
+replicaCount: 1
+
+image:
+  repository: quay.io/prometheuscommunity/elasticsearch-exporter
+  tag: v1.3.0
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    cpu: 100m
+    memory: 256Mi
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/infra"
+            operator: Exists
+
+es:
+  ## Address (host and port) of the Elasticsearch node we should connect to.
+  ## This could be a local node (localhost:9200, for instance), or the address
+  ## of a remote Elasticsearch server. When basic auth is needed,
+  ## specify as: <proto>://<user>:<password>@<host>:<port>. e.g., http://admin:pass@localhost:9200.
+  ##
+  uri: http://{{ app_name }}-es-coordinating.database.svc.cluster.local:9200
+  all: true
+  indices: true
+  indices_settings: true
+  indices_mappings: true
+  shards: true
+  snapshots: true
+  cluster_settings: true
+
+serviceMonitor:
+  enabled: true
+  interval: 2m

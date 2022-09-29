@@ -1,0 +1,77 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: database
+
+helmCharts:
+  - name: postgresql
+    repo: https://charts.bitnami.com/bitnami
+    version:  11.0.2
+    valuesFile: values.yaml
+    releaseName: "{{ app_name }}"
+    namespace: database
+  - releaseName: "prometheus-postgres-exporter-keycloak"
+    name: prometheus-postgres-exporter
+    repo: https://prometheus-community.github.io/helm-charts
+    namespace: database
+    version: 2.5.0
+    valuesInline:
+      config:
+        datasource:
+          # Specify one of both datasource or datasourceSecret
+          host: postgresql-primary-hl
+          user: keycloak
+          passwordSecret:
+            name: postgresql-databases-passwords
+            key: KEYCLOAK_DATABASE_PASSWORD
+          port: "5432"
+          database: 'keycloak'
+          sslmode: disable
+  - releaseName: "prometheus-postgres-exporter-scdf-skipper"
+    name: prometheus-postgres-exporter
+    repo: https://prometheus-community.github.io/helm-charts
+    namespace: database
+    version: 2.5.0
+    valuesInline:
+      config:
+        datasource:
+          # Specify one of both datasource or datasourceSecret
+          host: postgresql-primary-hl
+          user: scdf
+          passwordSecret:
+            name: postgresql-databases-passwords
+            key: SCDF_DATABASE_PASSWORD
+          port: "5432"
+          database: 'skipper'
+          sslmode: disable
+  - releaseName: "prometheus-postgres-exporter-scdf-dataflow"
+    name: prometheus-postgres-exporter
+    repo: https://prometheus-community.github.io/helm-charts
+    namespace: database
+    version: 2.5.0
+    valuesInline:
+      config:
+        datasource:
+          # Specify one of both datasource or datasourceSecret
+          host: postgresql-primary-hl
+          user: scdf
+          passwordSecret:
+            name: postgresql-databases-passwords
+            key: SCDF_DATABASE_PASSWORD
+          port: "5432"
+          database: 'dataflow'
+          sslmode: disable
+
+secretGenerator:
+  - name: init-postgres-db
+    files:
+      - init-db.sql
+    options:
+      disableNameSuffixHash: true
+  - name: postgresql-databases-passwords
+    literals:
+      - KEYCLOAK_DATABASE_PASSWORD={{ keycloak.database.password }}
+      - SCDF_DATABASE_PASSWORD={{ scdf.database.password }}
+
+resources:
+  - servicemonitor.yaml

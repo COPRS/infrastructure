@@ -4,15 +4,20 @@ tags:
 
 graylog:
   image:
-    repository: graylog/graylog:4.2.3-1
-  
-  replicas: 2
-  
-  mongodb:
-    uri:  mongodb://graylog:grayl0gPassw0rd@mongodb.infra.svc.cluster.local/graylog
+    repository: "graylog/graylog"
+    tag: "4.3.3-1"
 
+  replicas: 2
+
+  config: |
+    elasticsearch_mute_deprecation_warnings = true
+
+  mongodb:
+    uriSecretName: mongodb-access
+    uriSecretKey: uri
+  
   elasticsearch:
-    hosts: http://elasticsearch-security-es-coordinating.security.svc.cluster.local:9200 
+    hosts: http://elasticsearch-security-es-coordinating.security.svc.cluster.local:9200
     version: 7
     
   persistence:
@@ -26,18 +31,71 @@ graylog:
           - matchExpressions:
             - key: "node-role.kubernetes.io/infra"
               operator: Exists
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/instance
+                operator: In
+                values:
+                  - graylog
+          topologyKey: kubernetes.io/hostname
   resources:
     limits:
       cpu: 1
       memory: 2Gi
     requests:
       cpu: 500m
-      memory: 1024Mi
+      memory: 1Gi
+
+  metrics:
+    enabled: true
+
+  service:
+    ports:
+      - name: metrics
+        port: 9833
+        protocol: TCP
+
+{% if graylog.geolite2db_uri %}
+  geoip:
+    enabled: true
+    mmdbUri: {{ graylog.geolite2db_uri }}
+{% endif %}
 
   env:
     GRAYLOG_TRUSTED_PROXIES: 10.244.0.0/16
-
-  externalUri: http://security.DOMAIN_NAME/graylog
   
   ingress:
     enabled: false
+
+  init:
+    kubectlVersion: "v1.22.2"
+
+  provisioner:
+    enabled: true
+    useGraylogServiceAccount: false
+    script: |
+      IDS=$(curl -u "admin:$GRAYLOG_PASSWORD_SECRET" -X GET --header 'Content-Type: application/json' --header 'X-Requested-By: localhost' http://graylog-master.security.svc.cluster.local:9000/api/system/inputs)
+      RES=$?
+      echo $RES
+      if [ $RES -ne 0 ]
+      then 
+        echo 'Wait for master to be started'
+        exit 1
+      else
+        json_pipeline='
+          {"disabled_processors":
+          ["org.graylog.aws.processors.instancelookup.AWSInstanceNameLookupProcessor"],"processor_order":
+          [{"class_name":"org.graylog.aws.processors.instancelookup.AWSInstanceNameLookupProcessor","name":"AWS Instance Name Lookup"},
+          {"class_name":"org.graylog.plugins.map.geoip.processor.GeoIpProcessor","name":"GeoIP Resolver"},
+          {"class_name":"org.graylog2.messageprocessors.MessageFilterChainProcessor","name":"Message Filter Chain"},
+          {"class_name":"org.graylog.plugins.pipelineprocessor.processors.PipelineInterpreter","name":"Pipeline Processor"}]}'
+          curl -v -u "admin:$GRAYLOG_PASSWORD_SECRET" -X PUT --header 'Content-Type: application/json' --header 'X-Requested-By: localhost' --data-binary "${json_pipeline}" http://graylog-master.security.svc.cluster.local:9000/api/system/messageprocessors/config
+        json_plugin='{"enabled":true,"db_type":"MAXMIND_CITY","db_path":"/usr/share/graylog/geoip/GeoLite2-City.mmdb"}'
+          curl -u "admin:$GRAYLOG_PASSWORD_SECRET" -X PUT --header 'Content-Type: application/json' --header 'X-Requested-By: localhost' --data-binary "${json_plugin}" http://graylog-master.security.svc.cluster.local:9000/api/system/cluster_config/org.graylog.plugins.map.config.GeoIpResolverConfig 
+        json_header='{"username_header": "X-Username","enabled": "true"}'
+          curl -v -u "admin:$GRAYLOG_PASSWORD_SECRET" -X PUT --header 'Content-Type: application/json' --header 'X-Requested-By: localhost' --data-binary "${json_header}" http://graylog-master.security.svc.cluster.local:9000/api/system/authentication/http-header-auth-config
+        json_user='{"first_name":"Operator","last_name":"Graylog","username":"operator","email":"operator@operator.fr","password":"{{ graylog.operator_password }}","roles":["Admin"], "permissions":[]}'
+          curl -v -u "admin:$GRAYLOG_PASSWORD_SECRET" -X POST --header 'Content-Type: application/json' --header 'X-Requested-By: localhost' --data-binary "${json_user}" http://graylog-master.security.svc.cluster.local:9000/api/users
+      fi 

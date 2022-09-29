@@ -1,0 +1,11 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: rook-ceph
+
+resources:
+  - cephcluster.yaml
+  - apisixroute.yaml
+  - ceph-tools.yaml
+  - cephblockpool.yaml
+  - cephsharedfilesystem.yaml

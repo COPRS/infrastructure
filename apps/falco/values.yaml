@@ -10,6 +10,8 @@ kubernetesSupport:
   apiAuth: /var/run/secrets/kubernetes.io/serviceaccount/token
   apiUrl: "https://$(KUBERNETES_SERVICE_HOST)"
 
+priorityClassName: falco-priority
+
 falco:
   grpc:
     enabled: true
@@ -18,9 +20,15 @@ falco:
   grpcOutput:
     enabled: true
 
+resources:
+  requests:
+    cpu: 100m
+    memory: 50Mi
+  limits:
+    cpu: 200m
+    memory: 256Mi
+
 # Allow Falco to run on Kubernetes 1.6 masters.
 tolerations:
   - effect: NoSchedule
-    key: node-role.kubernetes.io/master
-  - effect: NoSchedule
-    key: node-role.kubernetes.io/gateway
+    operator: Exists

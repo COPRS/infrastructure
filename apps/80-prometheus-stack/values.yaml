@@ -1,0 +1,155 @@
+defaultRules:
+  create: true
+
+alertmanager:
+  serviceMonitor:
+    selfMonitor: true
+  alertmanagerSpec:
+    image:
+      repository: quay.io/prometheus/alertmanager
+      tag: v0.23.0
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+              - key: "node-role.kubernetes.io/infra"
+                operator: Exists
+    resources:
+      limits:
+        cpu: 50m
+        memory: 128Mi
+      requests:
+        cpu: 10m
+        memory: 64Mi
+
+grafana:
+  enabled: false
+kubeApiServer:
+  serviceMonitor:
+    interval: 2m
+kubelet:
+  serviceMonitor:
+    interval: 2m
+kubeControllerManager:
+  service:
+    port: 10257
+    targetPort: 10257
+  serviceMonitor:
+    interval: 2m
+    https: true
+    insecureSkipVerify: true
+coreDns:
+  serviceMonitor:
+    interval: 2m
+kubeEtcd:
+  enable: true
+  service:
+    enabled: true
+    port: {{ etcd_metrics_port }}
+    targetPort: {{ etcd_metrics_port }}
+  serviceMonitor:
+    interval: 2m
+kubeScheduler:
+  serviceMonitor:
+    interval: 2m
+kubeProxy:
+  serviceMonitor:
+    interval: 2m
+kubeStateMetrics:
+  serviceMonitor:
+    interval: 2m
+nodeExporter:
+  serviceMonitor:
+    interval: 2m
+
+prometheus-node-exporter:
+  image:
+    repository: quay.io/prometheus/node-exporter
+    tag: v1.3.0
+  extraHostVolumeMounts:
+    - name: system-dbus-socket
+      hostPath: /var/run/dbus/system_bus_socket
+      mountPath: /var/run/dbus/system_bus_socket
+      readOnly: true
+  extraArgs: 
+    - --collector.systemd
+    - --collector.systemd.unit-whitelist=(docker|kubelet|openvpn-client.*).service
+
+  resources:
+    requests:
+      cpu: 15m
+      memory: 30Mi
+    limits:
+      cpu: 30m
+      memory: 60Mi
+    
+prometheusOperator:
+  enabled: false
+
+prometheus:
+  enabled: true
+  serviceMonitor:
+    interval: 2m
+  thanosServiceMonitor:
+    enabled: true
+    interval: 2m
+  prometheusSpec:
+    image:
+      repository: quay.io/prometheus/prometheus
+      tag: v2.31.1
+    replicas: 2
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
+    podMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelector: {}
+    priorityClassName: prometheus-priority
+    ignoreNamespaceSelectors: false
+    retention: 2d
+    scrapeInterval: 2m
+    thanos:
+      objectStorageConfig:
+        name: thanos-bucket-credentials
+        key: objstore.yml
+      resources:
+        limits:
+          cpu: 100m
+          memory:  2Gi
+        requests:
+          cpu: 25m
+          memory: 512Mi
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+              - key: "node-role.kubernetes.io/infra"
+                operator: Exists
+              - key: "node-role.kubernetes.io/prometheus"
+                operator: Exists
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/instance
+                      operator: In
+                      values:
+                        - "{{ app_name }}-kube-prom-prometheus"
+                topologyKey: kubernetes.io/hostname
+    resources:
+      limits:
+        cpu: 4
+        memory: 20Gi
+      requests:
+        cpu: 2
+        memory: 4Gi
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: ceph-block
+          resources:
+            requests:
+              storage: 20Gi
+
+    externalUrl: http://monitoring.{{ platform_domain_name }}/prometheus/
+    routePrefix: /prometheus/

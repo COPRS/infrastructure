@@ -36,7 +36,7 @@
   
 - name: Install Suricata
   apt:  
-    name: suricata={{ suricata.suricata_version }}
+    name: suricata
     state: present
     update_cache: yes
   
@@ -145,14 +145,14 @@
 
     - name: Upload categories.txt  /etc/suricata/iprep/
       copy:
-        dest: "{{ suricata.suricata_path }}iprep/{{ suricata.categories.name }}"
+        dest: "{{ suricata.suricata_path }}iprep/{{ suricata.categories.name }}"
         content: "{{ suricata.categories.content }}"
       no_log: true
       when: "suricata.categories is defined"
       
     - name: Upload rotateIpReputation.sh  /etc/suricata/
       copy:
-        dest: "{{ suricata.suricata_path }}{{ suricata.rotateIpReputation.name }}"
+        dest: "{{ suricata.suricata_path }}{{ suricata.rotateIpReputation.name }}"
         content: "{{ suricata.rotateIpReputation.content }}"
         group: suricata
         owner: suricata
@@ -164,7 +164,7 @@
         name: "{{ suricata.rotateIpReputation.cron.name }}"
         hour: "{{ suricata.rotateIpReputation.cron.hour }}"
         minute: "0"
-        job: "{{ suricata.suricata_path }}{{ suricata.rotateIpReputation.name }}"
+        job: "{{ suricata.suricata_path }}{{ suricata.rotateIpReputation.name }}"
       when: "suricata.rotateIpReputation.cron is defined"
       
     - name:  Execute rotateIpReputation.sh

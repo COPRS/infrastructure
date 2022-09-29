@@ -1,0 +1,59 @@
+name: Docker Safescaled 
+
+on:
+  push:
+    paths:
+      - 'scaler/safescaled.Dockerfile'
+      - '.github/workflows/docker-ci-safescaled.yml'
+
+env:
+  REGISTRY_BASE: artifactory.coprs.esa-copernicus.eu
+  ARTIFACTORY_USERNAME: ${{ secrets.CS_ARTIFACTORY_USER }}
+  ARTIFACTORY_PASSWORD: ${{ secrets.CS_ARTIFACTORY_PASSWORD }}
+  ARTIFACTORY_PROJECT: rs-docker
+  NAME_IMAGE: safescaled
+  SAFESCALE_TAG: v22.06.0
+  
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # fetch all history so multiple commits can be scanned
+
+      - name: Download Safescale
+        run: mkdir scaler/build && wget https://github.com/CS-SI/SafeScale/releases/download/${{ env.SAFESCALE_TAG }}/safescale-${{ env.SAFESCALE_TAG }}-linux-amd64.tar.gz -O scaler/build/sf.tar.gz
+        
+      - name: Dezip package
+        run: cd scaler/build && tar -xzf sf.tar.gz safescaled
+
+      - name: Remove zip package
+        run: rm scaler/build/sf.tar.gz
+
+      - name: Build image Docker
+        run: docker build -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SAFESCALE_TAG }} -f scaler/safescaled.Dockerfile .
+
+      - name: Scan image
+        id: scan_image
+        uses: sandbox-coprs/test-security-scan@master
+        with:
+          image-ref: '${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SAFESCALE_TAG }}'
+          upload-sarif: true
+
+      - name: Log into registry ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}
+          username: ${{ env.ARTIFACTORY_USERNAME }}
+          password: ${{ env.ARTIFACTORY_PASSWORD }}
+          
+      - name: Push image
+        run: |
+          docker push ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SAFESCALE_TAG }}

@@ -1,0 +1,52 @@
+apiVersion: kibana.k8s.elastic.co/v1
+kind: Kibana
+metadata:
+  name: kibana-processing
+spec:
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  version: 7.15.2
+  count: 1
+  elasticsearchRef:
+    name: "{{ app_name }}"
+  podTemplate:
+    spec:
+      automountServiceAccountToken: true
+      initContainers:
+        - name: install-plugin
+          env:
+            - name: KIBANA_VERSION
+              value: 7.15.2
+          command:
+            - sh
+            - -c
+            - |
+              bin/kibana-plugin install https://github.com/pjhampton/kibana-prometheus-exporter/releases/download/${KIBANA_VERSION}/kibanaPrometheusExporter-${KIBANA_VERSION}.zip
+          volumeMounts:
+            - name: kibana-plugins-local
+              mountPath: /usr/share/kibana/plugins
+      containers:
+        - name: kibana
+          volumeMounts:
+            - name: kibana-plugins-local
+              mountPath: /usr/share/kibana/plugins
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /kibana/login
+              port: 5601
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+      volumes:
+        - name: kibana-plugins-local
+          emptyDir: {}
+  config:
+    server.publicBaseUrl: https://infra.{{ platform_domain_name }}/kibana
+    server.basePath: /kibana
+    server.rewriteBasePath: true
+  

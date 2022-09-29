@@ -1,21 +1,3 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: manager-config
-data:
-  controller_manager_config.yaml: |
-    apiVersion: controller-runtime.sigs.k8s.io/v1alpha1
-    kind: ControllerManagerConfig
-    health:
-      healthProbeBindAddress: :8081
-    metrics:
-      bindAddress: 0.0.0.0:8080
-    webhook:
-      port: 9443
-    leaderElection:
-      leaderElect: true
-      resourceName: 2c0156f0.integreatly.org
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,7 +17,7 @@ spec:
             - --secure-listen-address=0.0.0.0:8443
             - --upstream=http://0.0.0.0:8080/
             - --logtostderr=true
-            - --v=10
+            - --v=1
           image: gcr.io/kubebuilder/kube-rbac-proxy:v0.8.0
           ports:
             - containerPort: 8443
@@ -44,12 +26,20 @@ spec:
             - containerPort: 8080
               name: metrics
               protocol: TCP
+          resources:
+            requests:
+              cpu: 5m
+              memory: 10Mi
+            limits:
+              cpu: 10m
+              memory: 20Mi
         - name: manager
           args:
             - --health-probe-bind-address=:8081
             - --metrics-bind-address=:8080
-            - --zap-log-level=error
+            - --zap-log-level=info
             - --scan-all=True
+            - --requeue-delay=1800
           command:
             - /manager
           env:
@@ -61,7 +51,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-          image: quay.io/grafana-operator/grafana-operator:v4.1.1
+          image: quay.io/grafana-operator/grafana-operator:v4.5.0
           livenessProbe:
             httpGet:
               path: /healthz
@@ -76,11 +66,11 @@ spec:
             periodSeconds: 10
           resources:
             limits:
-              cpu: 200m
-              memory: 300Mi
+              cpu: 400m
+              memory: 512Mi
             requests:
               cpu: 100m
-              memory: 100Mi
+              memory: 256Mi
           securityContext:
             allowPrivilegeEscalation: false
             runAsUser: 65532

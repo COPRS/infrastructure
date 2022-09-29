@@ -1,0 +1,10 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+resources:
+  - crd-apisixclusterconfigs.yaml
+  - crd-apisixconsumers.yaml
+  - crd-apisixpluginconfigs.yaml
+  - crd-apisixroutes.yaml
+  - crd-apisixtlses.yaml
+  - crd-apisixupstreams.yaml

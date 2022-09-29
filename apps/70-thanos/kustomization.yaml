@@ -1,0 +1,23 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: monitoring
+
+helmCharts:
+- name: thanos
+  releaseName: "{{ app_name }}"
+  repo: https://charts.bitnami.com/bitnami
+  version: 8.3.0
+  valuesFile: values.yaml
+  namespace: monitoring
+
+resources:
+  - apisixroute.yaml
+  - grafanadatasource.yaml
+
+secretGenerator:
+  - name: thanos-bucket-credentials
+    files: 
+      - objstore.yml
+    options:
+      disableNameSuffixHash: true

@@ -1,0 +1,71 @@
+# Cluster configuration
+cluster:
+  name: rs-cluster
+  complexity: large
+  cidr: 192.168.0.0/16
+  os: "csc-rs-ubuntu"
+
+  nodegroups:
+  # kube_control_plane, infra and gateway are MANDATORY
+    - name: kube_control_plane
+      sizing: "cpu=4,ram=[8-10],disk=80"
+    - name: infra
+      min_size: 5
+      max_size: 10
+      sizing: "cpu=8,ram=[14-18],disk=40,count=6"
+      kubespray:
+        node_labels:
+          node-role.kubernetes.io/infra: ''
+    - name: gateway
+      sizing: "cpu=2,ram=[4-5],disk=20"
+      kubespray:
+        node_labels:
+          node-role.kubernetes.io/gateway: ''
+        node_taints:
+          - node-role.kubernetes.io/gateway:NoSchedule
+        kubelet_config_extra_args:
+          systemReserved:
+            cpu: "1"
+            memory: "2Gi"
+    - name: egress
+      min_size: 1
+      max_size: 3
+      sizing: "cpu=4,ram=[8-10],disk=40"
+      kubespray:
+        node_labels:
+          node-role.kubernetes.io/egress: ''
+    - name: prometheus
+      min_size: 0
+      max_size: 2
+      sizing: "cpu=8,ram=[30-34],disk=40"
+      kubespray:
+        node_labels:
+          node-role.kubernetes.io/infra: ''
+          node-role.kubernetes.io/prometheus: ''
+    - name: rook_ceph
+      min_size: 3
+      max_size: 3
+      volume:
+        type: SSD
+        size: 5000
+      sizing: "cpu=4,ram=[8-10],disk=40"
+      kubespray:
+        node_labels:
+          node-role.kubernetes.io/rook_ceph: ''
+        node_taints:
+          - node-role.kubernetes.io/rook_ceph:NoSchedule
+    - name: processing
+      min_size: 0
+      max_size: 6
+      sizing: "cpu=8,ram=[30-34],disk=40"
+      kubespray:
+        node_labels:
+          node-role.kubernetes.io/processing: ''
+
+safescale_tenant: rs-dev
+
+buckets:
+  - "{{ cluster.name }}-elasticsearch-processing"
+  - "{{ cluster.name }}-elasticsearch-security"
+  - "{{ cluster.name }}-thanos"
+  - "{{ cluster.name }}-loki"

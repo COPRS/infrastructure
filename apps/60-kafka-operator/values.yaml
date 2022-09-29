@@ -1,0 +1,27 @@
+image:
+  registry: quay.io
+  repository: strimzi
+  name: operator
+  tag: 0.27.1
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/infra"
+            operator: Exists
+resources:
+  limits:
+    memory: 1Gi
+    cpu: 500m
+  requests:
+    memory: 512Mi
+    cpu: 100m
+
+logLevel: WARN
+watchAnyNamespace: true
+fullReconciliationIntervalMs: 300000
+imageTagOverride: "0.27.1"
+createGlobalResources: true
+generateNetworkPolicy: false

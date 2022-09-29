@@ -1,0 +1,48 @@
+apiVersion: apisix.apache.org/v2beta3
+kind: ApisixRoute
+metadata:
+  name: kibana-security
+spec:
+  http:
+    - name: kibana-security
+      backends:
+        - serviceName: kibana-security-kb-http
+          servicePort: 5601
+      match:
+        hosts: [ security.{{ platform_domain_name }} ]
+        paths:
+          - /kibana
+          - /kibana/*
+        methods: [ GET, PUT, POST ]
+      plugins:
+        - name: cors
+          enable: true
+          config:
+            allow_origins: "https://security.{{ platform_domain_name }}"
+        - name: proxy-rewrite
+          enable: true
+          config:
+            headers:
+              Authorization: "Basic {{ ( 'operator:' ~ elasticsearch_security.operator_password_hash ) | b64encode }}"
+        - name: openid-connect
+          enable: true
+          config:
+            client_id: kibana-security
+            client_secret: "{{ elasticsearch_security.kibana_oidc_client_secret }}"
+            discovery: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/.well-known/openid-configuration
+            scope: openid
+            bearer_only: false
+            realm: {{ keycloak.realm.name }}
+            introspection_endpoint_auth_method: client_secret_post
+            redirect_uri: https://security.{{ platform_domain_name }}/kibana/redirect_uri
+---
+apiVersion: apisix.apache.org/v2beta3
+kind: ApisixTls
+metadata:
+  name: sni-security
+spec:
+  hosts:
+    - security.{{ platform_domain_name }}
+  secret:
+    name: ingress-tls
+    namespace:  networking

@@ -1,36 +1,8 @@
-- name: get apps folders
-  find:
-    file_type: directory
-    paths: "{{ app_paths }}"
-  delegate_to: localhost
-  register: result
-
-- name: Initialize parsed app folders
-  set_fact:
-    parsed_apps: []
-
-- name: Extract app path and names
-  set_fact:
-    apps: "{{ apps|default([]) + [ { 'name': name, 'dir': item } ] }}"
+- name: Browse each package
+  include_tasks: install_package.yaml
   vars:
-    name: "{{ item | basename }}"
-    regex: '.+/[\w-]+[\w\.-]+$'
-  loop: "{{  result.files | sort(attribute='path') | map(attribute='path') | map('regex_search', regex) }}"
-
-- block:
-    - name: install {{ APP_NAME }}
-      include_tasks: install.yaml
-      vars:
-        app_name: "{{ APP_NAME | regex_search('^[0-9-]*([\\w-]+)', '\\1') | first }}"
-        app_dir: "{{ apps | select('search', APP_NAME ) | map(attribute='dir') | first }}"
-
-    - meta: end_play
-  when: APP_NAME is defined
-
-- name: install apps
-  include_tasks: install.yaml
-  vars:
-    app_name: "{{ item.name | regex_search('^[0-9-]*([\\w-]+)', '\\1') | first }}"
-    app_dir: "{{ item.dir }}"
-  loop: "{{ apps | sort(attribute='name') }}"
-  when: app_name not in parsed_apps
+    package_name: "{{ package_path | basename }}"
+  loop: "{{ package_paths }}"
+  loop_control:
+    loop_var: package_path
+  when: package is undefined or package == package_name

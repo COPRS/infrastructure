@@ -1,0 +1,24 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: monitoring
+
+helmCharts:
+- name: prometheus-blackbox-exporter
+  releaseName: "{{ app_name }}"
+  repo: https://prometheus-community.github.io/helm-charts
+  version: 5.8.2
+  valuesFile: values.yaml
+  namespace: monitoring
+
+secretGenerator:
+  - name: blackbox-exporter-credentials
+    files:
+      - apisix_client_secret
+      - grafana_client_secret
+      - graylog_client_secret
+      - kibana-processing_client_secret
+      - kibana-security_client_secret
+      - linkerd_client_secret
+      - scdf_client_secret
+      - thanos_client_secret

@@ -1,0 +1,7 @@
+{
+    "type": "s3",
+    "settings": {
+      "client": "default",
+      "bucket": "{{ elasticsearch_processing.repository.s3.bucket }}"
+    }
+  }

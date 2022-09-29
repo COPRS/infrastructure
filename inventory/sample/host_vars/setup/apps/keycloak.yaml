@@ -1,0 +1,11 @@
+keycloak:
+  superadmin:
+    password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  realm:
+    name: RS
+    admin:
+      username: rs-admin
+      password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+      mail: rs-admin@rs.eu
+  database:
+    password: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"

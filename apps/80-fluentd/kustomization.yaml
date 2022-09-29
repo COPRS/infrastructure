@@ -1,0 +1,27 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: logging
+
+configMapGenerator:
+  - name: fluentd-custom-plugins
+    files:
+      - filter_filename_properties.rb
+      - filter_icd_formatter.rb
+      - rename_key_util.rb
+      - filter_rename_key.rb
+  - name: elasticsearch-templates
+    files:
+      - static_trace.json=es_template-static_trace.json
+      - dynamic_trace.json=es_template-dynamic_trace.json
+
+helmCharts:
+- name: fluentd
+  repo: https://charts.bitnami.com/bitnami
+  version: 4.5.2
+  valuesFile: values.yaml
+  releaseName: "{{ app_name }}"
+  namespace: fluentd
+
+resources:
+  - servicemonitor.yaml

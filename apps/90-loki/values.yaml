@@ -1,0 +1,198 @@
+fullnameOverride: loki
+loki:
+  image:
+    registry: docker.io
+    repository: grafana/loki
+    tag: 2.5.0
+  structuredConfig:
+    auth_enabled: false
+
+    server:
+      http_listen_port: 3100
+
+    ingester:
+      lifecycler:
+        ring:
+          kvstore:
+            store: memberlist
+          replication_factor: 1
+      chunk_encoding: snappy
+      chunk_retain_period: 1m
+      max_transfer_retries: 0
+      wal:
+        dir: /var/loki/wal
+      autoforget_unhealthy: true
+
+    limits_config:
+      retention_period: {{ loki.retention.retention_period }}
+      enforce_metric_name: false
+      reject_old_samples: false
+      reject_old_samples_max_age: 168h
+      max_cache_freshness_per_query: 10m
+
+    schema_config:
+      configs:
+        - from: 2021-01-01
+          store: boltdb-shipper
+          object_store: aws
+          schema: v12
+          index:
+            prefix: loki_index_
+            period: 24h
+
+    storage_config:
+      aws:
+        bucketnames: {{ loki.s3.bucket }}
+        endpoint: {{ loki.s3.endpoint }}
+        region: {{ loki.s3.region }}
+        access_key_id: ${S3_ACCESS_KEY}
+        secret_access_key: ${S3_SECRET_KEY}
+        insecure: false
+        sse_encryption: false
+        s3forcepathstyle: true
+      boltdb_shipper:
+        shared_store: aws
+        active_index_directory: /var/loki/index
+        cache_location: /var/loki/cache
+        cache_ttl: 168h
+
+    compactor:
+      working_directory: /var/loki/retention
+      shared_store: aws
+      compaction_interval: 10m
+      retention_enabled: true
+      retention_delete_delay: 2h
+      retention_delete_worker_count: 150
+
+serviceMonitor:
+  enabled: true
+
+ingester:
+  kind: StatefulSet
+  replicas: 3
+  resources:
+    limits:
+      cpu: 250m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
+  affinity: |
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  persistence:
+    enabled: true
+    size: 20Gi
+    storageClass: ceph-block
+  extraArgs:
+    - -config.expand-env=true
+  extraEnvFrom:
+    - secretRef:
+        name: loki-s3-credentials
+
+distributor:
+  replicas: 3
+  resources:
+    limits:
+      cpu: 300m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  affinity: |
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  extraArgs:
+    - -config.expand-env=true
+  extraEnvFrom:
+    - secretRef:
+        name: loki-s3-credentials
+
+querier:
+  replicas: 3
+  resources:
+    limits:
+      cpu: 1
+      memory: 2Gi
+    requests:
+      cpu: 50m
+      memory: 128Mi
+  affinity: |
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  persistence:
+    enabled: true
+    size: 20Gi
+    storageClass: ceph-block
+  extraArgs:
+    - -config.expand-env=true
+  extraEnvFrom:
+    - secretRef:
+        name: loki-s3-credentials
+
+queryFrontend:
+  replicas: 2
+  resources:
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 40m
+      memory: 64Mi
+  affinity: |
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+
+gateway:
+  enabled: false
+
+compactor:
+  enabled: true
+  resources:
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 20m
+      memory: 64Mi
+  extraArgs:
+    - -config.expand-env=true
+  extraEnvFrom:
+    - secretRef:
+        name: loki-s3-credentials
+
+memcached:
+  image:
+    registry: docker.io
+    repository: memcached
+    tag: 1.6.7-alpine
+
+memcachedExporter:
+  enabled: true
+  image:
+    registry: docker.io
+    repository: prom/memcached-exporter
+    tag: v0.6.0
+  resources:
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 40m
+      memory: 64Mi

@@ -1,0 +1,43 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: loki
+spec:
+  scaleTargetRef:
+    apiVersion:    apps/v1
+    kind:          StatefulSet
+    name:          loki-ingester
+    envSourceContainerName: ingester
+  pollingInterval:  30
+  cooldownPeriod:   300
+  minReplicaCount:  3
+  maxReplicaCount:  15
+  advanced:
+    restoreToOriginalReplicaCount: false
+    horizontalPodAutoscalerConfig:
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 300
+          policies:
+            - type: Pods
+              value: 1
+              periodSeconds: 60
+        scaleUp:
+          stabilizationWindowSeconds: 0
+          policies:
+            - type: Percent
+              value: 20
+              periodSeconds: 60
+            - type: Pods
+              value: 3
+              periodSeconds: 60
+          selectPolicy: Max
+  triggers:
+    - type: cpu
+      metadata:
+        type: Utilization
+        value: "80"
+    - type: memory
+      metadata:
+        type: Utilization
+        value: "80"

@@ -1,0 +1,66 @@
+image:
+  registry: docker.io
+  repository: bitnami/postgresql
+  tag: 14.1.0-debian-10-r80
+  debug: false
+auth:
+  enablePostgresUser: true
+  postgresPassword: {{ postgresql.postgres_user.password }}
+  replicationUsername: repl_user
+  replicationPassword: repl_password
+
+architecture: replication
+replication:
+  synchronousCommit: "off"
+  numSynchronousReplicas: 0
+primary:
+  initdb:
+    scriptsSecret: init-postgres-db
+    user: postgres
+    password: {{ postgresql.postgres_user.password }}
+  resources:
+    limits:
+      cpu: 250m
+      memory: 2048Mi
+    requests:
+      cpu: 50m
+      memory: 512Mi
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  persistence:
+    enabled: true
+    storageClass: ceph-block
+    size: 30Gi
+
+readReplicas:
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 250m
+      memory: 2048Mi
+    requests:
+      cpu: 50m
+      memory: 512Mi
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
+  persistence:
+    enabled: true
+    storageClass: ceph-block
+    size: 30Gi
+
+serviceAccount:
+  create: true
+  automountServiceAccountToken: true
+
+metrics:
+  enabled: false

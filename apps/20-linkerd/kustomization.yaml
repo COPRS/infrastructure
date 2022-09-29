@@ -1,0 +1,36 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+namespace: networking
+
+helmCharts:
+- name: linkerd2
+  repo: https://helm.linkerd.io/stable
+  version: 2.11.1
+  releaseName: "{{ app_name }}"
+  valuesFile: values.yaml
+  includeCRDs: true
+  namespace: networking
+
+resources:
+  - certificate-linkerdidentityissuer.yaml
+  - issuer-linkerdtrustanchor.yaml
+  - certificate-linkerdpolicyvalidator.yaml
+  - certificate-linkerdproxyinjector.yaml
+  - certificate-linkerdspvalidator.yaml
+  - issuer-webhookissuer.yaml
+  - linkerd-control-plane-metrics.yaml
+
+secretGenerator:
+  - name: linkerd-trust-anchor
+    files:
+      - tls.crt=trust-anchor-certificate-ca.crt
+      - tls.key=trust-anchor-certificate-ca.key
+    options:
+      disableNameSuffixHash: true
+  - name: webhook-issuer-tls
+    files:
+      - tls.crt=webhook-certificate-ca.crt
+      - tls.key=webhook-certificate-ca.key
+    options:
+      disableNameSuffixHash: true

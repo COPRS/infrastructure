@@ -1,8 +1,5 @@
 ---
 openvpn:
-  # Requiered
-  openvpn_version: "2.4.7-1ubuntu2.20.04.3"
-
   # Optional
   # conf_files:
   #   - name: ca.crt

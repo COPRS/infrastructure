@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: kibana-security
+spec:
+  selector:
+    matchLabels:
+      common.k8s.elastic.co/type: kibana
+      kibana.k8s.elastic.co/name: kibana-security
+  podMetricsEndpoints:
+    - path: /kibana/_prometheus/metrics
+      port: http
+      basicAuth:
+        username:
+          name: kibana-security-exporter-credentials
+          key: username
+        password:
+          name: kibana-security-exporter-credentials
+          key: password

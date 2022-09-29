@@ -1,0 +1,35 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ app_name }}-repository-config"
+spec:
+  parallelism: 1
+  completions: 1
+  template:
+    metadata:
+      name: repository-config
+      annotations:
+        linkerd.io/inject: disabled
+    spec:
+      restartPolicy: OnFailure
+      initContainers:
+        - name: wait-for-elasticearch
+          image: alpine
+          command:
+            - sh
+            - -c
+            - "for i in $(seq 1 300); do nc -zvw1 {{ app_name }}-es-http.{{ kustomization.namespace }}.svc.cluster.local 9200 && exit 0 || sleep 3; done; exit 1"
+      containers:
+        - name: curl-send-config
+          image: appropriate/curl
+          volumeMounts:
+            - name: repository-config
+              mountPath: /etc/repository-config
+          command:
+            - sh
+            - -c
+            - "curl --fail -X PUT '{{ app_name }}-es-http.{{ kustomization.namespace }}.svc.cluster.local:9200/_snapshot/s3-repository?pretty' -H 'Content-Type: application/json' -d @/etc/repository-config/s3-repository.json"
+      volumes:
+        - name: repository-config
+          configMap:
+            name: "{{ app_name }}-repository-config"

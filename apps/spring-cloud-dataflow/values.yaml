@@ -2,10 +2,13 @@ global:
   storageClass: ceph-block
 server:
   image:
-    tag: 2.9.1-debian-10-r7
+    tag: 2.9.4-debian-10-r0
+  configuration:
+    defaultSpringApplicationJSON: false
+  extraEnvVarsSecret: spring-cloud-dataflow-registry-config
   composedTaskRunner:
     image:
-      tag: 2.9.1-debian-10-r7
+      tag: 2.9.4-debian-10-r0
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
@@ -16,13 +19,13 @@ server:
   resources:
     limits:
       cpu: 1000m
-      memory: 1Gi
+      memory: 2Gi
     requests:
       cpu: 500m
-      memory: 512Mi
+      memory: 1Gi
 skipper:
   image:
-    tag: 2.8.1-debian-10-r6
+    tag: 2.8.4-debian-10-r0
   affinity:
     nodeAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
@@ -33,10 +36,12 @@ skipper:
   resources:
     limits:
       cpu: 1000m
-      memory: 1Gi
+      memory: 2Gi
     requests:
       cpu: 500m
-      memory: 512Mi
+      memory: 1Gi
+deployer:
+  imagePullSecrets: [spring-cloud-dataflow-registry-dockersecret]
 metrics:
   enabled: true
   image:
@@ -67,11 +72,11 @@ mariadb:
 rabbitmq:
   enabled: false
 externalDatabase:
-  host: postgresql.infra.svc.cluster.local
+  host: postgresql-primary-hl.database.svc.cluster.local
   port: 5432
   driver: org.postgresql.Driver
   scheme: postgresql
-  password: scdfpassword
+  password: {{ scdf.database.password }}
   dataflow:
     database: dataflow
     username: scdf

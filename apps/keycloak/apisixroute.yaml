@@ -1,0 +1,53 @@
+apiVersion: apisix.apache.org/v2beta3
+kind: ApisixRoute
+metadata:
+  name: keycloak
+spec:
+  http:
+    - name: keycloak
+      backends:
+        - serviceName: keycloak-http
+          servicePort: 80
+      match:
+        hosts: [ iam.{{ platform_domain_name }} ]
+        paths:
+          - /auth/admin/{{ keycloak.realm.name }}
+          - /auth/admin/{{ keycloak.realm.name }}/*
+          - /auth/admin/{{ keycloak.realm.name }}/console
+          - /auth/admin/{{ keycloak.realm.name }}/console/*
+          - /auth/admin/realms
+          - /auth/admin/serverinfo
+          - /auth/realms/{{ keycloak.realm.name }}/account/*
+          - /auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/*
+          - /auth/realms/RS/login-actions/*
+          - /auth/resources/*
+          - /auth/js/*
+      plugins:
+        - name: cors
+          enable: true
+          config:
+            allow_origins: "https://apisix.{{ platform_domain_name }},https://linkerd.{{ platform_domain_name }},https://monitoring.{{ platform_domain_name }},https://security.{{ platform_domain_name }},https://processing.{{ platform_domain_name }}"
+        - name: serverless-pre-function
+          enable: true
+          config:
+            phase: rewrite
+            functions:
+              - "return function(conf, ctx) ngx.var.var_x_forwarded_port = tostring(\"443\") end"
+    - name: keycloak-superadmin
+      backends:
+        - serviceName: keycloak-http
+          servicePort: 80
+      match:
+        hosts: [ iam.{{ platform_domain_name }} ]
+        paths: [ /* ]
+---
+apiVersion: apisix.apache.org/v2beta3
+kind: ApisixTls
+metadata:
+  name: sni-iam
+spec:
+  hosts:
+    - iam.{{ platform_domain_name }}
+  secret:
+    name: ingress-tls
+    namespace:  networking

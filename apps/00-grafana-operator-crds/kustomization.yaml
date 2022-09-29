@@ -1,0 +1,11 @@
+namePrefix: grafana-operator-
+
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+  app.kubernetes.io/component: "{{ app_name }}"
+
+resources:
+  - crd-grafanadashboards.yaml
+  - crd-grafanadatasources.yaml
+  - crd-grafananotificationchannels.yaml
+  - crd-grafanas.yaml

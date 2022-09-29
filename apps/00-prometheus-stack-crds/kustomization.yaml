@@ -1,0 +1,12 @@
+commonLabels:
+  app.kubernetes.io/instance: "{{ app_name }}"
+
+resources:
+  - crd-alertmanagerconfigs.yaml
+  - crd-alertmanagers.yaml
+  - crd-podmonitors.yaml
+  - crd-probes.yaml
+  - crd-prometheuses.yaml
+  - crd-prometheusrules.yaml
+  - crd-servicemonitors.yaml
+  - crd-thanosrulers.yaml

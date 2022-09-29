@@ -1,0 +1,48 @@
+---
+- name: Loading clusters list
+  shell: "{{ safescale_path }} cluster list | jq -r '.result[].name'"
+  register: cluster_list
+
+- name: Create safescale cluster
+  shell: |
+    {{ safescale_path }} \
+    cluster create \
+    --complexity {{ cluster.complexity }} \
+    --flavor BOH \
+    {% if cluster.cidr is defined %}--cidr {{ cluster.cidr }}{% endif %} \
+    --disable remotedesktop \
+    --disable reverseproxy \
+    --os {{ cluster.os }} \
+    --master-sizing {{ (cluster.nodegroups | selectattr('name', 'equalto', 'kube_control_plane') | first).sizing }} \
+    --node-sizing {{ (cluster.nodegroups | selectattr('name', 'equalto', 'infra') | first).sizing }} \
+    --gw-sizing {{ (cluster.nodegroups | selectattr('name', 'equalto', 'gateway') | first).sizing }} \
+    --force \
+    {{ cluster.name }}
+  when: cluster.name not in cluster_list.stdout_lines
+
+- name: Create the safescale label for node groups
+  shell: |
+    {{ safescale_path }} label create {{ cluster.name }}-nodegroup --value none
+
+- name: Add created nodes to nodegroups
+  shell: |
+    for i in  $({{ safescale_path }} cluster inspect {{ cluster.name }} | jq -c -r '.result.nodes.masters[].name'); do \
+      {{ safescale_path }} host label bind $i {{ cluster.name }}-nodegroup --value kube_control_plane; done \
+    && for i in  $({{ safescale_path }} cluster inspect {{ cluster.name }} | jq -c -r '.result.nodes.nodes[].name'); do \
+      {{ safescale_path }} host label bind $i {{ cluster.name }}-nodegroup --value infra; done \
+    && {{ safescale_path }} host label bind gw-{{ cluster.name }} {{ cluster.name }}-nodegroup --value gateway \ 
+    {% if cluster.complexity | lower != 'small' %} && {{ safescale_path }} host label bind gw2-{{ cluster.name }} {{ cluster.name }}-nodegroup --value gateway {% endif %}
+
+- name: Expand cluster to minimum node groups sizes
+  include_tasks:
+    file: expand-post-creation.yaml
+  loop: "{{ cluster.nodegroups }}"
+  loop_control:
+    loop_var: expand_nodegroup
+  when:
+    - expand_nodegroup.name not in ['kube_control_plane', 'gateway', 'infra'] 
+    - expand_nodegroup.min_size is defined and expand_nodegroup.min_size > 0
+
+- name: Create the buckets
+  import_tasks: create-buckets.yaml
+  tags: create_buckets

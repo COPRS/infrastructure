@@ -1,10 +1,10 @@
 logs
-.ssh
 artifacts
 tenants.*
-ssh-main-gateway.*
-!roles/safescale-cluster/templates/*
+ssh-main-gateway.conf
 library/safescale
-apps/**/manifest.yaml
+apps/**/resources.txt
 roles/image/files/output/
 __pycache__
+generated_inventory_vars.yaml
+scaler/build

@@ -1,0 +1,237 @@
+## default values.yaml file is available at https://github.com/linkerd/linkerd2/tree/main/charts/linkerd-control-plane/values.yaml
+
+## a HA values sample file is available at https://github.com/linkerd/linkerd2/tree/main/charts/linkerd-control-plane/values-ha.yaml
+
+# -- Control plane namespace
+namespace: networking
+# -- enabling this omits the NET_ADMIN capability in the PSP
+# and the proxy-init container when injecting the proxy;
+# requires the linkerd-cni plugin to already be installed
+cniEnabled: false
+# -- Kubernetes priorityClassName for the Linkerd Pods
+priorityClassName: ""
+
+enablePodAntiAffinity: true
+
+# policy controller configuration
+policyController:
+  # image -- Docker image for the policy controller
+  image:
+    # -- Docker image for the proxy
+    name: cr.l5d.io/linkerd/policy-controller
+    # -- Pull policy for the proxy container Docker image
+    # @default -- imagePullPolicy
+    pullPolicy: ""
+    # -- Tag for the proxy container Docker image
+    # @default -- linkerdVersion
+    version: ""
+
+  # -- The default allow policy to use when no `Server` selects a pod.  One of: "all-authenticated",
+  # "all-unauthenticated", "cluster-authenticated", "cluster-unauthenticated", "deny"
+  # @default -- "all-unauthenticated"
+  defaultAllowPolicy: "all-unauthenticated"
+  logLevel: linkerd=warn,warn
+
+  # -- policy controller resource requests & limits
+  # @default -- destinationResources
+  resources:
+    cpu:
+      limit: 10m
+      request: 5m
+    memory:
+      limit: 56Mi
+      request: 28Mi
+    ephemeral-storage:
+      # -- Maximum amount of ephemeral storage that the policy controller can use
+      limit: ""
+      # -- Amount of ephemeral storage that the policy controller requests
+      request: ""
+
+# proxy configuration
+proxy:
+  image:
+    # -- Docker image for the proxy
+    name: cr.l5d.io/linkerd/proxy
+    # -- Pull policy for the proxy container Docker image
+    # @default -- imagePullPolicy
+    pullPolicy: ""
+    # -- Tag for the proxy container Docker image
+    # @default -- linkerdVersion
+    version: ""
+  # -- The `cpu.limit` and `cores` should be kept in sync. The value of `cores`
+  # must be an integer and should typically be set by rounding up from the
+  # limit. E.g. if cpu.limit is '1500m', cores should be 2.
+  cores: 0
+  resources:
+    cpu:
+      limit: 100m
+      request: 50m
+    memory:
+      limit: 250Mi
+      request: 20Mi
+    ephemeral-storage:
+      # -- Maximum amount of ephemeral storage that the proxy can use
+      limit: ""
+      # -- Amount of ephemeral storage that the proxy requests
+      request: ""
+  # -- User id under which the proxy runs
+  uid: 2102
+  # -- If set the proxy sidecar will stay alive for at
+  # least the given period before receiving SIGTERM signal from Kubernetes but
+  # no longer than pod's `terminationGracePeriodSeconds`. See [Lifecycle
+  # hooks](https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/#container-hooks)
+  # for more info on container lifecycle hooks.
+  waitBeforeExitSeconds: 0
+  #  -- If set, the application container will not start until the proxy is
+  # ready
+  await: true
+  requireIdentityOnInboundPorts: ""
+  # -- Default set of opaque ports
+  # - SMTP (25,587) server-first
+  # - MYSQL (3306) server-first
+  # - Galera (4444) server-first
+  # - PostgreSQL (5432) server-first
+  # - Redis (6379) server-first
+  # - ElasticSearch (9300) server-first
+  # - Memcached (11211) clients do not issue any preamble, which breaks detection
+  opaquePorts: "25,587,3306,4444,5432,6379,9300,11211"
+  # -- disable mtls
+  # disableIdentity: true
+  # disableTap: true
+  logLevel: warn,linkerd=warn
+
+# -- Add a PSP resource and bind it to the control plane ServiceAccounts. Note
+# PSP has been deprecated since k8s v1.21
+enablePSP: false
+
+# controllerImage -- Docker image for the destination and identity components
+controllerImage: cr.l5d.io/linkerd/controller
+# -- Number of replicas for each control plane pod
+controllerReplicas: 3
+
+controllerResources: &controller_resources
+  cpu:
+    limit: 50m
+    request: 10m
+  memory:
+    limit: 250Mi
+    request: 50Mi
+
+# destination configuration
+# set resources for the sp-validator and its linkerd proxy respectively
+# see proxy.resources for details.
+# destinationResources -- CPU, Memory and Ephemeral Storage resources required by destination (see `proxy.resources` for sub-fields)
+destinationResources:
+  cpu:
+    limit: 50m
+    request: 10m
+  memory:
+    limit: 200Mi
+    request: 100Mi
+
+# debug configuration
+debugContainer:
+  image:
+    # -- Docker image for the debug container
+    name: cr.l5d.io/linkerd/debug
+    # -- Pull policy for the debug container Docker image
+    # @default -- imagePullPolicy
+    pullPolicy: ""
+    # -- Tag for the debug container Docker image
+    # @default -- linkerdVersion
+    version: ""
+
+identity:
+  # -- If the linkerd-identity-trust-roots ConfigMap has already been created
+  externalCA: false
+
+  # -- Use [Service Account token Volume projection](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#service-account-token-volume-projection) for pod validation instead of the default token
+  serviceAccountTokenProjection: true
+  issuer:
+    scheme: kubernetes.io/tls
+
+# CA
+identityTrustAnchorsPEM: |
+  {{ linkerd.ca.crt | indent( width=2 ) }}
+
+# -|- CPU, Memory and Ephemeral Storage resources required by the identity controller (see `proxy.resources` for sub-fields)
+identityResources:
+  cpu:
+    limit: 50m
+    request: 10m
+  memory:
+    limit: 64Mi
+    request: 32Mi
+# -|- CPU, Memory and Ephemeral Storage resources required by proxy injected into identity pod (see `proxy.resources` for sub-fields)
+#identityProxyResources:
+
+# heartbeat configuration
+# disableHeartBeat -- Set to true to not start the heartbeat cronjob
+disableHeartBeat: false
+heartbeatResources: *controller_resources
+# -- Config for the heartbeat cronjob
+# heartbeatSchedule: "0 0 * * *"
+
+# proxy injector configuration
+proxyInjector:
+  # -- Do not create a secret resource for the profileValidator webhook. If this is set to `true`, the value `proxyInjector.caBundle` must be set (see below)
+  externalSecret: true
+
+  # -- Bundle of CA certificates for proxy injector. If not provided then Helm will use the certificate generated  for `proxyInjector.crtPEM`. If `proxyInjector.externalSecret` is set to true, this value must be set, as no certificate will be generated.
+  caBundle: |
+    {{ linkerd.webhook.crt | indent( width=4 ) }}
+
+# -|- CPU, Memory and Ephemeral Storage resources required by the proxy injector (see
+#`proxy.resources` for sub-fields)
+proxyInjectorResources:
+  cpu:
+    limit: 50m
+    request: 10m
+  memory:
+    limit: 144Mi
+    request: 72Mi
+#-|- CPU, Memory and Ephemeral Storage resources required by proxy injected into the proxy injector
+#pod (see `proxy.resources` for sub-fields)
+#proxyInjectorProxyResources:
+
+# service profile validator configuration
+profileValidator:
+  # -- Do not create a secret resource for the profileValidator webhook. If this is set to `true`, the value `profileValidator.caBundle` must be set (see below).
+  externalSecret: true
+
+  # -- Bundle of CA certificates for service profile validator. If not provided
+  # then Helm will use the certificate generated  for `profileValidator.crtPEM`.
+  # If `profileValidator.externalSecret` is set to true, this value must be set,
+  # as no certificate will be generated.
+  caBundle: |
+    {{ linkerd.webhook.crt | indent( width=4 ) }}
+
+# policy validator configuration
+policyValidator:
+  # -- Do not create a secret resource for the policyValidator webhook. If this is set to `true`, the value `policyValidator.caBundle` must be set (see below).
+  externalSecret: true
+
+  # -- Bundle of CA certificates for policy validator. If not provided
+  # then Helm will use the certificate generated  for `policyValidator.crtPEM`.
+  # If `policyValidator.externalSecret` is set to true, this value must be set,
+  # as no certificate will be generated.
+  caBundle: |
+    {{ linkerd.webhook.crt | indent( width=4 ) }}
+
+# -|- CPU, Memory and Ephemeral Storage resources required by the SP validator (see
+#`proxy.resources` for sub-fields)
+spValidatorResources:
+  cpu:
+    limit: 10m
+    request: 5m
+  memory:
+    limit: 56Mi
+    request: 28Mi
+
+installNamespace: false
+
+nodeSelector:
+  node-role.kubernetes.io/infra: ""
+
+podAnnotations:
+  linkerd.io/inject: disabled

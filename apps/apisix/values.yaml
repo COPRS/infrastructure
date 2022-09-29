@@ -4,50 +4,32 @@ apisix:
   # Set it to false and ingress-controller.enabled=true will deploy only ingress-controller
   enabled: true
 
-  # Use Pod metadata.uid as the APISIX id.
-  setIDFromPodUID: false
-
-  customLuaSharedDicts: []
-    # - name: foo
-    #   size: 10k
-    # - name: bar
-    #   size: 1m
-
-  image:
-    repository: apache/apisix
-    # Overrides the image tag whose default is the chart appVersion.
-    tag: 2.10.0-alpine
-
-  replicaCount: 1
+  replicaCount: 3
 
   podAnnotations:
     config.linkerd.io/skip-outbound-ports: "2379"
 
-  podSecurityContext: {}
-    # fsGroup: 2000
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 1000
-
-  resources: {}
+  resources:
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
     # resources, such as Minikube. If you do want to specify resources, uncomment the following
     # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 128Mi
+    limits:
+      cpu: 100m
+      memory: 256Mi
 
   nodeSelector: {}
   tolerations: []
-  affinity: {}
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+            - key: "node-role.kubernetes.io/infra"
+              operator: Exists
   # If true, it will sets the anti-affinity of the Pod.
   podAntiAffinity:
     enabled: true
@@ -67,12 +49,12 @@ gateway:
   http:
     enabled: true
     servicePort: 80
-    containerPort: 9080
+    containerPort: 80
     nodePort: 32080
   tls:
     enabled: true
     servicePort: 443
-    containerPort: 9443
+    containerPort: 443
     nodePort: 32443
     existingCASecret: ""
     certCAFilename: ""
@@ -80,47 +62,27 @@ gateway:
       enabled: true
   stream:  # L4 proxy (TCP/UDP)
     enabled: false
-    only: false
-    tcp: []
-    udp: []
   ingress:
     enabled: false
-    annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: apisix.local
-        paths: []
-    tls: []
-  #  - secretName: apisix-tls
-  #    hosts:
-  #      - chart-example.local
-
 
 admin:
   # Enable Admin API
   enabled: true
   # admin service type
   type: ClusterIP
-  # loadBalancerIP: a.b.c.d
-  # loadBalancerSourceRanges:
-  #   - "143.231.0.0/16"
-  externalIPs: []
-  #
   port: 9180
   servicePort: 9180
   # Admin API support CORS response headers
   cors: true
   # Admin API credentials
   credentials:
-    admin: edd1c9f034335f136f87ad84b625c8f1
-    viewer: 4054f7cf07e344346cd3f287985e76a2
+    admin: {{ apisix.api_credentials.admin }}
+    viewer: {{ apisix.api_credentials.viewer }}
 
   allow:
     # The ip range for allowing access to Apache APISIX
     ipList:
       - 127.0.0.1/24
-
 
 # APISIX plugins to be enabled
 plugins:
@@ -180,26 +142,6 @@ customPlugins:
 
 discovery:
   enabled: false
-  registry:
-      # Integration service discovery registry. E.g eureka\dns\nacos\consul_kv
-      # reference:
-      # https://apisix.apache.org/docs/apisix/discovery#configuration-for-eureka
-      # https://apisix.apache.org/docs/apisix/discovery/dns#service-discovery-via-dns
-      # https://apisix.apache.org/docs/apisix/discovery/consul_kv#configuration-for-consul-kv
-      # https://apisix.apache.org/docs/apisix/discovery/nacos#configuration-for-nacos
-      #
-      # an eureka example:
-      # eureka:
-      #   host:
-      #     - "http://${username}:${password}@${eureka_host1}:${eureka_port1}"
-      #     - "http://${username}:${password}@${eureka_host2}:${eureka_port2}"
-      #   prefix: "/eureka/"
-      #   fetch_interval: 30
-      #   weight: 100
-      #   timeout:
-      #     connect: 2000
-      #     send: 2000
-      #     read: 5000
 
 # access log and error log configuration
 logs:
@@ -221,7 +163,6 @@ dns:
   validity: 30
   timeout: 5
 
-
 autoscaling:
   enabled: false
 
@@ -230,11 +171,11 @@ autoscaling:
 # Observability configuration.
 # ref: https://apisix.apache.org/docs/apisix/plugins/prometheus/
 serviceMonitor:
-  enabled: false
+  enabled: true
   # namespace where the serviceMonitor is deployed, by default, it is the same as the namespace of the apisix
   namespace: ""
   # interval at which metrics should be scraped
-  interval: 15s
+  interval: 2m
   # path of the metrics endpoint
   path: /apisix/prometheus/metrics
   # container port where the metrics are exposed
@@ -248,47 +189,15 @@ serviceMonitor:
 # use the FQDN address or the IP of the etcd
 etcd:
   # install etcd(v3) by default, set false if do not want to install etcd(v3) together
-  enabled: true
+  enabled: false
   host:
-    - http://etcd.host:2379  # host or ip e.g. http://172.20.128.89:2379
+    - http://apisix-etcd.networking.svc.cluster.local:2379
   prefix: "/apisix"
-  timeout: 30
-
-  # if etcd.enabled is true, set more values of bitnami/etcd helm chart
-  auth:
-    rbac:
-      # No authentication by default
-      enabled: false
-      user: ""
-      password: ""
-    tls:
-      enabled: false
-      existingSecret: ""
-      certFilename: ""
-      certKeyFilename: ""
-      verify: true
-      sni: ""
-
-  service:
-    port: 2379
-
-  replicaCount: 1
-
-  persistence:
-    enabled: true
-    storageClass: ceph-block
-
-  podAnnotations:
-    config.linkerd.io/skip-inbound-ports: "2379"
 
 dashboard:
   enabled: true
   # default values available at: https://github.com/apache/apisix-helm-chart/blob/master/charts/apisix-dashboard/values.yaml
   replicaCount: 1
-
-  image:
-    repository: apache/apisix-dashboard
-    tag: 2.10.1-alpine
 
   authentication:
     secert: secert
@@ -299,12 +208,12 @@ dashboard:
 
 ingress-controller:
   enabled: true
-  # default values available at https://github.com/apache/apisix-helm-chart/blob/master/charts/apisix-ingress-controller/values.yaml
-  replicaCount: 1
+  # default values available at https://github.com/apache/apisix-helm-chart/blob/master/charts/apisix-ingress-controller/values.yaml
+  replicaCount: 2
 
   image:
     repository: apache/apisix-ingress-controller
-    tag: "1.3.0"
+    tag: "1.4.1"
 
   service:
     port: 80
@@ -317,7 +226,7 @@ ingress-controller:
     # error
     # panic
     # fatal
-    logLevel: "info"
+    logLevel: "warn"
     # the output file path of error log, default is stderr, when
     # the file path is "stderr" or "stdout", logs are marshalled
     # plainly, which is more readable for human; otherwise logs
@@ -351,17 +260,22 @@ ingress-controller:
       # "networking/v1" (for Kubernetes version v1.19.0 or higher), and
       # "extensions/v1beta1", default is "networking/v1".
       ingressVersion: "networking/v1"
-      # the supported apisixroute api group version, can be "apisix.apache.org/v1"
+      # the supported apisixroute api group version, can be "apisix.apache.org/v2beta3"
       # "apisix.apache.org/v2alpha1" or "apisix.apache.org/v2beta1"
-      apisixRouteVersion: "apisix.apache.org/v2beta1"
+      apisixRouteVersion: "apisix.apache.org/v2beta3"
     # APISIX related configurations.
     apisix:
       serviceName: apisix-admin
-      serviceNamespace: infra
+      serviceNamespace: networking
       servicePort: 9180
-      adminKey: "edd1c9f034335f136f87ad84b625c8f1"
+      adminKey: {{ apisix.api_credentials.admin }}
 
-  resources: {}
+  resources:
+    requests:
+      cpu: 20m
+      memory: 64Mi
+    limits:
+      memory: 128Mi
 
   initContainer:
     image: busybox
@@ -372,5 +286,3 @@ ingress-controller:
 
   nodeSelector: {}
   tolerations: []
-
-

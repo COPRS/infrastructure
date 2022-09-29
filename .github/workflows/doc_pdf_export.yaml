@@ -26,45 +26,6 @@ jobs:
           name: documentation
           path: output
           
-  convert_readme_via_pandoc_with_properties:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Add doc properties on top
-        run: |
-          echo "# Software Installation Manual" >> patch.md
-          echo "" >> patch.md
-          echo "## Document properties" >> patch.md
-          echo "" >> patch.md
-          echo "|    |   |" >> patch.md
-          echo "| -: | - |" >> patch.md
-          echo "|    **Reference** | CSGF-CSC-RS-CFG-SIM  |" >> patch.md
-          echo "|        **Issue** | 1 |" >> patch.md
-          echo "|   **Issue date** | 01 Mar 2022 |" >> patch.md
-          echo "|  **Prepared by** | **Cyrille BOUISSON**  *(Architect / Technical Manager)* |" >> patch.md
-          echo "|  **Approved by** | |" >> patch.md
-          echo "|  **Released by** | |" >> patch.md
-          echo "|     **Doc type** | ICD |" >> patch.md
-          echo "|       **No WBS** | WP-3000-C |" >> patch.md
-          echo "| **CMMI Process** | CM |" >> patch.md
-          echo "" >> patch.md
-          cat patch.md README.md > README_patched.md
-          
-      - name: make output dir
-        id: make_output_dir
-        run: mkdir output # create output dir
-
-      - name: Create PDF
-        uses: docker://ghcr.io/coprs/reference-system-software:dependencies_pandoc_latex
-        with:
-          args: -s --resource-path="/github/workspace/doc/img:/github/workspace/doc:." --listings -H /root/.pandoc/listings-setup.tex -H /root/.pandoc/deeplists.tex -V geometry:margin=1in --table-of-contents --pdf-engine=xelatex --output="output/infrastructure_sim.pdf" --from=markdown README_patched.md
-
-      - uses: actions/upload-artifact@master
-        with:
-          name: documentation
-          path: output
-          
   convert_docs_via_pandoc:
     runs-on: ubuntu-18.04
     strategy:
