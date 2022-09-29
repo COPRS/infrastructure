@@ -4,7 +4,7 @@
 
 ## Overview
 
-![](./user_manuals/img/deployment.png)
+![](./docs/media/deployment.png)
 
 > **Integrators' machine is called BASTION in the rest of the installation manual**
 
@@ -22,7 +22,7 @@
 
 ## Infrastructure requirements
 
-- Default configuration : [here](./user_manuals/config.md)
+- Default configuration : [here](./CONFIG.md)
 - A **domain name** publicly available with a wildcard **A** record.  
 
 ## Dependencies
@@ -32,7 +32,7 @@ This project exploits Kubespray to deploy Kubernetes.
 The fully detailed documentation and configuration options are available on its page: [https://kubespray.io/](https://kubespray.io/)
 
 ### HashiCorp Vault (optional)
-This project can integrate credentials from a custom `HashiCorp Vault` instance, see the specific documentation [here](doc/how-to/Credentials.md).
+This project can integrate credentials from a custom `HashiCorp Vault` instance, see the specific documentation [here](./docs/user_manuals/how-to/Credentials.md).
 
 ## Quickstart
 
@@ -141,7 +141,7 @@ ansible-playbook apps.yaml \
 
 ## Post installation
 
-- User's Manual : [here](./doc/user_manual.md)
+- User's Manual : [here](./docs/user_manuals/README.md)
 - *NOT MANDATORY* : A **load balancer** listening on the public IP address pointed to by the domain name.  
   Configure the load balancer to forward incoming flow toward the cluster masters.
 
@@ -150,7 +150,7 @@ ansible-playbook apps.yaml \
   | 80 | 32080 | TCP |
   | 443 | 32443 | TCP |
 
-> For **health check** : https://node-ip:6443/readyz <br>
+> For **health check** : `https://node-ip:6443/readyz` <br>
 > `node-ip` : private ip of each master
 
 - You may disable access to Keycloak master realm. From Apisix interface: open Route tab, search for `iam_keycloak_keycloak-superadmin` and click on `Offline`.
@@ -195,218 +195,8 @@ The repository is made of the following main directories and files.
 | image.yaml | *none* | *make reference system golden image for k8s nodes* |
 | security.yaml | *none* <br> auditd <br> wazuh <br> clamav <br> openvpn <br> suricata <br> uninstall_APP_NAME| *install all security tools* <br> install auditd <br> install wazuh <br> install clamav <br> install openvpn <br> install suricata <br> uninstall the app matching APP_NAME |
 
-## Apps
+# Copyright and license
 
-Default configurations:
+Copyright (C) 2021-2022, European Space Agency (ESA) https://www.esa.int/
 
-- **Cert manager**
-  - Helm chart:
-    - Repository: charts.jetstack.io
-    - Version: v1.6.1
-    - Source: https://github.com/cert-manager/cert-manager/blob/master/deploy/charts/cert-manager
-  - Images:
-    - quay.io/jetstack/cert-manager-cainjector:v1.6.1
-- **Linkerd CNI**
-  - Helm chart:
-    - Repository: helm.linkerd.io/stable
-    - Version: 2.11.1
-    - Source: https://github.com/linkerd/linkerd2/tree/main/charts/linkerd2-cni
-  - Images:
-    - cr.l5d.io/linkerd/cni-plugin:stable-2.11.1
-- **Linkerd**
-  - Helm chart:
-    - Repository: helm.linkerd.io/stable
-    - Version: 2.11.1
-    - Source: https://github.com/linkerd/linkerd2/tree/main/charts/linkerd-control-plane
-  - Images:
-    - cr.l5d.io/linkerd/policy-controller:stable-2.11.1
-    - cr.l5d.io/linkerd/proxy:stable-2.11.1
-    - cr.l5d.io/linkerd/controller:stable-2.11.1
-    - cr.l5d.io/linkerd/debug:stable-2.11.1
-- **Linkerd Viz**
-  - Helm chart:
-    - Repository: helm.linkerd.io/stable
-    - Version: 2.11.1
-    - Source: https://github.com/linkerd/linkerd2/tree/main/viz/charts/linkerd-viz
-  - Images:
-    - cr.l5d.io/linkerd:stable-2.11.1
-- **Rook Ceph** 
-  - Helm chart: 
-    - Repository: charts.rook.io/release
-    - Version: v1.9.4
-    - Source: https://github.com/rook/rook/tree/master/deploy/charts/rook-ceph
-  - Images:
-    - quay.io/cephcsi/cephcsi:v3.6.1
-    - k8s.gcr.io/sig-storage/csi-node-driver-registrar:v2.5.0
-    - k8s.gcr.io/sig-storage/csi-resizer:v1.4.0
-    - k8s.gcr.io/sig-storage/csi-provisioner:v3.1.0
-    - k8s.gcr.io/sig-storage/csi-snapshotter:v5.0.1
-    - k8s.gcr.io/sig-storage/csi-attacher:v3.4.0
-    - quay.io/csiaddons/volumereplication-operator:v0.3.0
-- **ECK Operator**
-  - Helm chart:
-    - Repository: helm.elastic.co
-    - Version: 1.9.0
-    - Source: https://github.com/elastic/cloud-on-k8s/tree/master/deploy/eck-operator
-  - Images:
-    - docker.elastic.co/eck/eck-operator:1.9.0
-    - docker.elastic.co/elasticsearch/elasticsearch:7.15.2
-    - docker.elastic.co/kibana/kibana:7.15.2
-    - quay.io/prometheuscommunity/elasticsearch-exporter:v1.3.0
-- **Grafana Operator**
-  - Helm chart: *None*
-  - Images:
-    - quay.io/grafana-operator/grafana-operator:v4.5.0
-    - docker.io/grafana/grafana:9.0.2-ubuntu
-- **Kafka Operator**
-  - Helm chart:
-    - Repository: strimzi.io/charts/
-    - Version: 0.27.1
-    - Source: https://github.com/strimzi/strimzi-kafka-operator/tree/main/helm-charts/helm3/strimzi-kafka-operator
-  - Images:
-    - quay.io/strimzi/operator:0.27.1
-    - quay.io/strimzi/kafka:0.27.1-kafka-2.8.1
-- **Prometheus Operator**
-  - Helm chart:
-    - Repository: prometheus-community.github.io/helm-charts
-    - Version: 21.0.0
-    - Source: https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
-  - Images:
-    - quay.io/prometheus-operator/prometheus-operator:v0.52.1-amd64
-    - quay.io/prometheus-operator/prometheus-config-reloader:v0.52.1-amd64
-    - quay.io/prometheus/node-exporter:v1.3.0
-    - quay.io/prometheus/alertmanager:v0.23.0
-    - quay.io/prometheus/prometheus:v2.31.1
-- **Stash Operator**
-  - Helm chart:
-    - Repository: charts.appscode.com/stable
-    - Version: v0.17.0
-    - Source: https://github.com/stashed/installer/tree/master/charts/stash-community
-  - Images:
-    - docker.io/appscode/stash:v0.17.0
-- **Fluent-bit**
-  - Helm chart:
-    - Repository: fluent.github.io/helm-charts
-    - Version: 0.19.6
-    - Source: https://github.com/fluent/helm-charts/tree/main/charts/fluent-bit
-  - Images:
-    - docker.io/fluent/fluent-bit:1.9.3
-- **MongoDB**
-  - Helm chart:
-    - Repository: charts.bitnami.com/bitnami
-    - Version: 11.0.3
-    - Source: https://github.com/bitnami/charts/tree/master/bitnami/mongodb
-  - Images:
-    - docker.io/bitnami/mongodb:5.0.6-debian-10-r14
-    - docker.io/bitnami/mongodb-exporter:0.30.0-debian-10-r58
-- **OpenLDAP**
-  - Helm chart: *None*
-  - Images:
-    - docker.io/osixia/openldap:1.5.0
-- **PostreSQL**
-  - Helm chart:
-    - Repository: charts.bitnami.com/bitnami
-    - Version: 11.0.2
-    - Source: https://github.com/bitnami/charts/tree/master/bitnami/postgresql
-  - Images:
-    - docker.io/bitnami/postgresql:14.1.0-debian-10-r80
-    - quay.io/prometheuscommunity/postgres-exporter:v0.10.0
-- **Thanos**
-  - Helm chart:
-    - Repository: charts.bitnami.com/bitnami
-    - Version: 8.3.0
-    - Source: https://github.com/bitnami/charts/tree/master/bitnami/thanos
-  - Images:
-    - docker.io/bitnami/thanos:0.23.1-scratch-r3
-- **Fluentd**
-  - Helm chart:
-    - Repository: charts.bitnami.com/bitnami
-    - Version: 4.5.2
-    - Source: https://github.com/bitnami/charts/tree/master/bitnami/fluentd
-  - Images:
-    - docker.io/bitnami/fluentd:1.14.2-debian-10-r23
-- **Loki**
-  - Helm chart:
-    - Repository: grafana.github.io/helm-charts
-    - Version: 0.48.1
-    - Source: https://github.com/grafana/helm-charts/tree/main/charts/loki-distributed
-  - Images:
-    - docker.io/grafana/loki:2.5.0
-- **Apisix**
-  - Helm chart:
-    - Repository: charts.apiseven.com
-    - Version: 0.10.0
-    - Source: https://github.com/apache/apisix-helm-chart/tree/master/charts/apisix
-  - Images:
-    - docker.io/apache/apisix:2.14.1-alpine
-    - docker.io/apache/apisix-dashboard:2.11-alpine
-    - docker.io/apache/apisix-ingress-controller:1.4.1
-    - docker.io/bitnami/etcd:3.5.4-debian-11-r9
-- **Falco**
-  - Helm chart:
-    - Repository: falcosecurity.github.io/charts
-    - Version: 1.16.2
-    - Source: https://github.com/falcosecurity/charts/tree/master/falco
-  - Images:
-    - docker.io/falcosecurity/falco:0.30.0
-    - docker.io/falcosecurity/falco-exporter:0.6.0
-- **FinOps object storage exporter**
-  - Helm chart:
-    - Repository: artifactory.coprs.esa-copernicus.eu/artifactory/rs-helm
-    - Version: 1.0.0
-    - Source: *Private*
-  - Images:
-    - artifactory.coprs.esa-copernicus.eu/cs-docker/finops-object-storage-exporter:release-0.3.0
-- **FinOps resources exporter**
-  - Helm chart:
-    - Repository: artifactory.coprs.esa-copernicus.eu/artifactory/rs-helm
-    - Version: 1.0.0
-    - Source: *Private*
-  - Images:
-    - artifactory.coprs.esa-copernicus.eu/cs-docker/finops-resources-exporter:release-0.3.0
-- **Graylog**
-  - Helm chart:
-    - Repository: charts.kong-z.com
-    - Version: 1.9.2
-    - Source: https://github.com/KongZ/charts/tree/main/charts/graylog
-  - Images:
-    - docker.io/graylog/graylog:4.3.3-1
-- **Keycloack**
-  - Helm chart:
-    - Repository: codecentric.github.io/helm-charts
-    - Version: 16.0.5
-    - Source: https://github.com/codecentric/helm-charts/tree/master/charts/keycloak
-  - Images:
-    - docker.io/jboss/keycloak:15.0.2
-- **Spring Cloud Data Flow**
-  - Helm chart:
-    - Repository: charts.bitnami.com/bitnami
-    - Version: 7.0.1
-    - Source: https://github.com/bitnami/charts/tree/master/bitnami/spring-cloud-dataflow
-  - Images:
-    - docker.io/bitnami/spring-cloud-dataflow:2.9.4-debian-10-r7
-    - docker.io/bitnami/spring-cloud-skipper:2.8.4-debian-10-r6
-    - docker.io/bitnami/prometheus-rsocket-proxy:1.3.0-debian-10-r334
-- **Keda**
-  - Helm chart:
-    - Repository: kedacore.github.io/charts
-    - Version: 2.6.2
-    - Source: https://github.com/kedacore/charts/tree/main/keda
-  - Images:
-    - ghcr.io/kedacore/keda:2.6.1
-    - ghcr.io/kedacore/keda-metrics-apiserver:2.6.1
-- **Prometheus blackbox exporter**
-  - Helm chart:
-    - Repository: https://prometheus-community.github.io/helm-charts
-    - Version: 5.8.2
-    - Source: https://github.com/prometheus-community/helm-charts/tree/main/charts/prometheus-blackbox-exporter
-  - Images:
-    - docker.io/prom/blackbox-exporter:v0.20.0
-- **Autoscaling**
-  - Images:
-    - artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:v22.06.0
-    - artifactory.coprs.esa-copernicus.eu/rs-docker/cluster-autoscaler:1.22.3
-    - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:0.10.0
-- **Kubelet rubber stamp**
-  - Images:
-    - docker.io/digitalocean/kubelet-rubber-stamp:v0.3.1-do.2
+The Reference System Software as a whole is distributed under the Apache License, version 2.0. A copy of this license is available in the [LICENSE](LICENSE) file. Reference System Software depends on third-party components and code snippets released under their own license (obviously, all compatible with the one of the Reference System Software). These dependencies are listed in the [NOTICE](NOTICE.md) file.
