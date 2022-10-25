@@ -1,0 +1,17 @@
+envs:
+  config:
+    KAFKA_CLUSTERS_0_NAME: local
+    KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: "node-role.kubernetes.io/infra"
+            operator: Exists

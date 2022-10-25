@@ -1,0 +1,25 @@
+apiVersion: apisix.apache.org/v2beta3
+kind: ApisixRoute
+metadata:
+  name: kafka-ui
+spec:
+  http:
+    - name: kafka-ui
+      backends:
+        - serviceName: kafka-ui
+          servicePort: 80
+      match:
+        hosts: [ kafka.{{ platform_domain_name }} ]
+        paths: [ /* ]
+      websocket: true
+---
+apiVersion: apisix.apache.org/v2beta3
+kind: ApisixTls
+metadata:
+  name: sni-processing
+spec:
+  hosts:
+    - kafka.{{ platform_domain_name }}
+  secret:
+    name: ingress-tls
+    namespace:  networking
