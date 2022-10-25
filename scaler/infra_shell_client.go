@@ -9,6 +9,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"gopkg.in/yaml.v2"
@@ -44,6 +45,7 @@ type InfraShellClient struct {
 	GeneratedInventory   *GeneratedInventory
 	MetricsRegistry      *prometheus.Registry
 	nodeGroupSizeMetrics *prometheus.GaugeVec
+	operationMutex       sync.Mutex
 }
 
 type InfraNodeGroup struct {
@@ -142,6 +144,10 @@ func NewInfraShellClient(inventoryDirPath string, infrastructurePath string, sf 
 }
 
 func (i *InfraShellClient) IncreaseNodeGroupSize(nodeGroup string, count int) (err error) {
+	klog.V(5).Infof("Waiting for last cluster operation to finish...")
+	i.operationMutex.Lock()
+	defer i.operationMutex.Unlock()
+
 	i.InfraNodeGroups[nodeGroup].TargetSize += count
 
 	klog.V(3).Infof("Running safescale infra expand playbook")
@@ -243,6 +249,10 @@ func (i *InfraShellClient) IncreaseNodeGroupSize(nodeGroup string, count int) (e
 }
 
 func (i *InfraShellClient) RemoveNodesFromNodeGroup(nodeGroup string, nodes []string) (err error) {
+	klog.V(5).Infof("Waiting for last cluster operation to finish...")
+	i.operationMutex.Lock()
+	defer i.operationMutex.Unlock()
+
 	i.InfraNodeGroups[nodeGroup].TargetSize -= len(nodes)
 
 	if len(nodes) < 1 {
