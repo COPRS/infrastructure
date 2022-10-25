@@ -1,5 +1,5 @@
-SCALER_TAG = 0.10.0
-SAFESCALE_TAG = v22.06.0
+SCALER_TAG = 1.1.0
+SAFESCALE_TAG = v22.06.1
 CA_TAG = 1.22.3
 
 build-scaler-image:

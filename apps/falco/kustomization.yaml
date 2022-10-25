@@ -10,6 +10,14 @@ helmCharts:
   version: 1.16.2
   valuesFile: values.yaml
   namespace: security
+- name: falco-exporter
+  releaseName: falco-exporter
+  repo: https://falcosecurity.github.io/charts
+  version: 0.7.1
+  valuesFile: values-exporter.yaml
+  namespace: security
 
 resources:
   - falco-priority.yaml
+  - servicemonitor.yaml
+  - grafanadashboard.yaml

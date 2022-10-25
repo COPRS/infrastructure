@@ -130,7 +130,7 @@
           with_fileglob:
             - "{{ additional_resources_dir.stat.path }}/*ml"
         - name: Apply the resources into the cluster
-          shell: "kubectl apply -f {{ remote_rs_addon_dir.path }}/additional_resources/"
+          shell: "kubectl apply --server-side --force-conflicts -f {{ remote_rs_addon_dir.path }}/additional_resources/"
           register: deploy_log
         - name: Print the deployed resources
           debug:

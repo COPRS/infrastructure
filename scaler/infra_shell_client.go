@@ -9,6 +9,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"gopkg.in/yaml.v2"
@@ -44,6 +45,7 @@ type InfraShellClient struct {
 	GeneratedInventory   *GeneratedInventory
 	MetricsRegistry      *prometheus.Registry
 	nodeGroupSizeMetrics *prometheus.GaugeVec
+	operationMutex       sync.Mutex
 }
 
 type InfraNodeGroup struct {
@@ -142,6 +144,10 @@ func NewInfraShellClient(inventoryDirPath string, infrastructurePath string, sf 
 }
 
 func (i *InfraShellClient) IncreaseNodeGroupSize(nodeGroup string, count int) (err error) {
+	klog.V(5).Infof("Waiting for last cluster operation to finish...")
+	i.operationMutex.Lock()
+	defer i.operationMutex.Unlock()
+
 	i.InfraNodeGroups[nodeGroup].TargetSize += count
 
 	klog.V(3).Infof("Running safescale infra expand playbook")
@@ -243,6 +249,10 @@ func (i *InfraShellClient) IncreaseNodeGroupSize(nodeGroup string, count int) (e
 }
 
 func (i *InfraShellClient) RemoveNodesFromNodeGroup(nodeGroup string, nodes []string) (err error) {
+	klog.V(5).Infof("Waiting for last cluster operation to finish...")
+	i.operationMutex.Lock()
+	defer i.operationMutex.Unlock()
+
 	i.InfraNodeGroups[nodeGroup].TargetSize -= len(nodes)
 
 	if len(nodes) < 1 {
@@ -284,6 +294,13 @@ func (i *InfraShellClient) RemoveNodesFromNodeGroup(nodeGroup string, nodes []st
 }
 
 func (i *InfraShellClient) readNodeGroupsFromInventory(inv *GeneratedInventory) error {
+
+	nodeGroupsNodesInfo, err := i.SafescaleShellClient.GetNodeGroupsNodes(i.GeneratedInventory.Cluster.Name)
+	if err != nil {
+		klog.V(1).Infof("could not get node groups nodes info: %v", err)
+		return err
+	}
+
 	for _, nodegroup := range inv.Cluster.Nodegroups {
 
 		cpu, ram, err := ParseSafeScaleSizing(nodegroup.Sizing)
@@ -304,15 +321,12 @@ func (i *InfraShellClient) readNodeGroupsFromInventory(inv *GeneratedInventory) 
 			})
 		}
 
-		ngni, err := i.SafescaleShellClient.GetNodeGroupNodesIDs(i.GeneratedInventory.Cluster.Name, nodegroup.Name)
-		if err != nil {
-			klog.V(1).Infof("could not get nodes ids for nodegroup: %v", err)
-			return err
-		}
-		ngnn, err := i.SafescaleShellClient.GetNodeGroupNodesNames(i.GeneratedInventory.Cluster.Name, nodegroup.Name)
-		if err != nil {
-			klog.V(1).Infof("could not get nodes names for nodegroup: %v", err)
-			return err
+		nodeGroupNodesInfo := nodeGroupsNodesInfo[nodegroup.Name]
+		nodeGroupNodesIds := make([]string, len(nodeGroupNodesInfo))
+		nodeGroupNodesNames := make([]string, len(nodeGroupNodesInfo))
+		for _, nodeInfo := range nodeGroupNodesInfo {
+			nodeGroupNodesIds = append(nodeGroupNodesIds, nodeInfo.Id)
+			nodeGroupNodesNames = append(nodeGroupNodesNames, nodeInfo.Name)
 		}
 
 		minSize := nodegroup.MinSize
@@ -324,12 +338,12 @@ func (i *InfraShellClient) readNodeGroupsFromInventory(inv *GeneratedInventory) 
 
 		i.InfraNodeGroups[nodegroup.Name] = &InfraNodeGroup{
 			Name:       nodegroup.Name,
-			ActualSize: len(ngni),
-			TargetSize: len(ngni),
+			ActualSize: len(nodeGroupNodesInfo),
+			TargetSize: len(nodeGroupNodesInfo),
 			MinSize:    minSize,
 			MaxSize:    maxSize,
-			NodesIDs:   ngni,
-			NodesNames: ngnn,
+			NodesIDs:   nodeGroupNodesIds,
+			NodesNames: nodeGroupNodesNames,
 			NodeTemplateInfo: v1.Node{
 				Status: v1.NodeStatus{
 					Capacity: v1.ResourceList{
@@ -357,31 +371,24 @@ func (i *InfraShellClient) readNodeGroupsFromInventory(inv *GeneratedInventory) 
 }
 
 func (i *InfraShellClient) updateNodesNodeGroup() error {
+
+	nodeGroupsNodesInfo, err := i.SafescaleShellClient.GetNodeGroupsNodes(i.GeneratedInventory.Cluster.Name)
+	if err != nil {
+		klog.V(1).Infof("could not get node groups nodes info: %v", err)
+		return err
+	}
+
 	nngbn := make(map[string]string, 0)
 	nngbi := make(map[string]string, 0)
 
-	for nodeGroupName := range i.InfraNodeGroups {
+	for nodeGroupName, nodeGroupNodesInfo := range nodeGroupsNodesInfo {
 		klog.V(5).Infof("infraNodeGroup %s", nodeGroupName)
-		ngnn, err := i.SafescaleShellClient.GetNodeGroupNodesNames(i.GeneratedInventory.Cluster.Name, nodeGroupName)
-		if err != nil {
-			klog.V(1).Infof("could not get nodes names for nodegroup: %v", err)
-			return err
-		}
-		ngni, err := i.SafescaleShellClient.GetNodeGroupNodesIDs(i.GeneratedInventory.Cluster.Name, nodeGroupName)
-		if err != nil {
-			klog.V(1).Infof("could not get nodes ids for nodegroup: %v", err)
-			return err
-		}
-		i.InfraNodeGroups[nodeGroupName].NodesIDs = ngni
-		i.InfraNodeGroups[nodeGroupName].NodesNames = ngnn
 
-		i.nodeGroupSizeMetrics.WithLabelValues(nodeGroupName).Set(float64(len(ngnn)))
+		i.nodeGroupSizeMetrics.WithLabelValues(nodeGroupName).Set(float64(len(nodeGroupNodesInfo)))
 
-		for _, nodeName := range ngnn {
-			nngbn[nodeName] = nodeGroupName
-		}
-		for _, nodeID := range ngni {
-			nngbn[nodeID] = nodeGroupName
+		for _, nodeInfo := range nodeGroupNodesInfo {
+			nngbn[nodeInfo.Name] = nodeGroupName
+			nngbi[nodeInfo.Id] = nodeGroupName
 		}
 	}
 
