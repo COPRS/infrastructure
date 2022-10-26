@@ -21,6 +21,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
   - Merge falco and falco-exporter apps for better clarity
   - Deploy rs_addon additional resources using kubectl server side for better homogeneity
   - Limit app-installer's ansible templating to the app's root dir to allow the placement of any kind of file in the app's subfolders
+### Fixed
+- [#561 - [BUG] [infra] Fluentbit - fluentd fails when topic_to_loki_regex setting is empty](https://github.com/COPRS/rs-issues/issues/561)
 
 ## [1.2.0-rc1] - 2022-09-28
 ### Added
