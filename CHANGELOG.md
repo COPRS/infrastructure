@@ -11,11 +11,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+## [1.3.0-rc1] - 2022-10-26
+### Added
+- Deploy Reference System on OVH cloud and local cluster
+### Changed
+- Improvements :
+  - Prevent node autoscaling concurrence for better reliability
+  - Reduce autoscaler's calls to safescale, greatly improving its performance
+  - Merge falco and falco-exporter apps for better clarity
+  - Deploy rs_addon additional resources using kubectl server side for better homogeneity
+  - Limit app-installer's ansible templating to the app's root dir to allow the placement of any kind of file in the app's subfolders
+
 ## [1.2.0-rc1] - 2022-09-28
 ### Added
 - [#540 - [STORAGE] Procedure to copy file and directories on the RS shared disk](https://github.com/COPRS/rs-issues/issues/540)
 - Documentation and Notice.md
-- Deploy Reference System on OVH cloud and local cluster
   
 ## [1.1.0-rc3] - 2022-09-13
 ### Fixed
