@@ -191,7 +191,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Source: https://github.com/grafana/helm-charts/tree/loki-distributed-0.48.1/charts/loki-distributed
   - Container image(s)
     - docker.io/grafana/loki:2.5.0
-      - License: [Apache License 2.0](https://github.com/grafana/helm-charts/blob/loki-2.5.0/LICENSE)
+      - License: [GNU Affero General Public License v3.0](https://github.com/grafana/loki/blob/v2.5.0/LICENSE)
 
 - Apisix
   - Helm chart:
@@ -226,7 +226,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Source: https://github.com/COPRS/monitoring/tree/1.0.0/finops/resources-exporter/helm
   - Container image(s)
     - artifactory.coprs.esa-copernicus.eu/cs-docker/finops-object-storage-exporter:release-0.3.0
-      - License: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/resources-exporter/LICENSE)]
+      - License: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/resources-exporter/LICENSE)
 
 - FinOps resources exporter
   - Helm chart:
