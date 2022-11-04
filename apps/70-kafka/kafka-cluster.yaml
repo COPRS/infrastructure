@@ -147,11 +147,11 @@ spec:
                   operator: Exists
     resources:
       requests:
-        cpu: 10m
-        memory: 20Mi
+        cpu: 40m
+        memory: 32Mi
       limits:
-        cpu: 50m
-        memory: 40Mi
+        cpu: 200m
+        memory: 128Mi
   entityOperator:
     template:
       pod:
