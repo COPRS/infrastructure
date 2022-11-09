@@ -23,6 +23,12 @@ spec:
             realm: {{ keycloak.realm.name }}
             introspection_endpoint_auth_method: client_secret_post
             redirect_uri: https://apisix.{{ platform_domain_name }}/redirect_uri
+        - config:
+            regex_uri:
+            - ^/$
+            - /dashboard/
+          enable: true
+          name: proxy-rewrite 
 ---
 apiVersion: apisix.apache.org/v2beta3
 kind: ApisixTls
