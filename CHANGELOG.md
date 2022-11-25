@@ -11,6 +11,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+## [1.4.0-rc1] - 2022-11-24
+### Fixed
+- [#551 - [BUG] rs-addon deployment - Error when updating existing additional resource](https://github.com/COPRS/rs-issues/issues/687)
+- [#687 - [BUG] [OPS] Kafka information are not reacheable with promotheus](https://github.com/COPRS/rs-issues/issues/687)
+- [#691 - [BUG][Infra] SCDF dashboard access unsuccessful - apisix route](https://github.com/COPRS/rs-issues/issues/691)
+
 ## [1.3.0-rc1] - 2022-10-26
 ### Added
 - Deploy Reference System on OVH cloud and local cluster
