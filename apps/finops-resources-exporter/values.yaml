@@ -2,7 +2,7 @@
 image:
   registry: artifactory.coprs.esa-copernicus.eu/rs-docker
   repository: monitoring/finops-resources-exporter
-  tag: release-0.3.0
+  tag: 1.0.0
 
 metrics:
   serviceMonitor:

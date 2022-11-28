@@ -223,7 +223,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Licence: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/resources-exporter/LICENSE)
     - Source: https://github.com/COPRS/monitoring/tree/1.0.0/finops/resources-exporter/helm
   - Container image(s)
-    - artifactory.coprs.esa-copernicus.eu/cs-docker/finops-object-storage-exporter:release-0.3.0
+    - artifactory.coprs.esa-copernicus.eu/cs-docker/finops-object-storage-exporter:1.0.0
       - License: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/resources-exporter/LICENSE)
 
 - FinOps resources exporter
@@ -232,7 +232,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Licence: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/object-storage-exporter/LICENSE)
     - Source: https://github.com/COPRS/monitoring/tree/1.0.0/finops/object-storage-exporter/helm
   - Container image(s)
-    - artifactory.coprs.esa-copernicus.eu/cs-docker/finops-resources-exporter:release-0.3.0
+    - artifactory.coprs.esa-copernicus.eu/cs-docker/finops-resources-exporter:1.0.0
       - License: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/object-storage-exporter/LICENSE)
 
 - Graylog
