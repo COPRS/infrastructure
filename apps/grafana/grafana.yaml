@@ -3,7 +3,7 @@ kind: Grafana
 metadata:
   name: grafana
 spec:
-  baseImage: 'grafana/grafana:9.0.2-ubuntu'
+  baseImage: 'grafana/grafana:9.3.0-ubuntu'
   client:
     preferService: true
   config:

@@ -87,8 +87,8 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
   - Container image(s)
     - quay.io/grafana-operator/grafana-operator:v4.8.0
       - License: [Apache License 2.0](https://github.com/grafana-operator/grafana-operator/blob/v4.8.0/LICENSE)
-    - docker.io/grafana/grafana:9.0.2-ubuntu
-      - License: [GNU Affero General Public License v3.0](https://github.com/grafana/grafana/blob/v9.0.2/LICENSE)
+    - docker.io/grafana/grafana:9.3.0-ubuntu
+      - License: [GNU Affero General Public License v3.0](https://github.com/grafana/grafana/blob/v9.3.0/LICENSE)
 
 - Kafka Operator
   - Helm chart:
