@@ -27,7 +27,7 @@ spec:
       auth_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/auth
       token_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/token
       api_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/userinfo
-      role_attribute_path: contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
+      role_attribute_path: contains(roles[*], 'admin') && 'GrafanaAdmin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
       role_attribute_strict: true
     metrics:
       enabled: true
@@ -67,6 +67,8 @@ spec:
         value: "true"
       - name: GF_UNIFIED_ALERTING_SCREENSHOTS_UPLOAD_EXTERNAL_IMAGE_STORAGE
         value: "false"
+      - name: GF_AUTH_GENERIC_OAUTH_ALLOW_ASSIGN_GRAFANA_ADMIN
+        value: "true"
   dataStorage:
     size: 8Gi
     accessModes: 
