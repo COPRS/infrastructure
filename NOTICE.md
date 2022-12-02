@@ -129,12 +129,12 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
 
 - Fluent-bit 
   - Helm chart:
-    - Version: 0.19.6
+    - Version: 0.21.4
     - Licence: [Apache License 2.0](https://github.com/fluent/helm-charts/blob/fluent-bit-0.19.6/LICENSE)
     - Source: https://github.com/fluent/helm-charts/tree/fluent-bit-0.19.6/charts/fluent-bit
   - Container image(s)
-    - docker.io/fluent/fluent-bit:1.9.3
-      - License: [Apache License 2.0](https://github.com/fluent/fluent-bit/blob/v1.9.3/LICENSE)
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/fluent-bit-plugin-loki:2.0.6
+      - License: [Apache License 2.0](https://github.com/fluent/fluent-bit/blob/v2.0.6/LICENSE)
 
 - MongoDB
   - Helm chart:
