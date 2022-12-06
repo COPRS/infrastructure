@@ -1,5 +1,6 @@
 grafana:
   oidc_client_secret: "{{ lookup('password', '/dev/null length=60 chars=ascii_letters') }}"
+  # Configure here SMTP credentials so that Grafana can send emails
   smtp:
     enabled: true
     host: SMTP_HOST
@@ -7,3 +8,9 @@ grafana:
     password: SMTP_PASSWORD
     from_address: FROM_ADDRESS
     from_name: FROM_NAME
+  # Configure here additional plugins to install in Grafana
+  # The url must point to a ZIP filed, not necessarily signed
+  # The name must be the plugin ID
+  custom_plugins:
+    - name: ""
+      url: ""

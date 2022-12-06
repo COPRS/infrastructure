@@ -9,3 +9,4 @@ resources:
   - crd-grafanadatasources.yaml
   - crd-grafananotificationchannels.yaml
   - crd-grafanas.yaml
+  - crd-grafanafolders.yaml

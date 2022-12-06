@@ -3,7 +3,7 @@ kind: Grafana
 metadata:
   name: grafana
 spec:
-  baseImage: 'grafana/grafana:9.0.2-ubuntu'
+  baseImage: 'grafana/grafana:9.3.0-ubuntu'
   client:
     preferService: true
   config:
@@ -27,8 +27,11 @@ spec:
       auth_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/auth
       token_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/token
       api_url: https://iam.{{ platform_domain_name }}/auth/realms/{{ keycloak.realm.name }}/protocol/openid-connect/userinfo
-      role_attribute_path: contains(roles[*], 'admin') && 'Admin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
+      role_attribute_path: contains(roles[*], 'admin') && 'GrafanaAdmin' || contains(roles[*], 'editor') && 'Editor' || 'Viewer'
       role_attribute_strict: true
+    plugins:
+      plugin_admin_enabled: true
+      allow_loading_unsigned_plugins: "{{ grafana.custom_plugins | map(attribute='name') | join(',') }}"
     metrics:
       enabled: true
     rendering:
@@ -67,6 +70,10 @@ spec:
         value: "true"
       - name: GF_UNIFIED_ALERTING_SCREENSHOTS_UPLOAD_EXTERNAL_IMAGE_STORAGE
         value: "false"
+      - name: GF_AUTH_GENERIC_OAUTH_ALLOW_ASSIGN_GRAFANA_ADMIN
+        value: "true"
+      - name: GF_INSTALL_PLUGINS
+        value: "{%- for item in grafana.custom_plugins -%}{{ item.url }};{{ item.name }},{%- endfor -%}"
   dataStorage:
     size: 8Gi
     accessModes: 
