@@ -11,6 +11,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 > - **Fixed** for any bug fixes.
 > - **Security** in case of vulnerabilities.
 
+## [1.5.0-rc1] - 2023-01-04
+### Changed
+- Assign GrafanaAdmin role instead of Admin
+- Allow deployment of custom remote and unsigned Grafana plugins
+- Update Grafana operator to 4.8.0 and Grafana to 9.3.0 (both latest)
+- Update SCDF to 2.9.6
+- Update fluent-bit to 2.0.6
+
+### Fixed
+- [#607 - [BUG] Missing traces on Elastic Search](https://github.com/COPRS/rs-issues/issues/607)
+- [#691 - [BUG][Infra] SCDF dashboard access unsuccessful - apisix route](https://github.com/COPRS/rs-issues/issues/691)
+
 ## [1.4.0-rc1] - 2022-11-24
 ### Fixed
 - [#551 - [BUG] rs-addon deployment - Error when updating existing additional resource](https://github.com/COPRS/rs-issues/issues/687)
