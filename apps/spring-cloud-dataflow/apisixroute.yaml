@@ -12,6 +12,13 @@ spec:
         hosts: [ processing.{{ platform_domain_name }} ]
         paths: [ /* ]
       websocket: true
+      plugins:
+        - config:
+            regex_uri:
+            - ^/$
+            - /dashboard/
+          enable: true
+          name: proxy-rewrite 
 ---
 apiVersion: apisix.apache.org/v2beta3
 kind: ApisixTls
