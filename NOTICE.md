@@ -1,5 +1,3 @@
-Reference System Software Copyright 2021-2022 European Space Agency (ESA) https://www.esa.int
-
 This software is distributed under the Apache Software License (ASL) v2.0, see LICENSE file or http://www.apache.org/licenses/LICENSE-2.0 for details.
 
 Below are all the Commercial off-the-shelf (COTS) used and their respective licence:
