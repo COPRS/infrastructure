@@ -63,7 +63,7 @@ cp -rfp inventory/sample inventory/mycluster
 
 4. ### Review and change the default configuration to match your needs
 
- - Node groups and S3 buckets in `inventory/mycluster/host_vars_setup/safescale.yaml`
+ - Node groups and S3 buckets in `inventory/mycluster/host_vars/setup/safescale.yaml`
  - Credentials, domain name, the stash license, S3 endpoints in `infrastructure/inventory/mycluster/host_vars/setup/main.yaml`
  - Packages paths containing the apps to be deployed in `inventory/mycluster/host_vars/setup/app_installer.yaml`
 
