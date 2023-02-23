@@ -28,8 +28,11 @@ jobs:
         with:
           fetch-depth: 0 # fetch all history so multiple commits can be scanned
 
+      - name: Prepare ansible resources
+        run: mkdir scaler/ansible_resources && cp -r *.yaml ansible.cfg roles inventory scaler/ansible_resources
+
       - name: Build image Docker
-        run: docker build --env SAFESCALE_TAG=${{ env.SAFESCALE_TAG }} -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SCALER_TAG }} -f scaler/Dockerfile .
+        run: cd scaler && docker build --env SAFESCALE_TAG=${{ env.SAFESCALE_TAG }} -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SCALER_TAG }} -f Dockerfile .
 
       - name: Scan image
         id: scan_image

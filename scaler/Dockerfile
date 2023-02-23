@@ -32,8 +32,8 @@ COPY --from=external-bin --chown=safescale:safescale /safescale /home/safescale/
 COPY --from=external-bin --chown=safescale:safescale /kubespray-release-2.17 ./collections/kubespray/
 RUN pip3 install --no-cache-dir --user pyOpenSSL ecdsa -r collections/kubespray/requirements.txt
 RUN ansible-galaxy collection install kubernetes.core openstack.cloud
-COPY --chown=safescale:safescale *.yaml ansible.cfg ./
-COPY --chown=safescale:safescale roles ./roles
-COPY --chown=safescale:safescale inventory/sample/hosts.yaml ../inventory/hosts.yaml
+COPY --chown=safescale:safescale ansible_resources/*.yaml ansible_resources/ansible.cfg ./
+COPY --chown=safescale:safescale ansible_resources/roles ./roles
+COPY --chown=safescale:safescale ansible_resources/inventory/sample/hosts.yaml ../inventory/hosts.yaml
 COPY --from=scaler-bin --chown=safescale:safescale /app/build/rs-infra-scaler /opt/rs-infra-scaler/rs-infra-scaler
 CMD ["/opt/rs-infra-scaler/rs-infra-scaler"]
