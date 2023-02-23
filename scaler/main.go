@@ -134,6 +134,7 @@ func (c *RSInfraScaler) NodeGroupForNode(ctx context.Context, req *eg.NodeGroupF
 		klog.V(1).Infof("could not find nodegroup for node:  %s", req.Node.Name)
 		return nil, fmt.Errorf("could not find nodegroup for node:  %s", req.Node.Name)
 	}
+	klog.V(6).Infof("nodeGroupName found in inventory: %s.", nodeGroupName)
 
 	return &eg.NodeGroupForNodeResponse{
 		NodeGroup: &eg.NodeGroup{
