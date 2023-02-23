@@ -289,11 +289,11 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
 - Autoscaling
   - Helm chart: *None*
   - Container image(s)
-    - artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:v22.06.1
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/safescaled:v22.11.6
       - License: [Apache License 2.0](LICENSE)
     - artifactory.coprs.esa-copernicus.eu/rs-docker/cluster-autoscaler:1.22.3
       - License: [Apache License 2.0](LICENSE)
-    - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:1.1.0
+    - artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:1.6.0
       - License: [Apache License 2.0](LICENSE)
 
 - Kubelet rubber stamp
