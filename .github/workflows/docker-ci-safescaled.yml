@@ -12,7 +12,7 @@ env:
   ARTIFACTORY_PASSWORD: ${{ secrets.CS_ARTIFACTORY_PASSWORD }}
   ARTIFACTORY_PROJECT: rs-docker
   NAME_IMAGE: safescaled
-  SAFESCALE_TAG: v22.06.0
+  SAFESCALE_TAG: v22.11.6
   
 jobs:
 
