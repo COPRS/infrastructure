@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0 # fetch all history so multiple commits can be scanned
 
       - name: Build image Docker
-        run: docker build --env SAFESCALE_TAG=${{ env.SAFESCALE_TAG }} -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SAFESCALE_TAG }} -f scaler/safescaled.Dockerfile .
+        run: docker build --build-arg SAFESCALE_TAG=${{ env.SAFESCALE_TAG }} -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SAFESCALE_TAG }} -f scaler/safescaled.Dockerfile .
 
       - name: Scan image
         id: scan_image
