@@ -8,6 +8,7 @@ COPY protos/ protos/
 RUN go build -o ./build/rs-infra-scaler .
 
 FROM alpine as external-bin
+ARG SAFESCALE_TAG
 # Download KubeSpray
 RUN apk add wget unzip
 RUN wget -q https://github.com/kubernetes-sigs/kubespray/archive/refs/heads/release-2.17.zip -O kubespray.zip && unzip kubespray.zip >/dev/null && rm kubespray.zip
