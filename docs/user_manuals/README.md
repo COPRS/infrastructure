@@ -1,4 +1,4 @@
-# User's Manual
+# Infrastructure - User's Manual
 
 ## Document properties
 
