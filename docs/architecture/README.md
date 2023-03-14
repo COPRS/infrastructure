@@ -1,4 +1,4 @@
-# Architecture Design Document
+# Infrastructure - Architecture Design Document
 
 ## Document properties
 

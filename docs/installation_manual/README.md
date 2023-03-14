@@ -1,4 +1,4 @@
-# Installation manual
+# Infrastructure - Installation manual
 
 ## Document properties
 

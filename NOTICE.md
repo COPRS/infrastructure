@@ -1,12 +1,19 @@
 This software is distributed under the Apache Software License (ASL) v2.0, see LICENSE file or http://www.apache.org/licenses/LICENSE-2.0 for details.
 
-Below are all the Commercial off-the-shelf (COTS) used and their respective licence:
+- Please be advised that:
+  - The Grafana and Loki software are used with the AGPL Licence.
+  - The Ansible, ClamAV, OpenVPN, Suricata and Wazuh software are used with the GPL Licence.
+  - The OpenLDAP software is used with the OpenLDAP Public License.
+  - The Nmap software is used with the Nmap Public Source License.
+  
+  Below are all the Commercial off-the-shelf (COTS) used and their respective licences:
 
 - Cert manager :
   - Helm chart
     - Version: v1.6.1
     - License: [Apache License 2.0](https://github.com/cert-manager/cert-manager/blob/v1.6.1/LICENSE)
     - Source: https://github.com/cert-manager/cert-manager/tree/v1.6.1/deploy/charts/cert-manager
+    - Copyright: Copyright The cert-manager Authors. [Authors and Contributors](https://github.com/cert-manager/cert-manager/blob/v1.6.1/deploy/charts/cert-manager/OWNERS)
   - Container image(s)
     - quay.io/jetstack/cert-manager-cainjector:v1.6.1
       - License: [Apache License 2.0](https://github.com/cert-manager/cert-manager/blob/v1.6.1/LICENSE)
@@ -16,6 +23,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 2.11.1
     - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
     - Source: https://github.com/linkerd/linkerd2/tree/stable-2.11.1/charts/linkerd2-cni
+    - Copyright: Copyright (C) 2023 Linkerd Authors. All rights reserved. [Authors and Contributors](https://github.com/linkerd/linkerd2/blob/main/MAINTAINERS.md)
   - Container image(s)
     - cr.l5d.io/linkerd/cni-plugin:stable-2.11.1
       - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
@@ -25,6 +33,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 2.11.1
     - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
     - Source: https://github.com/linkerd/linkerd2/tree/main/charts/linkerd-control-plane
+    - Copyright: Copyright (C) 2023 Linkerd Authors. All rights reserved. [Authors and Contributors](https://github.com/linkerd/linkerd2/blob/main/MAINTAINERS.md)
   - Container image(s)
     - cr.l5d.io/linkerd/policy-controller:stable-2.11.1
       - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
@@ -40,6 +49,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 2.11.1
     - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
     - Source: https://github.com/linkerd/linkerd2/tree/stable-2.11.1/viz/charts/linkerd-viz
+    - Copyright: Copyright (C) 2023 Linkerd Authors. All rights reserved. [Authors and Contributors](https://github.com/linkerd/linkerd2/blob/main/MAINTAINERS.md)
   - Container image(s)
     - cr.l5d.io/linkerd:stable-2.11.1
       - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
@@ -49,6 +59,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: v1.9.4
     - License: [Apache License 2.0](https://github.com/rook/rook/blob/v1.9.4/LICENSE)
     - Source: https://github.com/rook/rook/tree/v1.9.4/deploy/charts/rook-ceph
+    - Copyright: Copyright 2016 The Rook Authors. All rights reserved. [Authors and Contributors](https://github.com/rook/rook/blob/v1.9.4/OWNERS.md)
   - Container image(s)
     - quay.io/cephcsi/cephcsi:v3.6.1
       - License: [Apache License 2.0](https://github.com/ceph/ceph-csi/blob/v3.6.1/LICENSE)
@@ -70,6 +81,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 1.9.0
     - License: [Elastic License 2.0](https://github.com/elastic/cloud-on-k8s/blob/1.9.0/LICENSE.txt)
     - Source: https://github.com/elastic/cloud-on-k8s/tree/1.9.0/deploy/eck-operator
+    - Copyright: Copyright 2018-2021 Elasticsearch BV
   - Container image(s)
     - docker.elastic.co/eck/eck-operator:1.9.0
       - License: [Elastic License 2.0](https://github.com/elastic/cloud-on-k8s/blob/1.9.0/LICENSE.txt)
@@ -84,6 +96,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
   - Helm chart: *None*
     - Version: 1.1.0
     - License: [Apache License 2.0](https://github.com/COPRS/infrastructure/blob/1.1.0-rc3/LICENSE)
+    - Copyright: Copyright (C) 2023 Raintank, Inc. dba Grafana Labs. All Rights Reserved
   - Container image(s)
     - quay.io/grafana-operator/grafana-operator:v4.8.0
       - License: [Apache License 2.0](https://github.com/grafana-operator/grafana-operator/blob/v4.8.0/LICENSE)
@@ -95,6 +108,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 0.27.1
     - Licence: [Apache License 2.0](https://github.com/strimzi/strimzi-kafka-operator/blob/0.27.1/LICENSE)
     - Source: https://github.com/strimzi/strimzi-kafka-operator/tree/0.27.1/helm-charts/helm3/strimzi-kafka-operator
+    - Copyright: Copyright (c) Strimzi Authors 2023.  [Authors and Contributors](https://github.com/strimzi/strimzi-kafka-operator/blob/0.27.1/helm-charts/helm3/strimzi-kafka-operator/OWNERS)
   - Container image(s)
     - quay.io/strimzi/operator:0.27.1
       - License: [Apache License 2.0](https://github.com/strimzi/strimzi-kafka-operator/blob/0.27.1/LICENSE)
@@ -106,6 +120,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 21.0.0
     - Licence: [Apache License 2.0](https://github.com/prometheus-community/helm-charts/blob/kube-prometheus-stack-21.0.0/LICENSE)
     - Source: https://github.com/prometheus-community/helm-charts/tree/kube-prometheus-stack-21.0.0/charts/kube-prometheus-stack
+    - Copyright: Copyright 2012-2015 The Prometheus Authors
   - Container image(s)
     - quay.io/prometheus-operator/prometheus-operator:v0.52.1-amd64
       - License: [Apache License 2.0](https://github.com/prometheus-operator/prometheus-operator/blob/v0.52.1/LICENSE)
@@ -123,6 +138,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: v0.17.0
     - Licence: [AppsCode Community License 1.0.0](https://github.com/stashed/installer/blob/master/LICENSE.md)
     - Source: https://github.com/stashed/installer/tree/master/charts/stash-community
+    - Copyright: Copyright Tamal Saha
   - Container image(s)
     - docker.io/appscode/stash:v0.17.0
       - License: [AppsCode Community License 1.0.0](https://github.com/stashed/installer/blob/master/LICENSE.md)
@@ -132,6 +148,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 0.21.4
     - Licence: [Apache License 2.0](https://github.com/fluent/helm-charts/blob/fluent-bit-0.19.6/LICENSE)
     - Source: https://github.com/fluent/helm-charts/tree/fluent-bit-0.19.6/charts/fluent-bit
+    - Copyright: Copyright (c) 2015-2023 The Fluent Bit Authors.
   - Container image(s)
     - artifactory.coprs.esa-copernicus.eu/rs-docker/fluent-bit-plugin-loki:2.0.6
       - License: [Apache License 2.0](https://github.com/fluent/fluent-bit/blob/v2.0.6/LICENSE)
@@ -141,6 +158,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 11.0.3
     - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
     - Source: https://github.com/bitnami/charts/tree/master/bitnami/mongodb
+    - Copyright: Copyright (c) 2023 MongoDB, Inc.
   - Container image(s)
     - docker.io/bitnami/mongodb:5.0.6-debian-10-r14
       - License: [Apache License 2.0](https://github.com/bitnami/containers/blob/main/LICENSE.md)
@@ -151,13 +169,14 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
   - Helm chart: *None*
   - Container image(s)
     - docker.io/osixia/openldap:1.5.0
-      - License: [MIT License](https://github.com/osixia/docker-openldap/blob/v1.5.0/LICENSE)
+      - License: [OpenLDAP Public License](https://www.openldap.org/software/release/license.html)
 
-- PostreSQL
+- PostgreSQL
   - Helm chart:
     - Version: 11.0.2
     - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
     - Source: https://github.com/bitnami/charts/tree/master/bitnami/postgresql
+    - Copyright: Copyright (c) 2023 Bitnami
   - Container image(s)
     - docker.io/bitnami/postgresql:14.1.0-debian-10-r80
       - License: [Apache License 2.0](https://github.com/bitnami/containers/blob/main/LICENSE.md)
@@ -169,6 +188,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 8.3.0
     - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
     - Source: https://github.com/bitnami/charts/tree/master/bitnami/thanos
+    - Copyright: Copyright (c) 2023 Bitnami
   - Container image(s)
     - docker.io/bitnami/thanos:0.23.1-scratch-r3
       - License: [Apache License 2.0](https://github.com/bitnami/containers/blob/main/LICENSE.md)
@@ -178,6 +198,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 4.5.2
     - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
     - Source: https://github.com/bitnami/charts/tree/master/bitnami/fluentd
+    - Copyright: Copyright (c) 2023 Bitnami
   - Container image(s)
     - docker.io/bitnami/fluentd:1.14.2-debian-10-r23
       - License: [Apache License 2.0](https://github.com/bitnami/containers/blob/main/LICENSE.md)
@@ -187,6 +208,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 0.48.1
     - Licence: [Apache License 2.0](https://github.com/grafana/helm-charts/blob/loki-distributed-0.48.1/LICENSE)
     - Source: https://github.com/grafana/helm-charts/tree/loki-distributed-0.48.1/charts/loki-distributed
+    - Copyright: Copyright The Helm Authors.
   - Container image(s)
     - docker.io/grafana/loki:2.5.0
       - License: [GNU Affero General Public License v3.0](https://github.com/grafana/loki/blob/v2.5.0/LICENSE)
@@ -196,6 +218,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 0.10.0
     - Licence: [Apache License 2.0](https://github.com/apache/apisix/blob/master/LICENSE)
     - Source: https://github.com/apache/apisix-helm-chart/tree/apisix-0.10.0/charts/apisix
+    - Copyright: Copyright 2019-2023 The Apache Software Foundation
   - Container image(s)
     - docker.io/apache/apisix:2.14.1-alpine
       - License: [Apache License 2.0](https://github.com/apache/apisix-docker/blob/master/LICENSE)
@@ -211,6 +234,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 1.16.2
     - Licence: [Apache License 2.0](https://github.com/falcosecurity/charts/blob/falco-1.16.2/LICENSE)
     - Source: https://github.com/falcosecurity/charts/tree/falco-1.16.2/falco
+    - Copyright: Copyright The Falco Authors. [Authors and Contributors](https://github.com/falcosecurity/charts/blob/falco-1.16.2/falco/OWNERS)
   - Container image(s)
     - docker.io/falcosecurity/falco:0.30.0
       - License: [Apache License 2.0](https://github.com/falcosecurity/falco/blob/0.30.0/COPYING)
@@ -240,6 +264,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 1.9.2
     - Licence: [Apache License 2.0](https://github.com/KongZ/charts/blob/graylog-1.9.2/LICENSE)
     - Source: https://github.com/KongZ/charts/tree/graylog-1.9.2
+    - Copyright: Copyright 2019-2021 Siri Chongasamethaworn
   - Container image(s)
     - docker.io/graylog/graylog:4.3.3-1
       - License: [Apache License 2.0](https://github.com/Graylog2/graylog-docker/blob/4.3.3-1/LICENSE)
@@ -249,6 +274,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 16.0.5
     - Licence: [Apache License 2.0](https://github.com/codecentric/helm-charts/blob/keycloak-16.0.5/LICENSE)
     - Source: https://github.com/codecentric/helm-charts/tree/keycloak-16.0.5/charts/keycloak
+    - Copyright: The Keycloak Authors. [Authors and Contributors](https://github.com/codecentric/helm-charts/blob/keycloak-16.0.5/charts/keycloak/OWNERS)
   - Container image(s)
     - docker.io/jboss/keycloak:15.0.2
       - License: [Apache License 2.0](https://github.com/keycloak/keycloak-containers/blob/15.0.2/License.html)
@@ -258,6 +284,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 14.0.2
     - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
     - Source: https://github.com/bitnami/charts/tree/master/bitnami/spring-cloud-dataflow
+    - Copyright: Copyright (c) 2023 Bitnami
   - Container image(s)
     - docker.io/bitnami/spring-cloud-dataflow:2.9.6-debian-11-r18
       - License: [Apache License 2.0](https://github.com/bitnami/containers/blob/main/LICENSE.md)
@@ -271,6 +298,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 2.6.2
     - Licence: [Apache License 2.0](https://github.com/kedacore/charts/blob/v2.6.2/LICENSE)
     - Source: https://github.com/kedacore/charts/tree/v2.6.2/keda
+    - Copyright: Copyright 2020 The KEDA Authors. [Authors and Contributors](https://github.com/kedacore/governance/blob/main/MAINTAINERS.md)
   - Container image(s)
     - ghcr.io/kedacore/keda:2.6.1
       - License: [Apache License 2.0](https://github.com/kedacore/keda/blob/v2.6.1/LICENSE)
@@ -282,6 +310,7 @@ Below are all the Commercial off-the-shelf (COTS) used and their respective lice
     - Version: 5.8.2
     - Licence: [Apache License 2.0](https://github.com/prometheus-community/helm-charts/blob/prometheus-blackbox-exporter-5.8.2/LICENSE)
     - Source: https://github.com/prometheus-community/helm-charts/tree/prometheus-blackbox-exporter-5.8.2/charts/prometheus-blackbox-exporter
+    - Copyright 2012-2016 The Prometheus Authors. [Authors and Contributors](https://github.com/prometheus/blackbox_exporter/blob/master/MAINTAINERS.md)
   - Container image(s)
     - docker.io/prom/blackbox-exporter:v0.20.0
       - License: [Apache License 2.0](https://github.com/prometheus/blackbox_exporter/blob/v0.20.0/LICENSE)
