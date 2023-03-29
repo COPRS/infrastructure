@@ -212,6 +212,7 @@ apiVersion: stash.appscode.com/v1beta1
 kind: RestoreSession
 metadata:
   name: restore-latest-postgresql-backup
+  namespace: database
 spec:
   driver: Restic
   task:
@@ -256,8 +257,8 @@ spec:
 
 Once the `RestoreSession` has the status **Success**, run the following commands to trigger a restore (change the databases credentials):
 ```bash
-kubectl -n database wait --for condition=ready pod -l statefulset.kubernetes.io/pod-name=postgresql-postgresql-0
-kubectl exec -n database postgresql-postgresql-0 -c postgresql -- /bin/sh -c "\
+kubectl -n database wait --for condition=ready pod -l statefulset.kubernetes.io/pod-name=postgresql-primary-0
+kubectl exec -n database postgresql-primary-0 -c postgresql -- /bin/sh -c "\
   export PGPASSWORD=$KEYCLOAK_DATABASE_PASSWORD && psql -U keycloak keycloak < /tmp/backup/keycloak.sql \
   && export PGPASSWORD=$SCDF_DATABASE_PASSWORD && psql -U scdf skipper < /tmp/backup/skipper.sql \
   && export PGPASSWORD=$SCDF_DATABASE_PASSWORD && psql -U scdf dataflow < /tmp/backup/dataflow.sql"
