@@ -5,6 +5,6 @@ helmCharts:
 - name: stash-community
   releaseName: "{{ app_name }}"
   repo: https://charts.appscode.com/stable/
-  version: v0.17.0
+  version: v0.28.0 
   valuesFile: values.yaml
   namespace: infra

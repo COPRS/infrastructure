@@ -2,9 +2,9 @@ license: |
   {{ stash.license | indent( width=2 ) }}
 licenseApiService: v1beta1.admission.stash.appscode.com
 operator:
-  registry: appscode
+  registry: stashed 
   repository: stash
-  tag: v0.17.0
+  tag: v0.28.0
   resources:
     requests:
       cpu: 50m
