@@ -35,7 +35,5 @@ patchesJson6902:
       labelSelector: "component=tap"
     patch: |-
       - op: replace
-      path: /spec/template/spec/containers/0/livenessProbe/
-      value:
-        name: initialDelaySeconds
+        path: /spec/template/spec/containers/0/livenessProbe/initialDelaySeconds
         value: 120
