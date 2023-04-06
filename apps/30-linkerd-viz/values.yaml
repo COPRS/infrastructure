@@ -49,8 +49,6 @@ tap:
     memory:
       limit: 200Mi
       request: 100Mi
-  livenessProbe:
-    initialDelaySeconds: 120
 
   caBundle: |
     {{ linkerd.webhook.crt | indent( width=4 ) }}
