@@ -29,3 +29,13 @@ patchesJson6902:
         value:
           identities:
             - web.networking.serviceaccount.identity.networking.cluster.local
+            
+  - target:
+      kind: Deployment
+      labelSelector: "component=tap"
+    patch: |-
+      - op: replace
+      path: /spec/template/spec/containers/0/livenessProbe/
+      value:
+        name: initialDelaySeconds
+        value: 120
