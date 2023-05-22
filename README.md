@@ -168,6 +168,9 @@ ansible-playbook apps.yaml \
 
 - You may disable access to Keycloak master realm. From Apisix interface: open Route tab, search for `iam_keycloak_keycloak-superadmin` and click on `Offline`.
 
+## Known issues and limitations
+
+The project and this component has few known issues and limitations. Head over the [limitation](./docs/user_manuals/how-to/Limitations.md) page to learn more about it.
 ## Tree view
 
 The repository is made of the following main directories and files.
