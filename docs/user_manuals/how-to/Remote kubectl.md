@@ -2,17 +2,19 @@
 
 ## Install kubectl and the oidc plugin
 
- - Install kubectl using the official documentation: https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/
- - Install the kubelogin using official documentation: https://github.com/int128/kubelogin or by running:
- ```shellsession
- curl -LO https://github.com/int128/kubelogin/releases/download/v1.25.1/kubelogin_linux_amd64.zip
- unzip kubelogin_linux_amd64.zip
- sudo mv kubelogin /usr/local/bin/kubectl-oidc_login
- ```
+- Install kubectl using the official documentation: <https://kubernetes.io/fr/docs/tasks/tools/install-kubectl/>
+- Install the kubelogin using official documentation: <https://github.com/int128/kubelogin> or by running:
+
+```shellsession
+curl -LO https://github.com/int128/kubelogin/releases/download/v1.25.1/kubelogin_linux_amd64.zip
+unzip kubelogin_linux_amd64.zip
+sudo mv kubelogin /usr/local/bin/kubectl-oidc_login
+```
 
 ## Configure your kubeconfig file to use the platform's authentification
 
 Setup your `kubeconfig` file like the following example, and set manually the the variables that come from the inventory:
+
 ```yaml
 apiVersion: v1
 clusters:

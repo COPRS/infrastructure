@@ -4,16 +4,16 @@
 
 ## Overview
 
-![](./docs/media/deployment.png)
+![deployment](./docs/media/deployment.png)
 
 > **Integrators' machine is called BASTION in the rest of the installation manual**
 
 ## _Bastion_ requirements
 
-- Safescale: **>= v22.11.6** (https://github.com/CS-SI/SafeScale)
-- openstacksdk: **>= v0.12.0** (https://pypi.org/project/openstacksdk/)
-- qemu-system: **>= v4.2.1** (https://packages.ubuntu.com/focal/qemu-kvm / https://packages.ubuntu.com/focal/qemu-system-x86)
-- Packer: **>= v1.7.8** (https://github.com/hashicorp/packer)
+- Safescale: **>= v22.11.6** (<https://github.com/CS-SI/SafeScale>)
+- openstacksdk: **>= v0.12.0** (<https://pypi.org/project/openstacksdk/>)
+- qemu-system: **>= v4.2.1** (<https://packages.ubuntu.com/focal/qemu-kvm> / <https://packages.ubuntu.com/focal/qemu-system-x86>)
+- Packer: **>= v1.7.8** (<https://github.com/hashicorp/packer>)
 - python3
 - python3-pip
 - git
@@ -28,20 +28,24 @@
 ## Dependencies
 
 ### Kubespray
+
 This project exploits Kubespray to deploy Kubernetes.  
 The fully detailed documentation and configuration options are available on its page: [https://kubespray.io/](https://kubespray.io/)
 
 ### HashiCorp Vault (optional)
+
 This project can integrate credentials from a custom `HashiCorp Vault` instance, see the specific documentation [here](./docs/user_manuals/how-to/Credentials.md).
 
 ## Quickstart
 
-1. ### Get the infrastructure repository
+### 1. Get the infrastructure repository
+
 ```shellsession
 git clone https://github.com/COPRS/infrastructure.git
 ```
 
-2. ### Install requirements
+### 2. Install requirements
+
 ```shellsession
 cd infrastructure
 
@@ -56,43 +60,48 @@ ansible-galaxy collection install \
     openstack.cloud
 ```
 
-3. ### Copy the sample inventory
+### 3. Copy the sample inventory
+
 ```shellsession
 cp -rfp inventory/sample inventory/mycluster
 ```
 
-4. ### Review and change the default configuration to match your needs
+### 4. Review and change the default configuration to match your needs
 
- - Node groups and S3 buckets in `inventory/mycluster/host_vars/setup/safescale.yaml`
- - Credentials, domain name, the stash license, S3 endpoints in `infrastructure/inventory/mycluster/host_vars/setup/main.yaml`
- - Packages paths containing the apps to be deployed in `inventory/mycluster/host_vars/setup/app_installer.yaml`
+- Node groups and S3 buckets in `inventory/mycluster/host_vars/setup/safescale.yaml`
+- Credentials, domain name, the stash license, S3 endpoints in `infrastructure/inventory/mycluster/host_vars/setup/main.yaml`
+- Packages paths containing the apps to be deployed in `inventory/mycluster/host_vars/setup/app_installer.yaml`
 
-5. ### Generate or download the inventory variables
+### 5. Generate or download the inventory variables
+
 ```shellsession
 ansible-playbook generate_inventory.yaml \
     -i inventory/mycluster/hosts.yaml
 ```
 
-6. ### If needed create an image for the machines with `packer`
+### 6. If needed create an image for the machines with `packer`
+
 ```shellsession
 ansible-playbook image.yaml \
     -i inventory/mycluster/hosts.yaml
 ```
 
-7. ### Create and configure machines
+### 7. Create and configure machines
+
 ```shellsession
 ansible-playbook cluster.yaml \
     -i inventory/mycluster/hosts.yaml
 ```
 
-8. ### Install security services
+### 8. Install security services
+
 ```shellsession
 ansible-playbook security.yaml \
     -i inventory/mycluster/hosts.yaml \
     --become
 ```
 
-9. ### Deploy kubernetes with `kubespray`
+### 9. Deploy kubernetes with `kubespray`
 
 ```shellsession
 # The option `--become` is required, for example writing SSL keys in /etc/,
@@ -104,7 +113,8 @@ ansible-playbook collections/kubespray/cluster.yml \
     --become
 ```
 
-10. ### Enable pod security policies (PSP) on the cluster
+### 10. Enable pod security policies (PSP) on the cluster
+
 ```shellsession
 # /!\ create first the PSP and ClusterRoleBinding resources
 # before enabling the admission plugin
@@ -122,18 +132,21 @@ ansible-playbook collections/kubespray/upgrade-cluster.yml \
     --become
 ```
 
-11. ### Setup RS specifics 
+### 11. Setup RS specifics
+
 ```shellsession
 ansible-playbook rs-setup.yaml \
     -i inventory/mycluster/hosts.yaml
 ```
 
-12. ### Add the providerID spec to the nodes for the autoscaling
+### 12. Add the providerID spec to the nodes for the autoscaling
+
 ```shellsession
 ansible-playbook cluster.yaml -i inventory/mycluster/hosts.yaml -t providerids
 ```
 
-13. ### Deploy the apps 
+### 13. Deploy the apps
+
 ```shellsession
 ansible-playbook apps.yaml \
     -i inventory/mycluster/hosts.yaml
@@ -142,7 +155,7 @@ ansible-playbook apps.yaml \
 ## Post installation
 
 - User's Manual : [here](./docs/user_manuals/README.md)
-- *NOT MANDATORY* : A **load balancer** listening on the public IP address pointed to by the domain name.  
+- _NOT MANDATORY_ : A **load balancer** listening on the public IP address pointed to by the domain name.  
   Configure the load balancer to forward incoming flow toward the cluster masters.
 
   | Load balancer port | masters port | protocol |
@@ -161,20 +174,20 @@ The repository is made of the following main directories and files.
 
 - **apps**: A package example, gathering default applications deployed with Reference System platform.
 - **collections/kubespray**: folder where kubespray is integrated into the project as a git submodule.
-    - `cluster.yml`: The Ansible playbook to run to deploy Kubernetes or to add a master node.
-    - `scale.yml`: An Ansible playbook to add a worker node.
-    - `remove-node.yml`: An Ansible playbook to remove a node.
+  - `cluster.yml`: The Ansible playbook to run to deploy Kubernetes or to add a master node.
+  - `scale.yml`: An Ansible playbook to add a worker node.
+  - `remove-node.yml`: An Ansible playbook to remove a node.
 - **doc**: Here we find all the documentation describing the infrastructure deployment and maintenance operations.
 - **inventory**:
   - **sample**: An Ansible inventory for a sample configuration.
-      - **group_vars**:
-          - **all**:
-            - `app_installer.yaml`: The configuration of the app installer roles. It includes the list and paths of packages to install.
-            - `main.yaml`: Mandatory platform configuration.
-            - `kubespray.yaml`: The Kubespray configuration.
-            - `safescale.yaml`: Configuration of the machines, networks and buckets created by SafeScale, and more.
-            - **apps**: One file per app deployed containing specific variables.
-      - `hosts.yaml`: The list of machines described in their respective groups, this file is managed by the `cluster.yaml` playbook.
+    - **group_vars**:
+      - **all**:
+        - `app_installer.yaml`: The configuration of the app installer roles. It includes the list and paths of packages to install.
+        - `main.yaml`: Mandatory platform configuration.
+        - `kubespray.yaml`: The Kubespray configuration.
+        - `safescale.yaml`: Configuration of the machines, networks and buckets created by SafeScale, and more.
+        - **apps**: One file per app deployed containing specific variables.
+    - `hosts.yaml`: The list of machines described in their respective groups, this file is managed by the `cluster.yaml` playbook.
 - **roles**: The list of roles used to deploy the cluster.
 - `ansible.cfg`: Ansible configuration file. It includes the ssh configuration to allow Ansible to access the machines through the gateway.
 - `apps.yaml`: An Ansible playbook to deploy the applications on the platform.
@@ -186,14 +199,14 @@ The repository is made of the following main directories and files.
 
 ### Playbooks manual
 
-| name | tags | utility | 
+| name | tags | utility |
 |---|---|---|
-| apps.yaml | *none* |  *deploy applications*<br>Supported possible options:<br>**-e app=APP_NAME** Deploy only a specific application.<br>**-e debug=true** Keep the application resources generated for debugging.<br>**-e package=PACKAGE_NAME** Deploy only a specific package.|
-| cluster.yaml | *none*  <br> create_cluster <br> config <br> gateway <br> update_hosts <br> providerids <br> | *all tags below are executed* <br> create safescale cluster <br> configure cluster machines <br> configure gateways <br> update hosts.yaml with newly created machines, fill .ssh folder with machines ssh private keys <br> write providerID spec to kube nodes |
-| delete.yaml <br> :warning: this playbook has been developed with the only purpose of testing the project **not for production usage**| *none* <br> cleanup_generated <br> detach_volumes <br> delete_volumes <br> delete_cluster | *nothing* <br> **remove** ssh keys, added hosts in hosts.yaml, ssh config file <br> detach added disks from k8s nodes <br> delete added disks from k8s nodes <br> delete safescale cluster|
-| generate_inventory.yaml | *none* | *Generate/download/upload inventory vars in group_vars/all* |
-| image.yaml | *none* | *make reference system golden image for k8s nodes* |
-| security.yaml | *none* <br> auditd <br> wazuh <br> clamav <br> openvpn <br> suricata <br> uninstall_APP_NAME| *install all security tools* <br> install auditd <br> install wazuh <br> install clamav <br> install openvpn <br> install suricata <br> uninstall the app matching APP_NAME |
+| apps.yaml | _none_ |  _deploy applications_<br>Supported possible options:<br>**-e app=APP_NAME** Deploy only a specific application.<br>**-e debug=true** Keep the application resources generated for debugging.<br>**-e package=PACKAGE_NAME** Deploy only a specific package.|
+| cluster.yaml | _none_  <br> create_cluster <br> config <br> gateway <br> update_hosts <br> providerids <br> | _all tags below are executed_ <br> create safescale cluster <br> configure cluster machines <br> configure gateways <br> update hosts.yaml with newly created machines, fill .ssh folder with machines ssh private keys <br> write providerID spec to kube nodes |
+| delete.yaml <br> :warning: this playbook has been developed with the only purpose of testing the project **not for production usage**| _none_ <br> cleanup_generated <br> detach_volumes <br> delete_volumes <br> delete_cluster | _nothing_ <br> **remove** ssh keys, added hosts in hosts.yaml, ssh config file <br> detach added disks from k8s nodes <br> delete added disks from k8s nodes <br> delete safescale cluster|
+| generate_inventory.yaml | _none_ | _Generate/download/upload inventory vars in group_vars/all_ |
+| image.yaml | _none_ | _make reference system golden image for k8s nodes_ |
+| security.yaml | _none_ <br> auditd <br> wazuh <br> clamav <br> openvpn <br> suricata <br> uninstall_APP_NAME| _install all security tools_ <br> install auditd <br> install wazuh <br> install clamav <br> install openvpn <br> install suricata <br> uninstall the app matching APP_NAME |
 
 # Copyright and license
 

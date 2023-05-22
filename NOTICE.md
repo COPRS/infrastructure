@@ -1,4 +1,6 @@
-This software is distributed under the Apache Software License (ASL) v2.0, see LICENSE file or http://www.apache.org/licenses/LICENSE-2.0 for details.
+# NOTICE.md
+
+This software is distributed under the Apache Software License (ASL) v2.0, see LICENSE file or <http://www.apache.org/licenses/LICENSE-2.0> for details.
 
 - Please be advised that:
   - The Grafana and Loki software are used with the AGPL Licence.
@@ -12,7 +14,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart
     - Version: v1.6.1
     - License: [Apache License 2.0](https://github.com/cert-manager/cert-manager/blob/v1.6.1/LICENSE)
-    - Source: https://github.com/cert-manager/cert-manager/tree/v1.6.1/deploy/charts/cert-manager
+    - Source: <https://github.com/cert-manager/cert-manager/tree/v1.6.1/deploy/charts/cert-manager>
     - Copyright: Copyright The cert-manager Authors. [Authors and Contributors](https://github.com/cert-manager/cert-manager/blob/v1.6.1/deploy/charts/cert-manager/OWNERS)
   - Container image(s)
     - quay.io/jetstack/cert-manager-cainjector:v1.6.1
@@ -22,7 +24,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart
     - Version: 2.11.1
     - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
-    - Source: https://github.com/linkerd/linkerd2/tree/stable-2.11.1/charts/linkerd2-cni
+    - Source: <https://github.com/linkerd/linkerd2/tree/stable-2.11.1/charts/linkerd2-cni>
     - Copyright: Copyright (C) 2023 Linkerd Authors. All rights reserved. [Authors and Contributors](https://github.com/linkerd/linkerd2/blob/main/MAINTAINERS.md)
   - Container image(s)
     - cr.l5d.io/linkerd/cni-plugin:stable-2.11.1
@@ -32,7 +34,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart
     - Version: 2.11.1
     - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
-    - Source: https://github.com/linkerd/linkerd2/tree/main/charts/linkerd-control-plane
+    - Source: <https://github.com/linkerd/linkerd2/tree/main/charts/linkerd-control-plane>
     - Copyright: Copyright (C) 2023 Linkerd Authors. All rights reserved. [Authors and Contributors](https://github.com/linkerd/linkerd2/blob/main/MAINTAINERS.md)
   - Container image(s)
     - cr.l5d.io/linkerd/policy-controller:stable-2.11.1
@@ -48,7 +50,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart
     - Version: 2.11.1
     - License: [Apache License 2.0](https://github.com/linkerd/linkerd2/blob/stable-2.11.1/LICENSE)
-    - Source: https://github.com/linkerd/linkerd2/tree/stable-2.11.1/viz/charts/linkerd-viz
+    - Source: <https://github.com/linkerd/linkerd2/tree/stable-2.11.1/viz/charts/linkerd-viz>
     - Copyright: Copyright (C) 2023 Linkerd Authors. All rights reserved. [Authors and Contributors](https://github.com/linkerd/linkerd2/blob/main/MAINTAINERS.md)
   - Container image(s)
     - cr.l5d.io/linkerd:stable-2.11.1
@@ -58,7 +60,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart
     - Version: v1.9.4
     - License: [Apache License 2.0](https://github.com/rook/rook/blob/v1.9.4/LICENSE)
-    - Source: https://github.com/rook/rook/tree/v1.9.4/deploy/charts/rook-ceph
+    - Source: <https://github.com/rook/rook/tree/v1.9.4/deploy/charts/rook-ceph>
     - Copyright: Copyright 2016 The Rook Authors. All rights reserved. [Authors and Contributors](https://github.com/rook/rook/blob/v1.9.4/OWNERS.md)
   - Container image(s)
     - quay.io/cephcsi/cephcsi:v3.6.1
@@ -80,7 +82,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart
     - Version: 1.9.0
     - License: [Elastic License 2.0](https://github.com/elastic/cloud-on-k8s/blob/1.9.0/LICENSE.txt)
-    - Source: https://github.com/elastic/cloud-on-k8s/tree/1.9.0/deploy/eck-operator
+    - Source: <https://github.com/elastic/cloud-on-k8s/tree/1.9.0/deploy/eck-operator>
     - Copyright: Copyright 2018-2021 Elasticsearch BV
   - Container image(s)
     - docker.elastic.co/eck/eck-operator:1.9.0
@@ -107,7 +109,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 0.27.1
     - Licence: [Apache License 2.0](https://github.com/strimzi/strimzi-kafka-operator/blob/0.27.1/LICENSE)
-    - Source: https://github.com/strimzi/strimzi-kafka-operator/tree/0.27.1/helm-charts/helm3/strimzi-kafka-operator
+    - Source: <https://github.com/strimzi/strimzi-kafka-operator/tree/0.27.1/helm-charts/helm3/strimzi-kafka-operator>
     - Copyright: Copyright (c) Strimzi Authors 2023.  [Authors and Contributors](https://github.com/strimzi/strimzi-kafka-operator/blob/0.27.1/helm-charts/helm3/strimzi-kafka-operator/OWNERS)
   - Container image(s)
     - quay.io/strimzi/operator:0.27.1
@@ -119,7 +121,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 21.0.0
     - Licence: [Apache License 2.0](https://github.com/prometheus-community/helm-charts/blob/kube-prometheus-stack-21.0.0/LICENSE)
-    - Source: https://github.com/prometheus-community/helm-charts/tree/kube-prometheus-stack-21.0.0/charts/kube-prometheus-stack
+    - Source: <https://github.com/prometheus-community/helm-charts/tree/kube-prometheus-stack-21.0.0/charts/kube-prometheus-stack>
     - Copyright: Copyright 2012-2015 The Prometheus Authors
   - Container image(s)
     - quay.io/prometheus-operator/prometheus-operator:v0.52.1-amd64
@@ -137,17 +139,17 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: v0.17.0
     - Licence: [AppsCode Community License 1.0.0](https://github.com/stashed/installer/blob/master/LICENSE.md)
-    - Source: https://github.com/stashed/installer/tree/master/charts/stash-community
+    - Source: <https://github.com/stashed/installer/tree/master/charts/stash-community>
     - Copyright: Copyright Tamal Saha
   - Container image(s)
     - docker.io/appscode/stash:v0.17.0
       - License: [AppsCode Community License 1.0.0](https://github.com/stashed/installer/blob/master/LICENSE.md)
 
-- Fluent-bit 
+- Fluent-bit
   - Helm chart:
     - Version: 0.21.4
     - Licence: [Apache License 2.0](https://github.com/fluent/helm-charts/blob/fluent-bit-0.19.6/LICENSE)
-    - Source: https://github.com/fluent/helm-charts/tree/fluent-bit-0.19.6/charts/fluent-bit
+    - Source: <https://github.com/fluent/helm-charts/tree/fluent-bit-0.19.6/charts/fluent-bit>
     - Copyright: Copyright (c) 2015-2023 The Fluent Bit Authors.
   - Container image(s)
     - artifactory.coprs.esa-copernicus.eu/rs-docker/fluent-bit-plugin-loki:2.0.6
@@ -157,7 +159,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 11.0.3
     - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
-    - Source: https://github.com/bitnami/charts/tree/master/bitnami/mongodb
+    - Source: <https://github.com/bitnami/charts/tree/master/bitnami/mongodb>
     - Copyright: Copyright (c) 2023 MongoDB, Inc.
   - Container image(s)
     - docker.io/bitnami/mongodb:5.0.6-debian-10-r14
@@ -175,7 +177,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 11.0.2
     - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
-    - Source: https://github.com/bitnami/charts/tree/master/bitnami/postgresql
+    - Source: <https://github.com/bitnami/charts/tree/master/bitnami/postgresql>
     - Copyright: Copyright (c) 2023 Bitnami
   - Container image(s)
     - docker.io/bitnami/postgresql:14.1.0-debian-10-r80
@@ -187,7 +189,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 8.3.0
     - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
-    - Source: https://github.com/bitnami/charts/tree/master/bitnami/thanos
+    - Source: <https://github.com/bitnami/charts/tree/master/bitnami/thanos>
     - Copyright: Copyright (c) 2023 Bitnami
   - Container image(s)
     - docker.io/bitnami/thanos:0.23.1-scratch-r3
@@ -197,7 +199,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 4.5.2
     - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
-    - Source: https://github.com/bitnami/charts/tree/master/bitnami/fluentd
+    - Source: <https://github.com/bitnami/charts/tree/master/bitnami/fluentd>
     - Copyright: Copyright (c) 2023 Bitnami
   - Container image(s)
     - docker.io/bitnami/fluentd:1.14.2-debian-10-r23
@@ -207,7 +209,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 0.48.1
     - Licence: [Apache License 2.0](https://github.com/grafana/helm-charts/blob/loki-distributed-0.48.1/LICENSE)
-    - Source: https://github.com/grafana/helm-charts/tree/loki-distributed-0.48.1/charts/loki-distributed
+    - Source: <https://github.com/grafana/helm-charts/tree/loki-distributed-0.48.1/charts/loki-distributed>
     - Copyright: Copyright The Helm Authors.
   - Container image(s)
     - docker.io/grafana/loki:2.5.0
@@ -217,7 +219,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 0.10.0
     - Licence: [Apache License 2.0](https://github.com/apache/apisix/blob/master/LICENSE)
-    - Source: https://github.com/apache/apisix-helm-chart/tree/apisix-0.10.0/charts/apisix
+    - Source: <https://github.com/apache/apisix-helm-chart/tree/apisix-0.10.0/charts/apisix>
     - Copyright: Copyright 2019-2023 The Apache Software Foundation
   - Container image(s)
     - docker.io/apache/apisix:2.14.1-alpine
@@ -233,7 +235,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 1.16.2
     - Licence: [Apache License 2.0](https://github.com/falcosecurity/charts/blob/falco-1.16.2/LICENSE)
-    - Source: https://github.com/falcosecurity/charts/tree/falco-1.16.2/falco
+    - Source: <https://github.com/falcosecurity/charts/tree/falco-1.16.2/falco>
     - Copyright: Copyright The Falco Authors. [Authors and Contributors](https://github.com/falcosecurity/charts/blob/falco-1.16.2/falco/OWNERS)
   - Container image(s)
     - docker.io/falcosecurity/falco:0.30.0
@@ -245,7 +247,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 1.0.0
     - Licence: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/resources-exporter/LICENSE)
-    - Source: https://github.com/COPRS/monitoring/tree/1.0.0/finops/resources-exporter/helm
+    - Source: <https://github.com/COPRS/monitoring/tree/1.0.0/finops/resources-exporter/helm>
   - Container image(s)
     - artifactory.coprs.esa-copernicus.eu/cs-docker/finops-object-storage-exporter:1.0.0
       - License: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/resources-exporter/LICENSE)
@@ -254,7 +256,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 1.0.0
     - Licence: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/object-storage-exporter/LICENSE)
-    - Source: https://github.com/COPRS/monitoring/tree/1.0.0/finops/object-storage-exporter/helm
+    - Source: <https://github.com/COPRS/monitoring/tree/1.0.0/finops/object-storage-exporter/helm>
   - Container image(s)
     - artifactory.coprs.esa-copernicus.eu/cs-docker/finops-resources-exporter:1.0.0
       - License: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/object-storage-exporter/LICENSE)
@@ -263,7 +265,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 1.9.2
     - Licence: [Apache License 2.0](https://github.com/KongZ/charts/blob/graylog-1.9.2/LICENSE)
-    - Source: https://github.com/KongZ/charts/tree/graylog-1.9.2
+    - Source: <https://github.com/KongZ/charts/tree/graylog-1.9.2>
     - Copyright: Copyright 2019-2021 Siri Chongasamethaworn
   - Container image(s)
     - docker.io/graylog/graylog:4.3.3-1
@@ -273,7 +275,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 16.0.5
     - Licence: [Apache License 2.0](https://github.com/codecentric/helm-charts/blob/keycloak-16.0.5/LICENSE)
-    - Source: https://github.com/codecentric/helm-charts/tree/keycloak-16.0.5/charts/keycloak
+    - Source: <https://github.com/codecentric/helm-charts/tree/keycloak-16.0.5/charts/keycloak>
     - Copyright: The Keycloak Authors. [Authors and Contributors](https://github.com/codecentric/helm-charts/blob/keycloak-16.0.5/charts/keycloak/OWNERS)
   - Container image(s)
     - docker.io/jboss/keycloak:15.0.2
@@ -283,7 +285,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 14.0.2
     - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
-    - Source: https://github.com/bitnami/charts/tree/master/bitnami/spring-cloud-dataflow
+    - Source: <https://github.com/bitnami/charts/tree/master/bitnami/spring-cloud-dataflow>
     - Copyright: Copyright (c) 2023 Bitnami
   - Container image(s)
     - docker.io/bitnami/spring-cloud-dataflow:2.9.6-debian-11-r18
@@ -297,7 +299,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 2.6.2
     - Licence: [Apache License 2.0](https://github.com/kedacore/charts/blob/v2.6.2/LICENSE)
-    - Source: https://github.com/kedacore/charts/tree/v2.6.2/keda
+    - Source: <https://github.com/kedacore/charts/tree/v2.6.2/keda>
     - Copyright: Copyright 2020 The KEDA Authors. [Authors and Contributors](https://github.com/kedacore/governance/blob/main/MAINTAINERS.md)
   - Container image(s)
     - ghcr.io/kedacore/keda:2.6.1
@@ -309,7 +311,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - Helm chart:
     - Version: 5.8.2
     - Licence: [Apache License 2.0](https://github.com/prometheus-community/helm-charts/blob/prometheus-blackbox-exporter-5.8.2/LICENSE)
-    - Source: https://github.com/prometheus-community/helm-charts/tree/prometheus-blackbox-exporter-5.8.2/charts/prometheus-blackbox-exporter
+    - Source: <https://github.com/prometheus-community/helm-charts/tree/prometheus-blackbox-exporter-5.8.2/charts/prometheus-blackbox-exporter>
     - Copyright 2012-2016 The Prometheus Authors. [Authors and Contributors](https://github.com/prometheus/blackbox_exporter/blob/master/MAINTAINERS.md)
   - Container image(s)
     - docker.io/prom/blackbox-exporter:v0.20.0
