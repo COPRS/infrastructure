@@ -171,6 +171,7 @@ ansible-playbook apps.yaml \
 ## Known issues and limitations
 
 The project and this component has few known issues and limitations. Head over the [limitation](./docs/user_manuals/how-to/Limitations.md) page to learn more about it.
+
 ## Tree view
 
 The repository is made of the following main directories and files.
