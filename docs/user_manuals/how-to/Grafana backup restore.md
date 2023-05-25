@@ -32,7 +32,7 @@ This value will be set instead of `<REPLACE_ME_PASSWORD>`
 
 ### 1.5. Run once the tool to initialize the folder's structure
 
-`docker run -it --rm --mount source=gdg,target=/app/ ghcr.io/esnet/gdg:0.4`
+`docker run -it --rm --mount source=gdg,target=/app/ ghcr.io/esnet/gdg:0.4 ctx list`
 
 ### 1.6. Replace the configuration (Step 1)
 
