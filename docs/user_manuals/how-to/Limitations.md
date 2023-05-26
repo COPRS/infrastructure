@@ -32,6 +32,7 @@ You have to destroy the stream, edit the stream's property and redeploy the stre
 [The step 5 of the insfrastucture's quickstart](/README.md#5-generate-or-download-the-inventory-variables) might fail due to invalid `YAML` files. It's most probably because of bad indentation from the configuration done in the previous steps.
 
 The issue is described in ticket [COPRS/rs-issues/issues/835](https://github.com/COPRS/rs-issues/issues/835)
+
 ### Workaround
 
 Fix the file `inventory/host_vars/setup/main.yaml`. The `YAML` syntax could be incorrect or a non-ascii character might be there.
@@ -39,8 +40,8 @@ Fix the file `inventory/host_vars/setup/main.yaml`. The `YAML` syntax could be i
 1. Check the `YAML` structure
 
    - Install the package `yq` : <https://github.com/mikefarah/yq#install>
-   - Check the syntax of `inventory/host_vars/setup/main.yaml` with `yq` :
-     - `yq inventory/host_vars/setup/main.yaml`
+   - Check the syntax of `inventory/sample/host_vars/setup/main.yaml` with `yq` :
+     - `yq inventory/sample/host_vars/setup/main.yaml`
 
    The file's content should be displayed in the terminal. If not, it means the syntax is not correct.
 
