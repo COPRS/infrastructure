@@ -48,3 +48,32 @@ Fix the file `inventory/host_vars/setup/main.yaml`. The `YAML` syntax could be i
 2. Check for non-ascii character
 
    `grep --color='auto' -P -n "[^\x00-\x7F]" inventory/host_vars/setup/main.yaml`
+
+## 3. Impossible to add a new node to the cluster
+
+### Issue
+
+In the ticket [COPRS/rs-issues/issues/859](https://github.com/COPRS/rs-issues/issues/859), we see that kubespray requires version `1.4.9-1` but the new nodes are deployed with a more recent version. As a result, the playbook fails and the new node is not fully deployed and configured.
+
+### Workaround
+
+After the step 2 *Install requirements* from the installation manual, edit the file `infrastructure/collections/kubespray/roles/container-engine/containerd/tasks/main.yml` from line 100.
+
+Change from :
+
+```yaml
+- name: ensure containerd packages are installed
+  package:
+    name: "{{ containerd_package_info.pkgs }}"
+    state: present
+```
+
+to :
+
+```yaml
+- name: ensure containerd packages are installed
+  package:
+    name: "{{ containerd_package_info.pkgs }}"
+    force: true
+    state: present
+```
