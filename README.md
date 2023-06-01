@@ -168,6 +168,65 @@ ansible-playbook apps.yaml \
 
 - You may disable access to Keycloak master realm. From Apisix interface: open Route tab, search for `iam_keycloak_keycloak-superadmin` and click on `Offline`.
 
+## Build
+
+In order to build the [autoscaling component](./docs/user_manuals/how-to/Cluster%20scaling.md#autoscaling) check from source, first clone the GitHub repository :
+
+### 1. Build the cluster-autoscaler
+
+```Bash
+NAME_IMAGE="cluster-autoscaler" ;
+CA_TAG="1.22.3" ;
+REGISTRY_BASE="<CHANGE_ME>" ;
+PROJECT="<CHANGE_ME>" ;
+
+git clone https://github.com/COPRS/infrastructure.git
+
+mkdir scaler/build ;
+wget https://github.com/kubernetes/autoscaler/archive/refs/tags/cluster-autoscaler-${CA_TAG}.tar.gz -O scaler/build/ca.tar.gz ;
+
+cd scaler/build ;
+tar -xzf ca.tar.gz autoscaler-cluster-autoscaler-${CA_TAG}/cluster-autoscaler ;
+
+cd scaler/build/autoscaler-cluster-autoscaler-${CA_TAG}/cluster-autoscaler ;
+make build-arch-amd64 ;
+
+cd scaler/build/autoscaler-cluster-autoscaler-${CA_TAG}/cluster-autoscaler ;
+docker build -t ${REGISTRY_BASE}/${PROJECT}/${NAME_IMAGE}:${CA_TAG} -f Dockerfile.amd64 . ;
+```
+
+### 2. Build the rs-infra-autoscaler
+
+```Bash
+NAME_IMAGE="rs-infra-scaler" ;
+SAFESCALE_TAG="v22.11.6" ;
+SCALER_TAG="1.6.0" ;
+REGISTRY_BASE="<CHANGE_ME>" ;
+PROJECT="<CHANGE_ME>" ;
+
+
+git clone https://github.com/COPRS/infrastructure.git
+
+mkdir scaler/ansible_resources ;
+cp -r *.yaml ansible.cfg roles inventory scaler/ansible_resources ;
+
+cd scaler ;
+docker build --build-arg SAFESCALE_TAG=${SAFESCALE_TAG} -t ${REGISTRY_BASE}/${PROJECT}/${NAME_IMAGE}:${SCALER_TAG} -f Dockerfile .
+```
+
+### 3. Build the safescale daemon
+
+```Bash
+NAME_IMAGE="safescaled" ;
+SAFESCALE_TAG="v22.11.6" ;
+REGISTRY_BASE="<CHANGE_ME>" ;
+PROJECT="<CHANGE_ME>" ;
+
+git clone https://github.com/COPRS/infrastructure.git
+
+docker build --build-arg SAFESCALE_TAG=${SAFESCALE_TAG} -t ${REGISTRY_BASE}/${PROJECT}/${NAME_IMAGE}:${SAFESCALE_TAG} -f scaler/safescaled.Dockerfile .
+```
+
 ## Known issues and limitations
 
 The project and this component has few known issues and limitations. Head over the [limitation](./docs/user_manuals/how-to/Limitations.md) page to learn more about it.
