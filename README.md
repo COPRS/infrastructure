@@ -211,7 +211,7 @@ mkdir scaler/ansible_resources ;
 cp -r *.yaml ansible.cfg roles inventory scaler/ansible_resources ;
 
 cd scaler ;
-docker build --build-arg SAFESCALE_TAG=${SAFESCALE_TAG} -t ${REGISTRY_BASE}/${PROJECT}/${NAME_IMAGE}:${SCALER_TAG} -f Dockerfile .
+docker build --build-arg SAFESCALE_TAG=${SAFESCALE_TAG} -t ${REGISTRY_BASE}/${PROJECT}/${NAME_IMAGE}:${SCALER_TAG} -f Dockerfile . ;
 ```
 
 ### 3. Build the safescale daemon
@@ -222,9 +222,9 @@ SAFESCALE_TAG="v22.11.6" ;
 REGISTRY_BASE="<CHANGE_ME>" ;
 PROJECT="<CHANGE_ME>" ;
 
-git clone https://github.com/COPRS/infrastructure.git
+git clone https://github.com/COPRS/infrastructure.git ;
 
-docker build --build-arg SAFESCALE_TAG=${SAFESCALE_TAG} -t ${REGISTRY_BASE}/${PROJECT}/${NAME_IMAGE}:${SAFESCALE_TAG} -f scaler/safescaled.Dockerfile .
+docker build --build-arg SAFESCALE_TAG=${SAFESCALE_TAG} -t ${REGISTRY_BASE}/${PROJECT}/${NAME_IMAGE}:${SAFESCALE_TAG} -f scaler/safescaled.Dockerfile . ;
 ```
 
 ## Known issues and limitations
