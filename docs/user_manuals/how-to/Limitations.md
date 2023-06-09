@@ -16,12 +16,15 @@
   - [5. Additional egress node creation fails](#5-additional-egress-node-creation-fails)
     - [Issue](#issue-4)
     - [Workaround](#workaround-4)
+  - [6. Fluent Bit failed to start after a node restart](#6-fluent-bit-failed-to-start-after-a-node-restart)
+    - [Issue](#issue-5)
+    - [Workaround](#workaround-5)
 
 ## 1. Unable to use SCDF Undeploy/Deploy function without misconfiguration
 
 Tickets :
 
-- [COPRS/rs-issues/issues/716](https://github.com/COPRS/rs-issues/issues/716)
+- [COPRS/rs-issues/#716](https://github.com/COPRS/rs-issues/issues/716)
 - [spring-cloud/spring-cloud-dataflow/issues/5145](https://github.com/spring-cloud/spring-cloud-dataflow/issues/5145)
 
 ### Issue
@@ -47,7 +50,7 @@ You have to destroy the stream, edit the stream's property and redeploy the stre
 
 ## 2. Failed to generate hosts.yaml
 
-Ticket : [COPRS/rs-issues/issues/835](https://github.com/COPRS/rs-issues/issues/835)
+Ticket : [COPRS/rs-issues/#835](https://github.com/COPRS/rs-issues/issues/835)
 
 ### Issue
 
@@ -71,7 +74,7 @@ Fix the file `inventory/host_vars/setup/main.yaml`. The `YAML` syntax could be i
 
 ## 3. Impossible to add a new node to the cluster
 
-Ticket : [COPRS/rs-issues/issues/859](https://github.com/COPRS/rs-issues/issues/859)
+Ticket : [COPRS/rs-issues/#859](https://github.com/COPRS/rs-issues/issues/859)
 
 ### Issue
 
@@ -102,7 +105,7 @@ to :
 
 ## 4. Asterisk (*) in SCDF `stream-parameters.properties` causes random result
 
-Ticket : [COPRS/rs-issues/issues/902](https://github.com/COPRS/rs-issues/issues/902)
+Ticket : [COPRS/rs-issues/#902](https://github.com/COPRS/rs-issues/issues/902)
 
 ### Issue
 
@@ -137,7 +140,7 @@ deployer.message-filter.kubernetes.requests.memory=1024Mi
 
 ## 5. Additional egress node creation fails
 
-Ticket : [COPRS/rs-issues/issues/652](https://github.com/COPRS/rs-issues/issues/652)
+Ticket : [COPRS/rs-issues/#652](https://github.com/COPRS/rs-issues/issues/652)
 
 ### Issue
 
@@ -156,3 +159,37 @@ Launch the playbook `collections/kubespray/facts.yml` first :
 ```Bash
 ansible-playbook collections/kubespray/facts.yml -i inventory/mycluster/hosts.yaml
 ```
+
+## 6. Fluent Bit failed to start after a node restart
+
+Ticket : [COPRS/rs-issues#558](https://github.com/COPRS/rs-issues/issues/558)
+
+### Issue
+
+Fluent Bit might fail to start after the a node is restarted with the following error :
+
+```console
+Fluent Bit v1.9.3
+
+* Copyright (C) 2015-2022 The Fluent Bit Authors
+
+* Fluent Bit is a CNCF sub-project under the umbrella of Fluentd
+
+* https://fluentbit.io
+
+
+
+[2022/09/15 08:13:34] [error] [storage] format check failed: tail.5/1-1662139558.357308467.flb
+
+[2022/09/15 08:13:34] [error] [storage] format check failed: tail.0/1-1662139559.215290961.flb
+
+level=error caller=out_grafana_loki.go:94 id=1 newPlugin="unable to create queue segment in /var/log/flb-storage/loki/dquer-system: unable to load queue segment in /var/log/flb-storage/loki/dquer-system: segment file /var/log/flb-storage/loki/dquer-system/0000000000680.dque is corrupted: excess deletion records (179)"
+
+[2022/09/15 08:13:34] [error] [lib] backend failed
+
+[2022/09/15 08:13:34] [error] [go proxy]: plugin 'grafana-loki' failed to initialize
+```
+
+### Workaround
+
+Connect on the node and delete the folder `/var/log/flb-storage/`.
