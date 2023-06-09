@@ -2,9 +2,12 @@
 
 ## 1. Unable to use SCDF Undeploy/Deploy function without misconfiguration
 
-### Issue
+Tickets :
 
-The issue was first raised in our project [COPRS/rs-issues/issues/716](https://github.com/COPRS/rs-issues/issues/716), and later on in the SCDF project itself [spring-cloud/spring-cloud-dataflow/issues/5145](https://github.com/spring-cloud/spring-cloud-dataflow/issues/5145).
+- [COPRS/rs-issues/issues/716](https://github.com/COPRS/rs-issues/issues/716)
+- [spring-cloud/spring-cloud-dataflow/issues/5145](https://github.com/spring-cloud/spring-cloud-dataflow/issues/5145)
+
+### Issue
 
 It prevents the usage of the Undeploy/Deploy functions from SCDF for any stream that contains regular expression. For e.g. we had the following regex:
 
@@ -14,7 +17,7 @@ But if you undeploy and deploy again the stream, even without editing this regex
 
 `ingestion-trigger.polling.inbox1.matchRegex='^S1.*(AUX_|AMH_|AMV_|MPL_ORB).*$'`
 
-This causes unexpected bahavior in the java application using that regex as it is not the same anymore, thus not filtering the way it should.
+This causes unexpected behaviour in the java application using that regex as it is not the same anymore, thus not filtering the way it should.
 
 ### Workaround
 
@@ -27,11 +30,10 @@ You have to destroy the stream, edit the stream's property and redeploy the stre
 
 ## 2. Failed to generate hosts.yaml
 
+Ticket : [COPRS/rs-issues/issues/835](https://github.com/COPRS/rs-issues/issues/835)
 ### Issue
 
-[The step 5 of the insfrastucture's quickstart](/README.md#5-generate-or-download-the-inventory-variables) might fail due to invalid `YAML` files. It's most probably because of bad indentation from the configuration done in the previous steps.
-
-The issue is described in ticket [COPRS/rs-issues/issues/835](https://github.com/COPRS/rs-issues/issues/835)
+[The step 5 of the infrastructure's quick start](/README.md#5-generate-or-download-the-inventory-variables) might fail due to invalid `YAML` files. It's most probably because of bad indentation from the configuration done in the previous steps.
 
 ### Workaround
 
@@ -51,9 +53,11 @@ Fix the file `inventory/host_vars/setup/main.yaml`. The `YAML` syntax could be i
 
 ## 3. Impossible to add a new node to the cluster
 
+Ticket : [COPRS/rs-issues/issues/859](https://github.com/COPRS/rs-issues/issues/859)
+
 ### Issue
 
-In the ticket [COPRS/rs-issues/issues/859](https://github.com/COPRS/rs-issues/issues/859), we see that kubespray requires version `1.4.9-1` but the new nodes are deployed with a more recent version. As a result, the playbook fails and the new node is not fully deployed and configured.
+Kubespray requires version `1.4.9-1` but the new nodes are deployed with a more recent version. As a result, the playbook fails and the new node is not fully deployed and configured.
 
 ### Workaround
 
@@ -80,10 +84,11 @@ to :
 
 ## 4. Asterisk (*) in SCDF `stream-parameters.properties` causes random result
 
+Ticket : [COPRS/rs-issues/issues/902](https://github.com/COPRS/rs-issues/issues/902)
+
 ### Issue
 
-The issue is described [COPRS/rs-issues/issues/902](https://github.com/COPRS/rs-issues/issues/902).  
-If you declare in the SCDF configuration file `stream-parameters.properties` the same parameter twice, for e.g. :
+If one parameter is declared twice in the SCDF configuration file `stream-parameters.properties` for e.g. :
 
 ```yaml
 deployer.*.kubernetes.requests.memory=512Mi
