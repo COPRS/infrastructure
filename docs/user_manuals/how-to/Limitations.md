@@ -1,5 +1,22 @@
 # Known issues and limitations
 
+- [Known issues and limitations](#known-issues-and-limitations)
+  - [1. Unable to use SCDF Undeploy/Deploy function without misconfiguration](#1-unable-to-use-scdf-undeploydeploy-function-without-misconfiguration)
+    - [Issue](#issue)
+    - [Workaround](#workaround)
+  - [2. Failed to generate hosts.yaml](#2-failed-to-generate-hostsyaml)
+    - [Issue](#issue-1)
+    - [Workaround](#workaround-1)
+  - [3. Impossible to add a new node to the cluster](#3-impossible-to-add-a-new-node-to-the-cluster)
+    - [Issue](#issue-2)
+    - [Workaround](#workaround-2)
+  - [4. Asterisk (\*) in SCDF `stream-parameters.properties` causes random result](#4-asterisk--in-scdf-stream-parametersproperties-causes-random-result)
+    - [Issue](#issue-3)
+    - [Workaround](#workaround-3)
+  - [5. Additional egress node creation fails](#5-additional-egress-node-creation-fails)
+    - [Issue](#issue-4)
+    - [Workaround](#workaround-4)
+
 ## 1. Unable to use SCDF Undeploy/Deploy function without misconfiguration
 
 Tickets :
@@ -31,6 +48,7 @@ You have to destroy the stream, edit the stream's property and redeploy the stre
 ## 2. Failed to generate hosts.yaml
 
 Ticket : [COPRS/rs-issues/issues/835](https://github.com/COPRS/rs-issues/issues/835)
+
 ### Issue
 
 [The step 5 of the infrastructure's quick start](/README.md#5-generate-or-download-the-inventory-variables) might fail due to invalid `YAML` files. It's most probably because of bad indentation from the configuration done in the previous steps.
