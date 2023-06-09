@@ -111,3 +111,25 @@ deployer.app2.kubernetes.requests.memory=512Mi
 deployer.app3.kubernetes.requests.memory=512Mi
 deployer.message-filter.kubernetes.requests.memory=1024Mi
 ```
+
+## 5. Additional egress node creation fails
+
+Ticket : [COPRS/rs-issues/issues/652](https://github.com/COPRS/rs-issues/issues/652)
+
+### Issue
+
+When creating additional egress node (i.e. the cluster is already created) you may encounter the following issue :
+
+```console
+The task includes an option with an undefined variable. The error was: {{ hostvars[groups['gateway'][0]]['ansible_default_ipv4']['gateway'] }}: 'ansible.vars.hostvars.HostVarsVars object' has no attribute 'ansible_default_ipv4'
+
+The error appears to be in '[...]/egress.yaml': line 38, column 7, but may be elsewhere in the file depending on the exact syntax problem.
+```
+
+### Workaround
+
+Launch the playbook `collections/kubespray/facts.yml` first :
+
+```Bash
+ansible-playbook collections/kubespray/facts.yml -i inventory/mycluster/hosts.yaml
+```
