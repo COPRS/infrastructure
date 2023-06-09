@@ -77,3 +77,37 @@ to :
     force: true
     state: present
 ```
+
+## 4. Asterisk (*) in SCDF `stream-parameters.properties` causes random result
+
+### Issue
+
+The issue is described [COPRS/rs-issues/issues/902](https://github.com/COPRS/rs-issues/issues/902).  
+If you declare in the SCDF configuration file `stream-parameters.properties` the same parameter twice, for e.g. :
+
+```yaml
+deployer.*.kubernetes.requests.memory=512Mi
+deployer.message-filter.kubernetes.requests.memory=1024Mi
+```
+
+It will cause SCDF to pick randomly one or the other value for the `message-filter.kubernetes.requests.memory` parameter instead of the desired one.
+
+### Workaround
+
+If you need to change a parameter's value for one component, you need to explicitly set the parameter for all components.
+
+Instead of this :
+
+```yaml
+deployer.*.kubernetes.requests.memory=512Mi
+deployer.message-filter.kubernetes.requests.memory=1024Mi
+```
+
+Use this :
+
+```yaml
+deployer.app1.kubernetes.requests.memory=512Mi
+deployer.app2.kubernetes.requests.memory=512Mi
+deployer.app3.kubernetes.requests.memory=512Mi
+deployer.message-filter.kubernetes.requests.memory=1024Mi
+```

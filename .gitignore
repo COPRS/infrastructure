@@ -9,3 +9,4 @@ __pycache__
 generated_inventory_vars.yaml
 scaler/build
 scaler/ansible_resources
+.vscode
