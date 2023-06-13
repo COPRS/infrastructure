@@ -12,7 +12,7 @@ helmCharts:
   namespace: networking
 - name: etcd
   releaseName: "{{ app_name }}"
-  repo: https://charts.bitnami.com/bitnami
+  repo: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
   version: 8.3.3
   valuesFile: values-etcd.yaml
   namespace: networking

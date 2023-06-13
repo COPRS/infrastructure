@@ -4,7 +4,7 @@ commonLabels:
 helmCharts:
 - name: spring-cloud-dataflow
   releaseName: "{{ app_name }}"
-  repo: https://charts.bitnami.com/bitnami
+  repo: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
   version: 14.0.2
   valuesFile: values.yaml
   namespace: processing
