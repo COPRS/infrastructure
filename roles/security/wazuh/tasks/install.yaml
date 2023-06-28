@@ -25,3 +25,5 @@
   with_items:
     - "<ignore>/etc/suricata/rules</ignore>"
     - "<ignore>/etc/suricata/iprep</ignore>"
+    - "<ignore>/var/lib/kubelet/plugins/kubernetes.io/csi/pv</ignore>"
+    - "<ignore>/var/lib/kubelet/pods</ignore>"
