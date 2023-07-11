@@ -108,7 +108,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - Kafka Operator
   - Helm chart:
     - Version: 0.27.1
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/strimzi/strimzi-kafka-operator/blob/0.27.1/LICENSE)
     - Source: https://github.com/strimzi/strimzi-kafka-operator/tree/0.27.1/helm-charts/helm3/strimzi-kafka-operator
     - Copyright: Copyright (c) Strimzi Authors 2023.  [Authors and Contributors](https://github.com/strimzi/strimzi-kafka-operator/blob/0.27.1/helm-charts/helm3/strimzi-kafka-operator/OWNERS)
@@ -121,7 +120,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - Prometheus Operator
   - Helm chart:
     - Version: 21.0.0
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/prometheus-community/helm-charts/blob/kube-prometheus-stack-21.0.0/LICENSE)
     - Source: https://github.com/prometheus-community/helm-charts/tree/kube-prometheus-stack-21.0.0/charts/kube-prometheus-stack
     - Copyright: Copyright 2012-2015 The Prometheus Authors
@@ -140,7 +138,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - Stash Operator
   - Helm chart:
     - Version: v0.17.0
-<<<<<<< Updated upstream
     - Licence: [AppsCode Community License 1.0.0](https://github.com/stashed/installer/blob/master/LICENSE.md)
     - Source: https://github.com/stashed/installer/tree/master/charts/stash-community
     - Copyright: Copyright Tamal Saha
@@ -151,7 +148,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - Fluent-bit
   - Helm chart:
     - Version: 0.21.4
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/fluent/helm-charts/blob/fluent-bit-0.19.6/LICENSE)
     - Source: https://github.com/fluent/helm-charts/tree/fluent-bit-0.19.6/charts/fluent-bit
     - Copyright: Copyright (c) 2015-2023 The Fluent Bit Authors.
@@ -162,7 +158,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - MongoDB
   - Helm chart:
     - Version: 11.0.3
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
     - Source: https://github.com/bitnami/charts/tree/master/bitnami/mongodb
     - Copyright: Copyright (c) 2023 MongoDB, Inc.
@@ -181,7 +176,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - PostgreSQL
   - Helm chart:
     - Version: 11.0.2
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
     - Source: https://github.com/bitnami/charts/tree/master/bitnami/postgresql
     - Copyright: Copyright (c) 2023 Bitnami
@@ -194,7 +188,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - Thanos
   - Helm chart:
     - Version: 8.3.0
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
     - Source: https://github.com/bitnami/charts/tree/master/bitnami/thanos
     - Copyright: Copyright (c) 2023 Bitnami
@@ -205,7 +198,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - Fluentd
   - Helm chart:
     - Version: 4.5.2
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
     - Source: https://github.com/bitnami/charts/tree/master/bitnami/fluentd
     - Copyright: Copyright (c) 2023 Bitnami
@@ -216,7 +208,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - Loki
   - Helm chart:
     - Version: 0.48.1
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/grafana/helm-charts/blob/loki-distributed-0.48.1/LICENSE)
     - Source: https://github.com/grafana/helm-charts/tree/loki-distributed-0.48.1/charts/loki-distributed
     - Copyright: Copyright The Helm Authors.
@@ -227,7 +218,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - Apisix
   - Helm chart:
     - Version: 0.10.0
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/apache/apisix/blob/master/LICENSE)
     - Source: https://github.com/apache/apisix-helm-chart/tree/apisix-0.10.0/charts/apisix
     - Copyright: Copyright 2019-2023 The Apache Software Foundation
@@ -244,7 +234,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - Falco
   - Helm chart:
     - Version: 1.16.2
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/falcosecurity/charts/blob/falco-1.16.2/LICENSE)
     - Source: https://github.com/falcosecurity/charts/tree/falco-1.16.2/falco
     - Copyright: Copyright The Falco Authors. [Authors and Contributors](https://github.com/falcosecurity/charts/blob/falco-1.16.2/falco/OWNERS)
@@ -257,7 +246,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - FinOps object storage exporter
   - Helm chart:
     - Version: 1.0.0
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/resources-exporter/LICENSE)
     - Source: https://github.com/COPRS/monitoring/tree/1.0.0/finops/resources-exporter/helm
   - Container image(s)
@@ -267,7 +255,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - FinOps resources exporter
   - Helm chart:
     - Version: 1.0.0
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/COPRS/monitoring/blob/1.0.0/finops/object-storage-exporter/LICENSE)
     - Source: https://github.com/COPRS/monitoring/tree/1.0.0/finops/object-storage-exporter/helm
   - Container image(s)
@@ -277,7 +264,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - Graylog
   - Helm chart:
     - Version: 1.9.2
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/KongZ/charts/blob/graylog-1.9.2/LICENSE)
     - Source: https://github.com/KongZ/charts/tree/graylog-1.9.2
     - Copyright: Copyright 2019-2021 Siri Chongasamethaworn
@@ -288,7 +274,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - Keycloack
   - Helm chart:
     - Version: 16.0.5
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/codecentric/helm-charts/blob/keycloak-16.0.5/LICENSE)
     - Source: https://github.com/codecentric/helm-charts/tree/keycloak-16.0.5/charts/keycloak
     - Copyright: The Keycloak Authors. [Authors and Contributors](https://github.com/codecentric/helm-charts/blob/keycloak-16.0.5/charts/keycloak/OWNERS)
@@ -299,7 +284,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - Spring Cloud Data Flow
   - Helm chart:
     - Version: 14.0.2
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/bitnami/charts/blob/master/LICENSE.md)
     - Source: https://github.com/bitnami/charts/tree/master/bitnami/spring-cloud-dataflow
     - Copyright: Copyright (c) 2023 Bitnami
@@ -314,7 +298,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - Keda
   - Helm chart:
     - Version: 2.6.2
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/kedacore/charts/blob/v2.6.2/LICENSE)
     - Source: https://github.com/kedacore/charts/tree/v2.6.2/keda
     - Copyright: Copyright 2020 The KEDA Authors. [Authors and Contributors](https://github.com/kedacore/governance/blob/main/MAINTAINERS.md)
@@ -327,7 +310,6 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
 - Prometheus blackbox exporter
   - Helm chart:
     - Version: 5.8.2
-<<<<<<< Updated upstream
     - Licence: [Apache License 2.0](https://github.com/prometheus-community/helm-charts/blob/prometheus-blackbox-exporter-5.8.2/LICENSE)
     - Source: https://github.com/prometheus-community/helm-charts/tree/prometheus-blackbox-exporter-5.8.2/charts/prometheus-blackbox-exporter
     - Copyright 2012-2016 The Prometheus Authors. [Authors and Contributors](https://github.com/prometheus/blackbox_exporter/blob/master/MAINTAINERS.md)
