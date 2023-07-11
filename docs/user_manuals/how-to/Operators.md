@@ -4,7 +4,7 @@
 
 Find the documentation [here](https://github.com/grafana-operator/grafana-operator/tree/master/documentation) and examples [here](https://github.com/grafana-operator/grafana-operator/tree/master/deploy/examples).
 > *Note: Grafana version 8 is deployed, it has many useful features and is stable, but keep in mind that many dashboards and tools have not been thoroughly tested yet.*
-
+>
 > *Note: The GrafanaDataSource and Grafana CRDs must be deployed in the monitoring namespace with the operator for now. (see [here](https://github.com/grafana-operator/grafana-operator/blob/master/documentation/multi_namespace_support.md#watching-for-datasources-in-all-namespaces)*
 
 ## Kafka operator

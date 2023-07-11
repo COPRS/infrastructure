@@ -1,7 +1,7 @@
 # Set up grafana SMTP alerting
 
 All this documentation is based on the official [Grafana Documentation](https://grafana.com/docs/grafana), please refer to it for more specific use cases.
-By default, an image renderer is deployed alongside Grafana, and will add images. 
+By default, an image renderer is deployed alongside Grafana, and will add images.
 
 ## Set up SMTP credentials in the ansible variables
 
@@ -20,12 +20,11 @@ grafana:
 
 These settings will be written in the grafana configuration on deployment.
 
-
 ## Set up actual alerting
 
 In order to have a functionnal alerting mecanism, you will have to configure the following Grafana components:
 
- - ### Alert rules
+### Alert rules
 
 Set evaluation criteria that determines whether an alert instance will fire. An alert rule consists of one or more queries and expressions, a condition, the frequency of evaluation, and optionally, the duration over which the condition is met.
 
@@ -35,14 +34,14 @@ Once an alert rule has been created, they go through various states and transiti
 
 If you want a capture of a dashboard embed in you notification, do not forget to set up the **Dashboard UID** and the **Panel ID** parameters here.
 
- - ### Labels
+### Labels
 
 Match an alert rule and its instances to notification policies and silences. They can also be used to group your alerts by severity.
 
-- ### Notification policies
+### Notification policies
 
 Set where, when, and how the alerts get routed. Each notification policy specifies a set of label matchers to indicate which alerts they are responsible for. A notification policy has a contact point assigned to it that consists of one or more notifiers.
 
- - ### Contact points
+### Contact points
 
 Define how your contacts are notified when an alert fires, an email list for example.

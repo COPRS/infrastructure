@@ -4,7 +4,6 @@ A key feature of the 0.9.0 release, is the node group dedicated to the Ceph Clus
 
 The ceph commands can be run from the `ceph-tools` container.
 
-
 ## 1. Backup sensitive data
 
 This procedure is complex, and it case of failure, you may lose all your data, so please backup any sensitive data beforehand. See [Databases backups](./Databases%20backups.md)

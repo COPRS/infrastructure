@@ -6,7 +6,7 @@ namespace: monitoring
 helmCharts:
 - name: thanos
   releaseName: "{{ app_name }}"
-  repo: https://charts.bitnami.com/bitnami
+  repo: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
   version: 8.3.0
   valuesFile: values.yaml
   namespace: monitoring

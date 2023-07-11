@@ -1,8 +1,11 @@
-# Create and mount a Ceph shared filesystem
+# Manage shaed filesystem
 
-## Create a PVC
+## Create and mount a Ceph shared filesystem
+
+### Create a PVC
 
 To create a shared filesystem on the platform that multiple pods will read or write into, configure and apply the following persistent volume:
+
 ```yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -18,7 +21,7 @@ spec:
   storageClassName: ceph-fs
 ```
 
-## Create a pod and mount the PVC
+### Create a pod and mount the PVC
 
 Then create a pod that mounts the shared filesystem:
 
@@ -44,7 +47,7 @@ spec:
         claimName: shared-processing-fs
 ```
 
-# Write files from s3 bucket
+## Write files from s3 bucket
 
 Get a shell in the running container:
 
@@ -52,7 +55,7 @@ Get a shell in the running container:
 kubectl exec -it shared-fs-pod -c shared-fs-pod -- /bin/sh
 ```
 
-Read the documentation (here)[https://s3tools.org/s3cmd-howto] on how to use `s3cmd`, some details may depend on the S3 location or bucket structure.
+Read the documentation [here](https://s3tools.org/s3cmd-howto) on how to use `s3cmd`, some details may depend on the S3 location or bucket structure.
 For example, run these commands to copy a file named **file.zip** from the root of an S3 bucket named **test-s3-bucket** to the shared filesystem:
 
 ```shell
@@ -63,7 +66,7 @@ s3cmd --configure
 s3cmd sync s3://test-s3-bucket/ /mnt/shared-fs
 ```
 
-# Send files from a local computer
+## Send files from a local computer
 
 Send the local file **/run/media/USB/file.zip** to the pod with the following command:
 

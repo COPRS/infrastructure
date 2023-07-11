@@ -4,12 +4,13 @@
 
 > Compliant with the COPRS ICD
 
- - Upload the RS Addon/RS Core zip file to the artifactory or have it on the bastion
- - Run the `deploy-rs-addon.yaml` playbook with the following variables:
-   - **stream_name**: name given by *Spring Cloud Dataflow* to the created stream
-   - **rs_addon_location**: direct download url of the zip file or zip location on the bastion
+- Upload the RS Addon/RS Core zip file to the artifactory or have it on the bastion
+- Run the `deploy-rs-addon.yaml` playbook with the following variables:
+  - **stream_name**: name given by *Spring Cloud Dataflow* to the created stream
+  - **rs_addon_location**: direct download url of the zip file or zip location on the bastion
 
 For example:
+
 ```shellsession
 ansible-playbook deploy-rs-addon.yaml \
     -i inventory/mycluster/hosts.yaml \
@@ -32,7 +33,6 @@ scdf:
 ```
 
 You will then be able to choose the namespace you want the stream to be deployed into by using the `-e stream_namespace=NAMESPACE` option on stream deployment.
-
 
 ## Uninstall
 

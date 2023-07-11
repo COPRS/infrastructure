@@ -7,7 +7,7 @@ A *package*, in *RS*, is a folder containing *apps* to be deployed when running 
 ## Create an application
 
 Create a folder that will be used as the *release name* and *app_name* in the deployment process.
-> *Note: The application installer process following the alphanumerical order. You can sort your applications prefixing each one by a number with a dash. The prefix added will not appear in the application name when deployed, its only purpose is to allow you to organize your deployments.* 
+> *Note: The application installer process following the alphanumerical order. You can sort your applications prefixing each one by a number with a dash. The prefix added will not appear in the application name when deployed, its only purpose is to allow you to organize your deployments.*
 *Example: 10-linkerd2*
 
 ### Deploy kubernetes resources with Kustomize
@@ -15,6 +15,7 @@ Create a folder that will be used as the *release name* and *app_name* in the de
 Create your `RESOURCE_TYPE-RESOURCE_NAME.yaml` file(s)
 
 Create a `kustomize.yaml` file containing these lines:
+
 ```yaml
 # kustomization.yaml
 

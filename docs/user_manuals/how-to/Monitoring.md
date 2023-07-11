@@ -9,7 +9,6 @@ To achieve this, set a regex that matches the topic(s) name(s) to be read and st
 
 The content of the topic(s) will be available in *Loki* using the label(s) `{kafka_topic="TOPIC_NAME"}`.
 
-
 ## Monitor system logs
 
 System logs are accessible in *Loki* using the labels `syslog_identifier` and `node`.

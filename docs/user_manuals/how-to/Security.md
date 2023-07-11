@@ -1,10 +1,9 @@
 # Managing security COTS on the cluster's nodes
 
-The purpose of this document is to explain how to install and uninstall 
+The purpose of this document is to explain how to install and uninstall
 security COTS on nodes.
 
-There are 5 COTS that are currently deployed in order to provide security to the 
-infrastructure. 
+There are 5 COTS that are currently deployed in order to provide security to the infrastructure.
 
 - AuditD
 - ClamAv
@@ -17,10 +16,11 @@ According to the purpose of each COTS, the node where the installation is perfom
 ## Future improvements
 
 - Suricata: choose dynamically the interface to work on.
-- Wazuh: handle wazuh password with a vault. 
+- Wazuh: handle wazuh password with a vault.
 
 ## auditd
-**Scope: All**
+
+**Scope: `All`**
 
 Auditd is the userspace component to the Linux Auditing System. It's responsible for writing audit records to the disk.
 The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/auditd/defaults/main.yml```
@@ -31,15 +31,16 @@ The COTS can be configured by updating the file : ```infrastructure/platform/rol
 
 In order to make easy the management of auditd logs, Laurel can be deployed.
 This tool is plugged to audisp and allows to merge auditd message types in one unique JSON.
-The documentation and example of configuration are available here : https://github.com/threathunters-io/laurel
+The documentation and example of configuration are available here : <https://github.com/threathunters-io/laurel>
 
 This plugin allows you to set laurel.conf through `laurel_conf`
 The audisp plugin can be configured by setting `laurel_audisp` property.
 Finally the release to be installed can be set by `using laurel_url`.
-NB if one property is set, all properties must be set too otherwise the installation will fail. 
+NB if one property is set, all properties must be set too otherwise the installation will fail.
 
 ## ClamAv
-**Scope: gateways**
+
+**Scope: `gateways`**
 
 The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/clamav/defaults/main.yml`.
 
@@ -49,15 +50,17 @@ The version of this COTS can be edited in ```/platform/roles/security/clamav/def
 
 | Name | Function | Required |
 |------|----------|----------|
-|  clamav_version   | Clamav version  |    Yes      |     
+|  clamav_version   | Clamav version  |    Yes      |
 
-Clamav is decomposed in 3 modules.
+Clamav is decomposed in 3 modules:
+
 - Freshclam for signature update.
 - clamd the daemon.
-- clamonacc which performs on-access scanning. 
+- clamonacc which performs on-access scanning.
 
 ## Wazuh
-**Scope: The Manager is installed only on the first master node and agent that are installed on all remaining nodes.** 
+
+**Scope: `The Manager is installed only on the first master node and agent that are installed on all remaining nodes.`**
 
 The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/wazuh/defaults/main.yml```
 We strongly advise to use the lastest version of Wazuh as the version 3 and 4 are not the same. Using version 3, the playbook may not work.
@@ -65,7 +68,7 @@ We strongly advise to use the lastest version of Wazuh as the version 3 and 4 ar
 | Name | Function | Required |
 |------|----------|----------|
 | wazuh_repository    |    Repository of wazuh (can change according version)     |   Yes   |
-| wazuh_version   | Wazuh version  |    Yes      |     
+| wazuh_version   | Wazuh version  |    Yes      |
 | wazuh_registration_password  |  The wazuh master password to join cluster surveillance  |  Yes |
 | unused_rules  |  List of rules to not use  |  No |
 | unused_decoders  |  List of decoders to not use  |  No |
@@ -73,18 +76,18 @@ We strongly advise to use the lastest version of Wazuh as the version 3 and 4 ar
 | log_level_output  |  Level log output that must appears in alerts.json (from 1 to 15)  |  No |
 | ossec_conf  | Set Custom ossec.conf for master  |  No |
 
-
 ## Suricata
-**Scope: Gateway**
 
-Suricata is a NIDS that will reload rules every day to try to detect attack. 
+**Scope: `Gateway`**
+
+Suricata is a NIDS that will reload rules every day to try to detect attack.
 The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/suricata/defaults/main.yml```
 As the Wazuh playbook, we strongly advise you to use the provided version in parameters as the install may not work otherwise.
 
 | Name | Function | Required |
 |------|----------|----------|
 | suricata_version    |  The version of the package to be installed  |   Yes   |
-| suricata_repo_version   | The version of the repository package to be installed  |    Yes      |     
+| suricata_repo_version   | The version of the repository package to be installed  |    Yes      |
 | suricata_iface  |  The interface to monitor  |  Yes |
 | suricata_local_cidr  |  Cidr to monitor  |  Yes |
 | ignored_rules  |  List of rules to ignore  |  No |
@@ -94,19 +97,22 @@ As the Wazuh playbook, we strongly advise you to use the provided version in par
 
 The purpose of the object `rotateIpReputation` is to create a bash file that is going to be executed once a day to update the ip reputation of suricata.
 The rotateIpReputation object is optional, it is composed of 3 attributes:
-- The name that should end by .sh.
+
+- The name that should end by `.sh`.
 - The content, it is the actions that want to perform to update the ip reputation of suricata in bash.
 - The cron parameter, as the name and the hour of execution each day.
 
 The same object structure is available by updating `rotate_rules` object, here the purpose is to describe the bash file that is going to update the rules each day.
 
-`categories` Object is composed of two attributes: 
-- a name for the file.
-- the content of the file following `id,short name,description` format. 
-It is used to manage categories for ip reputation. 
+`categories` Object is composed of two attributes:
 
-## OpenVPN 
-**Scope: Gateway**
+- a name for the file.
+- the content of the file following `id,short name,description` format.
+It is used to manage categories for ip reputation.
+
+## OpenVPN
+
+**Scope: `Gateway`**
 
 OpenVpn client installed on gateway.
 The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/openvpn/defaults/main.yml```
@@ -114,9 +120,10 @@ The COTS can be configured by updating the file : ```infrastructure/platform/rol
 | Name | Function | Required |
 |------|----------|----------|
 | openvpn_version    |   OpenVPN version     |   Yes   |
-| conf_files   | List of objects that describe configuration files for openvpn  |    No      |     
+| conf_files   | List of objects that describe configuration files for openvpn  |    No      |
 
-The `conf_files` is a list of file with th following structure : 
+The `conf_files` is a list of file with th following structure :
+
 - A `name`.
-- The `content` of the file. 
+- The `content` of the file.
 It can be used to add certificate and client configuration for the VPN client.
