@@ -107,7 +107,6 @@
 | /var/ossec/logs/alerts/alerts.json | fluentbit.wazuh | graylog | 2 | Elasticsearch Security |
 | /var/log/audit_\*.log | fluentbit.auditd | graylog | 2 | Elasticsearch Security |
 | /var/log/containers/falco-?????_security_falco\*.log | fluentbit.falco | graylog | 2 | Elasticsearch Security |
-| /var/log/containers/nmap-job-\*.log | fluentbit.scans | graylog | 2 | Elasticsearch Security |
 
 ## Kafka Topics
 
@@ -117,7 +116,6 @@
 | fluentbit.falco | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
 | fluentbit.ingress | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
 | fluentbit.keycloak | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
-| fluentbit.scans | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
 | fluentbit.trace | 6 | 3 | 89478485 | 604800000 | | delete | 2 | false |
 | fluentbit.wazuh | 6 | 3 | 1789956970 | | 715827882 | delete | 2 | false |
 

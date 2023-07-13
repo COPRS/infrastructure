@@ -119,16 +119,6 @@ config:
       Buffer_Max_Size  1MB
       Mem_Buf_Limit    10MB
       storage.type     filesystem
-    [INPUT]
-      Name             tail
-      Tag              security.container.scans.*
-      Path             /var/log/containers/nmap-job-*.log
-      DB               /var/log/fluentbit_security_nmap.db
-      DB.Sync          Normal
-      Rotate_Wait      10
-      Buffer_Max_Size  1MB
-      Mem_Buf_Limit    10MB
-      storage.type     filesystem
   ## https://docs.fluentbit.io/manual/pipeline/filters
   filters: |
     # Rename CRI parser 'message' to 'log'
@@ -264,12 +254,6 @@ config:
       Match       security.container.falco.*
       Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
       Topics      fluentbit.falco
-    [OUTPUT]
-      Name        kafka
-      Format      json
-      Match       security.container.scans.*
-      Brokers     kafka-cluster-kafka-bootstrap.infra.svc.cluster.local:9092
-      Topics      fluentbit.scans
     [OUTPUT]
       Name        kafka
       Format      json
