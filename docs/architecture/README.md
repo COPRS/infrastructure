@@ -1,18 +1,7 @@
-# Architecture Design Document
-
-## Document properties
-
-|    |   |
-| -: | - |
-|    **Reference** | CSGF-CSC-RS-PRD-ADD-INF |
-|        **Issue** | 2 |
-|   **Issue date** | 16 Sep 2022 |
-|  **Prepared by** | **Cyrille BOUISSON**  *(Architect / Technical Manager)* |
-|  **Approved by** | **Jonathan TAGLIONE** (Quality Manager) + **Nicolas Leconte** (Technical Manager) |
-|  **Released by** | **Stéphane HURIEZ** (Project Manager) |
-|     **Doc type** | SCF |
-|       **No WBS** | WP-3000-C |
-
+### Copernicus Reference System
+# Infrastructure - Architecture Design Document
+### Reference System version V2.0
+---
 ## Document Summary
 
 This document is the Architecture Document Design for Infrastructure of Reference System. This document will be completed all along the software development lifecycle
@@ -24,10 +13,9 @@ This document is the Architecture Document Design for Infrastructure of Referenc
 | 1 | 01 Mar 2022 | | v1.0.0 <br> First issue of document |
 | 2 | 16 Sep 2022 | | v1.1.0 |
 
-
 ## Table Of Contents
 
-- [Architecture Design Document](#architecture-design-document)
+- [Infrastructure - Architecture Design Document](#infrastructure---architecture-design-document)
   - [Document properties](#document-properties)
   - [Document Summary](#document-summary)
   - [Document Change log](#document-change-log)
@@ -84,7 +72,7 @@ This document is the Architecture Document Design for Infrastructure of Referenc
       - [Domain Name Service](#domain-name-service)
     - [Gateways](#gateways)
     - [Security](#security)
-    - [Backup & Restore](#backup--restore)
+    - [Backup \& Restore](#backup--restore)
       - [Backup](#backup)
       - [Restore](#restore)
   - [Backend services](#backend-services)
@@ -190,7 +178,7 @@ In the Reference System requirements, workflows appear as interface elements, wh
 
 Since this concept is built into the orchestrator, the system exposes excellent progress information and error handling mechanisms out of the box. No need to reconstruct workflow states by correlating monitoring data from individual micro services. The operation, monitoring and maintenance of the system are therefore made easier. Less operators are required and using a parametric cost model allows to offer the right service for the right costs for the benefits of both the users and the Agency.
 
-![](./../media/workflows.png)
+![workflow](./../media/workflows.png)
 
 ### Open Source and collaborative mindset
 
@@ -209,6 +197,7 @@ The same approach has been adopted with success on the Sentinel-1 Cloud PDGS pro
 ## Components design
 
 The Kubernetes cluster is divided into namespaces. We can distinguish 5 types of namespaces:
+
 - those dedicated to main services,
 - those dedicated to backend services,
 - those dedicated to monitoring services,
@@ -222,6 +211,7 @@ The big picture of what is contained in the cluster is depicted in the figure be
 ## Fundation and Main Support Services
 
 The main challenges of this system are :
+
 - Defining a strategy to easily & securely migrate to the cloud
 - Providing a PaaS provider-agnostic to automatically create and manage ICT & easily deploy secured micro-services
 - Pushing the automation of infrastructure creation, deployment and maintenance tasks in a DevSecOps Spirit
@@ -237,7 +227,7 @@ This Architecture is compliant with Scaling services (with security) that enable
 #### Kubernetes components
 
 > Kubernetes is deployed using Kubespray. You can find more information here:  
-> https://github.com/kubernetes-sigs/kubespray
+> <https://github.com/kubernetes-sigs/kubespray>
 
 When you deploy Kubernetes, you get a cluster.
 
@@ -282,6 +272,7 @@ Component on the master that runs controllers .
 Logically, each controller is a separate process, but to reduce complexity, they are all compiled into a single binary and run in a single process.
 
 These controllers include:
+
 - Node Controller: Responsible for noticing and responding when nodes go down.
 - Replication Controller: Responsible for maintaining the correct number of pods for every replication controller object in the system.
 - Endpoints Controller: Populates the Endpoints object (that is, joins Services & Pods).
@@ -296,6 +287,7 @@ cloud-controller-manager runs cloud-provider-specific controller loops only. You
 cloud-controller-manager allows the cloud vendor’s code and the Kubernetes code to evolve independently of each other. In prior releases, the core Kubernetes code was dependent upon cloud-provider-specific code for functionality. In future releases, code specific to cloud vendors should be maintained by the cloud vendor themselves, and linked to cloud-controller-manager while running Kubernetes.
 
 The following controllers have cloud provider dependencies:
+
 - Node Controller: For checking the cloud provider to determine if a node has been deleted in the cloud after it stops responding
 - Route Controller: For setting up routes in the underlying cloud infrastructure
 - Service Controller: For creating, updating and deleting cloud provider load balancers
@@ -345,7 +337,7 @@ Like individual application containers, Pods are considered to be relatively eph
 
 When something is said to have the same lifetime as a Pod, such as a volume, that means that it exists as long as that Pod (with that UID) exists. If that Pod is deleted for any reason, even if an identical replacement is created, the related thing (e.g. volume) is also destroyed and created anew.
 
-Source: https://kubernetes.io/docs/concepts/workloads/pods/pod/
+Source: <https://kubernetes.io/docs/concepts/workloads/pods/pod/>
 
 ![POD Kubernetes](./../media/pod_k8s.png)
 
@@ -390,6 +382,7 @@ For headless Services that define selectors, the endpoints controller creates En
 -- Without selectors
 
 For headless Services that do not define selectors, the endpoints controller does not create Endpoints records. However, the DNS system looks for and configures either:
+
 - CNAME records for ExternalName-type Services.
 - A records for any Endpoints that share a name with the Service, for all other type
 
@@ -398,12 +391,13 @@ For headless Services that do not define selectors, the endpoints controller doe
 For some parts of your application (for example, frontends) you may want to expose a Service onto an external IP address, that’s outside of your cluster. Kubernetes ServiceTypes allow you to specify what kind of Service you want. The default is **ClusterIP**.
 
 Type values and their behaviors are:
+
 - **ClusterIP**: Exposes the Service on a cluster-internal IP. Choosing this value makes the Service only reachable from within the cluster. This is the default ServiceType.
-- **NodePort**: Exposes the Service on each Node’s IP at a static port (the NodePort). A ClusterIP Service, to which the NodePort Service routes, is automatically created. You’ll be able to contact the NodePort Service, from outside the cluster, by requesting <NodeIP>:<NodePort>.
+- **NodePort**: Exposes the Service on each Node’s IP at a static port (the NodePort). A ClusterIP Service, to which the NodePort Service routes, is automatically created. You’ll be able to contact the NodePort Service, from outside the cluster, by requesting `<NodeIP>:<NodePort>`.
 - **LoadBalancer**: Exposes the Service externally using a cloud provider’s load balancer. NodePort and ClusterIP Services, to which the external load balancer routes, are automatically created.
 - **ExternalName**: Maps the Service to the contents of the ExternalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. No proxying of any kind is set up.
 
-Source: https://kubernetes.io/docs/concepts/services-networking/service/
+Source: <https://kubernetes.io/docs/concepts/services-networking/service/>
 
 ![Service Kubernetes](./../media/services_k8s.jpeg)
 
@@ -421,7 +415,7 @@ In future versions of Kubernetes, objects in the same namespace will have the sa
 
 It is not necessary to use multiple namespaces just to separate slightly different resources, such as different versions of the same software: use labels to distinguish resources within the same namespace.
 
-Source: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+Source: <https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/>
 
 ![Namespace Kubernetes](./../media/namespace_k8s.png)
 
@@ -435,7 +429,7 @@ A PersistentVolumeClaim (PVC) is a request for storage by a user. It is similar 
 
 While PersistentVolumeClaims allow a user to consume abstract storage resources, it is common that users need PersistentVolumes with varying properties, such as performance, for different problems. Cluster administrators need to be able to offer a variety of PersistentVolumes that differ in more ways than just size and access modes, without exposing users to the details of how those volumes are implemented. For these needs, there is the StorageClass resource.
 
-Source: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+Source: <https://kubernetes.io/docs/concepts/storage/persistent-volumes/>
 
 ![Persistent Volumes Kubernetes](./../media/pv_k8s.png)
 
@@ -462,21 +456,24 @@ CronJobs use **Job** objects to complete their tasks. A CronJob creates a Job ob
 #### HA Mode
 
 The following components require a highly available endpoints:
+
 - etcd cluster,
 - kube-apiserver service instances.
 The latter relies on a 3rd side reverse proxy, like Nginx or HAProxy, to achieve the same goal.
 
 ##### etcd
+
 The etcd clients (kube-api-masters) are configured with the list of all etcd peers. If the etcd-cluster has multiple instances, it's configured in HA already.
 
 ##### kube-apiserver
+
 K8s components require a loadbalancer to access the apiservers via a reverse proxy. Kubespray includes support for an nginx-based proxy that resides on each non-master Kubernetes node. This is referred to as localhost loadbalancing. It is less efficient than a dedicated load balancer because it creates extra health checks on the Kubernetes apiserver, but is more practical for scenarios where an external LB or virtual IP management is inconvenient. This option is configured by the variable loadbalancer_apiserver_localhost (defaults to True. Or False, if there is an external loadbalancer_apiserver defined). You may also define the port the local internal loadbalancer uses by changing, loadbalancer_apiserver_port. This defaults to the value of kube_apiserver_port. It is also important to note that Kubespray will only configure kubelet and kube-proxy on non-master nodes to use the local internal loadbalancer.
 
 If you choose to NOT use the local internal loadbalancer, you will need to configure your own loadbalancer to achieve HA. Note that deploying a loadbalancer is up to a user and is not covered by ansible roles in Kubespray. By default, it only configures a non-HA endpoint, which points to the access_ip or IP address of the first server node in the kube_control_plane group. It can also configure clients to use endpoints for a given loadbalancer type. The following diagram shows how traffic to the apiserver is directed.
 
 ![Load Balancer localhost](./../media/ha_k8s.png)
 
-Source: https://github.com/kubernetes-sigs/kubespray/blob/master/docs/ha-mode.md
+Source: <https://github.com/kubernetes-sigs/kubespray/blob/master/docs/ha-mode.md>
 
 #### Autoscaling
 
@@ -494,9 +491,9 @@ Cf `how-to` [Cluster scaling](../user_manuals/how-to/Cluster%20scaling.md)
 
 #### File System Distributed : Ceph
 
-> You can see a trade-off on this subject here : https://github.com/COPRS/infrastructure/wiki/Storage-technology-solution-trade-off
+> You can see a trade-off on this subject here : <https://github.com/COPRS/infrastructure/wiki/Storage-technology-solution-trade-off>
 
-##### Overview 
+##### Overview
 
 Ceph is an open-source software (software-defined storage) storage platform, implements object storage on a single distributed computer cluster, and provides 3-in-1 interfaces for object-, block- and file-level storage. Ceph aims primarily for completely distributed operation without a single point of failure, scalable to the exabyte level, and freely available. Since version 12 Ceph does not rely on other filesystems and can directly manage HDDs and SSDs with its own storage backend BlueStore and can completely self reliantly expose a POSIX filesystem.
 
@@ -507,21 +504,22 @@ In this way, administrators have a single, consolidated system that avoids silos
 ##### Design
 
 Ceph employs five distinct kinds of daemons :
+
 - Cluster monitors (ceph-mon) that keep track of active and failed cluster nodes, cluster configuration, and information about data placement and global cluster state.
 - Object storage devices(ceph-osd) that use a direct, journaled disk storage (named BlueStore,[9] which since the v12.x release replaces the FileStore which would use a filesystem)
 - Metadata servers (ceph-mds) that cache and broker access to inodes and directories inside a CephFS filesystem.
 - HTTP gateways (ceph-rgw) that expose the object storage layer as an interface compatible with Amazon S3 or OpenStack Swift APIs
 - Managers (ceph-mgr) that perform cluster monitoring, bookkeeping, and maintenance tasks, and interface to external monitoring systems and management (e.g. balancer, dashboard, Prometheus, Zabbix plugin)
 
-Ceph does striping of individual files across multiple nodes to achieve higher throughput, similar to how RAID0 stripes partitions across multiple hard drives. Adaptive load balancing is supported whereby frequently accessed objects are replicated over more nodes 
+Ceph does striping of individual files across multiple nodes to achieve higher throughput, similar to how RAID0 stripes partitions across multiple hard drives. Adaptive load balancing is supported whereby frequently accessed objects are replicated over more nodes
 
 ![Ceph Design](./../media/archi_ceph.png)
 
-> More information on Ceph architecture : https://docs.ceph.com/en/latest/architecture/
+> More information on Ceph architecture : <https://docs.ceph.com/en/latest/architecture/>
 
 ##### Integration
 
-To implement Ceph filesystem in Kubernetes we selected the Rook storage operator. Rook automates the tasks of a storage administrator: deployment, bootstrapping, configuration, provisioning, scaling, upgrading, migration, disaster recovery, monitoring, and resource management. (https://rook.io/)
+To implement Ceph filesystem in Kubernetes we selected the Rook storage operator. Rook automates the tasks of a storage administrator: deployment, bootstrapping, configuration, provisioning, scaling, upgrading, migration, disaster recovery, monitoring, and resource management. (<https://rook.io/>)
 
 #### Container Runtime Interface and Container Runtime
 
@@ -536,6 +534,7 @@ Container Runtime Interface is a plugin interface which enables kubelet to use a
 ##### Container Runtime
 
 Here are some Container Runtime that can be used with Kubernetes :
+
 - containerd
 - Docker
 - cri-o
@@ -544,6 +543,7 @@ Here are some Container Runtime that can be used with Kubernetes :
 - ...
 
 We chose **containerd** like Container Runtime Interface because :
+
 - very mature since it comes from Docker itself and it is CNCF graduated
 - officially supported by Kubernetes
 - default and officially supported by AKS, EKS, GKE, k3s
@@ -552,9 +552,9 @@ We chose **containerd** like Container Runtime Interface because :
 - support Windows Kubernetes nodes
 - follows plugin model
 
-It is also possible to use an alternative better secured _runc_ alternative such as [KataContainer](https://katacontainers.io/) and [Gvisor](https://github.com/google/gvisor). KataContainer aims at providing best of Container and Virtualization technologies combining speed and resource isolation. Gvisor is a user-space container runtime that provides an isolation boundary between the application hosted by the container and the host kernel.
+It is also possible to use an alternative better secured *runc* alternative such as [KataContainer](https://katacontainers.io/) and [Gvisor](https://github.com/google/gvisor). KataContainer aims at providing best of Container and Virtualization technologies combining speed and resource isolation. Gvisor is a user-space container runtime that provides an isolation boundary between the application hosted by the container and the host kernel.
 
-> You can see a trade-off on this subject here : https://github.com/COPRS/infrastructure/wiki/Container-Runtimes-solution-trade-off
+> You can see a trade-off on this subject here : <https://github.com/COPRS/infrastructure/wiki/Container-Runtimes-solution-trade-off>
 
 #### Domain Name Service
 
@@ -565,12 +565,14 @@ For our purpose DNS servers that support DNSSEC and that can be used as both an 
 As the system infrastructure dynamically evolves according to the processing load it is also very important that authoritative bindings of the DNS servers can be modified and synchronized without restarting, which is not possible with bind9. Knot allows dynamic configuration but it is painful to automatize primary and secondary DNS databases synchronization. To implement authoritative bindings PowerDNS can use standard relational databases such as MySQL and PostgreSQL. By the way configuring the backend in HA mode allows a perfect synchronization of the primary and secondary databases. Nevertheless this implies an extra configuration costs not necessary if using CoreDNS in an environment where Kubernetes is deployed because CoreDNS can use the etcd provided by Kubernetes as backend. Moreover CoreDNS can be used by Kubernetes for service discovery and it is generally very well integrated into Kubernetes ecosystem.
 
 In conclusion CoreDNS seems to be the DNS the more suitable to use. Among the best practices recommended for DNS server configuration, 2 are particularly important:
+
 - Use ACL to control access by external hosts
 - Use DNSSEC authentication protocol to prevent classical security issues like DNS cache poisoning
 
 For log management CoreDNS provide a [plugin](https://coredns.io/plugins/log/) to write logs on the standard output and thus make it easy to collect and filter logs using a log aggregator and forward them to central log manager.
 
-In our system, we use **CoreDNS** : 
+In our system, we use **CoreDNS** :
+
 - because CoreDNS is a DNS server use by Kubernetes to resolve service object name.
 - Static A record are added in CoreDNS database to resolve Kubernetes nodes FQDN in "cluster.local" domain.
 - CoreDNS ConfigMap are updated automatically when a node is added or removed.
@@ -586,7 +588,7 @@ In our system, we use **CoreDNS** :
 
 ### Backup & Restore
 
-Stash (https://appscode.com/products/stash/) aims to backup content of kubernetes persistant volume on a storage backend, on our case an object storage acessed trough restic (https://restic.net/).
+Stash (<https://appscode.com/products/stash/>) aims to backup content of kubernetes persistant volume on a storage backend, on our case an object storage acessed trough restic (<https://restic.net/>).
 
 #### Backup
 
@@ -594,6 +596,7 @@ Stash (https://appscode.com/products/stash/) aims to backup content of kubernete
 
 In order to backup PVs data, we have to create a custom ressource Restic, which will specify what and how to backup.
 You have to specify:
+
 - The pod where the PV to backup is mounted (with selector)
 - The backend infos, (depends of the object storage kind). Beware, the bucket must already exists as restic suffer issues on bucket creation.
 - The path where the PV is mounted inside the container
@@ -603,6 +606,7 @@ You have to specify:
 It injects a sidecar container into the backuped pod, creates a custom ressource Repository describing the global snapshots informations and custom ressources Snapshots each one representing a backup succesfully uploaded on the object storage.
 
 Notes:
+
 - We recommend that you deploy the backup service at the same time as the deployment of the pod concerned by this backup because otherwise a service interruption of a few minutes will take place because it is an installation in sidecar mode
 - On the other hand, there will be no downtime if you change the backup configuration later on (for example: change the frequency of the backup)
 
@@ -612,6 +616,7 @@ Notes:
 
 To restore a backuped PV you have to create a custom ressource Recovery, which will specify which PV should be restored and with which snapshot.
 You have to specify:
+
 - A repository containing the backups.
 - The PV where the backup must be applied ( this PV have to be unbounded while being restored).
 - The path where the PV will be mounted inside the container.
@@ -620,6 +625,7 @@ A pod will be launched, will mount the PV and then will proceed to restore backu
 
 As a Recovery refers to a Repository, you may have to create a new Repository too.
 You have to specify:
+
 - Labels specifying the backuped object.
 - The backend infos, (depends of the object storage kind)
 
@@ -630,26 +636,28 @@ You have to specify:
 ![Elasticsearch Cluster](./../media/elasticsearch.png)
 
 See Nodes Roles to understand how the ES nodes work together in the cluster :  
-https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html
+<https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html>
 
 In the system, we have two instances:
-- elasticsearch-processing (in namespace _database_ ) 
-- elasticsearch-security (in namespace _security_ )
+
+- elasticsearch-processing (in namespace *database* )
+- elasticsearch-security (in namespace *security* )
 
 ### MongoDB
 
 ![MongoDB Cluster](./../media/mongodb.png)
 
 See:  
-- https://docs.mongodb.com/manual/replication/ 
-- https://docs.mongodb.com/manual/core/replica-set-arbiter/
+
+- <https://docs.mongodb.com/manual/replication/>
+- <https://docs.mongodb.com/manual/core/replica-set-arbiter/>
 
 ### PostgreSQL
 
 ![PostgreSQL Cluster](./../media/postgresql.png)
 
 See Streaming Replication:  
-https://www.postgresql.org/docs/14/warm-standby.html
+<https://www.postgresql.org/docs/14/warm-standby.html>
 
 ### Kafka
 
@@ -698,6 +706,7 @@ This main functional part is a very important one because it allows measuring th
 ![Monitoring Chain Overview](./../media/monitoring_overview.png)
 
 All data must always be present and always accessible in system. However, their availability time and frequency of access vary according to the kind of data:
+
 - Metrics data:  no need for resilience / write once / medium frequency
 - Logs (except security): no need for resilience / write once / high frequency
 - REPORTS: resilient / write once / medium frequency
@@ -719,6 +728,7 @@ We have to produce, fetch, store and make available these metrics, for this we u
 Our Prometheus is deeply integrated with Kubernetes thanks to the [prometheus-operator](https://github.com/prometheus-operator/prometheus-operator), so a k8s crd names serviceMonitor is available and allow Prometheus to automatically detect and update his configuration to fetch all the metrics linked to a servicemonitor.
 
 So to fetch metrics with Prometheus you have to :
+
 - create a service exposing the metrics
 - create a servicemonitor with a selector and a label "release=prometheus-operator" matching the service label
 
@@ -739,11 +749,12 @@ In the platform some metrics are key information and cannot be lost, so in order
 ![Thanos Architecture](./../media/architecture_thanos.jpg)
 
 It's like a Prometheus overlay built with several blocks:
+
 - The prometheus-sidecar, who give other Thanos components access to the Prometheus metrics.
 - The query, who evaluate PromQL queries against all instances at once, and deduplicate metrics.
 - The store gateway, who store metrics onto the object storage.
 - The compactor, who compacts older data to improve query efficiency.
-- The ruler, who generate alerts based on some metrics, and then will push alerts to the alert-manager 
+- The ruler, who generate alerts based on some metrics, and then will push alerts to the alert-manager
 
 Metrics are stored on the object storage after a 30 minutes consolidation. They are kept raw for 1month, then down-sampled to one point for each 5min period for 4months, and finaly down-sampled to one point for each 60min period after 4months.
 
@@ -753,7 +764,7 @@ The ruler graphical interface is exposed.
 
 #### Prometheus Exporters
 
-Exporters are http servers aiming to monitor something and produce metrics describing the monitored object. They are usualy exposed on **http://x.x.x.x:2112/metrics** and are updated on a regular basis. 
+Exporters are http servers aiming to monitor something and produce metrics describing the monitored object. They are usualy exposed on **<http://x.x.x.x:2112/metrics>** and are updated on a regular basis.  
 They can be independent services or part of the monitored object.
 
 ##### Generic prometheus exporters
@@ -774,13 +785,13 @@ They can be independent services or part of the monitored object.
 | Keda Operator | One/Replica | |
 | Keda Metrics API Server | One/Replica | |
 | Apisix | One/Replica | |
-| Apisix Ingress Controller | One/Replica | | 
+| Apisix Ingress Controller | One/Replica | |
 | Etcd (Apisix) | One/Replica | |
 | Linkerd Controller | One/Replica | |
 | Linkerd Proxy | One/Pod | Pod configured with Linkerd  |
 | Keycloak | One/Replica | |
 | OpenLDAP | One | |
-| cert-manager | One/Replica | | 
+| cert-manager | One/Replica | |
 | Rook Ceph Operator | One | |
 | Kafka Cluster Operator | One | |
 | Kafka Entity Operator | One | |
@@ -789,12 +800,12 @@ They can be independent services or part of the monitored object.
 | Kafka Exporter | One | Kafka Cluster Ressources Metrics |
 | Fluentbit | One/Node | |
 | Fluentd | One/Replica | |
-| Prometheus Operator | One | | 
+| Prometheus Operator | One |
 | Prometheus | One/Replica | |
 | Prometheus AlertManager | One/Replica | |
 | Thanos Compactor | One/Replica | |
-| Thanos Query | One/Replica | 
-| Thanos Store Gateway | One/Replica | 
+| Thanos Query | One/Replica |
+| Thanos Store Gateway | One/Replica |
 | Elastic Operator | One | |
 | Elasticsearch Processing | One | |
 | Elasticsearch Security | One | |
@@ -803,7 +814,7 @@ They can be independent services or part of the monitored object.
 | Grafana Operator | One | |
 | Kibana Processing | One | |
 | Kibana Security | One | |
-| PostgreSQL | TBD | | 
+| PostgreSQL | TBD | |
 | MongoDB | One/Replica | |
 | Spring Cloud Data Flow | One | |
 | Stash Operator | One | |
@@ -819,7 +830,7 @@ They can be independent services or part of the monitored object.
 | Object-storage | One | Description [here](https://github.com/COPRS/monitoring/tree/feature/main/finops/resources-exporter) |
 | Endpoint | One | Provide informations about the availability of several HTTP endpoints (based on Blackbox Exporter) <br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - probe_**{targetName="...",targetUrl="..."} |
 
-### Logs 
+### Logs
 
 > For REPORTS, we use also Elasticsearch. See chapter [Backend services > Elasticsearch](#elasticsearch)
 
@@ -851,7 +862,7 @@ The query frontend is an optional service providing the querier’s API endpoint
 
 The querier service handles queries using the LogQL query language, fetching logs both from the ingesters and from long-term storage.
 
-Source : https://grafana.com/docs/loki/latest/fundamentals/architecture/components/
+Source : <https://grafana.com/docs/loki/latest/fundamentals/architecture/components/>
 
 ### Logs gathering
 
@@ -883,7 +894,7 @@ Initially developed to visualize Time Series data, it evolved to visualize more 
 
 Datasource plugins are responsible for querying data to databases or web services. Grafana includes several datasources. Among them, datasources for Prometheus, ElasticSearch and Postgresql are useful for the architecture in place for this project.
 Panel plugins are responsible for visualizing data retrieved by datasources. Several panels are included, going from simple values to tables, gauges to line plots.
-Both plugin types are only useful if they are used together. Making them communicate is done by configuring Dashboards. Dashboards are pages where the user configure panels with a query done with a datasource. Panels inside a dashboard can be laid out at user’s will. Multiple panels inside a same dashboard can share the result of a query to display multiple representation of the same data. It is also possible to create dashboard’s variables accessible by all panels and datasources inside the dashboard. Some variables are builtin like variables __from and __to which define a timerange and are configurable through a Timepicker. Those variables can then be used to narrow down queries in datasources.
+Both plugin types are only useful if they are used together. Making them communicate is done by configuring Dashboards. Dashboards are pages where the user configure panels with a query done with a datasource. Panels inside a dashboard can be laid out at user’s will. Multiple panels inside a same dashboard can share the result of a query to display multiple representation of the same data. It is also possible to create dashboard’s variables accessible by all panels and datasources inside the dashboard. Some variables are builtin like variables *from* and *to* which define a timerange and are configurable through a Timepicker. Those variables can then be used to narrow down queries in datasources.
 
 Each dashboard is associated to an uuid, a unique identifier which permits to reference and link a dashboard independently of its name. Some panels offer the possibility to create a datalink: an hyperlink with information extracted from the underlining data and panel. This hyperlink can either reference an external resource or another dashboard referenced by its uuid. It is thus possible to open a new dashboard with variables initialized by data provided by the datalink.
 

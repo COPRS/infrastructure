@@ -1,3 +1,5 @@
+# Filesystem
+
 ## Add a new volume to a live cluster
 
 ### Create the volume
@@ -5,12 +7,13 @@
 ```Bash
 safescale volume create --size VOLUME_SIZE --speed DISK_TYPE VOLUME_NAME
 ```
+
 **VOLUME_SIZE** in gigabyte.  
 **DISK_TYPE**: default HDD
 
 ### Attach the newly created volume to an existing machine of the cluster
 
-*The volume must be attached without being formatted nor mounted for Ceph to detect it. You can do this on safescale by adding the options **--do-not-format** and **--do-not-mount***. 
+*The volume must be attached without being formatted nor mounted for Ceph to detect it. You can do this on safescale by adding the options **--do-not-format** and **--do-not-mount***.
 
 ```Bash
 safescale volume attach --do-not-format --do-not-mount VOLUME_NAME MACHINE_NAME
@@ -25,6 +28,7 @@ There are two possible way to achieve this. Either by deleting the pod Rook oper
 ```Bash
 kubectl -n NAMESPACE delete po $(kubectl -n NAMESPACE get po -l app=rook-ceph-operator -o jsonpath='{.items[0].metadata.name}')
 ```
+
 The deployment generates a new Rook operator Pod which will roll out the Ceph cluster configuration pods.
 
 #### Modify the CRD

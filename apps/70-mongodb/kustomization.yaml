@@ -3,7 +3,7 @@ commonLabels:
 
 helmCharts:
 - name: mongodb
-  repo: https://charts.bitnami.com/bitnami
+  repo: https://raw.githubusercontent.com/bitnami/charts/archive-full-index/bitnami
   version: 11.0.3
   valuesFile: values.yaml
   releaseName: "{{ app_name }}"

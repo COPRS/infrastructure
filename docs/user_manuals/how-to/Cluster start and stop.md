@@ -85,7 +85,7 @@
 
 4. Rollout other daemonsets
 
-    Finally, we can rollout other daemonsets. 
+    Finally, we can rollout other daemonsets.
 
     ```Bash
     namespaces=$(kubectl get namespaces --no-headers -ocustom-columns=":.metadata.name" --selector=kubernetes.io/metadata.name!=kube-system)

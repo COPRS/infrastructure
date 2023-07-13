@@ -1,4 +1,6 @@
-# Schedule databases backups
+# Databases backups
+
+## Schedule databases backups
 
 RS is deployed with a `Stash operator` that allows scheduling periodic databases backups using specific **CRDs**.
 
@@ -6,7 +8,7 @@ The stash documentation can be found [here](https://stash.run/docs/v2021.11.24/c
 
 You will need at least a `Repository` set up, see an example below.
 
-## Example S3 bucket as Repository
+### Example S3 bucket as Repository
 
 ```yaml
 apiVersion: v1 
@@ -31,9 +33,10 @@ spec:
     storageSecretName: backup-s3-credentials
 ```
 
-## Postgresql backup
+### Postgresql backup
 
 Add the following to your postgresql `values.yaml`:
+
 ```yaml
 primary:
   extraVolumeMounts:
@@ -46,6 +49,7 @@ primary:
 ```
 
 Deploy the following:
+
 ```yaml
 apiVersion: stash.appscode.com/v1beta1
 kind: BackupConfiguration
@@ -111,26 +115,29 @@ spec:
     prune: true
 ```
 
-## LDAP backup
+### LDAP backup
 
 In the `statefulset.yaml` file:
- - use the `osixia/openldap-backup` image that includes backup and restore scripts instead of the `osixia/openldap` image
- - merge the following values:
-   ```yaml
-   spec:
-    template:
-      spec:
-        containers:
-          - name: openldap
-            volumeMounts:
-              - mountPath: /data/backup
-                name: data-backup
-        volumes:
-          - name: data-backup
-            emptyDir: {}
-   ```
+
+- use the `osixia/openldap-backup` image that includes backup and restore scripts instead of the `osixia/openldap` image
+- merge the following values:
+
+  ```yaml
+  spec:
+   template:
+     spec:
+       containers:
+         - name: openldap
+           volumeMounts:
+             - mountPath: /data/backup
+               name: data-backup
+       volumes:
+         - name: data-backup
+           emptyDir: {}
+  ```
 
 Deploy the following:
+
 ```yaml
 apiVersion: stash.appscode.com/v1beta1
 kind: BackupConfiguration
@@ -191,27 +198,30 @@ spec:
     prune: true
 ```
 
-## Elasticsearch backup
+### Elasticsearch backup
 
 Because the secure configuration of a `repository` used for storing backup has to be set up on cluster startup, one is configured by default in both the elasticsearch clusters, therefore you need only to configure a `SLM policy` in the *kibana* user interface by navigating to *Management - Stack Management - Data - Snapshot and Restore* and using the documentation [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshots-take-snapshot.html#create-slm-policy).
 
-# Restore databases
+## Restore databases
 
 The restore using `Stash restic driver` is done in the following steps:
- - inject a sidecar in the pod to be restored (induces a pod restart)
- - download the backed-up database to the shared volume mount
- - manually trigger a restore in the running pod
+
+- inject a sidecar in the pod to be restored (induces a pod restart)
+- download the backed-up database to the shared volume mount
+- manually trigger a restore in the running pod
 
 Use the documentation [here](https://stash.run/docs/v2021.11.24/concepts/crds/restoresession/) to configure the `RestoreSession` CRDs.
 
-## Postgresql restore
+### Postgresql restore
 
 Deploy the following:
+
 ```yaml
 apiVersion: stash.appscode.com/v1beta1
 kind: RestoreSession
 metadata:
   name: restore-latest-postgresql-backup
+  namespace: database
 spec:
   driver: Restic
   task:
@@ -255,17 +265,19 @@ spec:
 ```
 
 Once the `RestoreSession` has the status **Success**, run the following commands to trigger a restore (change the databases credentials):
+
 ```bash
-kubectl -n database wait --for condition=ready pod -l statefulset.kubernetes.io/pod-name=postgresql-postgresql-0
-kubectl exec -n database postgresql-postgresql-0 -c postgresql -- /bin/sh -c "\
+kubectl -n database wait --for condition=ready pod -l statefulset.kubernetes.io/pod-name=postgresql-primary-0
+kubectl exec -n database postgresql-primary-0 -c postgresql -- /bin/sh -c "\
   export PGPASSWORD=$KEYCLOAK_DATABASE_PASSWORD && psql -U keycloak keycloak < /tmp/backup/keycloak.sql \
   && export PGPASSWORD=$SCDF_DATABASE_PASSWORD && psql -U scdf skipper < /tmp/backup/skipper.sql \
   && export PGPASSWORD=$SCDF_DATABASE_PASSWORD && psql -U scdf dataflow < /tmp/backup/dataflow.sql"
 ```
 
-## LDAP restore
+### LDAP restore
 
 Deploy the following:
+
 ```yaml
 apiVersion: stash.appscode.com/v1beta1
 kind: RestoreSession
@@ -313,13 +325,14 @@ spec:
 ```
 
 Once the `RestoreSession` has the status **Success**, run the following commands to trigger a restore:
+
 ```bash
 kubectl -n iam wait --for condition=ready pod -l statefulset.kubernetes.io/pod-name=openldap-0
 kubectl exec -n iam openldap-0 -c openldap -- /bin/bash -c "/sbin/slapd-restore-config \$(ls /data/backup/*-config.gz | sed -e 's/\/.*\///g') \
       && /sbin/slapd-restore-data \$(ls /data/backup/*-data.gz | sed -e 's/\/.*\///g')"
 ```
 
-## Elasticsearch restore
+### Elasticsearch restore
 
 Navigate to the *Management - Stack Management - Data - Snapshot and Restore* in the *kibana* user interface and manually trigger a restore. The interface allows fine configuration of the restore settings.
 

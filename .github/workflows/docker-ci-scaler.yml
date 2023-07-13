@@ -12,8 +12,8 @@ env:
   ARTIFACTORY_PASSWORD: ${{ secrets.CS_ARTIFACTORY_PASSWORD }}
   ARTIFACTORY_PROJECT: rs-docker
   NAME_IMAGE: rs-infra-scaler
-  SAFESCALE_TAG: v22.06.0
-  SCALER_TAG: 0.10.0
+  SAFESCALE_TAG: v22.11.6
+  SCALER_TAG: 1.6.0
   
 jobs:
 
@@ -28,28 +28,11 @@ jobs:
         with:
           fetch-depth: 0 # fetch all history so multiple commits can be scanned
 
-      - name: Init VM
-        run: git submodule update --init --recursive
-        
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.18
-
-      - name: Build binarie GO
-        run: cd scaler && go build -o ./build/rs-infra-scaler .
-
-      - name: Download Safescale
-        run: wget https://github.com/CS-SI/SafeScale/releases/download/${{ env.SAFESCALE_TAG }}/safescale-${{ env.SAFESCALE_TAG }}-linux-amd64.tar.gz -O scaler/build/sf.tar.gz
-
-      - name: dezip package
-        run: cd scaler/build && tar -xzf sf.tar.gz safescale
-
-      - name: Remove zip package
-        run: rm scaler/build/sf.tar.gz
+      - name: Prepare ansible resources
+        run: mkdir scaler/ansible_resources && cp -r *.yaml ansible.cfg roles inventory scaler/ansible_resources
 
       - name: Build image Docker
-        run: docker build -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SCALER_TAG }} -f scaler/Dockerfile .
+        run: cd scaler && docker build --build-arg SAFESCALE_TAG=${{ env.SAFESCALE_TAG }} -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SCALER_TAG }} -f Dockerfile .
 
       - name: Scan image
         id: scan_image

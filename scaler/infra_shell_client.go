@@ -450,9 +450,14 @@ func ParseSafeScaleSizingValue(sizing string) (string, error) {
 	if len(sizing) == 0 {
 		return "", fmt.Errorf("could not parse empty sizing")
 	}
-	if len(sizing) == 1 {
+
+	// Parse an interger
+	matched, _ := regexp.MatchString(`^(\d+)$`, sizing)
+	if matched {
 		return sizing, nil
 	}
+
+	// Parse a range
 	r := regexp.MustCompile(`\[(\d+)-(\d+)\]`)
 	res := r.FindStringSubmatch(sizing)
 

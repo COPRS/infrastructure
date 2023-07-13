@@ -10,6 +10,9 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: rs-infra-scaler
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 100%
   template:
     metadata:
       labels:
@@ -17,7 +20,7 @@ spec:
     spec:
       priorityClassName: system-cluster-critical
       containers:
-        - image: artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:1.1.0
+        - image: artifactory.coprs.esa-copernicus.eu/rs-docker/rs-infra-scaler:1.6.0
           name: rs-infra-scaler
           resources:
             limits:
@@ -44,15 +47,15 @@ spec:
           readinessProbe:
             tcpSocket:
               port: 8087
-            initialDelaySeconds: 180
+            initialDelaySeconds: 120
             periodSeconds: 20
             failureThreshold: 20
           livenessProbe:
             tcpSocket:
               port: 8086
-            initialDelaySeconds: 240
-            failureThreshold: 3
-            periodSeconds: 60
+            initialDelaySeconds: 80
+            failureThreshold: 10
+            periodSeconds: 10
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:

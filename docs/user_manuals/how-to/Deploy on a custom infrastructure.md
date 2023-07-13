@@ -7,6 +7,7 @@ Reference System uses SafeScale to deploy its infrastructure on any compatible c
 The `cluster.yaml` playbook, after having created the cluster and volumes with safescale, will populate the ansible `{{ inventory_dir }}/hosts.yaml` file according to the node groups configurations, with the machines IPs and specific hosts variables.
 
 Here is an example of a generated `hosts.yaml` file:
+
 ```yaml
 all:
   hosts:
@@ -140,6 +141,7 @@ Configure the `ansible.cfg` according to your machines ssh configuration. (user,
 ## Follow the main deployment procedure
 
 Once you have a working `hosts.yaml` file, follow the main deployment steps in the [README](../../../README.md) file, skip step **6.** and at step **7.** do not create the cluster, configure only the machine by running:
+
 ```shellsession
 ansible-playbook cluster.yaml \
     -i inventory/mycluster/hosts.yaml \

@@ -1,5 +1,6 @@
 FROM ubuntu:20.04
 ENV TZ=Europe/Paris
+ARG SAFESCALE_TAG
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt-get update && apt-get install -y --no-install-recommends \
   software-properties-common \
@@ -9,5 +10,5 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   jq \
   openssh-client \
   && rm -rf /var/lib/apt/lists/*
-COPY ./scaler/build/safescaled /safescaled
+RUN wget -qO- https://github.com/CS-SI/SafeScale/releases/download/${SAFESCALE_TAG}/safescale-${SAFESCALE_TAG}-linux-amd64.tar.gz | tar -xzf - -C / ./safescaled
 CMD ["/safescaled"]

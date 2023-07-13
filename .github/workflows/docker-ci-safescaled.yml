@@ -12,7 +12,7 @@ env:
   ARTIFACTORY_PASSWORD: ${{ secrets.CS_ARTIFACTORY_PASSWORD }}
   ARTIFACTORY_PROJECT: rs-docker
   NAME_IMAGE: safescaled
-  SAFESCALE_TAG: v22.06.0
+  SAFESCALE_TAG: v22.11.6
   
 jobs:
 
@@ -27,17 +27,8 @@ jobs:
         with:
           fetch-depth: 0 # fetch all history so multiple commits can be scanned
 
-      - name: Download Safescale
-        run: mkdir scaler/build && wget https://github.com/CS-SI/SafeScale/releases/download/${{ env.SAFESCALE_TAG }}/safescale-${{ env.SAFESCALE_TAG }}-linux-amd64.tar.gz -O scaler/build/sf.tar.gz
-        
-      - name: Dezip package
-        run: cd scaler/build && tar -xzf sf.tar.gz safescaled
-
-      - name: Remove zip package
-        run: rm scaler/build/sf.tar.gz
-
       - name: Build image Docker
-        run: docker build -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SAFESCALE_TAG }} -f scaler/safescaled.Dockerfile .
+        run: docker build --build-arg SAFESCALE_TAG=${{ env.SAFESCALE_TAG }} -t ${{ env.REGISTRY_BASE }}/${{ env.ARTIFACTORY_PROJECT }}/${{ env.NAME_IMAGE }}:${{ env.SAFESCALE_TAG }} -f scaler/safescaled.Dockerfile .
 
       - name: Scan image
         id: scan_image
