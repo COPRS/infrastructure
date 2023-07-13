@@ -68,11 +68,10 @@ cp -rfp inventory/sample inventory/mycluster
 
 ### 4. Review and change the default configuration to match your needs
 
-- Node groups and S3 buckets in `inventory/mycluster/host_vars/setup/safescale.yaml`
-- Credentials, domain name, the stash license, S3 endpoints in `infrastructure/inventory/mycluster/host_vars/setup/main.yaml`
-- Packages paths containing the apps to be deployed in `inventory/mycluster/host_vars/setup/app_installer.yaml`
-
-### 5. Generate or download the inventory variables
+ - Node groups and S3 buckets in `inventory/mycluster/host_vars_setup/safescale.yaml`
+ - Credentials, domain name, the stash license, S3 endpoints in `infrastructure/inventory/mycluster/host_vars/setup/main.yaml`
+ - Packages paths containing the apps to be deployed in `inventory/mycluster/host_vars/setup/app_installer.yaml`
+ - Optimization for well-known zones and/or internal-only domains, i.e. VPN/Object Storage for internal networks in `inventory/mycluster/host_vars/setup/kubespray.yaml`
 
 ```shellsession
 ansible-playbook generate_inventory.yaml \
