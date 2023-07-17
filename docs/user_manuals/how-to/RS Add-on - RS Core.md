@@ -34,6 +34,8 @@ scdf:
 
 You will then be able to choose the namespace you want the stream to be deployed into by using the `-e stream_namespace=NAMESPACE` option on stream deployment.
 
+Be sure that the Kustomize's version used is at least V4.5.7 before deploying SCDF with the multi-namespace option.
+
 ## Uninstall
 
 > **Use IHM**
