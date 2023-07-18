@@ -13,6 +13,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 >- **Fixed** for any bug fixes.
 >- **Security** in case of vulnerabilities.
 
+## [1.6.0-rc1] - 2023-07-17
+
+### Added
+
+- Documentation updated
+  - [#962 - \[BUG\] \[Documentation\] \[infra\] Missing build documentation](https://github.com/COPRS/rs-issues/issues/962)
+  - [#902 - \[BUG\] \[SCDF\] Configuration set on file "stream-parameters.properties" that use asterix "*" has imprediccable result after deployment.](https://github.com/COPRS/rs-issues/issues/902)
+  - [#859 - \[BUG\] \[INFRA\] Impossible to add a new node to the cluster : containerd version](https://github.com/COPRS/rs-issues/issues/859)
+  - [#835 - \[BUG\] Failed to generate hosts.yaml](https://github.com/COPRS/rs-issues/issues/835)
+  - [#652 - \[BUG\] \[Infra\] egress nodes: additional egress node creation at netplan configuration](https://github.com/COPRS/rs-issues/issues/652)
+  - [#647 - \[BUG\] Bad performance to retrieve data from OBS / network congestion on Gateway.](https://github.com/COPRS/rs-issues/issues/647)
+  - [#558 - \[BUG\] \[Infra\] fluent-bit: grafana-loki plugin fails after node restart deletes some files](https://github.com/COPRS/rs-issues/issues/558)
+
+### Fixed
+
+- [#569 - \[BUG\] \[Infra\] Stash - Error: timed out waiting for the condition](https://github.com/COPRS/rs-issues/issues/569)
+
 ## [1.5.0-rc1] - 2023-01-04
 
 ### Changed
