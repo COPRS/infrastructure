@@ -19,6 +19,9 @@
   - [6. Fluent Bit failed to start after a node restart](#6-fluent-bit-failed-to-start-after-a-node-restart)
     - [Issue](#issue-5)
     - [Workaround](#workaround-5)
+  - [7. Manually bypass gateway for object storage traffic](#7-manually-bypass-gateway-for-object-storage-traffic)
+    - [Issue](#issue-6)
+    - [Workaround](#workaround-6)
 
 ## 1. Unable to use SCDF Undeploy/Deploy function without misconfiguration
 
@@ -193,3 +196,35 @@ level=error caller=out_grafana_loki.go:94 id=1 newPlugin="unable to create queue
 ### Workaround
 
 Connect on the node and delete the folder `/var/log/flb-storage/`.
+
+## 7. Manually bypass gateway for object storage traffic
+
+Ticket : [COPRS/rs-issues#647](https://github.com/COPRS/rs-issues/issues/647)
+
+### Issue
+
+In order to stay generic and cloud agnostic, all the outgoing traffic is routed through the gateways. It might be an issue if the gateway cannot handle the traffic from the many processing nodes to the object storage. Several timeouts can be observed across the whole cluster and cause a lot of problems.
+
+### Workaround
+
+On every nodes ( /!\ **except the gateways** /!\ ), add the subnet of the object storage from the Cloud provider (100.64.0.0/10 in this example) to be routed directly to the VPC gateway from the Cloud provider (192.168.0.1 in this example).
+
+1. Add the route to `100.64.0.0/10` via `192.168.0.1` in `/etc/netplan/11-ens3-private.yaml` :
+
+   ```console
+   sudo yq -i -y  '.network.ethernets.ens3.routes += [ {"to":"100.64.0.0/10", "via":"192.168.0.1"} ]' /etc/netplan/11-ens3-private.yaml
+   ```
+
+2. Apply the netplan config :
+
+   ```console
+   sudo netplan apply
+   ```
+
+3. Verify the route is active :
+
+   ```console
+   ip route
+   ```
+
+   Search for the line `100.64.0.0/10 via 192.168.0.1 dev ens3 proto static`
