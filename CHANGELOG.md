@@ -17,13 +17,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 
 ### Added
 
-- [#962 - \[BUG\] \[Documentation\] \[infra\] Missing build documentation](https://github.com/COPRS/rs-issues/issues/962)
-- [#902 - \[BUG\] \[SCDF\] Configuration set on file "stream-parameters.properties" that use asterix "*" has imprediccable result after deployment.](https://github.com/COPRS/rs-issues/issues/902)
-- [#859 - \[BUG\] \[INFRA\] Impossible to add a new node to the cluster : containerd version](https://github.com/COPRS/rs-issues/issues/859)
-- [#835 - \[BUG\] Failed to generate hosts.yaml](https://github.com/COPRS/rs-issues/issues/835)
-- [#652 - \[BUG\] \[Infra\] egress nodes: additional egress node creation at netplan configuration](https://github.com/COPRS/rs-issues/issues/652)
-- [#647 - \[BUG\] Bad performance to retrieve data from OBS / network congestion on Gateway.](https://github.com/COPRS/rs-issues/issues/647)
-- [#558 - \[BUG\] \[Infra\] fluent-bit: grafana-loki plugin fails after node restart deletes some files](https://github.com/COPRS/rs-issues/issues/558)
+- Documentation updated
+  - [#962 - \[BUG\] \[Documentation\] \[infra\] Missing build documentation](https://github.com/COPRS/rs-issues/issues/962)
+  - [#902 - \[BUG\] \[SCDF\] Configuration set on file "stream-parameters.properties" that use asterix "*" has imprediccable result after deployment.](https://github.com/COPRS/rs-issues/issues/902)
+  - [#859 - \[BUG\] \[INFRA\] Impossible to add a new node to the cluster : containerd version](https://github.com/COPRS/rs-issues/issues/859)
+  - [#835 - \[BUG\] Failed to generate hosts.yaml](https://github.com/COPRS/rs-issues/issues/835)
+  - [#652 - \[BUG\] \[Infra\] egress nodes: additional egress node creation at netplan configuration](https://github.com/COPRS/rs-issues/issues/652)
+  - [#647 - \[BUG\] Bad performance to retrieve data from OBS / network congestion on Gateway.](https://github.com/COPRS/rs-issues/issues/647)
+  - [#558 - \[BUG\] \[Infra\] fluent-bit: grafana-loki plugin fails after node restart deletes some files](https://github.com/COPRS/rs-issues/issues/558)
 
 ### Fixed
 
