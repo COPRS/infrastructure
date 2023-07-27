@@ -5,7 +5,7 @@ metadata:
 spec:
   kafka:
     replicas: 3
-    version: 2.8.1
+    version: 3.4.0
     template:
       pod:
         affinity:
