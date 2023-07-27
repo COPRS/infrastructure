@@ -10,7 +10,7 @@ spec:
       strimzi.io/kind: KafkaBridge
   namespaceSelector:
     matchNames:
-      - myproject
+      - infra
   podMetricsEndpoints:
   - path: /metrics
     port: rest-api

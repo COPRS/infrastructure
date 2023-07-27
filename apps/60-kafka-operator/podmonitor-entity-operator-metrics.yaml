@@ -10,7 +10,7 @@ spec:
       app.kubernetes.io/name: entity-operator
   namespaceSelector:
     matchNames:
-      - myproject
+      - infra
   podMetricsEndpoints:
   - path: /metrics
     port: healthcheck
