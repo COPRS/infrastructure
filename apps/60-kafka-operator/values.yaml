@@ -2,7 +2,7 @@ image:
   registry: quay.io
   repository: strimzi
   name: operator
-  tag: 0.27.1
+  tag: 0.35.1
 
 affinity:
   nodeAffinity:
@@ -22,6 +22,6 @@ resources:
 logLevel: WARN
 watchAnyNamespace: true
 fullReconciliationIntervalMs: 300000
-imageTagOverride: "0.27.1"
+imageTagOverride: "0.35.1"
 createGlobalResources: true
 generateNetworkPolicy: false

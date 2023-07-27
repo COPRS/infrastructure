@@ -1,16 +1,16 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: entity-operator-metrics
+  name: bridge-metrics
   labels:
     app: strimzi
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: entity-operator
+      strimzi.io/kind: KafkaBridge
   namespaceSelector:
     matchNames:
       - myproject
   podMetricsEndpoints:
   - path: /metrics
-    port: healthcheck
+    port: rest-api

@@ -6,15 +6,15 @@ rules:
   name: kafka_server_$1_$2
   type: GAUGE
   labels:
-    clientId: "$3"
-    topic: "$4"
-    partition: "$5"
+   clientId: "$3"
+   topic: "$4"
+   partition: "$5"
 - pattern: kafka.server<type=(.+), name=(.+), clientId=(.+), brokerHost=(.+), brokerPort=(.+)><>Value
   name: kafka_server_$1_$2
   type: GAUGE
   labels:
-    clientId: "$3"
-    broker: "$4:$5"
+   clientId: "$3"
+   broker: "$4:$5"
 - pattern: kafka.server<type=(.+), cipher=(.+), protocol=(.+), listener=(.+), networkProcessor=(.+)><>connections
   name: kafka_server_$1_connections_tls_info
   type: GAUGE
@@ -35,14 +35,14 @@ rules:
   name: kafka_server_$1_$4
   type: GAUGE
   labels:
-    listener: "$2"
-    networkProcessor: "$3"
+   listener: "$2"
+   networkProcessor: "$3"
 - pattern: kafka.server<type=(.+), listener=(.+), networkProcessor=(.+)><>(.+)
   name: kafka_server_$1_$4
   type: GAUGE
   labels:
-    listener: "$2"
-    networkProcessor: "$3"
+   listener: "$2"
+   networkProcessor: "$3"
 # Some percent metrics use MeanRate attribute
 # Ex) kafka.server<type=(KafkaRequestHandlerPool), name=(RequestHandlerAvgIdlePercent)><>MeanRate
 - pattern: kafka.(\w+)<type=(.+), name=(.+)Percent\w*><>MeanRate
@@ -121,3 +121,24 @@ rules:
   type: GAUGE
   labels:
     quantile: "0.$4"
+# KRaft mode: uncomment the following lines to export KRaft related metrics
+# KRaft overall related metrics
+# distinguish between always increasing COUNTER (total and max) and variable GAUGE (all others) metrics
+#- pattern: "kafka.server<type=raft-metrics><>(.+-total|.+-max):"
+#  name: kafka_server_raftmetrics_$1
+#  type: COUNTER
+#- pattern: "kafka.server<type=raft-metrics><>(.+):"
+#  name: kafka_server_raftmetrics_$1
+#  type: GAUGE
+# KRaft "low level" channels related metrics
+# distinguish between always increasing COUNTER (total and max) and variable GAUGE (all others) metrics
+#- pattern: "kafka.server<type=raft-channel-metrics><>(.+-total|.+-max):"
+#  name: kafka_server_raftchannelmetrics_$1
+#  type: COUNTER
+#- pattern: "kafka.server<type=raft-channel-metrics><>(.+):"
+#  name: kafka_server_raftchannelmetrics_$1
+#  type: GAUGE
+# Broker metrics related to fetching metadata topic records in KRaft mode
+#- pattern: "kafka.server<type=broker-metadata-metrics><>(.+):"
+#  name: kafka_server_brokermetadatametrics_$1
+#  type: GAUGE
