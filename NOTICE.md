@@ -7,7 +7,7 @@ This software is distributed under the Apache Software License (ASL) v2.0, see L
   - The Ansible, ClamAV, OpenVPN, Suricata and Wazuh software are used with the GPL License.
   - The OpenLDAP software is used with the OpenLDAP Public License.
   
-  Below are all the Commercial off-the-shelf (COTS) used and their respective licenses:
+  Below are all the FOSS (Free and open-source software) used and their respective licenses:
 
 - Cert manager :
   - Helm chart
