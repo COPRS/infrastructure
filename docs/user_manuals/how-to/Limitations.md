@@ -22,6 +22,9 @@
   - [7. Manually bypass gateway for object storage traffic](#7-manually-bypass-gateway-for-object-storage-traffic)
     - [Issue](#issue-6)
     - [Workaround](#workaround-6)
+  - [8. SCDF : First known tag is always used if not explicitly specified](#8-scdf--first-known-tag-is-always-used-if-not-explicitly-specified)
+    - [Issue](#issue-7)
+    - [Workaround](#workaround-7)
 
 ## 1. Unable to use SCDF Undeploy/Deploy function without misconfiguration
 
@@ -228,3 +231,39 @@ On every nodes ( /!\ **except the gateways** /!\ ), add the subnet of the object
    ```
 
    Search for the line `100.64.0.0/10 via 192.168.0.1 dev ens3 proto static`
+
+## 8. SCDF : First known tag is always used if not explicitly specified
+
+Ticket : [COPRS/rs-issues#598](https://github.com/COPRS/rs-issues/issues/598)
+
+### Issue
+
+In SCDF, if you do not **explicitly** specify a tag version for an application, the docker tag version will be ignored and the first known will be used. For e.g. if you have the following configuration at one time, using the tag `1.12.0-rc1` in the configuration file `stream-application-list.properties` :
+
+```shell
+processor.s1l1-preparation=docker:artifactory.coprs.esa-copernicus.eu/rs-docker/rs-core-preparation-worker:1.12.0-rc1
+```
+
+SCDF will deploy the application with the tag `1.12.0-rc1`.
+
+**Now**, if later you update the tag version to use `1.13.2-rc1` in the configuration file `stream-application-list.properties` :
+
+```shell
+processor.s1l1-preparation=docker:artifactory.coprs.esa-copernicus.eu/rs-docker/rs-core-preparation-worker:1.13.2-rc1
+```
+
+SCDF will still deploy the version `1.12.0-rc1` instead of the desired `1.13.2-rc1`.
+
+### Workaround
+
+You must set the application's version in the configuration file `stream-parameters.properties` :
+
+```bash
+version.preparation-worker=1.13.2-rc1
+```
+
+**And** in the configuration file `stream-application-list.properties` :
+
+```shell
+processor.s1l1-preparation=docker:artifactory.coprs.esa-copernicus.eu/rs-docker/rs-core-preparation-worker:1.13.2-rc1
+```

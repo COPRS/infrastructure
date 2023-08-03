@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
   - [#652 - \[BUG\] \[Infra\] egress nodes: additional egress node creation at netplan configuration](https://github.com/COPRS/rs-issues/issues/652)
   - [#647 - \[BUG\] Bad performance to retrieve data from OBS / network congestion on Gateway.](https://github.com/COPRS/rs-issues/issues/647)
   - [#558 - \[BUG\] \[Infra\] fluent-bit: grafana-loki plugin fails after node restart deletes some files](https://github.com/COPRS/rs-issues/issues/558)
+  - [#598 - \[BUG\] \[PRO\] The first version of a rs-core/rs-addon is always deployed instead of the new version (docker image tag)](https://github.com/COPRS/rs-issues/issues/598)
 
 ### Fixed
 

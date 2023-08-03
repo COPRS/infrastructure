@@ -6,7 +6,7 @@
 > - definition of sufficient storage for services
 > - high availability of services
 >
-> When adding an RS-ADDON / RS-CORE, the following COTS will need to be re-configured:
+> When adding an RS-ADDON / RS-CORE, the following FOSS will need to be re-configured:
 >
 > - Storage size for Elasticsearch processing
 > - Storage size for Elasticsearch security
@@ -29,7 +29,7 @@
   - 2 Specific Workers for Prometheus  (VM : 8 CPUs / 32 Go RAM)
   - 2 Egress (VM : 4 CPUs / 16 Go RAM)
 
-## Configuration of COTS
+## Configuration of FOSS
 
 |   |   |
 | - | - |

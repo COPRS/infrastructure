@@ -1,9 +1,9 @@
-# Managing security COTS on the cluster's nodes
+# Managing security FOSS on the cluster's nodes
 
 The purpose of this document is to explain how to install and uninstall
-security COTS on nodes.
+security FOSS on nodes.
 
-There are 5 COTS that are currently deployed in order to provide security to the infrastructure.
+There are 5 FOSS that are currently deployed in order to provide security to the infrastructure.
 
 - AuditD
 - ClamAv
@@ -11,7 +11,7 @@ There are 5 COTS that are currently deployed in order to provide security to the
 - Suricata
 - OpenVPN
 
-According to the purpose of each COTS, the node where the installation is perfomed changes.
+According to the purpose of each FOSS, the node where the installation is perfomed changes.
 
 ## Future improvements
 
@@ -23,7 +23,7 @@ According to the purpose of each COTS, the node where the installation is perfom
 **Scope: `All`**
 
 Auditd is the userspace component to the Linux Auditing System. It's responsible for writing audit records to the disk.
-The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/auditd/defaults/main.yml```
+The FOSS can be configured by updating the file : ```infrastructure/platform/roles/security/auditd/defaults/main.yml```
 
 | Name | Function | Required |
 |------|----------|----------|
@@ -42,11 +42,11 @@ NB if one property is set, all properties must be set too otherwise the installa
 
 **Scope: `gateways`**
 
-The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/clamav/defaults/main.yml`.
+The FOSS can be configured by updating the file : ```infrastructure/platform/roles/security/clamav/defaults/main.yml`.
 
 ClamAv is an antivirus controlled by systemd.  
 Rules bases are reloaded automatically by freshclam many times a day.  
-The version of this COTS can be edited in ```/platform/roles/security/clamav/default/main.yaml```
+The version of this FOSS can be edited in ```/platform/roles/security/clamav/default/main.yaml```
 
 | Name | Function | Required |
 |------|----------|----------|
@@ -62,7 +62,7 @@ Clamav is decomposed in 3 modules:
 
 **Scope: `The Manager is installed only on the first master node and agent that are installed on all remaining nodes.`**
 
-The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/wazuh/defaults/main.yml```
+The FOSS can be configured by updating the file : ```infrastructure/platform/roles/security/wazuh/defaults/main.yml```
 We strongly advise to use the lastest version of Wazuh as the version 3 and 4 are not the same. Using version 3, the playbook may not work.
 
 | Name | Function | Required |
@@ -81,7 +81,7 @@ We strongly advise to use the lastest version of Wazuh as the version 3 and 4 ar
 **Scope: `Gateway`**
 
 Suricata is a NIDS that will reload rules every day to try to detect attack.
-The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/suricata/defaults/main.yml```
+The FOSS can be configured by updating the file : ```infrastructure/platform/roles/security/suricata/defaults/main.yml```
 As the Wazuh playbook, we strongly advise you to use the provided version in parameters as the install may not work otherwise.
 
 | Name | Function | Required |
@@ -115,7 +115,7 @@ It is used to manage categories for ip reputation.
 **Scope: `Gateway`**
 
 OpenVpn client installed on gateway.
-The COTS can be configured by updating the file : ```infrastructure/platform/roles/security/openvpn/defaults/main.yml```
+The FOSS can be configured by updating the file : ```infrastructure/platform/roles/security/openvpn/defaults/main.yml```
 
 | Name | Function | Required |
 |------|----------|----------|

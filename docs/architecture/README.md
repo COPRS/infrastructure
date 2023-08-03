@@ -868,7 +868,7 @@ Source : <https://grafana.com/docs/loki/latest/fundamentals/architecture/compone
 
 #### Overview
 
-The two most popular Logs Gathering Open Source are **Fluentd** and **Logstash**. We will therefore study these two COTS to determine which one best meets our expectations.
+The two most popular Logs Gathering Open Source are **Fluentd** and **Logstash**. We will therefore study these two FOSS to determine which one best meets our expectations.
 
 Fluentd and Logstash collect and transform events and logs from various data sources and writes them on several supports (files, databases NoSQL, ...).
 
