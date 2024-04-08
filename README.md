@@ -273,3 +273,8 @@ The repository is made of the following main directories and files.
 # Copyright and license
 
 The Reference System Software as a whole is distributed under the Apache License, version 2.0. A copy of this license is available in the [LICENSE](LICENSE) file. Reference System Software depends on third-party components and code snippets released under their own license (obviously, all compatible with the one of the Reference System Software). These dependencies are listed in the [NOTICE](NOTICE.md) file.
+
+<p align="center">
+ <img src="/docs/media/banner.jpg" width="800" height="50" />
+</p>
+
